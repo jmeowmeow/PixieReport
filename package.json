@@ -1,0 +1,28 @@
+{
+  "name": "pixiereport",
+  "version": "0.0.0",
+  "description": "Composes pixel doll weather images",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jmeowmeow/PixieReport.git"
+  },
+  "keywords": [
+    "node-canvas",
+    "weather",
+    "weatherpixie",
+    "dollz"
+  ],
+  "author": "Jeffrey Miller, github.com/jmeowmeow, jeffrey.miller@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jmeowmeow/PixieReport/issues"
+  },
+  "homepage": "https://github.com/jmeowmeow/PixieReport#readme",
+  "dependencies": {
+    "canvas": "^2.7.0"
+  }
+}
