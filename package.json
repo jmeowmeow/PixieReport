@@ -4,7 +4,7 @@
   "description": "Composes pixel doll weather images",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npx jasmine"
   },
   "repository": {
     "type": "git",
@@ -24,5 +24,8 @@
   "homepage": "https://github.com/jmeowmeow/PixieReport#readme",
   "dependencies": {
     "canvas": "^2.7.0"
+  },
+  "devDependencies": {
+    "jasmine": "^3.7.0"
   }
 }
