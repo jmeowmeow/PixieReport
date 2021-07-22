@@ -23,7 +23,9 @@
   },
   "homepage": "https://github.com/jmeowmeow/PixieReport#readme",
   "dependencies": {
-    "canvas": "^2.7.0"
+    "@mapbox/node-pre-gyp": "^1.0.5",
+    "canvas": "^2.7.0",
+    "uninstall": "^0.0.0"
   },
   "devDependencies": {
     "jasmine": "^3.7.0"
