@@ -587,7 +587,7 @@ ZYYY: "SHENYANG/DONGTA, China (ZYYY), 41-47N 123-30E 43M"
 exports.icaoToLocationMap = icaoLocMap;
 ```
 
-What I did 2020-01-09/10:
+What I did 2021-01-09/10:
 
 
 
