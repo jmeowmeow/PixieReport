@@ -204,8 +204,6 @@ I made a somewhat idiosyncratic choice for personal convenience in prototyping i
 
 My **prototype** image type is **SVG** + **Javascript**.
 
-
-
 * SVG renders text adequately
 * SVG composites multiple image layers (such as backgrounds and dolls dressed for the weather)
 * SVG image layers can be marked visible or invisible
@@ -213,15 +211,23 @@ My **prototype** image type is **SVG** + **Javascript**.
 * SVG documents are plaintext and can be manipulated by templating and string substitution (e.g. Javascript variables and weather report element text)
 * Javascript can manipulate the SVG document object model at load time in order to mark the appropriate layers visible (day/night background layer, doll appropriate to temperature layer)
 
+It's a bit of a mess internally (view source!), but it actually works and looks OK.
+
 See here for the initial SVG prototypes showing composition and image layering:
 
-[http://aristobit.com/svg/](http://aristobit.com/svg/)
+Locally as PixieReport project resources
 
+* [Pixie Demo#1](files/pixie-demo.svg)
+* [Pixie Demo#2](files/pixie-demo2.svg)
+* [Pixie mock-up](files/pixie-weathermockup.svg)
 
+If you don't see a correct rendering, it's possible that the Javascript onload hook is not firing. Try opening the SVG prototype file separately or via a link to the author's site.
 
-* [Pixie Demo#1](http://aristobit.com/svg/pixie-demo.svg)
-* [Pixie Demo#2](http://aristobit.com/svg/pixie-demo2.svg)
-* [Pixie mock-up](http://aristobit.com/svg/pixie-weathermockup.svg)
+Author's site [http://aristobit.com/svg/](http://aristobit.com/svg/)
+
+* Author's site [Pixie Demo#1](http://aristobit.com/svg/pixie-demo.svg)
+* Author's site [Pixie Demo#2](http://aristobit.com/svg/pixie-demo2.svg)
+* Author's site [Pixie mock-up](http://aristobit.com/svg/pixie-weathermockup.svg)
 
 A **production** image type should most likely be **PNG**.
 
@@ -247,6 +253,7 @@ Here it is:
 7. Merges the reporting variables into a template file **pixie-weathermockup.svg** to standard output, returned as HTTP document content (no clouds, alas) 
 8. On the browser client, a javascript snippet does the image compositing
 
+The CGI version starts with a template with distinctive tags to be replaced by strings from the weather report. The sample mockup version of **pixie-weathermockup.svg** linked below corresponds to the SVG document after Step 7 where template strings are replaced by extracted METAR weather-report text for display.
 
 ```
 $ more /Library/WebServer/CGI-Executables/pixie-metar.cgi 
