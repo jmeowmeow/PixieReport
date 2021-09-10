@@ -211,7 +211,15 @@ My **prototype** image type is **SVG** + **Javascript**.
 * SVG documents are plaintext and can be manipulated by templating and string substitution (e.g. Javascript variables and weather report element text)
 * Javascript can manipulate the SVG document object model at load time in order to mark the appropriate layers visible (day/night background layer, doll appropriate to temperature layer)
 
-It's a bit of a mess internally (view source!), but it actually works and looks OK.
+> ### SVG resources
+> Credit to Matthew Bystedt's site for Pike's SVG Dolls, Nov 22, 2012.
+> [Pike's SVG Dolls](https://apike.ca/prog_svg_paperdolls.html)
+>
+> See also Pike's SVG Page [SVG Tutorial](https://apike.ca/prog_svg.html) for more examples.
+>
+> More generally I've referred frequently to David Dailey's [A SVG Primer for Today's Browsers](https://www.w3.org/Graphics/SVG/IG/resources/svgprimer.html) from September 2010.
+
+The SVG weatherpixie prototype is a bit of a mess internally (view source!), but it actually works and looks OK.
 
 See here for the initial SVG prototypes showing composition and image layering:
 
@@ -221,7 +229,7 @@ Locally as PixieReport project resources
 * [Pixie Demo#2](files/pixie-demo2.svg)
 * [Pixie mock-up](files/pixie-weathermockup.svg)
 
-If you don't see a correct rendering, it's possible that the Javascript onload hook is not firing. Try opening the SVG prototype file separately or via a link to the author's site.
+If you don't see a correct rendering when viewing the "raw" SVG document from GitHub, it may be that GitHub's default content security policy is blocking the embedded image resources. See [Content Security Policy Quick Reference: img-src](https://content-security-policy.com/img-src/). Try opening the SVG prototype file separately or via a link to the author's site.
 
 Author's site [http://aristobit.com/svg/](http://aristobit.com/svg/)
 
