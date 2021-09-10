@@ -14,10 +14,10 @@ I was enchanted by the combination of cuteness, content, and customizability wra
 
 ### A "Tamsin" Weatherpixie
 
-![Goth weatherpixie on a cool cloudy night](images/image10.jpg "Goth weatherpixie on a cool cloudy night")
+![Goth weatherpixie on a cool cloudy night](images/tamsin-night-goth-250pct.jpg "Goth weatherpixie on a cool cloudy night")
 
 
-Rendered at 200% to show detail.
+Stretched to 250% to show detail.
 
 
 ### What's in a Weatherpixie?
