@@ -376,16 +376,17 @@ _Acknowledgments to William Pietri for consultation and experience related to Wi
             1. Have replied to likely-interested folks on Twitter.
             2. Some have subscribed and made suggestions.
     2. Directions for development
-        8. Interactive, handle @ references
-        9. Customize to particular requests
-            3. Designed to be customizable (choose accessories like Picrew / kisekae?) @WoudiM's [https://picrew.me/image_maker/407027](https://picrew.me/image_maker/407027)
-        10. Shared repository, clone it? -> (again, pixel artist or paperdoll community?)
-        11. Animated images? (rain etc., blinking, tail wagging? Doll pose and outline probably not animated, though perhaps a royal waving hand?)
-        12. Slack bot implementation? (@18F community: Mrs. Landingham bot -- timed intro messages on Slack)
-        13. Similarly: Discord bot, Federated Wiki plugin
-        14. Similarly: ObservableHQ or Jupyter Notebook version
-        15. Microformat side channel? / IndieWeb
-        16. Support embedding in flexible ways (URL to cache; Signature line, Wiki gadget?)
+        1. Interactive, handle @ references
+        2. Customize to particular requests
+            1. Designed to be customizable (choose accessories like Picrew / kisekae?) @WoudiM's [https://picrew.me/image_maker/407027](https://picrew.me/image_maker/407027)
+            2. Caller provides resources in API request?
+        3. Shared repository, clone it? -> (again, pixel artist or paperdoll community?)
+        4. Animated images? (rain etc., blinking, tail wagging? Doll pose and outline probably not animated, though perhaps a royal waving hand?)
+        5. Slack bot implementation? (@18F community: Mrs. Landingham bot -- timed intro messages on Slack)
+        6. Similarly: Discord bot, Federated Wiki plugin
+        7. Similarly: ObservableHQ or Jupyter Notebook version
+        8. Microformat side channel? / IndieWeb
+        9. Support embedding in flexible ways (URL to cache; Signature line, Wiki gadget?)
 2. Exit strategies / Sustainable engagement?
 
 
