@@ -243,7 +243,7 @@ For embedding in other web pages, you want an actual raster image format and not
 
 Actual raster images can be cached as static data keyed by the airport code, doll number, and formatting options.
 
-An **animated **image format for falling rain or snow or blowing clouds or blinking lights, or animated figures could use **GIF89a**.
+An **animated** image format for falling rain or snow or blowing clouds or blinking lights, or animated figures could use **GIF89a**.
 
 
 ### CGI Web Application
