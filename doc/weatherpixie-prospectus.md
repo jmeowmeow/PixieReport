@@ -41,7 +41,7 @@ Below the pixie were quantitative weather stats including:
 2. Relative humidity
 3. Time (time the picture was composed, not the weather report time).
 4. Wind speed in KPH or MPH and compass direction
-5. Barometer reading in millibars
+5. Barometer reading in millibars or inches of mercury
 
 The original format was small, 124 pixels wide x 175 pixels high. You could embed it on your home page by saving a URL which encoded your choice of location, units (for temperature and wind speed), and the ID number of the pixel doll set you wanted.
 
