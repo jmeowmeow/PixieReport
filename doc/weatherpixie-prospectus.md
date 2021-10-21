@@ -539,8 +539,6 @@ What I did 2020-12-31:
 
 What I did 2020-01-02:
 
-
-
 * Fighting with the metadata/create endpoint, which wants JSON, but twurl always specifies form encoding.
 * Search query: [https://www.google.com/search?q=twitter+metadata+%22could+not+authenticate%22](https://www.google.com/search?q=twitter+metadata+%22could+not+authenticate%22) 
 * Alleged fix: [https://github.com/twitter/twurl/pull/60](https://github.com/twitter/twurl/pull/60) / claims to be present in twurl 0.9.3+ and I have 0.9.5 - ??
@@ -630,6 +628,21 @@ How are our Jasmine tests doing? A little unhappy. We're not well-factored yet, 
 
 2021-09-09 Create edited snapshot of "Weatherpixie Prospectus" document using the Google Docs Marketplace "Docs to Markdown" plugin. Remove curly quotes introduced by Google Docs using vim, searching and substituting out /[\x82] and similar non-ASCII characters. Patch up the image sequence, since Docs to Markdown does not know what order the images are attached. 
 
+2021-10-20 Factoring out layer compositing code to improve testability of alt text logic. Progress.
+
+Here's a layer list from a breezy night at the TROLL-A oil platform heliport.
+
+1. (night)
+2. (cloudy)
+3. (Mymble's Daughter from Moomin, red hair in a vertical bun, looking upward past floating hearts, wearing a white blouse with a yellow bow, a deep pink dress, striped bloomers, and black shoes.)
+4. _rain or snow or fog or mist_ would go here, but is not indicated by the weather report
+5. (two red gale warning pennants)
+6. (frame)
+
+The intention is to compose a picture description from the day/night, sky cover, lightning, doll, rain/snow/fog conditions, and decorations present in the layer names or descriptions. The doll picture is descriptive, while the other layer names are indicative of the rest of the scene.  I expect we'll start with alt text composition logic fractionally better than madlibs insertion.
+
+Weather text is written in the black frame area atop the picture composited from this stack of layers. Location data is written vertically running up the left side of the picture.
+
 ---
 
 
@@ -667,11 +680,10 @@ Recap of post- Public Milestone 1,  to-dos with additions:
 Breaking this category out 2021-09-05, at a correspondent's suggestion for a Slack integration. I liked it b/c I was running over to the Macbook and hand-pushing a pixie for a given weather station (Bristol, Dublin) to paste into the Slack channel devoted to our work and I thought: yes, that would be nice, fewer steps from thought to act.
 
 
-## Brief Prospect List
-
-
+## Project Prospect List
 
 * Slack bot integration, probably wants hosted API pixie server
-* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /> tag.
+* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag.
 * Hosted Twitter bot, following notifications for interactions, responding with tweets.
 * A Slack or Twitter bot integration could wrap common working code, using Alistair Cockburn's "Hexagonal Architecture" or "Ports and Adapters" which could later drive a website.
+* Migrate from my hand-rolled icao.js site list and the METAR service to [OpenWeatherMap API](https://openweathermap.org/appid). OpenWeatherMap advises caching information for at least 10 minutes since _The update frequency of the OpenWeather model is not higher than once in 10 minutes_. The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations.
