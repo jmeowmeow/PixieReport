@@ -37,7 +37,7 @@ Below the pixie were quantitative weather stats including:
 
 
 
-1. Temperature in ºC or ºF
+1. Temperature in ÂºC or ÂºF
 2. Relative humidity
 3. Time (time the picture was composed, not the weather report time).
 4. Wind speed in KPH or MPH and compass direction
@@ -111,13 +111,13 @@ Here is an example from NOAA. "KSEA" is the airport code for Seattle-Tacoma Inte
   <tr>
    <td><strong>Temperature:</strong>
    </td>
-   <td>21.7°C ( 71°F)
+   <td>21.7Â°C ( 71Â°F)
    </td>
   </tr>
   <tr>
    <td><strong>Dewpoint:</strong>
    </td>
-   <td>12.8°C ( 55°F) [RH = 57%]
+   <td>12.8Â°C ( 55Â°F) [RH = 57%]
    </td>
   </tr>
   <tr>
@@ -168,7 +168,7 @@ OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/
 1. Pixie Creation Wizard:
     1. Geographic picker to find the nearest airport to a location, or search by continent and country. Yields an airport code.
     2. Pixie Doll Picker. Each has a description and is encoded by a small integer ID.
-    3. Unit picker (mph/kph, ºF/ºC)
+    3. Unit picker (mph/kph, ÂºF/ÂºC)
     4. Maybe other options? I don't recall
 2. Pixie Preview Page
     5. Rendered Weatherpixie. 
@@ -482,7 +482,7 @@ Message to @ApiPieBaker Twitter account:
 
     [@ApiPieBaker](https://twitter.com/ApiPieBaker)
 
-·[8m](https://twitter.com/ApiPieBaker/status/1342601569099866112)
+Â·[8m](https://twitter.com/ApiPieBaker/status/1342601569099866112)
 
 Wishlist for pixie project 2020-12-25: 
 
@@ -600,7 +600,7 @@ What I did 2021-01-09/10:
 
 
 
-Pixie and alt-text from 2021-08-11 (start of Code Café evening, a parallel-play hangout for software developers hosted by Lauren Granger)
+Pixie and alt-text from 2021-08-11 (start of Code CafÃ© evening, a parallel-play hangout for software developers hosted by Lauren Granger)
 
 ![a tweet from PixieReport showing Peter Rabbit diving into a watering can in a report from Adiyaman Airport in Turkey](images/image2.png "PixieReport tweet as seen in Twitter for Web")
 
@@ -608,7 +608,7 @@ Pixie and alt-text from 2021-08-11 (start of Code Café evening, a parallel-play 
 
 **_Missing from the alt text description are the picture's sun, sky, wind, cloud, and weather conditions._**
 
-2021-09-08 PixieReport work at Code Café. Start: review the document from start, to date.
+2021-09-08 PixieReport work at Code CafÃ©. Start: review the document from start, to date.
 
 Back on Alt Text.
 
