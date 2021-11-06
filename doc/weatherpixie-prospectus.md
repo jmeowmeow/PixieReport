@@ -35,9 +35,7 @@ Tamsin's **weatherpixies** were image compositions with these layers, back to fr
 
 Below the pixie were quantitative weather stats including:
 
-
-
-1. Temperature in ºC or ºF
+1. Temperature in °C or °F
 2. Relative humidity
 3. Time (time the picture was composed, not the weather report time).
 4. Wind speed in KPH or MPH and compass direction
@@ -168,7 +166,7 @@ OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/
 1. Pixie Creation Wizard:
     1. Geographic picker to find the nearest airport to a location, or search by continent and country. Yields an airport code.
     2. Pixie Doll Picker. Each has a description and is encoded by a small integer ID.
-    3. Unit picker (mph/kph, ºF/ºC)
+    3. Unit picker (mph/kph, °F/°C)
     4. Maybe other options? I don't recall
 2. Pixie Preview Page
     5. Rendered Weatherpixie. 
