@@ -187,11 +187,11 @@ I worked on this as an individual stage in pixie creation.
 
 It's possible to get a bulk snapshot of METAR reports for all current locations. The snapshot can serve as a database for data-driven tests of the METAR parsing stage. There is some variability of how the reports are given which needs to be handled (units of pressure, for instance).
 
-There is **more data in a METAR** than is rendered in a pixie image;** we select and condense** for presentation. For example, cloud layers may be reported in units of ? of total sky coverage at different elevations. For the image, we will choose a single value to describe how cloudy it is.
+There is **more data in a METAR** than is rendered in a pixie image; **we select and condense** for presentation. For example, cloud layers may be reported in units of ? of total sky coverage at different elevations. For the image, we will choose a single value to describe how cloudy it is.
 
 There are some reported weather conditions (smoke, freezing fog) which we may or may not render, or may collapse into fewer rendering categories (perhaps haze and fog). Similarly, rain, hail, sleet, freezing rain, and snow may collapse to rain, hail, snow. Thundershowers may be handled as a lightning overlay.
 
-For the working prototype I submitted as part of my AWS class, I used crude string matching of a **decoded **METAR report rather than actually parse the brief METAR code format.
+For the working prototype I submitted as part of my AWS class, I used crude string matching of a **decoded** METAR report rather than actually parse the brief METAR code format.
 
 My follow-up project which posts pixies to Twitter also matches from a decoded METAR.
 
