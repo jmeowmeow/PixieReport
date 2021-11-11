@@ -680,6 +680,7 @@ Breaking this category out 2021-09-05, at a correspondent's suggestion for a Sla
 
 ## Project Prospect List
 
+* a little polishing: check active sites not present in icao.js to see if their METAR report contains lat/long.
 * Slack bot integration, probably wants hosted API pixie server
 * Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag.
 * Hosted Twitter bot, following notifications for interactions, responding with tweets.
