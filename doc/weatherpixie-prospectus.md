@@ -660,34 +660,47 @@ Seattle in:
 ---
 
 
-### PixieReport To Do
+### PixieReport To Dos Done
 
-Recap of post- Public Milestone 1,  to-dos with additions:
-
-
-
-* Source clean-up, public repository
-    * Clean up
-    * Organize into standard Node project tree
-    * Add tests.
-    * Post to public repository
-    * Pending GitHub: zip/tgz working directory + LaunchAgent and back up.
 * Add more diverse and/or less human-specific pixies (in progress, need more).
-    * ? Mrs. Rabbit (icy through warm) + Peter Rabbit (hot)
-    * ? (Selfie set - for variety rather than diversity)
-    * ? Moomin (Too-ticky, Snufkin, Mymble's daughter, Snork Maiden, Moominmamma)
+    * Mrs. Rabbit (icy through warm) + Peter Rabbit (hot)
+    * (Selfie set - for variety rather than diversity)
+    * Moomin (Too-ticky, Snufkin, Mymble's daughter, Snork Maiden, Moominmamma)
 * Add alt text for picture via create/metadata. (in progress, not specific-to-pic alt text)
-    * ? Generic alt-text mentioning weather station code.
+    * Generic alt-text mentioning weather station code.
     * Alt-text including weather and day/night description
-    * ? Alt-text including pixie description
+    * Alt-text including pixie description
     * Solicit reviews of alt-text (is it useful and sensible?) see prospect folks above
-* Move to a hosted platform so that it can be reached for embedding or receiving callbacks
-* Add interactivity via Twitter callback (needs hosting, likely https?)
-* ? Re-do **icao.js** JSON database of weather stations with State/Province as part of the location string.
-    * Consider pruning sites with no lat/long by requesting METAR for sites in icao.js without lat/long, and/or requesting METAR for sites in our active site list which are missing from icao.js (thus end up with ICAO METAR K123 or whatever).
-* ? Add a night-with-stars layer for clear nights or partly cloudy nights, night-with-comet for Moomin pixies.
+* Add a night-with-stars layer for clear nights or partly cloudy nights
 * Reverse the gale flags so that they blow toward the left edge, following the rain slant and the blowing scarves.
 
+### PixieReport To Dos
+
+* Make night-with-comet the standard night background for Moomin pixies.
+    * Original Moomin pixies were a snap-in for dolls + backgrounds
+    * Loading of the named layers can be special falling back to standard
+* Source clean-up, public repository
+    * Separate pixie logic from Twitter post logic
+    * Organize into standard Node project tree
+    * Add tests.
+    * Add a local demo mode running on a Node server as driver.
+         * Stop here for shareable public code release.
+    * Post source to public repository
+    * After GitHub: zip/tgz messy original dev directory + LaunchAgent and back up.
+    * After/in parallel with GitHub: update demo mode Node server.
+         * Elaboration: Figure out how to make API calls directly from Node?
+         * Hosting a slightly more elaborate setup could drive @PixieReport
+* Move to a hosted platform so that it can be reached for embedding or receiving callbacks
+    * There may be a way to use Cheap Bots Done Quick on Google as the public receiving point.
+* Add @PixieReport interactivity via Twitter callback (needs hosting, likely https?)
+* Re-do **icao.js** JSON database of weather stations with State/Province as part of the location string.
+    * Consider pruning sites with no lat/long by requesting METAR for sites in icao.js without lat/long,
+    * Consider verifying active sites by requesting METAR for sites in our active site list which are missing from icao.js (thus end up with ICAO METAR K123 or whatever).
+
+2021-11 Suggestions from @PixieReport Twitter followers (2 votes on the poll)
+* Add Art (pixies and accessories)
+* Add OpenWeatherMap integration [OpenWeatherMap API](https://openweathermap.org/appid). The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations.
+* zero votes for @interaction
 
 # Prospective Pixie Projects
 
@@ -698,7 +711,8 @@ Breaking this category out 2021-09-05, at a correspondent's suggestion for a Sla
 
 * a little polishing: check active sites not present in icao.js to see if their METAR report contains lat/long.
 * Slack bot integration, probably wants hosted API pixie server
-* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag.
+* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag. Next-step from local Node server?
 * Hosted Twitter bot, following notifications for interactions, responding with tweets.
 * A Slack or Twitter bot integration could wrap common working code, using Alistair Cockburn's "Hexagonal Architecture" or "Ports and Adapters" which could later drive a website.
 * Migrate from my hand-rolled icao.js site list and the METAR service to [OpenWeatherMap API](https://openweathermap.org/appid). OpenWeatherMap advises caching information for at least 10 minutes since _The update frequency of the OpenWeather model is not higher than once in 10 minutes_. The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations.
+
