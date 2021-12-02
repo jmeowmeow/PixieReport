@@ -670,7 +670,8 @@ Seattle in:
     * Generic alt-text mentioning weather station code.
     * Alt-text including weather and day/night description
     * Alt-text including pixie description
-    * Solicit reviews of alt-text (is it useful and sensible?) see prospect folks above
+    * Solicit reviews of alt-text (is it useful and sensible?) see prospect folks above -- so far no response; will leave as is
+    * Alt-text on Twitter is sometimes click-to-reveal in Web view, as well as being embedded in the HTML DOM.
 * Add a night-with-stars layer for clear nights or partly cloudy nights
 * Reverse the gale flags so that they blow toward the left edge, following the rain slant and the blowing scarves.
 
