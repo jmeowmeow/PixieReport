@@ -31,7 +31,7 @@ Tamsin's **weatherpixies** were image compositions with these layers, back to fr
 3. Pixel doll image dressed according to temperature (more or fewer clothes) and possibly precipitation. There were multiple choices according to Tamsin's whims, rendering of herself and friends as pixel dolls, etc. There might be a dog or cat.
 4. Holiday accessories.
 5. Foreground weather indication such as raindrops or wisps of fog.
-6. Site signature "weatherpixie.com" 
+6. Site signature "weatherpixie.com"
 
 Below the pixie were quantitative weather stats including:
 
@@ -52,7 +52,7 @@ Another "Tamsin" pixie showing a daytime rendering with a different pixel doll, 
 
 ### Tamsin Pixie Tableau from @miramanga
 
-Source URL: [https://twitter.com/miramanga/status/1092320373083947009](https://twitter.com/miramanga/status/1092320373083947009) 
+Source URL: [https://twitter.com/miramanga/status/1092320373083947009](https://twitter.com/miramanga/status/1092320373083947009)
 
 
 ![tableau of eighteen overlapping pixel dolls of the same model with dress spanning bikini to parka](images/image11.jpg "tableau of Tamsin pixies from hot to cold")
@@ -61,13 +61,13 @@ Source URL: [https://twitter.com/miramanga/status/1092320373083947009](https://t
 
 ### Other Pixies: The St. Louis Post-Dispatch Weatherbird
 
-[https://en.wikipedia.org/wiki/Weatherbird](https://en.wikipedia.org/wiki/Weatherbird) 
+[https://en.wikipedia.org/wiki/Weatherbird](https://en.wikipedia.org/wiki/Weatherbird)
 
 
 ![Weatherbird smoking a cigar, dressed in cap, scarf, and jacket for a cold day](images/image1.png "Weatherbird smoking a cigar, dressed in cap, scarf, and jacket for a cold day")
 
 
-Thanks to Tim Hutchings of Portland, OR for the Weatherbird reference [https://twitter.com/TimHutchingsFTW](https://twitter.com/TimHutchingsFTW) 
+Thanks to Tim Hutchings of Portland, OR for the Weatherbird reference [https://twitter.com/TimHutchingsFTW](https://twitter.com/TimHutchingsFTW)
 
 
 ## METAR: Weather Data Behind the Weatherpixie
@@ -75,7 +75,7 @@ Thanks to Tim Hutchings of Portland, OR for the Weatherbird reference [https://t
 
 ### Meteorological Aerodrome Reports (METARs)
 
-The data source for a given weatherpixie was the most recent airport weather report (METAR) for a given airport. These are available on the Web in textual form, compressed into a telegraphic form as if sent via telex or teletypewriter, like the cryptic and ominous TTY messages in Crichton's The Andromeda Strain. 
+The data source for a given weatherpixie was the most recent airport weather report (METAR) for a given airport. These are available on the Web in textual form, compressed into a telegraphic form as if sent via telex or teletypewriter, like the cryptic and ominous TTY messages in Crichton's The Andromeda Strain.
 
 
 ```
@@ -156,7 +156,7 @@ METARs are accompanied by TAFs (Terminal Aviation Forecasts). The Weatherpixie o
 
 ### Alternative Weather Report Sources
 
-OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/examples) . Used for a Recurse Center project. 
+OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/examples) . Used for a Recurse Center project.
 
 
 ## Weatherpixie.com Features
@@ -169,7 +169,7 @@ OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/
     3. Unit picker (mph/kph, °F/°C)
     4. Maybe other options? I don't recall
 2. Pixie Preview Page
-    5. Rendered Weatherpixie. 
+    5. Rendered Weatherpixie.
     6. URL to embed the image on your site.
     7. Site navigation
 3. "About" page, background, links to resources, etc.
@@ -183,7 +183,7 @@ OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/
 
 ### METAR Parsing
 
-I worked on this as an individual stage in pixie creation. 
+I worked on this as an individual stage in pixie creation.
 
 It's possible to get a bulk snapshot of METAR reports for all current locations. The snapshot can serve as a database for data-driven tests of the METAR parsing stage. There is some variability of how the reports are given which needs to be handled (units of pressure, for instance).
 
@@ -256,13 +256,13 @@ Here it is:
 4. Downloads a METAR report to the temporary filename
 5. Repeatedly regex-scans the temporary file to bind reporting variables
 6. Writes a CGI header (document type svg/xml) to standard output
-7. Merges the reporting variables into a template file **pixie-weathermockup.svg** to standard output, returned as HTTP document content (no clouds, alas) 
+7. Merges the reporting variables into a template file **pixie-weathermockup.svg** to standard output, returned as HTTP document content (no clouds, alas)
 8. On the browser client, a javascript snippet does the image compositing
 
 The CGI version starts with a template with distinctive tags to be replaced by strings from the weather report. The sample mockup version of **pixie-weathermockup.svg** linked below corresponds to the SVG document after Step 7 where template strings are replaced by extracted METAR weather-report text for display.
 
 ```
-$ more /Library/WebServer/CGI-Executables/pixie-metar.cgi 
+$ more /Library/WebServer/CGI-Executables/pixie-metar.cgi
 #!/bin/sh
 # probably don't need jot for real METAR but certainly need sed and perhaps date
 which -s jot sed date curl || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi needs jot, sed, date, curl -- not all found."' && exit 1) || exit 0
@@ -271,15 +271,15 @@ echo $Q | egrep -q "^[A-Z][A-Z0-9]{3}$" || (sh -c 'echo "Content-Type: text/plai
 TMP="/tmp/pixie-$$-$Q.txt"
 curl "https://aviationweather.gov/metar/data?ids=${Q}&format=decoded&date=0&hours=0&layout=off&taf=off" > $TMP || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi cannot fetch METAR weather report."' && exit 1) || exit 0
 grep -q "No data found" $TMP && echo "Content-Type: text/plain\n\n\nNo data found for METAR station $Q." && exit 0
-TEMP=$(grep Temperature $TMP | sed -e "s/^.*( *//" -e "s/\&deg.*//") 
+TEMP=$(grep Temperature $TMP | sed -e "s/^.*( *//" -e "s/\&deg.*//")
 # WSPD=$(grep Winds $TMP | sed -e 's/^.* at *//' -e 's/ MPH.*//')
 # WDIR=$(grep Winds $TMP | sed -e 's/^.*<td>//' -e 's/ at .*//' -e 's/variable direction winds/VRB/' -e 's/from the //' -e 's/ (.*//')
 WSPD=$(grep Winds $TMP | sed -e 's/^.* at *//' -e 's/ MPH.*/mph/' -e 's/.*calm.*/Calm/')
 WDIR=$(grep Winds $TMP | sed -e 's/.*calm.*//' -e 's/^.*<td>//' -e 's/ at .*//' -e 's/variable direction winds/VRB/' -e 's/from the //' -e 's/ (.*//')
-RH=$(grep 'RH' $TMP | sed -e "s/^.*\= *//" -e "s/%.*//") 
+RH=$(grep 'RH' $TMP | sed -e "s/^.*\= *//" -e "s/%.*//")
 AP=$(grep Pressure $TMP | sed -e "s/ inches.*//" -e "s/^.*<td>//")
 echo "Content-Type: image/svg+xml"
-echo 
+echo
 DT=$(date '+%H:%MPST')
 #HR=$(date '+%H')
 HR=$(jot -r 1 0 23)
@@ -350,7 +350,7 @@ _Acknowledgments to William Pietri for consultation and experience related to Wi
 
 
 
-* Twitter bot. 
+* Twitter bot.
     * Study model code.
     * Choose a language and a deployment platform
     * Ask William Pietri about consultative details about a Twitter bot.
@@ -436,11 +436,11 @@ A Twitter bot is a good place to get some visibility while keeping the dimension
 
 Twitter API application for @APIPieBaker (now @PixieReport):
 
-I plan to post periodic images. My first plan is to revive the Weatherpixie (Tamsin Bowles), displaying a weather report and a digital paperdoll dressed for the weather, making use of public data in the form of airport weather reports. See 
+I plan to post periodic images. My first plan is to revive the Weatherpixie (Tamsin Bowles), displaying a weather report and a digital paperdoll dressed for the weather, making use of public data in the form of airport weather reports. See
 
-https://www.aviationweather.gov/metar/data?ids=KSEA&format=decoded&hours=0&taf=off&layout=on 
+https://www.aviationweather.gov/metar/data?ids=KSEA&format=decoded&hours=0&taf=off&layout=on
 
-for an example of an airport weather report. See 
+for an example of an airport weather report. See
 
 http://www.aristobit.com/svg/pixie-weathermockup.svg for a mockup of a Weatherpixie image. I expect to post in PNG format as supported by Twitter, not SVG.
 
@@ -461,11 +461,9 @@ Later versions of the project may respond to @references by generating weather i
 
 ### PixieReport App Log
 
-2020-12-25
+#### 2020-12-25
 
 Next possible actions after Public Milestone 1:
-
-
 
 * Clean up project into a format suitable for GitHub. -> Add tests.
 * Add more diverse and/or less human-specific pixies (two folks have suggested this).
@@ -475,26 +473,24 @@ Next possible actions after Public Milestone 1:
 
 Message to @ApiPieBaker Twitter account:
 
-**[Weatherpixie Redux (intermittently posting)](https://twitter.com/ApiPieBaker)**
+_(links emended to @PixieReport since name has changed)_
+
+**[Weatherpixie Redux (intermittently posting)](https://twitter.com/PixieReport)**
 
 
-    [@ApiPieBaker](https://twitter.com/ApiPieBaker)
+    [@ApiPieBaker](https://twitter.com/PixieReport)
 
-·[8m](https://twitter.com/ApiPieBaker/status/1342601569099866112)
+·[8m](https://twitter.com/PixieReport/status/1342601569099866112)
 
-Wishlist for pixie project 2020-12-25: 
-
-
+Wishlist for pixie project 2020-12-25:
 
 * Clean up source/host publicly
 * More diverse pixie models (figure, skin, animal)
-* Move to public host to enable interactivity 
+* Move to public host to enable interactivity
 
 Thoughts?
 
-What I actually did 2020-12-26:
-
-
+#### What I actually did 2020-12-26:
 
 * Added a self-portrait pixie set. Hopefully in the spirit of "Tamsin and her friends" from the original. (Reminds me of Talking Heads photo on Little Creatures album cover).
 
@@ -502,7 +498,7 @@ What I actually did 2020-12-26:
 ![five dolls using the same male base model dressed for weather from icy cold to warm](images/image7.png "author selfie pixie set")
 
 
-What I actually did 2020-12-27:
+#### What I actually did 2020-12-27:
 
 
 * Registered pixiereport.com with EasyDNS for 10 years. (No hosting decision yet).
@@ -516,7 +512,7 @@ Also to-do:
   metar: 'KLAX 280808Z 26017G32KT 4SM RA FEW016 BKN035 BKN050 11/08 A2989 RMK AO2 PK WND 26032/0805 VIS 2 1/2 RWY24 LTG DSNT N WSHFT 05 OCNL LTGICCC DSNT W-NW CB DSNT W-NW P0002 T01110078'
 * Stars on night pixie background
 
-What I did 2020-12-29:
+#### What I did 2020-12-29:
 
 
 
@@ -526,7 +522,7 @@ What I did 2020-12-29:
 ![array of five dolls, four Mrs. Rabbit and one Peter Rabbit](images/image4.png "Beatrix Potter pixies")
 
 
-What I did 2020-12-31:
+#### What I did 2020-12-31:
 
 * Fireworks night background for New Year's 2021.
 * Fireworks credit to Brett Monroe on Flickr, ? Wikimedia Commons. [https://www.flickr.com/people/46282282@N00](https://www.flickr.com/people/46282282@N00)
@@ -535,19 +531,19 @@ What I did 2020-12-31:
 ![night layer image showing fireworks and cc-by Brett Monroe](images/image3.png "New Year fireworks night layer")
 
 
-What I did 2020-01-02:
+#### What I did 2020-01-02:
 
 * Fighting with the metadata/create endpoint, which wants JSON, but twurl always specifies form encoding.
-* Search query: [https://www.google.com/search?q=twitter+metadata+%22could+not+authenticate%22](https://www.google.com/search?q=twitter+metadata+%22could+not+authenticate%22) 
+* Search query: [https://www.google.com/search?q=twitter+metadata+%22could+not+authenticate%22](https://www.google.com/search?q=twitter+metadata+%22could+not+authenticate%22)
 * Alleged fix: [https://github.com/twitter/twurl/pull/60](https://github.com/twitter/twurl/pull/60) / claims to be present in twurl 0.9.3+ and I have 0.9.5 - ??
-* Fixed! My actual problem was not correctly sending the necessary header param to twurl,  **-A "Content-Type: application/json"** . 
+* Fixed! My actual problem was not correctly sending the necessary header param to twurl,  **-A "Content-Type: application/json"** .
 * The other API endpoints, despite being "json", accept form-encoded data; metadata does not, because it has a two-level JSON structure for alt text, so **metadata/create** is special.
 * Hosting options (from Bradford Cross's [Twitter query](https://twitter.com/bradfordcross/status/1345621266883989505) about easy webapp hosting) including
     * [https://caprover.com/](https://caprover.com/) snap-on to Digital Ocean for easy deploy and management
     * Netlify
     * Digital Ocean
-    * Firebase 
-    * [https://render.com/](https://render.com/) 
+    * Firebase
+    * [https://render.com/](https://render.com/)
 
 ![Bradford Cross: What's the best way to build super simple hosted web apps these days? Something like node on heroku or appengine?](images/bradford-cross-hosting.png "@bradfordcross asks about simple hosted apps")
 
@@ -588,7 +584,7 @@ What I did 2021-01-09/10:
 
 
 
-* Finished Moomin pixies, added night-with-stars-and-comet using The Gimp's "Sparks" brush. The Gimp is awkward but mostly does what I need. 
+* Finished Moomin pixies, added night-with-stars-and-comet using The Gimp's "Sparks" brush. The Gimp is awkward but mostly does what I need.
 * Put Moomin pixies on guest rotation. The "Davis, USA" one looks odd, since the current weather, when checked for 2AM January 10th, is 39F, not 93F.
 
 
@@ -606,7 +602,7 @@ Pixie and alt-text from 2021-08-11 (start of Code Café evening, a parallel-play
 
 **_Missing from the alt text description are the picture's sun, sky, wind, cloud, and weather conditions._**
 
-2021-09-08 PixieReport work at Code Café. Start: review the document from start, to date.
+#### 2021-09-08 PixieReport work at Code Café. Start: review the document from start, to date.
 
 Back on Alt Text.
 
@@ -624,9 +620,9 @@ Weather: rain; Cumulonimbus clouds observed
 
 How are our Jasmine tests doing? A little unhappy. We're not well-factored yet, decoded-to-pixie.js is still more of a pipeline than a set of functional transformations.
 
-2021-09-09 Create edited snapshot of "Weatherpixie Prospectus" document using the Google Docs Marketplace "Docs to Markdown" plugin. Remove curly quotes introduced by Google Docs using vim, searching and substituting out /[\x82] and similar non-ASCII characters. Patch up the image sequence, since Docs to Markdown does not know what order the images are attached. 
+#### 2021-09-09 Create edited snapshot of "Weatherpixie Prospectus" document using the Google Docs Marketplace "Docs to Markdown" plugin. Remove curly quotes introduced by Google Docs using vim, searching and substituting out /[\x82] and similar non-ASCII characters. Patch up the image sequence, since Docs to Markdown does not know what order the images are attached.
 
-2021-10-20 Factoring out layer compositing code to improve testability of alt text logic. Progress.
+#### 2021-10-20 Factoring out layer compositing code to improve testability of alt text logic. Progress.
 
 Here's a layer list from a breezy night at the TROLL-A oil platform heliport.
 
@@ -641,7 +637,7 @@ The intention is to compose a picture description from the day/night, sky cover,
 
 Weather text is written in the black frame area atop the picture composited from this stack of layers. Location data is written vertically running up the left side of the picture.
 
-2021-11-17 PixieReport Twitter bot script now generates alt text
+#### 2021-11-17 PixieReport Twitter bot script now generates alt text
 from layers.
 
 Sample text / image pairs circulated to the @PixieReport feed as a
@@ -656,6 +652,16 @@ Maybe try a computed world map link from lat/long?
 Seattle in:
 * Google Maps:   https://www.google.com/maps/@47.65,-122.35,12z
 * OpenStreetMap: https://www.openstreetmap.org/#map=10/47.6233/-122.4316
+
+#### 2021-12-31
+
+* OpenStreetMap link is now part of @PixieReport tweet text, always same map zoom.
+* Repeated @PixieReport fireworks night background for New Year's.
+
+
+#### 2022-01-03
+
+* Forwarded specific trouble from original Twitter API integration work to someone talking with the API devs.
 
 ---
 
@@ -698,7 +704,7 @@ Seattle in:
     * Consider pruning sites with no lat/long by requesting METAR for sites in icao.js without lat/long,
     * Consider verifying active sites by requesting METAR for sites in our active site list which are missing from icao.js (thus end up with ICAO METAR K123 or whatever).
 
-2021-11 Suggestions from @PixieReport Twitter followers (2 votes on the poll)
+#### 2021-11 Suggestions from @PixieReport Twitter followers (2 votes on the poll)
 * Add Art (pixies and accessories)
 * Add OpenWeatherMap integration [OpenWeatherMap API](https://openweathermap.org/appid). The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations.
 * zero votes for @interaction
