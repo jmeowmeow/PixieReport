@@ -663,6 +663,10 @@ Seattle in:
 
 * Forwarded specific trouble from original Twitter API integration work to someone talking with the API devs.
 
+#### 2022-02-10
+
+* Published pixifier code and jasmine tests to public GitHub repo.
+
 ---
 
 
@@ -680,6 +684,10 @@ Seattle in:
     * Alt-text on Twitter is sometimes click-to-reveal in Web view, as well as being embedded in the HTML DOM.
 * Add a night-with-stars layer for clear nights or partly cloudy nights
 * Reverse the gale flags so that they blow toward the left edge, following the rain slant and the blowing scarves.
+* Public source code in progress
+    * Separate pixie logic from Twitter post logic
+    * Add tests for pixie logic
+    * Post source to public repository
 
 ### PixieReport To Dos
 
@@ -687,12 +695,10 @@ Seattle in:
     * Original Moomin pixies were a snap-in for dolls + backgrounds
     * Loading of the named layers can be special falling back to standard
 * Source clean-up, public repository
-    * Separate pixie logic from Twitter post logic
     * Organize into standard Node project tree
-    * Add tests.
+    * Add more tests for pixie logic
     * Add a local demo mode running on a Node server as driver.
          * Stop here for shareable public code release.
-    * Post source to public repository
     * After GitHub: zip/tgz messy original dev directory + LaunchAgent and back up.
     * After/in parallel with GitHub: update demo mode Node server.
          * Elaboration: Figure out how to make API calls directly from Node?
