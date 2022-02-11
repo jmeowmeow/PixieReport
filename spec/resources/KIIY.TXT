@@ -1,0 +1,12 @@
+Washington, Washington-Wilkes County Airport, GA, United States (KIIY) 33-46-47N 082-48-59W
+Aug 11, 2021 - 11:15 PM EDT / 2021.08.12 0315 UTC
+Wind: Calm:0
+Visibility: 10 mile(s):0
+Sky conditions: clear
+Weather: Lightning observed
+Temperature: 72.5 F (22.5 C)
+Dew Point: 70.7 F (21.5 C)
+Relative Humidity: 94%
+Pressure (altimeter): 30.16 in. Hg (1021 hPa)
+ob: KIIY 120315Z AUTO 00000KT 10SM CLR 22/22 A3016 RMK AO2 LTG DSNT SW T02250215
+cycle: 3

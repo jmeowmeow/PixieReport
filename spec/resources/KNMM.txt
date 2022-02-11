@@ -1,0 +1,11 @@
+MERIDIAN NAVAL AIR STATION, MS, United States (KNMM) 32-55N 88-56W 86M
+Nov 03, 2021 - 08:35 PM EDT / 2021.11.04 0035 UTC
+Wind: from the NNE (020 degrees) at 8 MPH (7 KT):0
+Visibility: 10 mile(s):0
+Sky conditions: overcast
+Temperature: 48.0 F (8.9 C)
+Dew Point: 44.1 F (6.7 C)
+Relative Humidity: 86%
+Pressure (altimeter): 30.24 in. Hg (1024 hPa)
+ob: KNMM 040035Z 02007KT 10SM BKN012 OVC100 09/07 A3024 RMK AO2 T00890067 
+cycle: 0

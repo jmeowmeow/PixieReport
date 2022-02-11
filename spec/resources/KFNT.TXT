@@ -1,0 +1,13 @@
+FLINT BISHOP INTERNATIONAL  AIRPORT, MI, United States (KFNT) 42-58N 83-45W 233M
+Aug 11, 2021 - 11:21 PM EDT / 2021.08.12 0321 UTC
+Wind: from the SSW (210 degrees) at 15 MPH (13 KT) gusting to 25 MPH (22 KT):0
+Visibility: 10 mile(s):0
+Sky conditions: overcast
+Weather: thunder in the vicinity; light rain; Lightning observed
+Precipitation last hour: 0.16 inches
+Temperature: 72.0 F (22.2 C)
+Dew Point: 69.1 F (20.6 C)
+Relative Humidity: 90%
+Pressure (altimeter): 29.89 in. Hg (1012 hPa)
+ob: KFNT 120321Z 21013G22KT 10SM VCTS -RA SCT030 SCT055 OVC110 22/21 A2989 RMK AO2 WSHFT 0307 LTG DSNT ALQDS RAB0258 TSB0255E19 P0016 T02220206
+cycle: 3

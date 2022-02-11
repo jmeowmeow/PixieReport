@@ -1,0 +1,13 @@
+Jamshedpur, India (VEJS) 22-49N 086-11E 142M
+Aug 11, 2021 - 11:05 PM EDT / 2021.08.12 0305 UTC
+Wind: Calm:0
+Visibility: 1 mile(s):0
+Sky conditions: mostly cloudy
+Weather: mist
+Temperature: 86 F (30 C)
+Heat index: 101.8 F (38.8 C):1
+Dew Point: 80 F (27 C)
+Relative Humidity: 84%
+Pressure (altimeter): 29.68 in. Hg (1005 hPa)
+ob: VEJS 120305Z 00000KT 3000 BR SCT015 BKN100 30/27 Q1005 
+cycle: 3

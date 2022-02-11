@@ -1,0 +1,13 @@
+MONTAGUE SISKIYOU COUNTY, CA, United States (KSIY) 41-46N 122-28W
+Aug 11, 2021 - 10:53 PM EDT / 2021.08.12 0253 UTC
+Wind: from the N (360 degrees) at 16 MPH (14 KT) gusting to 24 MPH (21 KT):0
+Visibility: 3 mile(s):0
+Sky conditions: overcast
+Weather: haze
+Temperature: 93.9 F (34.4 C)
+Dew Point: 37.9 F (3.3 C)
+Relative Humidity: 14%
+Pressure (altimeter): 29.99 in. Hg (1015 hPa)
+Pressure tendency: 0.02 inches (0.6 hPa) higher than three hours ago
+ob: KSIY 120253Z AUTO 36014G21KT 3SM HZ OVC036 34/03 A2999 RMK AO2 SLP137 T03440033 51006
+cycle: 3

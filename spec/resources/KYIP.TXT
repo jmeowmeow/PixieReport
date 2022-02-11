@@ -1,0 +1,12 @@
+WILLOW RUN AIRPORT, MI, United States (KYIP) 42-14N 083-32W 215M
+Aug 22, 2021 - 03:53 PM EDT / 2021.08.22 1953 UTC
+Wind: from the SSW (210 degrees) at 7 MPH (6 KT):0
+Visibility: 10 mile(s):0
+Sky conditions: partly cloudy
+Temperature: 90.0 F (32.2 C)
+Heat index: 96.1 F (35.6 C):1
+Dew Point: 71.1 F (21.7 C)
+Relative Humidity: 53%
+Pressure (altimeter): 29.94 in. Hg (1013 hPa)
+ob: KYIP 221953Z 21006KT 10SM SCT048 32/22 A2994 RMK AO2 SLP130 T03220217
+cycle: 20

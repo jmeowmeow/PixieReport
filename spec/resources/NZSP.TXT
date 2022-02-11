@@ -1,0 +1,10 @@
+Amundsen-Scott South Pole Station, Antarctica (NZSP) 90-00S 00-00E 2835M
+Aug 11, 2021 - 07:50 PM EDT / 2021.08.11 2350 UTC
+Wind: Calm:0
+Visibility: 2 mile(s):0
+Sky conditions: clear
+Weather: ice crystals; mist
+Temperature: -97 F (-72 C)
+Pressure (altimeter): 28.23 in. Hg (955 hPa)
+ob: NZSP 112350Z 00000KT 4800 IC BR SKC M72/ A2823 RMK SKWY WNDS ESTMD CLN AIR 11001KT ALL WNDS GRID 
+cycle: 0
