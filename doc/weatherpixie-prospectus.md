@@ -667,6 +667,7 @@ Seattle in:
 
 * Published pixifier code and jasmine tests to public GitHub repo.
 
+
 ---
 
 
@@ -689,20 +690,27 @@ Seattle in:
     * Add tests for pixie logic
     * Post source to public repository
 
-### PixieReport To Dos
+### PixieReport To-Do
 
 * Make night-with-comet the standard night background for Moomin pixies.
     * Original Moomin pixies were a snap-in for dolls + backgrounds
     * Loading of the named layers can be special falling back to standard
-* Source clean-up, public repository
-    * Organize into standard Node project tree
-    * Add more tests for pixie logic
+* Source clean-up, public repository (parse to pixie code published)
     * Add a local demo mode running on a Node server as driver.
-         * Stop here for shareable public code release.
-    * After GitHub: zip/tgz messy original dev directory + LaunchAgent and back up.
+    * Re-do the "post to Twitter or local webpage" script as a
+      driver which will generate a pixie or an entire webpage, taking
+      optional ICAO METAR station code and params and and emitting a png,
+      an html page or html frame. Params can determine options such as which
+      pixie and whether or not to show location text or weather text. Use this
+      script as the basis of the local demo, and refit the Twitter post script
+      to use this.
+    * Add more tests for pixie logic
+    * Organize into standard Node project tree?
     * After/in parallel with GitHub: update demo mode Node server.
-         * Elaboration: Figure out how to make API calls directly from Node?
-         * Hosting a slightly more elaborate setup could drive @PixieReport
+         * Figure out how to make METAR calls from Node; error handling?
+         * Figure out how to make Twitter API calls directly from Node?
+         * Could be used to drive @PixieReport continuously or interactively
+    * After GitHub: zip/tgz messy original dev directory + LaunchAgent and back up.
 * Move to a hosted platform so that it can be reached for embedding or receiving callbacks
     * There may be a way to use Cheap Bots Done Quick on Google as the public receiving point.
 * Add @PixieReport interactivity via Twitter callback (needs hosting, likely https?)
