@@ -474,6 +474,11 @@ var writeAltText = function(fs, params) {
 
 // https://github.com/Automattic/node-canvas#canvascreatepngstream
 // https://flaviocopes.com/canvas-node-generate-image/ (writeFileSync)
+// A Twitter post is synthesized from three components:
+//   a PNG padded horizontally with transparent pixels to 3x width
+//   the alt text for the image
+//   the location text forming the tweet text
+// The @PixieReport twitter bot prototype uploads and combines these pieces via "twurl"
 var writePngPixie = function(opaqueImageCanvas, params, fs) {
   const station = params.stationCode;
   const widecanvas = createCanvas(pixiewidth*3, pixieheight);
