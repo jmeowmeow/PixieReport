@@ -637,8 +637,8 @@ The intention is to compose a picture description from the day/night, sky cover,
 
 Weather text is written in the black frame area atop the picture composited from this stack of layers. Location data is written vertically running up the left side of the picture.
 
-#### 2021-11-17 PixieReport Twitter bot script now generates alt text
-from layers.
+#### 2021-11-17 PixieReport
+Twitter bot script now generates alt text from layers.
 
 Sample text / image pairs circulated to the @PixieReport feed as a
 link to a compilation of 99 alt-text/pixie image pairs for review.
