@@ -688,6 +688,7 @@ Seattle in:
 * Public source code in progress
     * Separate pixie logic from Twitter post logic
     * Add tests for pixie logic
+    * Add first node-canvas test
     * Post source to public repository
 
 ### PixieReport To-Do
