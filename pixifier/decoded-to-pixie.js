@@ -1,73 +1,6 @@
 'use strict';
-const fs = require('fs'); // reading stdin, writing PNG and text files to __dirname/output
+const fs = require('fs'); // read stdin, write PNG and text files to __dirname/output
 const { decodedToParamObject, windSpeed, computeAltText, Layer, computeTheLayers, computeSceneText, worldMapLink } = require('./decoded-metar-parser.js');
-
-const sample_fallback_params = {
-  stationCode: 'KSEA',
-  stationDesc: 'Seattle-Tacoma International Airport',
-  hectoPressure: '1006',
-  inHgPressure: '29.69',
-  degreesC: 7,
-  degreesCstr: '7',
-  degreesF: 44.6,
-  degreesFstr: '45',
-  windSpeedKph: '19',
-  windSpeedMph: '12',
-  windDir: 'S',
-  zuluTime: '04:53Z',
-  skyCover: 'overcast',
-  weather: ['light rain', 'mist'],
-  humidity: '85%',
-  metar: 'KSEA 130453Z 17010KT 6SM -RA BR OVC026 07/05 A2969 RMK AO2 SLP062 P0007 T00720050'
-};
-
-var vibr = {
-  stationCode: 'VIBR',
-  stationDesc: 'VIBR',
-  hectoPressure: '1020',
-  inHgPressure: '30.09',
-  degreesC: 17,
-  degreesCstr: '17',
-  degreesF: 62.6,
-  degreesFstr: '63',
-  windSpeedKph: '0',
-  windSpeedMph: '0',
-  windDir: 'Calm',
-  zuluTime: '05:00Z',
-  skyCover: 'mostly clear',
-  humidity: '45%',
-  metar: 'VIBR 050500Z 00000KT 5000 HZ FEW035 17/05 Q1020'
-};
-
-
-const everett = {
-  stationCode: 'KPAE',
-  stationDesc: 'Paine Field, Everett WA',
-  hectoPressure: '1009',
-  inHgPressure: '29.79',
-  degreesC: 5,
-  degreesCstr: '5',
-  degreesF: 41,
-  degreesFstr: '41',
-  windSpeedKph: '17-30',
-  windSpeedMph: '10-18',
-  windDir: 'ESE',
-  zuluTime: '01:10Z',
-  skyCover: 'overcast',
-  humidity: '85%',
-  metar: 'KPAE 150110Z AUTO 12009G16KT 6SM -RA BR OVC028 05/03 A2979 RMK AO2 PRESFR P0001 T00500028'
-};
-
-const stdin_fd = 0;
-const decoded_inputbuf = fs.readFileSync(stdin_fd, 'utf-8');
-
-var params;
-
-if (decoded_inputbuf.length > 0) {
-   params = decodedToParamObject(decoded_inputbuf);
-   } else {
-   params = sample_fallback_params;
-}
 
 // Weatherpixie layer compositing
 // Originally derived from https://github.com/Automattic/node-canvas#quick-example
@@ -474,11 +407,6 @@ var writeAltText = function(fs, params) {
 
 // https://github.com/Automattic/node-canvas#canvascreatepngstream
 // https://flaviocopes.com/canvas-node-generate-image/ (writeFileSync)
-// A Twitter post is synthesized from three components:
-//   a PNG padded horizontally with transparent pixels to 3x width
-//   the alt text for the image
-//   the location text forming the tweet text
-// The @PixieReport twitter bot prototype uploads and combines these pieces via "twurl"
 var writePngPixie = function(opaqueImageCanvas, params, fs) {
   const station = params.stationCode;
   const widecanvas = createCanvas(pixiewidth*3, pixieheight);
@@ -492,6 +420,76 @@ var writePngPixie = function(opaqueImageCanvas, params, fs) {
   writeAltText(fs, params);
 }
 
+// pixie creation logic above
+// -------------------------
+// script driver code below
+
+const sample_fallback_params = {
+  stationCode: 'KSEA',
+  stationDesc: 'Seattle-Tacoma International Airport',
+  hectoPressure: '1006',
+  inHgPressure: '29.69',
+  degreesC: 7,
+  degreesCstr: '7',
+  degreesF: 44.6,
+  degreesFstr: '45',
+  windSpeedKph: '19',
+  windSpeedMph: '12',
+  windDir: 'S',
+  zuluTime: '04:53Z',
+  skyCover: 'overcast',
+  weather: ['light rain', 'mist'],
+  humidity: '85%',
+  metar: 'KSEA 130453Z 17010KT 6SM -RA BR OVC026 07/05 A2969 RMK AO2 SLP062 P0007 T00720050'
+};
+
+var vibr = {
+  stationCode: 'VIBR',
+  stationDesc: 'VIBR',
+  hectoPressure: '1020',
+  inHgPressure: '30.09',
+  degreesC: 17,
+  degreesCstr: '17',
+  degreesF: 62.6,
+  degreesFstr: '63',
+  windSpeedKph: '0',
+  windSpeedMph: '0',
+  windDir: 'Calm',
+  zuluTime: '05:00Z',
+  skyCover: 'mostly clear',
+  humidity: '45%',
+  metar: 'VIBR 050500Z 00000KT 5000 HZ FEW035 17/05 Q1020'
+};
+
+
+const everett = {
+  stationCode: 'KPAE',
+  stationDesc: 'Paine Field, Everett WA',
+  hectoPressure: '1009',
+  inHgPressure: '29.79',
+  degreesC: 5,
+  degreesCstr: '5',
+  degreesF: 41,
+  degreesFstr: '41',
+  windSpeedKph: '17-30',
+  windSpeedMph: '10-18',
+  windDir: 'ESE',
+  zuluTime: '01:10Z',
+  skyCover: 'overcast',
+  humidity: '85%',
+  metar: 'KPAE 150110Z AUTO 12009G16KT 6SM -RA BR OVC028 05/03 A2979 RMK AO2 PRESFR P0001 T00500028'
+};
+
+const stdin_fd = 0;
+const decoded_inputbuf = fs.readFileSync(stdin_fd, 'utf-8');
+
+var params;
+
+if (decoded_inputbuf.length > 0) {
+   params = decodedToParamObject(decoded_inputbuf);
+   } else {
+   params = sample_fallback_params;
+}
 var myArgs = process.argv.slice(2);
 var dollLayers = computeLayers(params, mainLayerDefs);
 var sceneText  = computeSceneText(dollLayers);
