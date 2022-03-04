@@ -375,6 +375,7 @@ var writeHtmlPixie = function(theCanvas, params) {
 
 var writeLocText = function(fs, params) {
   // location text used to compose the tweet text
+  // compute location text
   const station = params.stationCode;
   var location_label = "";
   if (params.stationDesc && params.stationDesc.length > 4) {
@@ -388,6 +389,7 @@ var writeLocText = function(fs, params) {
     location_output = `${location_label} ${mapLink}`
   };
 
+  // persist location text for handoff to driver script
   const relfilepath = 'output/' + station + '.txt'
   fs.writeFileSync(__dirname + '/' + relfilepath, location_output);
   console.log('Created '+relfilepath);
@@ -398,9 +400,12 @@ var writeAltText = function(fs, params) {
   // basic alt text should include weather description
   // satisfactory alt text describes the pixie or absence of pixie, and background
 
+  // obtain alt text
+  const alttext_label = computeAltText(params);
+
+  // persist image alt text for handoff to driver script
   const station = params.stationCode;
   const relfilepath = 'output/' + station + '.alt.txt'
-  const alttext_label = computeAltText(params);
   fs.writeFileSync(__dirname + '/' + relfilepath, alttext_label);
   console.log('Created '+relfilepath);
 }
@@ -422,7 +427,7 @@ var writePngPixie = function(opaqueImageCanvas, params, fs) {
 
 // pixie creation logic above
 // -------------------------
-// script driver code below
+// script-args logic below
 
 const sample_fallback_params = {
   stationCode: 'KSEA',
