@@ -354,11 +354,11 @@ var computeLayers = function(parsedData, layerDefs) {
   //   for computing alt text.
 
   var layerfile = computeTheLayers(parsedData, layerDefs);
-  var layerNames = 'layerNames: ';
-  for (const desc of layerfile.map(layer => layer.desc)) {
-     layerNames = layerNames + '(' + desc + ') ';
-  }
-  console.log("<-- " + layerNames + " -->");
+  //| var layerNames = 'layerNames: ';
+  //| for (const desc of layerfile.map(layer => layer.desc)) {
+  //|    layerNames = layerNames + '(' + desc + ') ';
+  //| }
+  //| console.log("<-- " + layerNames + " -->");
   return layerfile;
 }
 
@@ -372,6 +372,7 @@ var writeHtmlPixie = function(theCanvas, params) {
                '" src="' + theCanvas.toDataURL() + '" /></td>');
   console.log(epilog);
 }
+
 
 var writeLocText = function(fs, params) {
   // location text used to compose the tweet text
@@ -413,12 +414,15 @@ var writeAltText = function(fs, params) {
 // https://github.com/Automattic/node-canvas#canvascreatepngstream
 // https://flaviocopes.com/canvas-node-generate-image/ (writeFileSync)
 var writePngPixie = function(opaqueImageCanvas, params, fs) {
+  // composite the pixie into the center of a wider canvas
   const station = params.stationCode;
   const widecanvas = createCanvas(pixiewidth*3, pixieheight);
   const widectx = widecanvas.getContext('2d');
   const xoffset = pixiewidth;
   widectx.drawImage(opaqueImageCanvas, xoffset, 0);
   const buffer = widecanvas.toBuffer('image/png');
+
+  // persist the wide image as a PNG file, alongside tweet body and alt text
   fs.writeFileSync(__dirname + '/output/' + station + '.png', buffer);
   console.log('Created output/'+station+'.png');
   writeLocText(fs, params);
@@ -484,6 +488,10 @@ const everett = {
   humidity: '85%',
   metar: 'KPAE 150110Z AUTO 12009G16KT 6SM -RA BR OVC028 05/03 A2979 RMK AO2 PRESFR P0001 T00500028'
 };
+
+// start of script execution
+// read stdin for pixie params
+// read argv  for twitter-out vs. html-out
 
 const stdin_fd = 0;
 const decoded_inputbuf = fs.readFileSync(stdin_fd, 'utf-8');
