@@ -36,7 +36,17 @@ describe("iCanHazCanvas has node-canvas", function() {
     expect(context2d).not.toBe(null);
   });
 
-
+  it("should copy from a narrow canvas into a wide canvas", function() {
+    const pixiewidth  = 125;
+    const pixieheight = 175;
+    const pixiecanvas = createCanvas(pixiewidth, pixieheight);
+    const twitter_no_crop = createCanvas(pixiewidth*3, pixieheight);
+    const twitterctx = twitter_no_crop.getContext('2d');
+    const xoffset = pixiewidth;
+    twitterctx.drawImage(pixiecanvas, xoffset, 0);
+    const buffer = twitter_no_crop.toBuffer('image/png');
+    expect(buffer).not.toBe(null);
+  });
 
 });
 
