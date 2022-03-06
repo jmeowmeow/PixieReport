@@ -430,7 +430,18 @@ function sunpos(udtTime, udtLocation) {
 // sunpos(myTime, myLoc);
 /////////////////////////////////////end sunpos
 
-var decodedToParamObject = function(decoded) {
+// canonicalize to Unix newlines to support Windows checkouts
+// remove CR, leave LF ===  ^J === \n === U+000A
+var stripCarriageReturns = function(maybeItsText) {
+  if ((typeof maybeItsText === 'string') || (maybeItsText instanceof String)) {
+    return maybeItsText.replaceAll('\r', '');
+  } else {
+    return maybeItsText;
+  }
+}
+
+var decodedToParamObject = function(decodedRawMetarReport) {
+    var decoded = stripCarriageReturns(decodedRawMetarReport);
     var params = {}
     var metar = metarObsLine(decoded);
     params.stationCode = stationCode(metar);
