@@ -18,6 +18,9 @@ const { decodedToParamObject, windSpeed, computeAltText, Layer, computeTheLayers
 
 const { createCanvas, loadImage } = require('canvas')
 
+const path = require('path');
+const cwd  = __dirname;
+
 const pixiewidth  = 125;
 const pixieheight = 175;
 const canvas = createCanvas(pixiewidth, pixieheight);
@@ -209,7 +212,7 @@ const pixies = [
         './pixies/pixie0/',
         './pixies/pixieselfie/'
                ];
-const pix = pixies[Math.floor(Math.random() * pixies.length)];
+const pix = path.join(cwd, pixies[Math.floor(Math.random() * pixies.length)]);
 const dolls = [pix + 'pixie-icy.png',  pix + 'pixie-cold.png', pix + 'pixie-cool.png',
                pix + 'pixie-warm.png', pix + 'pixie-hot.png' ];
 
@@ -217,7 +220,7 @@ var dollDescByTemp = {};
 var dollLayerByTemp = {};
 
 const noDollLayer = new Layer('no pixel doll shown',
-                              './pixies/skycond/blank.png');
+                              path.join(cwd, './pixies/skycond/blank.png'));
 
 try {
    const { dollsByWeather } = require(pix +'dolldesc.js');
@@ -242,7 +245,7 @@ dollLayerByTemp = {
   4: new Layer(dollDescByTemp[4], dolls[4])
 }
 
-const highwind = './pixies/highwind/';
+const highwind = path.join(cwd, './pixies/highwind/');
 // lights
 const nighthighwind = [
         new Layer('a high wind beacon', highwind + 'nightwarn.png'),
@@ -266,9 +269,9 @@ const dayhighwind = [
 // overcast      => overcast.png
 // obscured      => overcast.png
 
-const skycond = [ new Layer('clear',    './pixies/skycond/blank.png'),
-                  new Layer('cloudy' ,  './pixies/skycond/clouds.png'),
-                  new Layer('overcast', './pixies/skycond/overcast.png') ];
+const skycond = [ new Layer('clear',    path.join(cwd, './pixies/skycond/blank.png')),
+                  new Layer('cloudy' ,  path.join(cwd, './pixies/skycond/clouds.png')),
+                  new Layer('overcast', path.join(cwd, './pixies/skycond/overcast.png')) ];
 
 // mapping from parsed sky cover
 const skyhash = {
@@ -286,15 +289,15 @@ const skyhash = {
 // In order to make this kind of sensible, we should hash from
 // a METAR term to ["short weather name", "path"]
 const weathercond = [
-  new Layer('', './pixies/weather/blank.png'),
-  new Layer('drizzle', './pixies/weather/drizzle.png'),
-  new Layer('light rain', './pixies/weather/ltrain.png'),
-  new Layer('rain', './pixies/weather/rain.png'),
-  new Layer('mist', './pixies/weather/mist.png'),
-  new Layer('fog',  './pixies/weather/fog.png'),
-  new Layer('light snow',  './pixies/weather/ltsnow.png'),
-  new Layer('snow',  './pixies/weather/snow.png'),
-  new Layer('heavy snow',  './pixies/weather/snow.png')
+  new Layer('', path.join(cwd, './pixies/weather/blank.png')),
+  new Layer('drizzle', path.join(cwd, './pixies/weather/drizzle.png')),
+  new Layer('light rain', path.join(cwd, './pixies/weather/ltrain.png')),
+  new Layer('rain', path.join(cwd, './pixies/weather/rain.png')),
+  new Layer('mist', path.join(cwd, './pixies/weather/mist.png')),
+  new Layer('fog',  path.join(cwd, './pixies/weather/fog.png')),
+  new Layer('light snow',  path.join(cwd, './pixies/weather/ltsnow.png')),
+  new Layer('snow',  path.join(cwd, './pixies/weather/snow.png')),
+  new Layer('heavy snow',  path.join(cwd, './pixies/weather/snow.png'))
 ]
 
 // weather we know: keys of weatherhash (drizzle, rain, mist, fog, snow)
@@ -315,9 +318,8 @@ const weatherhash = {
       'heavy snow':      weathercond[7],
       };
 
-const lightningLayer = new Layer('lightning', './pixies/weather/lightning.png'); // after clouds, before doll
-
-const bgd = './pixies/backgrounds/';
+const lightningLayer = new Layer('lightning', path.join(cwd, './pixies/weather/lightning.png')); // after clouds, before doll
+const bgd = path.join(cwd, './pixies/backgrounds/');
 const bkgd = [new Layer("night", bgd + 'starrynightbkg.png'),
               new Layer("gray twilight", bgd + 'graybackground.png'),
               new Layer("dusk", bgd + 'pinkbackground.png'),
