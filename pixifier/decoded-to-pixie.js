@@ -1,5 +1,5 @@
 'use strict';
-const fs = require('fs'); // read stdin, write PNG and text files to __dirname/output
+const fs = require('fs'); // read stdin; originally write PNG and text files to __dirname/output
 const { decodedToParamObject, windSpeed, computeAltText, Layer, computeTheLayers, computeSceneText, worldMapLink } = require('./decoded-metar-parser.js');
 
 // Weatherpixie layer compositing
@@ -364,15 +364,16 @@ var computeLayers = function(parsedData, layerDefs) {
   return layerfile;
 }
 
-var writeHtmlPixie = function(theCanvas, params) {
-  // used in a shell pipeline, thus console-out
+var buildHtmlPixie = function(theCanvas, params) {
+  var thePixie = '';
   const metar = params.metar;
-  console.log(prolog1 + params.stationDesc + prolog2);
+  thePixie = thePixie + prolog1 + params.stationDesc + prolog2 + '\n';
   const alttext_label = computeAltText(params);
-  console.log('<td><img title="' +
-               params.stationDesc + '" alt="' + alttext_label +
-               '" src="' + theCanvas.toDataURL() + '" /></td>');
-  console.log(epilog);
+  thePixie = thePixie + '<td><img title="' +
+             params.stationDesc + '" alt="' + alttext_label +
+             '" src="' + theCanvas.toDataURL() + '" /></td>' + '\n';
+  thePixie = thePixie + epilog + '\n';
+  return thePixie;
 }
 
 
@@ -429,6 +430,11 @@ var writePngPixie = function(opaqueImageCanvas, params, fs) {
   console.log('Created output/'+station+'.png');
   writeLocText(fs, params);
   writeAltText(fs, params);
+}
+
+var writeHtmlPixie = function(theCanvas, params) {
+  // used in a shell pipeline, thus console-out
+  console.log(buildHtmlPixie(theCanvas, params);
 }
 
 // pixie creation logic above
