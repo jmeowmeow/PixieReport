@@ -376,7 +376,7 @@ var buildHtmlPixie = function(theCanvas, params) {
   return thePixie;
 }
 
-var writeLocText = function(fs, params) {
+var buildLocText = function(params) {
   // location text used to compose the tweet text
   // compute location text
   const station = params.stationCode;
@@ -392,28 +392,10 @@ var writeLocText = function(fs, params) {
     location_output = `${location_label} ${mapLink}`
   };
 
-  // persist location text for handoff to driver script
-  const relfilepath = 'output/' + station + '.txt'
-  fs.writeFileSync(__dirname + '/' + relfilepath, location_output);
-  console.log('Created '+relfilepath);
+  return location_output;
 }
 
-var writeAltText = function(fs, params) {
-  // minimal alt text falls back to "Pixie report for station: (location text)"
-  // basic alt text should include weather description
-  // satisfactory alt text describes the pixie or absence of pixie, and background
-
-  // obtain alt text
-  const alttext_label = computeAltText(params);
-
-  // persist image alt text for handoff to driver script
-  const station = params.stationCode;
-  const relfilepath = 'output/' + station + '.alt.txt'
-  fs.writeFileSync(__dirname + '/' + relfilepath, alttext_label);
-  console.log('Created '+relfilepath);
-}
-
-var buildWidePngPixie = function(pixieCanvas, params, fs) {
+var buildWidePngPixie = function(pixieCanvas, params) {
   // composite the pixie into the center of a wider transparent canvas
   const station = params.stationCode;
   const widecanvas = createCanvas(pixiewidth*3, pixieheight);
@@ -426,17 +408,26 @@ var buildWidePngPixie = function(pixieCanvas, params, fs) {
 // Canvas to PNG credit:
 // https://github.com/Automattic/node-canvas#canvascreatepngstream
 // https://flaviocopes.com/canvas-node-generate-image/ (writeFileSync)
+// persists tweet components (tweet, widened png image, image alt text)
 var writePngPixie = function(opaqueImageCanvas, params, fs) {
-  const tweetComponents = { locText: null, altText: null, widePng: null };
-
-  tweetComponents.widePng = buildWidePngPixie(opaqueImageCanvas, params, fs);
-
-  // persist the wide image as a PNG file, alongside tweet body and alt text
   const station = params.stationCode;
-  fs.writeFileSync(__dirname + '/output/' + station + '.png', tweetComponents.widePng);
-  console.log('Created output/'+station+'.png');
-  writeLocText(fs, params);
-  writeAltText(fs, params);
+  const tweetComponents = { widePng: null, locText: null, altText: null };
+
+  tweetComponents.widePng = buildWidePngPixie(opaqueImageCanvas, params);
+  tweetComponents.locText = buildLocText(params);
+  tweetComponents.altText = computeAltText(params);
+
+  const imagefilepath = 'output/' + station + '.png';
+  fs.writeFileSync(__dirname + '/' + imagefilepath, tweetComponents.widePng);
+  console.log('Created '+imagefilepath);
+
+  const tweetfilepath = 'output/' + station + '.txt'
+  fs.writeFileSync(__dirname + '/' + tweetfilepath, tweetComponents.locText);
+  console.log('Created '+tweetfilepath);
+
+  const altfilepath = 'output/' + station + '.alt.txt'
+  fs.writeFileSync(__dirname + '/' + altfilepath, tweetComponents.altText);
+  console.log('Created '+altfilepath);
 }
 
 var writeHtmlPixie = function(theCanvas, params) {
