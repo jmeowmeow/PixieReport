@@ -376,7 +376,6 @@ var buildHtmlPixie = function(theCanvas, params) {
   return thePixie;
 }
 
-
 var writeLocText = function(fs, params) {
   // location text used to compose the tweet text
   // compute location text
@@ -414,19 +413,27 @@ var writeAltText = function(fs, params) {
   console.log('Created '+relfilepath);
 }
 
-// https://github.com/Automattic/node-canvas#canvascreatepngstream
-// https://flaviocopes.com/canvas-node-generate-image/ (writeFileSync)
-var writePngPixie = function(opaqueImageCanvas, params, fs) {
-  // composite the pixie into the center of a wider canvas
+var buildWidePngPixie = function(pixieCanvas, params, fs) {
+  // composite the pixie into the center of a wider transparent canvas
   const station = params.stationCode;
   const widecanvas = createCanvas(pixiewidth*3, pixieheight);
   const widectx = widecanvas.getContext('2d');
   const xoffset = pixiewidth;
-  widectx.drawImage(opaqueImageCanvas, xoffset, 0);
-  const buffer = widecanvas.toBuffer('image/png');
+  widectx.drawImage(pixieCanvas, xoffset, 0);
+  return widecanvas.toBuffer('image/png');
+}
+
+// Canvas to PNG credit:
+// https://github.com/Automattic/node-canvas#canvascreatepngstream
+// https://flaviocopes.com/canvas-node-generate-image/ (writeFileSync)
+var writePngPixie = function(opaqueImageCanvas, params, fs) {
+  const tweetComponents = { locText: null, altText: null, widePng: null };
+
+  tweetComponents.widePng = buildWidePngPixie(opaqueImageCanvas, params, fs);
 
   // persist the wide image as a PNG file, alongside tweet body and alt text
-  fs.writeFileSync(__dirname + '/output/' + station + '.png', buffer);
+  const station = params.stationCode;
+  fs.writeFileSync(__dirname + '/output/' + station + '.png', tweetComponents.widePng);
   console.log('Created output/'+station+'.png');
   writeLocText(fs, params);
   writeAltText(fs, params);
@@ -434,7 +441,7 @@ var writePngPixie = function(opaqueImageCanvas, params, fs) {
 
 var writeHtmlPixie = function(theCanvas, params) {
   // used in a shell pipeline, thus console-out
-  console.log(buildHtmlPixie(theCanvas, params);
+  console.log(buildHtmlPixie(theCanvas, params));
 }
 
 // pixie creation logic above
