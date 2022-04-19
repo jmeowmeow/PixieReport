@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI' ];
+const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS' ];
 
 const expectedParams = {
   KBLI: { degreesC: 1},
@@ -10,7 +10,8 @@ const expectedParams = {
   KSIY: { degreesC: 34},
   KYIP: { degreesC: 32},
   NZSP: { degreesC: -72},
-  VEJS: { degreesC: 30}
+  VEJS: { degreesC: 30},
+  MHGS: { degreesC: 29}
 };
 
 const expectedAltTextWords = {
@@ -21,7 +22,8 @@ const expectedAltTextWords = {
   'NZSP': ['night', 'clear', 'mist'],
   'VEJS': ['day', 'cloudy', 'mist'],
   'KYIP': ['day', 'cloudy'],
-  'KBLI': ['night', 'overcast', 'mist']
+  'KBLI': ['night', 'overcast', 'mist'],
+  'MHGS': ['day', 'cloudy'] // towering cumulus not yet rendered
 };
 
 const {decodedToParamObject, computeAltText, Layer, computeTheLayers, computeSceneText} = require('../pixifier/decoded-metar-parser.js');
@@ -67,7 +69,7 @@ describe("decoded metar to param parser", function() {
       for (const prop of Object.getOwnPropertyNames(expectedParamsMap)) {
         var asFound  = toParam[prop];
         var asSought = expectedParamsMap[prop];
-        expect(asFound).toBe(asSought, sampleMetar + ' ' + prop);
+        expect(asFound).toBe(asSought, 'properties.' + prop + ' of '+sampleMetar);
       };
     };
   });

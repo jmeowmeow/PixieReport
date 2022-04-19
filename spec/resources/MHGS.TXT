@@ -1,0 +1,11 @@
+Station name not available
+Apr 16, 2022 - 06:00 PM EDT / 2022.04.16 2200 UTC
+Wind: from the N (360 degrees) at 9 MPH (8 KT):0
+Visibility: greater than 7 mile(s):0
+Sky conditions: mostly cloudy
+Weather: Towering cumulus clouds observed
+Temperature: 84 F (29 C)
+Dew Point: 68 F (20 C)
+Relative Humidity: 58%
+ob: MHGS 162200Z 36008KT 9999 BKN040TCU 29/20
+cycle: 22

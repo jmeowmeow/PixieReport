@@ -91,7 +91,8 @@ var inHgPressure = function(obs) {
 
 var numDegreesC = function(obs) {
   // before slash is observed temperature C, after slash is dew point. %hum is a nonlinear fn.
-  var shortTemp = /\b(M?)(\d{1,2})\/((M?(\d{1,2})))? /; // "10/M1", "20/", "7/5" not "1 3/4SM"
+  // okay the end has to be not a space but a whitespace character or line ending, maybe \b?
+  var shortTemp = /\b(M?)(\d{1,2})\/((M?(\d{1,2})))?( |$)/; // "10/M1", "20/", "7/5", "29/20\n" not "1 3/4SM"
   var result = shortTemp.exec(obs);
   if (result) { var plusMinus = 1.0;
                 if (result[1] == 'M') { plusMinus = -1.0; };
