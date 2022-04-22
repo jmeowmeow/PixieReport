@@ -667,6 +667,16 @@ Seattle in:
 
 * Published pixifier code and jasmine tests to public GitHub repo.
 
+#### 2022-04-22
+
+* Added 'npm start' to activate a local demo server with one sample report.
+* Previously: fixed the temperature-parsing regexp to read to the end of the line
+* Previously: factored the pixie-composing functions away from the script code feeding Twitter
+
+
+![GitHub repo sample pixie on MacOS](images/demo-macos-menlo.png "Mymble's Daughter with clouds, mist, and rain. Weather text is crisp.")
+![GitHub repo sample pixie on Win10](images/demo-win10-no-menlo.png "Mymble's Daughter with clouds, mist, and rain. Weather text is cramped.")
+
 
 ---
 
@@ -690,6 +700,7 @@ Seattle in:
     * Add tests for pixie logic
     * Add first node-canvas test
     * Post source to public repository
+    * Add a local demo mode running on a Node server as driver.
 
 ### PixieReport To-Do
 
@@ -697,7 +708,12 @@ Seattle in:
     * Original Moomin pixies were a snap-in for dolls + backgrounds
     * Loading of the named layers can be special falling back to standard
 * Source clean-up, public repository (parse to pixie code published)
-    * Add a local demo mode running on a Node server as driver.
+    * Local demo server:
+         * More variety of sample pixies
+         * Interactivity, options, prototype a bookmarkable URL for preferences
+         * Tweaks to node-canvas typeface support?
+    * Figure out how to write in a sane and useful subset for Node async i/o
+    * Add more tests for pixie logic, related to cleaning up the server logic
     * Re-do the "post to Twitter or local webpage" script as a
       driver which will generate a pixie or an entire webpage, taking
       optional ICAO METAR station code and params and and emitting a png,
@@ -705,8 +721,7 @@ Seattle in:
       pixie and whether or not to show location text or weather text. Use this
       script as the basis of the local demo, and refit the Twitter post script
       to use this.
-    * Add more tests for pixie logic
-    * Organize into standard Node project tree?
+    * Organize into standard Node project tree? _I couldn't find a useful standard, so: no._
     * After/in parallel with GitHub: update demo mode Node server.
          * Figure out how to make METAR calls from Node; error handling?
          * Figure out how to make Twitter API calls directly from Node?
