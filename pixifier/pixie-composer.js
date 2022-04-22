@@ -325,6 +325,7 @@ const weatherhash = {
 
 const lightningLayer = new Layer('lightning', path.join(cwd, './pixies/weather/lightning.png')); // after clouds, before doll
 const bgd = path.join(cwd, './pixies/backgrounds/');
+console.log("background path: "+bgd);
 const bkgd = [new Layer("night", bgd + 'starrynightbkg.png'),
               new Layer("gray twilight", bgd + 'graybackground.png'),
               new Layer("dusk", bgd + 'pinkbackground.png'),
@@ -403,6 +404,34 @@ var buildWidePngPixie = function(pixieCanvas, params) {
   return widecanvas.toBuffer('image/png');
 }
 
+var sampleParams = {
+  stationCode: 'KSEA',
+  stationDesc: 'Seattle-Tacoma International Airport',
+  hectoPressure: '1006',
+  inHgPressure: '29.69',
+  degreesC: 7,
+  degreesCstr: '7',
+  degreesF: 44.6,
+  degreesFstr: '45',
+  windSpeedKph: '19',
+  windSpeedMph: '12',
+  windDir: 'S',
+  zuluTime: '04:53Z',
+  skyCover: 'overcast',
+  weather: ['light rain', 'mist'],
+  humidity: '85%',
+  metar: 'KSEA 130453Z 17010KT 6SM -RA BR OVC026 07/05 A2969 RMK AO2 SLP062 P0007 T00720050'
+}
+
+// implicitly depends on canvas as in/out via loadAndCompose
+// params and canvas are both mutated references
+var composePixie = function(params) {
+  var dollLayers = computeLayers(params);
+  var sceneText  = computeSceneText(dollLayers);
+  if (sceneText) { params.sceneText = sceneText; }
+  loadAndCompose(dollLayers, params);
+}
+
 exports.buildWidePngPixie = buildWidePngPixie;
 exports.buildHtmlPixie = buildHtmlPixie;
 exports.buildLocText = buildLocText;
@@ -412,3 +441,5 @@ exports.computeAltText = computeAltText;
 exports.loadAndCompose = loadAndCompose;
 exports.decodedToParamObject = decodedToParamObject; // forwarded to script driver
 exports.canvas = canvas; // icky, but I couldn't figure out how to return from loadAndCompose so sort it out later
+exports.sampleParams = sampleParams; // moved here to the importable definitions to use in the demo server
+exports.composePixie = composePixie; //   "    "   "  ...

@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs'); // read stdin; write PNG and text files to __dirname/output
- const { buildWidePngPixie, buildHtmlPixie, buildLocText, computeLayers, computeSceneText, computeAltText, loadAndCompose, decodedToParamObject, canvas } = require('./pixie-composer.js');
+ const { buildWidePngPixie, buildHtmlPixie, buildLocText, computeLayers, computeSceneText, computeAltText, loadAndCompose, decodedToParamObject, canvas, sampleParams, composePixie } = require('./pixie-composer.js');
 
 ////////// pixie building above, pixie output below, script args at end
 
@@ -38,24 +38,7 @@ var writeHtmlPixie = function(theCanvas, params) {
 // -------------------------
 // script-args logic below
 
-const sample_fallback_params = {
-  stationCode: 'KSEA',
-  stationDesc: 'Seattle-Tacoma International Airport',
-  hectoPressure: '1006',
-  inHgPressure: '29.69',
-  degreesC: 7,
-  degreesCstr: '7',
-  degreesF: 44.6,
-  degreesFstr: '45',
-  windSpeedKph: '19',
-  windSpeedMph: '12',
-  windDir: 'S',
-  zuluTime: '04:53Z',
-  skyCover: 'overcast',
-  weather: ['light rain', 'mist'],
-  humidity: '85%',
-  metar: 'KSEA 130453Z 17010KT 6SM -RA BR OVC026 07/05 A2969 RMK AO2 SLP062 P0007 T00720050'
-};
+const sample_fallback_params = sampleParams;
 
 var vibr = {
   stationCode: 'VIBR',
@@ -109,12 +92,8 @@ if (decoded_inputbuf.length > 0) {
    params = sample_fallback_params;
 }
 var myArgs = process.argv.slice(2);
-var dollLayers = computeLayers(params);
-var sceneText  = computeSceneText(dollLayers);
-if (sceneText) { params.sceneText = sceneText; }
-loadAndCompose(dollLayers, params);
+composePixie(params);
 var dollCanvas = canvas;
-console.log(dollCanvas);
 if (myArgs.length > 0) {
   setTimeout(() => {
     writePngPixie(dollCanvas, params, fs);
