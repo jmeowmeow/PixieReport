@@ -22,7 +22,7 @@ const sampleOutput = function(res) {
 const server = http.createServer((req, res) => {
   console.log(`serving request for ${req.url} from ${req.headers['user-agent']}`);
   res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Content-Type', 'text/html; charset=UTF-8');
   setTimeout(() => {
     sampleOutput(res);
   });

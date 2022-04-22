@@ -27,10 +27,12 @@ const pixiewidth  = 125;
 const pixieheight = 175;
 const canvas = createCanvas(pixiewidth, pixieheight);
 
+const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 const prolog1 = '<html><head><title>Station ';
 const prolog2 = '</title>' +
   '<style>' + 'table { background: rgb(255,255,255); }' +
   'table { background: linear-gradient(45deg, rgba(0,212,255,1) 0%, rgba(220,80,80,1) 50%, rgba(0,212,255,1) 100%); }' + '</style>' +
+  favicon +
   '</head>' + '<table cellpadding="10"><tr>';
 const epilog = '</tr></table>\n</body></html>';
 
