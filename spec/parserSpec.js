@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS' ];
+const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ' ];
 
 const expectedParams = {
   KBLI: { degreesC: 1},
@@ -11,7 +11,8 @@ const expectedParams = {
   KYIP: { degreesC: 32},
   NZSP: { degreesC: -72},
   VEJS: { degreesC: 30},
-  MHGS: { degreesC: 29}
+  MHGS: { degreesC: 29},
+  SVCJ: { degreesC: 31}
 };
 
 const expectedAltTextWords = {
@@ -23,7 +24,8 @@ const expectedAltTextWords = {
   'VEJS': ['day', 'cloudy', 'mist'],
   'KYIP': ['day', 'cloudy'],
   'KBLI': ['night', 'overcast', 'mist'],
-  'MHGS': ['day', 'cloudy'] // towering cumulus not yet rendered
+  'MHGS': ['day', 'cloudy'], // towering cumulus not yet rendered
+  'SVCJ': ['day', 'clear']
 };
 
 const {decodedToParamObject, computeAltText, Layer, computeTheLayers, computeSceneText} = require('../pixifier/decoded-metar-parser.js');

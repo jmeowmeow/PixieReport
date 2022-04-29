@@ -1,0 +1,6 @@
+Station name not available
+Oct 10, 2020 - 01:02 PM EDT / 2020.10.10 1702 UTC
+Wind: Calm:0
+Temperature: 87 F (31 C)
+ob: SVCJ 101702Z AUTO 00000KT NCD 31/// Q////
+cycle: 17
