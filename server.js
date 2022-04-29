@@ -13,10 +13,29 @@ const http = require('http');
 const hostname = 'localhost';
 const port = 3000;
 
+const imgLinkUrlPath = '/'; // we could put random parameters in here, etc.
+
+const substarray = [
+ [ '<a name="sub2a"/>', '<a href="' + imgLinkUrlPath + '">'],
+ [ '<a name="sub2b"/>', '</a>']
+];
+
+const substitutions = new Map(substarray);
+
+const substituteInHtml = function(htmlString) {
+  // throw a link around the picture
+ var result = htmlString;
+ substitutions.forEach( (val, key) => { result = result.replace(key, val) });
+ return result;
+}
+
 const sampleOutput = function(res) {
   var p = sampleParams;
-  composePixie(p);
-  res.end(buildHtmlPixie(canvas, p));
+  composePixie(p); // side effects cause image to be composed onto canvas
+  // buildHtmlPixie produces a whole document, but it knows nothing of the server context for linking, etc.
+  var htmlPixie = buildHtmlPixie(canvas, p); // template merged w/params and data URL for canvas image
+  var demoServerOut = substituteInHtml(htmlPixie);
+  res.end(demoServerOut);
 };
 
 const server = http.createServer((req, res) => {
