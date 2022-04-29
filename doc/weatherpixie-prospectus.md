@@ -702,12 +702,18 @@ Seattle in:
     * Post source to public repository
     * Add a local demo mode running on a Node server as driver.
 
+### PixieReport To Dos Discarded
+* Organize into standard Node project tree? _I couldn't find a useful standard, so: no._
+
 ### PixieReport To-Do
 
 * Make night-with-comet the standard night background for Moomin pixies.
     * Original Moomin pixies were a snap-in for dolls + backgrounds
     * Loading of the named layers can be special falling back to standard
 * Source clean-up, public repository (parse to pixie code published)
+    * Revise the resource loader so that it can be called repeatedly
+      with alternative parameters, maybe keying off the pixie set name,
+      rather than binding a single set of image and image alt text resources.
     * Local demo server:
          * More variety of sample pixies
          * Interactivity, options, prototype a bookmarkable URL for preferences
@@ -721,7 +727,6 @@ Seattle in:
       pixie and whether or not to show location text or weather text. Use this
       script as the basis of the local demo, and refit the Twitter post script
       to use this.
-    * Organize into standard Node project tree? _I couldn't find a useful standard, so: no._
     * After/in parallel with GitHub: update demo mode Node server.
          * Figure out how to make METAR calls from Node; error handling?
          * Figure out how to make Twitter API calls directly from Node?
