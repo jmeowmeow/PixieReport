@@ -408,7 +408,7 @@ var buildWidePngPixie = function(pixieCanvas, params) {
   return widecanvas.toBuffer('image/png');
 }
 
-var sampleParams = {
+var ksea = {
   stationCode: 'KSEA',
   stationDesc: 'Seattle-Tacoma International Airport',
   hectoPressure: '1006',
@@ -426,6 +426,46 @@ var sampleParams = {
   humidity: '85%',
   metar: 'KSEA 130453Z 17010KT 6SM -RA BR OVC026 07/05 A2969 RMK AO2 SLP062 P0007 T00720050'
 }
+
+var vibr = {
+  stationCode: 'VIBR',
+  stationDesc: 'VIBR',
+  hectoPressure: '1020',
+  inHgPressure: '30.09',
+  degreesC: 17,
+  degreesCstr: '17',
+  degreesF: 62.6,
+  degreesFstr: '63',
+  windSpeedKph: '0',
+  windSpeedMph: '0',
+  windDir: 'Calm',
+  zuluTime: '05:00Z',
+  skyCover: 'mostly clear',
+  humidity: '45%',
+  metar: 'VIBR 050500Z 00000KT 5000 HZ FEW035 17/05 Q1020'
+};
+
+const kpae = {
+  stationCode: 'KPAE',
+  stationDesc: 'Paine Field, Everett WA',
+  hectoPressure: '1009',
+  inHgPressure: '29.79',
+  degreesC: 5,
+  degreesCstr: '5',
+  degreesF: 41,
+  degreesFstr: '41',
+  windSpeedKph: '17-30',
+  windSpeedMph: '10-18',
+  windDir: 'ESE',
+  zuluTime: '01:10Z',
+  skyCover: 'overcast',
+  humidity: '85%',
+  metar: 'KPAE 150110Z AUTO 12009G16KT 6SM -RA BR OVC028 05/03 A2979 RMK AO2 PRESFR P0001 T00500028'
+};
+
+var samples = [ ksea, vibr, kpae ];
+
+const sampleParams = samples[Math.floor(Math.random() * samples.length)];
 
 // implicitly depends on canvas as in/out via loadAndCompose
 // params and canvas are both mutated references
