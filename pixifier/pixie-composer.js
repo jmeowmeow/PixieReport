@@ -465,7 +465,9 @@ const kpae = {
 
 var samples = [ ksea, vibr, kpae ];
 
-const sampleParams = samples[Math.floor(Math.random() * samples.length)];
+const paramProducer = function() {
+   return samples[Math.floor(Math.random() * samples.length)];
+   }
 
 // implicitly depends on canvas as in/out via loadAndCompose
 // params and canvas are both mutated references
@@ -485,5 +487,5 @@ exports.computeAltText = computeAltText;
 exports.loadAndCompose = loadAndCompose;
 exports.decodedToParamObject = decodedToParamObject; // forwarded to script driver
 exports.canvas = canvas; // icky, but I couldn't figure out how to return from loadAndCompose so sort it out later
-exports.sampleParams = sampleParams; // moved here to the importable definitions to use in the demo server
+exports.paramProducer = paramProducer; // moved here to use in the demo server, revised to bind late
 exports.composePixie = composePixie; //   "    "   "  ...

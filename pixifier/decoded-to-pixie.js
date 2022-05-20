@@ -1,6 +1,6 @@
 'use strict';
 const fs = require('fs'); // read stdin; write PNG and text files to __dirname/output
- const { buildWidePngPixie, buildHtmlPixie, buildLocText, computeLayers, computeSceneText, computeAltText, loadAndCompose, decodedToParamObject, canvas, sampleParams, composePixie } = require('./pixie-composer.js');
+ const { buildWidePngPixie, buildHtmlPixie, buildLocText, computeLayers, computeSceneText, computeAltText, loadAndCompose, decodedToParamObject, canvas, paramProducer, composePixie } = require('./pixie-composer.js');
 
 ////////// pixie building above, pixie output below, script args at end
 
@@ -38,7 +38,7 @@ var writeHtmlPixie = function(theCanvas, params) {
 // -------------------------
 // script-args logic below
 
-const sample_fallback_params = sampleParams;
+const sample_fallback_params = paramProducer();
 
 // start of script execution
 // read stdin for pixie params

@@ -7,7 +7,7 @@
 //   1. Objects have a script lifecycle rather than a server/request lifecycle
 //   2. Hacky use of setTimeout() to yield processing to background file i/o
 
-const { buildWidePngPixie, buildHtmlPixie, buildLocText, computeLayers, computeSceneText, computeAltText, loadAndCompose, decodedToParamObject, canvas, sampleParams, composePixie } = require('./pixifier/pixie-composer.js');
+const { buildWidePngPixie, buildHtmlPixie, buildLocText, computeLayers, computeSceneText, computeAltText, loadAndCompose, decodedToParamObject, canvas, paramProducer, composePixie } = require('./pixifier/pixie-composer.js');
 const http = require('http');
 
 const hostname = 'localhost';
@@ -30,7 +30,7 @@ const substituteInHtml = function(htmlString) {
 }
 
 const sampleOutput = function(res) {
-  var p = sampleParams;
+  var p = paramProducer();
   composePixie(p); // side effects cause image to be composed onto canvas
   // buildHtmlPixie produces a whole document, but it knows nothing of the server context for linking, etc.
   var htmlPixie = buildHtmlPixie(canvas, p); // template merged w/params and data URL for canvas image
@@ -53,7 +53,7 @@ server.listen(port, hostname, () => {
   console.log(`Canvas width x height = ${canvas.width}x${canvas.height}`);
   // warm up the filesystem I guess?
   setTimeout(() => {
-    composePixie(sampleParams);
+    composePixie(paramProducer());
   });
   console.log('Dispatched a background fetch of pixie layer files');
 });
