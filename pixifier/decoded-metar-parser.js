@@ -50,6 +50,8 @@ var stationDesc = function(code, decoded, icaoMap) {
   }
 };
 
+//ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016
+//example: 171550Z -> 17th of the month, 15:50 UT
 var zuluTime = function(obs) {
   var regex = /\d{2}(\d{2})(\d{2}Z)/;
   var result = regex.exec(obs);

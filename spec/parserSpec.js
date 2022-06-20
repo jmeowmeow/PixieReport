@@ -1,18 +1,17 @@
 const fs = require('fs');
 
 const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ' ];
-
 const expectedParams = {
-  KBLI: { degreesC: 1},
-  KFNT: { degreesC: 22},
-  KIIY: { degreesC: 22},
-  KLAN: { degreesC: 22},
-  KSIY: { degreesC: 34},
-  KYIP: { degreesC: 32},
-  NZSP: { degreesC: -72},
-  VEJS: { degreesC: 30},
-  MHGS: { degreesC: 29},
-  SVCJ: { degreesC: 31}
+  KBLI: { degreesC: 1, zuluTime: '06:53Z'},
+  KFNT: { degreesC: 22, zuluTime: '03:21Z'},
+  KIIY: { degreesC: 22, zuluTime: '03:15Z'},
+  KLAN: { degreesC: 22, zuluTime: '03:30Z'},
+  KSIY: { degreesC: 34, zuluTime: '02:53Z'},
+  KYIP: { degreesC: 32, zuluTime: '19:53Z'},
+  NZSP: { degreesC: -72, zuluTime: '23:50Z'},
+  VEJS: { degreesC: 30, zuluTime: '03:05Z'},
+  MHGS: { degreesC: 29, zuluTime: '22:00Z'},
+  SVCJ: { degreesC: 31, zuluTime: '17:02Z'}
 };
 
 const expectedAltTextWords = {
