@@ -168,10 +168,10 @@ OpenWeatherMap [https://openweathermap.org/examples](https://openweathermap.org/
     2. Pixie Doll Picker. Each has a description and is encoded by a small integer ID.
     3. Unit picker (mph/kph, °F/°C)
     4. Maybe other options? I don't recall
-2. Pixie Preview Page
-    5. Rendered Weatherpixie.
-    6. URL to embed the image on your site.
-    7. Site navigation
+2. Pixie Preview Page:
+    1. Rendered Weatherpixie.
+    2. URL to embed the image on your site.
+    3. Site navigation
 3. "About" page, background, links to resources, etc.
 4. Pixie Renderer. Given an airport, a doll series, and display options, renders a scene. If there is no current METAR data for that airport, renders daytime/nighttime background and a flag.
 5. Rendered Pixies served as images
@@ -187,7 +187,7 @@ I worked on this as an individual stage in pixie creation.
 
 It's possible to get a bulk snapshot of METAR reports for all current locations. The snapshot can serve as a database for data-driven tests of the METAR parsing stage. There is some variability of how the reports are given which needs to be handled (units of pressure, for instance).
 
-There is **more data in a METAR** than is rendered in a pixie image; **we select and condense** for presentation. For example, cloud layers may be reported in units of ? of total sky coverage at different elevations. For the image, we will choose a single value to describe how cloudy it is.
+There is **more data in a METAR** than is rendered in a pixie image; **we select and condense** for presentation. For example, cloud layers may be reported in units of octants (1/8ths) of total sky coverage at different elevations. For the image, we will choose a single value to describe how cloudy it is.
 
 There are some reported weather conditions (smoke, freezing fog) which we may or may not render, or may collapse into fewer rendering categories (perhaps haze and fog). Similarly, rain, hail, sleet, freezing rain, and snow may collapse to rain, hail, snow. Thundershowers may be handled as a lightning overlay.
 
@@ -752,6 +752,7 @@ Breaking this category out 2021-09-05, at a correspondent's suggestion for a Sla
 ## Project Prospect List
 
 * a little polishing: check active sites not present in icao.js to see if their METAR report contains lat/long.
+* support for URL site preview format using HTML header properties. See [npm: link-preview-js](https://www.npmjs.com/package/link-preview-js) and [OpenGraph header tags](https://ogp.me/#metadata)
 * Slack bot integration, probably wants hosted API pixie server
 * Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag. Next-step from local Node server?
 * Hosted Twitter bot, following notifications for interactions, responding with tweets.
