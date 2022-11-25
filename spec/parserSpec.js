@@ -1,9 +1,9 @@
 const fs = require('fs');
 
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ' ];
+const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL' ];
 const expectedParams = {
   KBLI: { degreesC: 1, zuluTime: '06:53Z'},
-  KFNT: { degreesC: 22, zuluTime: '03:21Z'},
+  KFNT: { degreesC: 22, zuluTime: '03:21Z', windSpeedMph: '15-25'},
   KIIY: { degreesC: 22, zuluTime: '03:15Z'},
   KLAN: { degreesC: 22, zuluTime: '03:30Z'},
   KSIY: { degreesC: 34, zuluTime: '02:53Z'},
@@ -11,8 +11,25 @@ const expectedParams = {
   NZSP: { degreesC: -72, zuluTime: '23:50Z'},
   VEJS: { degreesC: 30, zuluTime: '03:05Z'},
   MHGS: { degreesC: 29, zuluTime: '22:00Z'},
-  SVCJ: { degreesC: 31, zuluTime: '17:02Z'}
+  SVCJ: { degreesC: 31, zuluTime: '17:02Z'},
+  KBRL: { degreesC: 0, zuluTime: '15:45Z', windSpeedMph: '5'}
 };
+
+// Given an observation like
+// ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016
+// to parse how far a weather report time is off from now, we need a formula like
+//
+// zReportTime = new Date()
+// zReportTime.setUTCFullYear() // not usually
+// zReportTime.setUTCMonth() // not usually
+// zReportTime.setUTCDate(17)
+// zReportTime.setUTCHours(15)
+// zReportTime.setUTCSeconds(50)
+// howOldIsReport = Date.now() - zReportTime[Symbol.toPrimitive]('number');
+// this should generally be milliseconds since observation to now.
+// We can use obs age to assess freshness
+//
+// see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
 
 const expectedAltTextWords = {
   'KFNT': ['night', 'overcast', 'lightning', 'light rain'],

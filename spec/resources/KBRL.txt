@@ -1,0 +1,13 @@
+BURLINGTON REGIONAL AIRPORT, IA, United States (KBRL) 40-46N 91-08W 211M
+Nov 15, 2022 - 10:45 AM EST / 2022.11.15 1545 UTC
+Wind: from the NE (040 degrees) at 5 MPH (4 KT):0
+Visibility: 1 1/2 mile(s):0
+Sky conditions: overcast
+Weather: light snow; mist
+Temperature: 32 F (0 C)
+Windchill: 26 F (-3 C):1
+Dew Point: 30 F (-1 C)
+Relative Humidity: 92%
+Pressure (altimeter): 20.2 in. Hg (684 hPa)
+ob: KBRL 151545Z 040004KT 1 1/2SM -SN BR BKN005 OVC014 00/M01 A2020 
+cycle: 16
