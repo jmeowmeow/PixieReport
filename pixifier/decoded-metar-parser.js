@@ -114,7 +114,7 @@ var degreesF = function(obs) {
 
 const windSpeed = function(obs) {
     // needs to be consistent with dirMatcher
-    var windMatcher = / (\/\/\/|VRB|\d{3})(\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
+    var windMatcher = / (\/\/\/|VRB|\d{3})(0?\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
     var result = windMatcher.exec(obs);
     var retval = null;
     if (result) {
@@ -175,7 +175,7 @@ var windSpeedMph = function(obs) {
 
 var windDir = function(obs) {
     // needs to be consistent with windMatcher
-    var dirMatcher = / (VRB|\d{3})(\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
+    var dirMatcher = / (VRB|\d{3})(0?\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
     var result = dirMatcher.exec(obs);
     if (result) {
       if (result[1] == "VRB") {
