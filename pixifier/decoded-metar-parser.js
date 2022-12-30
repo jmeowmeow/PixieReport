@@ -223,19 +223,6 @@ var windDir = function(obs) {
     }
   };
 
-var metarToObject = function(metar) {
-    var ans = {};
-    ans.hectoPressure = hectoPressure(metar);
-    ans.inHgPressure = inHgPressure(metar);
-    ans.degreesC = degreesC(metar);
-    ans.degreesF = degreesF(metar);
-    ans.windSpeedKph = windSpeedKph(metar);
-    ans.windSpeedMph = windSpeedMph(metar);
-    ans.windDir = windDir(metar);
-    ans.zuluTime = zuluTime(metar);
-    return ans;
-}
-
 var metarObsLine = function(decoded) {
   var regex = /ob: (.*)\n/
   var result = regex.exec(decoded);
@@ -444,6 +431,12 @@ var stripCarriageReturns = function(maybeItsText) {
   }
 }
 
+// extract to allow accumulating multiple params
+var withZuluTime = function(params, metar) {
+    params.zuluTime = zuluTime(metar);
+    return params;
+}
+
 var decodedToParamObject = function(decodedRawMetarReport) {
     var decoded = stripCarriageReturns(decodedRawMetarReport);
     var params = {}
@@ -463,7 +456,7 @@ var decodedToParamObject = function(decodedRawMetarReport) {
     params.windSpeedKph = windSpeedKph(metar);
     params.windSpeedMph = windSpeedMph(metar);
     params.windDir = windDir(metar);
-    params.zuluTime = zuluTime(metar);
+    params = withZuluTime(params, metar);
     params.skyCover = skyCover(decoded);
     params.humidity = humidity(decoded);
     params.weather  = weatherlist(decoded);
