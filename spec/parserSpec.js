@@ -2,17 +2,17 @@ const fs = require('fs');
 
 const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL' ];
 const expectedParams = {
-  KBLI: { degreesC: 1, zuluTime: '06:53Z'},
-  KFNT: { degreesC: 22, zuluTime: '03:21Z', windSpeedMph: '15-25'},
-  KIIY: { degreesC: 22, zuluTime: '03:15Z'},
-  KLAN: { degreesC: 22, zuluTime: '03:30Z'},
-  KSIY: { degreesC: 34, zuluTime: '02:53Z'},
-  KYIP: { degreesC: 32, zuluTime: '19:53Z'},
-  NZSP: { degreesC: -72, zuluTime: '23:50Z'},
-  VEJS: { degreesC: 30, zuluTime: '03:05Z'},
-  MHGS: { degreesC: 29, zuluTime: '22:00Z'},
-  SVCJ: { degreesC: 31, zuluTime: '17:02Z'},
-  KBRL: { degreesC: 0, zuluTime: '15:45Z', windSpeedMph: '5'}
+  KBLI: { degreesC: 1, zuluTime: '06:53Z',  zuluDayOfMonth: '03'},
+  KFNT: { degreesC: 22, zuluTime: '03:21Z', zuluDayOfMonth: '12', windSpeedMph: '15-25'},
+  KIIY: { degreesC: 22, zuluTime: '03:15Z', zuluDayOfMonth: '12'},
+  KLAN: { degreesC: 22, zuluTime: '03:30Z', zuluDayOfMonth: '12'},
+  KSIY: { degreesC: 34, zuluTime: '02:53Z', zuluDayOfMonth: '12'},
+  KYIP: { degreesC: 32, zuluTime: '19:53Z', zuluDayOfMonth: '22'},
+  NZSP: { degreesC: -72, zuluTime: '23:50Z',zuluDayOfMonth: '11'},
+  VEJS: { degreesC: 30, zuluTime: '03:05Z', zuluDayOfMonth: '12'},
+  MHGS: { degreesC: 29, zuluTime: '22:00Z', zuluDayOfMonth: '16'},
+  SVCJ: { degreesC: 31, zuluTime: '17:02Z', zuluDayOfMonth: '10'},
+  KBRL: { degreesC: 0, zuluTime: '15:45Z',  zuluDayOfMonth: '15', windSpeedMph: '5'}
 };
 
 // Given an observation like
@@ -130,7 +130,7 @@ describe("alt text calculation", function() {
   const emptyParsedToParam = {
     stationCode: '????', stationDesc: '????', hectoPressure: '', inHgPressure: '',
     degreesC: null, degreesF: null, windSpeedKph: '', windSpeedMph: '',
-    windDir: undefined, zuluTime: '(no time)', skyCover: 'clear', humidity: '',
+    windDir: undefined, zuluTime: '(no time)', zuluDayOfMonth: undefined, skyCover: 'clear', humidity: '',
     weather: [], metar: '', latlong: null, dateTimeUTC: null
   }
 
