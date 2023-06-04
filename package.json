@@ -4,6 +4,8 @@
   "description": "Composes pixel doll weather images",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
+    "static": "npx lws --stack lws-static lws-index",
     "test": "npx jasmine"
   },
   "repository": {
@@ -28,6 +30,9 @@
     "uninstall": "^0.0.0"
   },
   "devDependencies": {
-    "jasmine": "^3.7.0"
+    "jasmine": "^3.7.0",
+    "lws": "^4.1.2",
+    "lws-index": "^3.1.1",
+    "lws-static": "^3.1.0"
   }
 }
