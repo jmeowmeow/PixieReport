@@ -6,6 +6,20 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
 
     <script>
+
+      function loadAndComposeOver(drawcontext, path) {
+        const loader = new Image();
+        loader.addEventListener(
+          "load",
+          () => {
+            // execute drawImage statements here
+            drawcontext.drawImage(loader, 0, 0);
+          },
+          false
+        );
+        loader.src = path;
+      }
+
       function draw() {
         // (MDN Canvas tutorial)
         // hide the static image using the DOM API
@@ -21,19 +35,21 @@
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // get a single image from the pixie resources
+        // but set up for another once loaded and drawn
         const loadimg = new Image();
         loadimg.addEventListener(
           "load",
           () => {
             // execute drawImage statements here
             ctx.drawImage(loadimg, 0, 0);
+            loadAndComposeOver(ctx, "pixifier/pixies/pixieselfie/pixie-cool.png");
           },
           false
         );
         loadimg.src = "pixifier/pixies/backgrounds/nightcometbkg.png"
 
         // we now have two parallel tasks; adding the canvas to the DOM
-        // and painting the loaded image on the canvas
+        // and via callbacks, painting the loaded image on the canvas, then overlaying the second image
 
         pixieimg.parentNode.insertBefore(canvas, pixieimg);
 

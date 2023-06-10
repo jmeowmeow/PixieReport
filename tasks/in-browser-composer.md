@@ -6,7 +6,10 @@ Paths and reading images
 
 - [x] 0. Display a single PNG image resource in the page as an IMG resource.
 - [x] 1. Display a single PNG image resource in the in-browser canvas. See [MDN Canvas Tutorial](https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images)
-- [ ] 2. Composite two images having transparency on the upper layer, you can use a background and a pixie.
+- [x] 2. Composite two images having transparency on the upper layer, you can use a background and a pixie.
+
+_Do we need a code review yet? Is it too early to refactor rather than duplicate the loading code?_
+
 - [ ] 3. Read a pixie description file or another JSON blob and log it to the Javascript console or set the innerHTML of an element.
 - [ ] 4. Read a JSON resource and navigate to a sub value like a pixie text description. Echo like #3.
 
