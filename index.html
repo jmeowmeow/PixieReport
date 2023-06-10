@@ -2,8 +2,45 @@
 <html>
   <head>
     <title>PixieReport via Browser Runtime</title>
+    <!-- Lea Verou style emoji favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
+
+    <script>
+      function draw() {
+        // (MDN Canvas tutorial)
+        // hide the static image using the DOM API
+        const pixieimg = document.images[0];
+        pixieimg.style = "display: none";
+
+        // loadimg callback requires Canvas element to exist
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("width", 125);
+        canvas.setAttribute("height", 175);
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#f0f"; // magenta, or could stripe or checkerboard or test pattern
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // get a single image from the pixie resources
+        const loadimg = new Image();
+        loadimg.addEventListener(
+          "load",
+          () => {
+            // execute drawImage statements here
+            ctx.drawImage(loadimg, 0, 0);
+          },
+          false
+        );
+        loadimg.src = "pixifier/pixies/backgrounds/nightcometbkg.png"
+
+        // we now have two parallel tasks; adding the canvas to the DOM
+        // and painting the loaded image on the canvas
+
+        pixieimg.parentNode.insertBefore(canvas, pixieimg);
+
+      }
+    </script>
   </head>
-  <body>
+  <body onload="draw()">
     <img src="pixifier/pixies/backgrounds/starrynightbkg.png"/>
     <p/>
     <a href="tasks/in-browser-composer.html">browser runtime milestones</a>
