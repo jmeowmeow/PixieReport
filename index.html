@@ -7,52 +7,51 @@
 
     <script>
 
-      function loadAndComposeOver(drawcontext, path) {
+      function loadAndComposeOver(drawcontext, paths) {
+        if (paths.length < 1) {
+          return;
+        }
+        const headpath = paths[0];
+        const tailpath = paths.slice(1);
+        // if there are more layers to load, set up another load after painting the layer
+        // because they have to paint in the given order
+        tailcall = () => { loadAndComposeOver(drawcontext, tailpath); };
+
         const loader = new Image();
         loader.addEventListener(
           "load",
           () => {
             // execute drawImage statements here
             drawcontext.drawImage(loader, 0, 0);
+            tailcall();
           },
           false
         );
-        loader.src = path;
+
+        loader.src = headpath; // fetch!
       }
 
       function draw() {
         // (MDN Canvas tutorial)
-        // hide the static image using the DOM API
-        const pixieimg = document.images[0];
-        pixieimg.style = "display: none";
 
-        // loadimg callback requires Canvas element to exist
+        // loadimg callback requires a reference to the Canvas element
+        // so let's make a Canvas element
         const canvas = document.createElement("canvas");
         canvas.setAttribute("width", 125);
         canvas.setAttribute("height", 175);
         const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#f0f"; // magenta, or could stripe or checkerboard or test pattern
+        ctx.fillStyle = "#f0f"; // magenta for base layer before compositing
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // get a single image from the pixie resources
-        // but set up for another once loaded and drawn
-        const loadimg = new Image();
-        loadimg.addEventListener(
-          "load",
-          () => {
-            // execute drawImage statements here
-            ctx.drawImage(loadimg, 0, 0);
-            loadAndComposeOver(ctx, "pixifier/pixies/pixieselfie/pixie-cool.png");
-          },
-          false
-        );
-        loadimg.src = "pixifier/pixies/backgrounds/nightcometbkg.png"
+        // hide the static image using the DOM API
+        const pixieimg = document.images[0];
+        pixieimg.style = "display: none";
 
-        // we now have two parallel tasks; adding the canvas to the DOM
-        // and via callbacks, painting the loaded image on the canvas, then overlaying the second image
+        const layerFilesToCompose = [ "pixifier/pixies/backgrounds/nightcometbkg.png", 
+                                      "pixifier/pixies/pixieselfie/pixie-cool.png" ];
 
-        pixieimg.parentNode.insertBefore(canvas, pixieimg);
-
+        loadAndComposeOver(ctx, layerFilesToCompose);       // async load-and-paint canvas
+        pixieimg.parentNode.insertBefore(canvas, pixieimg); // sync add canvas element to DOM
       }
     </script>
   </head>
