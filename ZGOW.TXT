@@ -1,0 +1,12 @@
+Shantou, China (ZGOW) 23-24N 116-41E 3M
+Jun 14, 2023 - 07:00 PM EDT / 2023.06.14 2300 UTC
+Wind: from the E (080 degrees) at 7 MPH (6 KT):0
+Visibility: 1 mile(s):0
+Sky conditions: overcast
+Weather: light rain; mist
+Temperature: 77 F (25 C)
+Dew Point: 75 F (24 C)
+Relative Humidity: 94%
+Pressure (altimeter): 29.74 in. Hg (1007 hPa)
+ob: ZGOW 142300Z 08003MPS 3000 -RA BR SCT011 OVC020 25/24 Q1007 NOSIG
+cycle: 23

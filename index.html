@@ -3,8 +3,10 @@
   <head>
     <title>PixieReport via Browser Runtime</title>
     <!-- Lea Verou style emoji favicon -->
+
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
 
+<!--    <script src="pixifier/pixies/pixieselfie/dolldesc.js" />  -->
     <script>
 
       function loadAndComposeOver(drawcontext, paths) {
@@ -53,9 +55,32 @@
         loadAndComposeOver(ctx, layerFilesToCompose);       // async load-and-paint canvas
         pixieimg.parentNode.insertBefore(canvas, pixieimg); // sync add canvas element to DOM
       }
+
+      async function loadSomeJSON() {
+        const someJSON = await fetch("./index-json.json").then( body => body.json());
+        const jsonDiv  = document.createElement("div");
+        jsonDiv.innerHTML = 'The JSON is: <pre>' + JSON.stringify(someJSON) + '</pre><br />The value of key1 from the JSON is: <tt>' + someJSON.key1 + '</tt>';
+        const pixiei = document.images[0];
+        pixiei.parentNode.insertBefore(jsonDiv, pixiei); // sync add element to DOM
+      }
+
+      async function loadSomeText() {
+        const metarText = await fetch("./ZGOW.TXT").then( body => body.text());
+        const metarDiv = document.createElement("div");
+        metarDiv.innerHTML = '<pre>' + metarText + '</pre>';
+        const pixieim = document.images[0];
+        pixieim.parentNode.insertBefore(metarDiv, pixieim); // sync add element to DOM
+      }
+
+      function handleOnload() {
+         draw();
+         loadSomeText();
+         loadSomeJSON();
+      }
+
     </script>
   </head>
-  <body onload="draw()">
+  <body onload="handleOnload()">
     <img src="pixifier/pixies/backgrounds/starrynightbkg.png"/>
     <p/>
     <a href="tasks/in-browser-composer.html">browser runtime milestones</a>
