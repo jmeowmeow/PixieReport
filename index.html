@@ -72,17 +72,44 @@
         pixieim.parentNode.insertBefore(metarDiv, pixieim); // sync add element to DOM
       }
 
+      function processMetarQuery() {
+        let params = new URL(document.location).searchParams;
+        let metar = params.get("metar");
+        let qType = typeof(metar);
+        if (qType == "string") {
+          metarlocation = document.getElementById("metarlocation", null);
+          metarlocation.innerHTML = metar;
+          metarinput = document.getElementById("metarinput", null);
+          metarinput.value = metar;
+        }
+      }
+
       function handleOnload() {
          draw();
          loadSomeText();
          loadSomeJSON();
+         processMetarQuery();
       }
 
     </script>
   </head>
   <body onload="handleOnload()">
     <img src="pixifier/pixies/backgrounds/starrynightbkg.png"/>
-    <p/>
-    <a href="tasks/in-browser-composer.html">browser runtime milestones</a>
+    <!-- dynamic content inserted in DOM here -->
+    <p>
+    Report for <a href="/index.html?metar=KSEA" />KSEA</a>.<br/>
+    Report for <a href="/index.html?metar=ZGOW" />ZGOW</a>.<br/>
+    Report for <a href="/index.html?metar=KBFI" />KBFI</a>.<br/>
+    </p>
+    <p>
+    <form action="/index.html" method="get">
+    <label>Enter a METAR code like KSEA, ZGOW, KBFI: <input id="metarinput" type="text" value="KSEA" name="metar" width="6" /></label> <input type="submit" value="sUBMIT qUERY"/>
+    </form>
+    </p>
+    <p>
+    We're loading this page with the METAR station code:
+    <span id="metarlocation">(none)</span>
+    </p>
+    In-browser pixie <a href="tasks/in-browser-composer.html">tasks and milestones</a>
   </body>
 </html>

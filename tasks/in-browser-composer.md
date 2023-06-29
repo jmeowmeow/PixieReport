@@ -1,5 +1,7 @@
 # in-browser-composer.md
 
+[<<](/) _Return to home page_
+
 MILESTONES
 
 Paths and reading images
@@ -12,12 +14,15 @@ Paths and reading images
 - [x] 4. Read a JSON resource and navigate to a sub value like a pixie text description. Echo like #3.
 
 ----
+Excursion: Parsing request info using the DOM API.
 
-5 and 6 in either order
+- [x] 5. Using the local web server, can we use the [purple.bikeshed.org](http://purple.bikeshed.org) approach via the [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) DOM API? Try a FORM and/or link submit. **YES.**
 
-- [ ] 5. Parse a textual weather report and output a pixie description object.
-- [ ] 6. Take a pixie description and use it to compose an image.
-- [ ] 7. Join 5 and 6 to take a textual report and compose an image.
+6 and 7 in either order
+
+- [ ] 6. Parse a textual weather report and output a pixie description object.
+- [ ] 7. Take a pixie description and use it to compose an image.
+- [ ] 8. Join 6 and 7 to take a textual report and compose an image.
 
 ----
 
