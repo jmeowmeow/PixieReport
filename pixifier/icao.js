@@ -8699,4 +8699,5 @@ ZYYY: "SHENYANG/DONGTA, China (ZYYY), 41-47N 123-30E 43M"
 // derived from https://www.aviationweather.gov/docs/metar/stations.txt
 // downloaded 20 Oct 2020, with edits
 // caution: not all of these stations give timely full reports
-exports.icaoToLocationMap = icaoLocMap;
+// exports.icaoToLocationMap = icaoLocMap;
+export const icaoToLocationMap = icaoLocMap;

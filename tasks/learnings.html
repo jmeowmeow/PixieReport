@@ -1,0 +1,34 @@
+<h2>learnings.md</h2>
+<p>Sat 08 Jul 2023 10:04:27 AM PDT</p>
+<h2>Pair and Share technique</h2>
+<ul>
+<li>From Recurse Center</li>
+<li>Stop every 20min or so when pairing on new material</li>
+<li>Write down separately what you've learned.</li>
+</ul>
+<h2>Redirect stderr for stuff</h2>
+<p><code>cmd 2&gt;&amp;1 | less</code></p>
+<h2>Javascript Module Loading</h2>
+<ul>
+<li>Context: convert PixieReport parsing and composing from Node to browser runtime.</li>
+<li>Pairing with @erikareads.</li>
+<li>&lt;script type="module"&gt; allows module loading and declarations</li>
+<li>load from a path including '.js' so that the static web server thinks it's javascript and not plaintext</li>
+<li>export { identifier1, identifier2, identifier3 } ;</li>
+<li>export const identifier</li>
+<li>export class Identifier</li>
+</ul>
+<p>Javascript (ES6, not Node)</p>
+<p><code>import * as name from './path.js';
+import { thing } from './path.js';</code></p>
+<p>Node-isms</p>
+<p>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import</p>
+<p>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export</p>
+<hr />
+<p>Sat 08 Jul 2023 10:44:21 AM PDT</p>
+<h2>Module-ization of Javascript formerly in Node, converted to ES import/export</h2>
+<ul>
+<li>Javascript module names cannot be seen from global context </li>
+<li>Javascript module scripts can see document, location, etc. from local context</li>
+<li>Instead of onload="handleOnload()" make the last line in your module script a call to handleOnload();</li>
+</ul>

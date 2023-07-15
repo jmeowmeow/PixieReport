@@ -7,7 +7,8 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
 
 <!--    <script src="pixifier/pixies/pixieselfie/dolldesc.js" />  -->
-    <script>
+<script type="module">
+import * as parser from './pixifier/decoded-metar-parser.js'; 
 
       function loadAndComposeOver(drawcontext, paths) {
         if (paths.length < 1) {
@@ -17,7 +18,7 @@
         const tailpath = paths.slice(1);
         // if there are more layers to load, set up another load after painting the layer
         // because they have to paint in the given order
-        tailcall = () => { loadAndComposeOver(drawcontext, tailpath); };
+        let tailcall = () => { loadAndComposeOver(drawcontext, tailpath); };
 
         const loader = new Image();
         loader.addEventListener(
@@ -91,9 +92,10 @@
          processMetarQuery();
       }
 
+     handleOnload();
     </script>
   </head>
-  <body onload="handleOnload()">
+  <body >
     <img src="pixifier/pixies/backgrounds/starrynightbkg.png"/>
     <!-- dynamic content inserted in DOM here -->
     <p>

@@ -1,5 +1,6 @@
 'use strict';
-const { icaoToLocationMap } = require('./icao.js');
+// const { icaoToLocationMap } = require('./icao.js');
+import { icaoToLocationMap } from './icao.js'; 
 
 // PixieReport decoded-metar-parser.js
 //
@@ -674,10 +675,15 @@ var worldMapLink = function(parsedData) {
   return link;
 };
 
-exports.decodedToParamObject = decodedToParamObject;
-exports.windSpeed = windSpeed;
-exports.computeAltText = computeAltText;
-exports.Layer = Layer;
-exports.computeTheLayers = computeTheLayers;
-exports.computeSceneText = computeSceneText;
-exports.worldMapLink = worldMapLink;
+// parser is exporting to composer
+
+// export const decodedToParamObject = decodedToParamObject;
+// export const windSpeed = windSpeed;
+// export const computeAltText = computeAltText;
+// export class Layer = Layer;
+// export const computeTheLayers = computeTheLayers;
+// export const computeSceneText = computeSceneText;
+// export const worldMapLink = worldMapLink;
+
+export { decodedToParamObject, windSpeed, computeAltText, Layer, computeTheLayers, computeSceneText, worldMapLink };
+ 
