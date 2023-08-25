@@ -33,3 +33,16 @@ import { thing } from './path.js';</code></p>
 <li>Instead of onload="handleOnload()" make the last line in your module script a call to handleOnload();</li>
 <li>You don't need to mark a module script as "defer", it will automatically "defer" a module so that it doesn't attempt to run it as it's being loaded.</li>
 </ul>
+<hr />
+<p>Thu 24 Aug 2023 09:08:51 PM PDT</p>
+<h2>Resync mental context, add some helpful shortcuts</h2>
+<ul>
+<li>npm start is still broken because there are a single set of JS files and require vs import is unresolved</li>
+<li>python3 -m http.server works as a local static file server; there's probably a Node one that's equivalent.</li>
+<li>local python HTTP server needed a <meta encoding="UTF-8"> in order to serve the embedded UTF-8 favicon SVG char</li>
+<li>local python HTTP server logs a broken pipe error after serving index.html for no obvious reason</li>
+<li>added "make http" (python http server), remake.sh (MD to HTML), "make remake" target for remake.sh</li>
+<li>suggestion from Erika: perhaps adding test assertions, even in-browser, would help you stay focused on next small steps</li>
+<li>if you add assertions you can add a breaking test</li>
+<li>insert date in 'vi', <code>:read !date</code> or use the embedded date function whatever that is. </li>
+</ul>
