@@ -18,10 +18,17 @@ Excursion: Parsing request info using the DOM API.
 
 - [x] 5. Using the local web server, can we use the [purple.bikeshed.org](http://purple.bikeshed.org) approach via the [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) DOM API? Try a FORM and/or link submit. **YES.**
 
-? Where ARE we on all the scripting? as of Thu 24 Aug 2023, we are importing the pixifier (as "parser") and should be able to exercise it in the browser js console
-6 and 7 in either order
+Where ARE we on all the scripting? as of Thu 24 Aug 2023, we are importing the
+pixifier (as "parser") and should be able to exercise it in the browser js
+console. Note that part of the challenge so far (see 2a above) is that we're
+writing callback-oriented or async code, which isn't yet natural to compose.
+In addition, introducing ES6 import means that any dependent code must be
+consistent; though the functions may be the same, loading code with require
+versus import is different and incompatible.
 
-- [ ] 6. Parse a textual weather report and output a pixie description object, via _inlined script_ or _imported script_ (see above) from pixifier source.
+6 and 7 in either order.
+
+- [x] 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);
 - [ ] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text.
 - [ ] 8. Join 6 and 7 to take a textual report and compose an image with alt text.
 - [ ] 9. Demo. Consider cleanup. Consider architecture.
@@ -32,7 +39,7 @@ Look what we've won, what's next? (candidates for next milestones)
 
 Parameterization and potential inputs from user
 - pixie image set
-- which weather station by code 
+- which weather station by code
 - can we use https://purple.bikeshed.com/ approach with lws? See MDN HTML DOM API documentation of the [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) DOM API. YES, works.
 
 Canvas to PNG and Alt Text

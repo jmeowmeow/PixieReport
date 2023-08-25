@@ -28,7 +28,7 @@ import { thing } from './path.js';</code></p>
 <p>Sat 08 Jul 2023 10:44:21 AM PDT</p>
 <h2>Module-ization of Javascript formerly in Node, converted to ES import/export</h2>
 <ul>
-<li>Javascript module names cannot be seen from global context </li>
+<li>Javascript module names cannot be seen from global context</li>
 <li>Javascript module scripts can see document, location, etc. from global/document context</li>
 <li>Instead of onload="handleOnload()" make the last line in your module script a call to handleOnload();</li>
 <li>You don't need to mark a module script as "defer", it will automatically "defer" a module so that it doesn't attempt to run it as it's being loaded.</li>
@@ -44,5 +44,22 @@ import { thing } from './path.js';</code></p>
 <li>added "make http" (python http server), remake.sh (MD to HTML), "make remake" target for remake.sh</li>
 <li>suggestion from Erika: perhaps adding test assertions, even in-browser, would help you stay focused on next small steps</li>
 <li>if you add assertions you can add a breaking test</li>
-<li>insert date in 'vi', <code>:read !date</code> or use the embedded date function whatever that is. </li>
+<li>insert date in 'vi', <code>:read !date</code> or use the embedded date function whatever that is.</li>
 </ul>
+<hr />
+<p>Fri 25 Aug 2023 09:15:51 AM PDT</p>
+<h2>Re-sync, async, and move a little forward</h2>
+<p>One of the challenges I had in going from a Node script to an in-browser
+computation was that any JS script loading resources in-browser is async,
+and requires promise handling or callbacks or .then(); looking at the
+sample code form with .then() was a reminder that handling async isn't
+yet natural for me.</p>
+<p>Updated some context in index and in-browser-composer.md for the async
+and import details.</p>
+<p>Excursion: how do we insert the value of the vi date function?
+I think I bound it to F3 in my Microsoft configuration.</p>
+<p>Can we use:
+  :s/./strftime("%c", localtime())\&amp;/ ? nope not interpreted</p>
+<p>Hmm maybe we can use append() ?
+  :append(strftime("%c", localtime()))
+nope, that's probably vim9 script, needs a "def" context.</p>
