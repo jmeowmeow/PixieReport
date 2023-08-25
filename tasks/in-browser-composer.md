@@ -18,10 +18,11 @@ Excursion: Parsing request info using the DOM API.
 
 - [x] 5. Using the local web server, can we use the [purple.bikeshed.org](http://purple.bikeshed.org) approach via the [Location](https://developer.mozilla.org/en-US/docs/Web/API/Location) DOM API? Try a FORM and/or link submit. **YES.**
 
+? Where ARE we on all the scripting? as of Thu 24 Aug 2023, we are importing the pixifier (as "parser") and should be able to exercise it in the browser js console
 6 and 7 in either order
 
-- [ ] 6. Parse a textual weather report and output a pixie description object, via inlined script from pixifier source.
-- [ ] 7. Take a pixie description and use it to compose an image, inlining a modified version of the composer which uses a real Canvas.
+- [ ] 6. Parse a textual weather report and output a pixie description object, via _inlined script_ or _imported script_ (see above) from pixifier source.
+- [ ] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text.
 - [ ] 8. Join 6 and 7 to take a textual report and compose an image with alt text.
 - [ ] 9. Demo. Consider cleanup. Consider architecture.
 
