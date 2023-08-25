@@ -1,0 +1,11 @@
+SEATTLE-TACOMA INTERNATIONAL  AIRPORT , WA, United States (KSEA) 47-27N 122-19W 136M
+Aug 24, 2023 - 11:53 PM EDT / 2023.08.25 0353 UTC
+Wind: from the N (010 degrees) at 15 MPH (13 KT):0
+Visibility: 10 mile(s):0
+Sky conditions: clear
+Temperature: 66.9 F (19.4 C)
+Dew Point: 51.1 F (10.6 C)
+Relative Humidity: 56%
+Pressure (altimeter): 29.94 in. Hg (1013 hPa)
+ob: KSEA 250353Z 01013KT 10SM CLR 19/11 A2994 RMK AO2 SLP143 T01940106
+cycle: 4

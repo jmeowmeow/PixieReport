@@ -66,8 +66,8 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         pixiei.parentNode.insertBefore(jsonDiv, pixiei); // sync add element to DOM
       }
 
-      async function loadSomeText() {
-        const metarText = await fetch("./ZGOW.TXT").then( body => body.text());
+      async function loadSomeText(station) {
+        const metarText = await fetch("metar/"+station+".TXT").then( body => body.text());
         const metarDiv = document.createElement("div");
         metarDiv.innerHTML = '<pre>' + metarText + '</pre>';
         const pixieim = document.images[0];
@@ -84,13 +84,17 @@ import * as parser from './pixifier/decoded-metar-parser.js';
           metarinput = document.getElementById("metarinput", null);
           metarinput.value = metar;
         }
+	// return the value for use in looking up weather reports
+	const known = ["ZGOW", "KBFI", "KSEA" ];
+	return known.includes(metar) ? metar : "KSEA";
       }
 
       function handleOnload() {
+         let metar = processMetarQuery();
          draw();
-         loadSomeText();
+         loadSomeText(metar);
          loadSomeJSON();
-         processMetarQuery();
+	 alert("remember the parser next: \nimport * as parser from './pixifier/decoded-metar-parser.js'; ");
       }
 
      handleOnload();
@@ -103,10 +107,11 @@ import * as parser from './pixifier/decoded-metar-parser.js';
     Report for <a href="/index.html?metar=KSEA" />KSEA</a>.<br/>
     Report for <a href="/index.html?metar=ZGOW" />ZGOW</a>.<br/>
     Report for <a href="/index.html?metar=KBFI" />KBFI</a>.<br/>
+    Report for <a href="/index.html?metar=KBLI" />KBLI</a>.<br/>
     </p>
     <p>
     <form action="/index.html" method="get">
-    <label>Enter a METAR code like KSEA, ZGOW, KBFI: <input id="metarinput" type="text" value="KSEA" name="metar" width="6" /></label> <input type="submit" value="sUBMIT qUERY"/>
+    <label>Enter a METAR code like KSEA, ZGOW, KBFI, KBLI: <input id="metarinput" type="text" value="KSEA" name="metar" width="6" /></label> <input type="submit" value="sUBMIT qUERY"/>
     </form>
     </p>
     <p>
