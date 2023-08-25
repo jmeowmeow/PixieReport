@@ -33,11 +33,11 @@ import * as name from './path.js';
 import { thing } from './path.js';
 ```
 
-Node-isms
+Node-isms; "require", which is a synchronously executed statement, vs. "import" which is deferred / async.
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import
+[MDN JS import statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import)
 
-https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export
+[MDN JS export statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export)
 
 ----
 

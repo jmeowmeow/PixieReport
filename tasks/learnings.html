@@ -21,14 +21,15 @@
 <p>Javascript (ES6, not Node)</p>
 <p><code>import * as name from './path.js';
 import { thing } from './path.js';</code></p>
-<p>Node-isms</p>
-<p>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import</p>
-<p>https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export</p>
+<p>Node-isms; "require", which is a synchronously executed statement, vs. "import" which is deferred / async.</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">MDN JS import statement</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">MDN JS export statement</a></p>
 <hr />
 <p>Sat 08 Jul 2023 10:44:21 AM PDT</p>
 <h2>Module-ization of Javascript formerly in Node, converted to ES import/export</h2>
 <ul>
 <li>Javascript module names cannot be seen from global context </li>
-<li>Javascript module scripts can see document, location, etc. from local context</li>
+<li>Javascript module scripts can see document, location, etc. from global/document context</li>
 <li>Instead of onload="handleOnload()" make the last line in your module script a call to handleOnload();</li>
+<li>You don't need to mark a module script as "defer", it will automatically "defer" a module so that it doesn't attempt to run it as it's being loaded.</li>
 </ul>
