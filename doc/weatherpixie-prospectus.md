@@ -86,69 +86,41 @@ KSEA 110353Z 33006KT 10SM FEW050 22/13 A2997 RMK AO2 SLP154 T02170128
 
 METAR weather reports are a standard format including points of interest for aviation.
 
-Here is an example from NOAA. "KSEA" is the airport code for Seattle-Tacoma International Airport. The gray-background text is parsed into time, wind direction, visibility, cloud cover, temperature/dewpoint temperature, barometric pressure, and a few things I can't remember, after RMK for remarks ("RMK AO2 SLP154 TO270128")
+Here is an example from NOAA. "KSEA" is the airport code for Seattle-Tacoma International Airport. The gray-background text is parsed into time, wind direction, visibility, cloud cover, temperature/dewpoint temperature, barometric pressure, and a few things I can't remember, after RMK for remarks ("RMK AO2 SLPNO T01170050")
 
-[https://www.aviationweather.gov/metar/data?ids=KSEA&format=decoded&hours=0&taf=off&layout=on](https://www.aviationweather.gov/metar/data?ids=KSEA&format=decoded&hours=0&taf=off&layout=on)
+[https://aviationweather.gov/data/metar/?id=KSEA&hours=0&decoded=yes](https://aviationweather.gov/data/metar/?id=KSEA&hours=0&decoded=yes)
 
-**Data at: 0419 UTC 11 Aug 2020**
-
-
-<table>
-  <tr>
-   <td><strong>METAR for:</strong>
-   </td>
-   <td>KSEA (Seattle-Tacoma Intl, WA, US)
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Text:</strong>
-   </td>
-   <td><strong>KSEA 110353Z 33006KT 10SM FEW050 22/13 A2997 RMK AO2 SLP154 T02170128</strong>
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Temperature:</strong>
-   </td>
-   <td>21.7°C ( 71°F)
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Dewpoint:</strong>
-   </td>
-   <td>12.8°C ( 55°F) [RH = 57%]
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Pressure (altimeter):</strong>
-   </td>
-   <td>29.97 inches Hg (1015.0 mb) [Sea level pressure: 1015.4 mb]
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Winds:</strong>
-   </td>
-   <td>from the NNW (330 degrees) at 7 MPH (6 knots; 3.1 m/s)
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Visibility:</strong>
-   </td>
-   <td>10 or more sm (16+ km)
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Ceiling:</strong>
-   </td>
-   <td>at least 12,000 feet AGL
-   </td>
-  </tr>
-  <tr>
-   <td><strong>Clouds:</strong>
-   </td>
-   <td>few clouds at 5000 feet AGL
-   </td>
-  </tr>
-</table>
+<table border="0" cellpadding="1" cellspacing="0">
+<tbody><tr>
+<td align="right" width="130px"><span style="color: #3333CC; font-weight: bold">METAR for:</span></td><td>KSEA (Seattle-Tacoma Intl, WA, US) </td></tr>
+<tr>
+<td align="right" valign="top"><span style="color: #9999CC; font-weight: bold">Text:</span></td><td style="background-color: #CCCCCC; font-weight: bold">KSEA 231953Z 22012KT 10SM SCT035 BKN050 12/05 A3001 RMK AO2 SLPNO T01170050</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Conditions at:</span></td><td>1953 UTC 23 Oct 2023</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Temperature:</span></td><td> 11.7°C ( 53°F)</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Dewpoint:</span></td><td>  5.0°C ( 41°F) [RH =  63%]</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Pressure (altimeter):</span></td><td>30.01 inches Hg (1016.3 mb)</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Winds:</span></td><td>from the SW (220 degrees) at  14 MPH (12 knots;  6.2 m/s)</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Visibility:</span></td><td>10 or more sm (16+ km)</td>
+</tr>
+<tr>
+<td align="right"><span style="color: #9999CC; font-weight: bold">Ceiling:</span></td><td>5000 feet AGL</td>
+</tr>
+<tr>
+<td align="right" valign="top"><span style="color: #9999CC; font-weight: bold">Clouds:</span></td><td>scattered clouds at 3500 feet AGL, broken clouds at 5000 feet AGL</td>
+</tr>
+</tbody></table>
 
 
 METARs are accompanied by TAFs (Terminal Aviation Forecasts). The Weatherpixie only uses the most recent METAR report. Sometimes the METAR report is a few hours old, so the weather conditions may not match the pixie generation time indicated by the sky and clock hours.
