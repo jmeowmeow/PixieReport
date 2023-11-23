@@ -78,9 +78,9 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         let metar = params.get("metar");
         let qType = typeof(metar);
         if (qType == "string") {
-          metarlocation = document.getElementById("metarlocation", null);
+          let metarlocation = document.getElementById("metarlocation", null);
           metarlocation.innerHTML = metar;
-          metarinput = document.getElementById("metarinput", null);
+          let metarinput = document.getElementById("metarinput", null);
           metarinput.value = metar;
         }
 	// return the value for use in looking up weather reports

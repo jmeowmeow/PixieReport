@@ -89,3 +89,29 @@ Hmm maybe we can use append() ?
   :append(strftime("%c", localtime()))
 nope, that's probably vim9 script, needs a "def" context.
 
+
+Thu 23 Nov 2023 09:53:22 AM PST
+
+## Strict mode, MIME types, and "let"
+
+Paired with plocket!
+
+In the browser, there are several security related changes that had to be made.
+
+1. 'let': because variables in JS are global by default, and global variables can't be created in strict mode, I saw failures to find the elements I was looking up.
+2. MIME type: when loading JS modules, they need to be served via HTTP(S) with the MIME type set correctly for Javascript. An answer from "phind.com" (in the Chumby wiki) described how to set up Busybox httpd to serve MIME types.
+3. Ways to use "phind": inspect the sources provided for the narrative answer, and visit the sources for more context and details.
+
+Making these fixes allowed me to proceed.
+
+[MDN Strict Mode docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#converting_mistakes_into_errors)
+
+The Chumby wiki (one of the Phind source docs) had details on how to configure the Busybox web server for local development to return Javascript MIME types as needed for strict mode.
+
+```
+echo '.js:application/javascript' >> /etc/httpd.conf 
+
+cat /etc/httpd.conf 
+
+.js:application/javascript
+```

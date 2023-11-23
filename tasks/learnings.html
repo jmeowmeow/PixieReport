@@ -63,3 +63,20 @@ I think I bound it to F3 in my Microsoft configuration.</p>
 <p>Hmm maybe we can use append() ?
   :append(strftime("%c", localtime()))
 nope, that's probably vim9 script, needs a "def" context.</p>
+<p>Thu 23 Nov 2023 09:53:22 AM PST</p>
+<h2>Strict mode, MIME types, and "let"</h2>
+<p>Paired with plocket!</p>
+<p>In the browser, there are several security related changes that had to be made.</p>
+<ol>
+<li>'let': because variables in JS are global by default, and global variables can't be created in strict mode, I saw failures to find the elements I was looking up.</li>
+<li>MIME type: when loading JS modules, they need to be served via HTTP(S) with the MIME type set correctly for Javascript. An answer from "phind.com" (in the Chumby wiki) described how to set up Busybox httpd to serve MIME types.</li>
+<li>Ways to use "phind": inspect the sources provided for the narrative answer, and visit the sources for more context and details.</li>
+</ol>
+<p>Making these fixes allowed me to proceed.</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#converting_mistakes_into_errors">MDN Strict Mode docs</a></p>
+<p>The Chumby wiki (one of the Phind source docs) had details on how to configure the Busybox web server for local development to return Javascript MIME types as needed for strict mode.</p>
+<p>```
+echo '.js:application/javascript' &gt;&gt; /etc/httpd.conf </p>
+<p>cat /etc/httpd.conf </p>
+<p>.js:application/javascript
+```</p>
