@@ -51,6 +51,8 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         const pixieimg = document.images[0];
         pixieimg.style = "display: none";
 
+// this is where we want to feed the pixie params to the layer file chooser
+
         const layerFilesToCompose = [ "pixifier/pixies/backgrounds/nightcometbkg.png", 
                                       "pixifier/pixies/pixieselfie/pixie-cool.png" ];
 
@@ -65,9 +67,10 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         metarDiv.innerHTML = '<pre>' + metarText + '</pre>';
 	// can we parse it?
 	const pixieParam = parser.decodedToParamObject(metarText); 
-	const pixieJSON = JSON.stringify(pixieParam);
+	console.log(pixieParam);
+	const pixieJSON = JSON.stringify(pixieParam, null, 2);
         const jsonDiv  = document.createElement("div");
-	jsonDiv.innerHTML = 'The pixie param JSON is:<br/>' + pixieJSON + '<br />The value of stationDesc from the params is: <tt>' + pixieParam.stationDesc + '</tt>';
+	jsonDiv.innerHTML = 'The pixie param JSON is:<pre>' + pixieJSON + '</pre>The value of stationDesc from the params is: <tt>' + pixieParam.stationDesc + '</tt>';
         const pixiei = document.images[0]; // invisible placeholder image by this point I think
         pixiei.parentNode.insertBefore(jsonDiv, pixiei); // sync add element to DOM
         pixiei.parentNode.insertBefore(metarDiv, pixiei); // sync add element to DOM
@@ -91,6 +94,9 @@ import * as parser from './pixifier/decoded-metar-parser.js';
       function handleOnload() {
          let metar = processMetarQuery();
          loadSomeText(metar);
+	 // FIXME
+	 // the previous load needs to be composed with a set of
+	 // layers to draw into the canvas!
          draw();
       }
 
@@ -98,8 +104,12 @@ import * as parser from './pixifier/decoded-metar-parser.js';
     </script>
   </head>
   <body >
+<p>
+<strong>In-browser pixie</strong> <a href="tasks/in-browser-composer.html">tasks and milestones</a>
+</p>
     <img src="pixifier/pixies/backgrounds/starrynightbkg.png"/>
     <!-- dynamic content inserted in DOM here -->
+
     <p>
     Report for <a href="/index.html?metar=KSEA" />KSEA</a>.<br/>
     Report for <a href="/index.html?metar=ZGOW" />ZGOW</a>.<br/>
@@ -115,6 +125,5 @@ import * as parser from './pixifier/decoded-metar-parser.js';
     We're loading this page with the METAR station code:
     <span id="metarlocation">(none)</span>
     </p>
-    In-browser pixie <a href="tasks/in-browser-composer.html">tasks and milestones</a>
   </body>
 </html>
