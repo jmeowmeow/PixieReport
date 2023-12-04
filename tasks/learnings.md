@@ -115,3 +115,36 @@ cat /etc/httpd.conf
 
 .js:application/javascript
 ```
+
+
+Mon 04 Dec 2023 11:33:07 AM PST
+
+## Async and Promises
+
+You can cash in a Javascript Promise in a non-async method using "then()". I'd 
+wanted to use "await" to assure the presence of a value depending on external 
+resources before proceeding, and had been informed by the runtime that it wasn't do-able. 
+
+I had felt thwarted, because the error message and the examples of async usage left
+me at a loss for what to do. 
+
+Learning: `promise.then(` _callback_ `)` operates regardless of "async" or "top-level".
+
+Meta-learning: Read the API documentation a little more closely if you feel blocked.
+The examples may not cover your case, particularly when porting from a Node script to
+an in-browser program.
+
+Work in progress below.
+
+
+```
+90-      function handleOnload() {
+91-         let metar = processMetarQuery();
+92-         let paramPromise = loadSomeText(metar);
+93:         paramPromise.then( (value) => { console.log("Here is the promised pixie param."); console.log(value); });
+94-	 // FIXME
+95-	 // the previous load needs to be composed with a set of
+96-	 // layers to draw into the canvas!
+```
+
+

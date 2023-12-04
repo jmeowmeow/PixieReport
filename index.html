@@ -35,7 +35,7 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         loader.src = headpath; // fetch!
       }
 
-      function draw() {
+      function draw(layerFilesToCompose) {
         // (MDN Canvas tutorial)
 
         // loadimg callback requires a reference to the Canvas element
@@ -51,13 +51,8 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         const pixieimg = document.images[0];
         pixieimg.style = "display: none";
 
-// this is where we want to feed the pixie params to the layer file chooser
-
-        const layerFilesToCompose = [ "pixifier/pixies/backgrounds/nightcometbkg.png", 
-                                      "pixifier/pixies/pixieselfie/pixie-cool.png" ];
-
         loadAndComposeOver(ctx, layerFilesToCompose);       // async load-and-paint canvas
-        // -- this would be the place to add canvas text -- // async load-and-paint canvas
+        // -- this would be the place to add canvas text --
         pixieimg.parentNode.insertBefore(canvas, pixieimg); // sync add canvas element to DOM
       }
 
@@ -74,6 +69,7 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         const pixiei = document.images[0]; // invisible placeholder image by this point I think
         pixiei.parentNode.insertBefore(jsonDiv, pixiei); // sync add element to DOM
         pixiei.parentNode.insertBefore(metarDiv, pixiei); // sync add element to DOM
+        return pixieParam;
       }
 
       function processMetarQuery() {
@@ -93,11 +89,18 @@ import * as parser from './pixifier/decoded-metar-parser.js';
 
       function handleOnload() {
          let metar = processMetarQuery();
-         loadSomeText(metar);
+         let paramPromise = loadSomeText(metar);
+         paramPromise.then( (value) => { console.log("Here is the promised pixie param."); console.log(value); });
 	 // FIXME
 	 // the previous load needs to be composed with a set of
 	 // layers to draw into the canvas!
-         draw();
+   // this is where we want to feed the pixie params to the layer file chooser
+
+        const layerFilesToCompose = [ "pixifier/pixies/backgrounds/nightcometbkg.png",
+                                      "pixifier/pixies/skycond/overcast.png",
+                                      "pixifier/pixies/pixieselfie/pixie-cool.png" ];
+
+         draw(layerFilesToCompose);
       }
 
      handleOnload();

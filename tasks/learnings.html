@@ -80,3 +80,22 @@ echo '.js:application/javascript' &gt;&gt; /etc/httpd.conf </p>
 <p>cat /etc/httpd.conf </p>
 <p>.js:application/javascript
 ```</p>
+<p>Mon 04 Dec 2023 11:33:07 AM PST</p>
+<h2>Async and Promises</h2>
+<p>You can cash in a Javascript Promise in a non-async method using "then()". I'd 
+wanted to use "await" to assure the presence of a value depending on external 
+resources before proceeding, and had been informed by the runtime that it wasn't do-able. </p>
+<p>I had felt thwarted, because the error message and the examples of async usage left
+me at a loss for what to do. </p>
+<p>Learning: <code>promise.then(</code> <em>callback</em> <code>)</code> operates regardless of "async" or "top-level".</p>
+<p>Meta-learning: Read the API documentation a little more closely if you feel blocked.
+The examples may not cover your case, particularly when porting from a Node script to
+an in-browser program.</p>
+<p>Work in progress below.</p>
+<p><code>90-      function handleOnload() {
+91-         let metar = processMetarQuery();
+92-         let paramPromise = loadSomeText(metar);
+93:         paramPromise.then( (value) =&gt; { console.log("Here is the promised pixie param."); console.log(value); });
+94-  // FIXME
+95-  // the previous load needs to be composed with a set of
+96-  // layers to draw into the canvas!</code></p>
