@@ -364,6 +364,8 @@ var computeLayers = function(parsedData) {
   //   for computing alt text.
 
   var layerfile = computeTheLayers(parsedData, mainLayerDefs);
+  console.log("mainLayerDefs");
+  console.log(mainLayerDefs);
   return layerfile;
 }
 
