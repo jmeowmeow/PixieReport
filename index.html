@@ -90,17 +90,19 @@ import * as parser from './pixifier/decoded-metar-parser.js';
       function handleOnload() {
          let metar = processMetarQuery();
          let paramPromise = loadSomeText(metar);
-         paramPromise.then( (value) => { console.log("Here is the promised pixie param."); console.log(value); });
-	 // FIXME
-	 // the previous load needs to be composed with a set of
-	 // layers to draw into the canvas!
-   // this is where we want to feed the pixie params to the layer file chooser
+         paramPromise.then( (pixieParams) => { 
+          let chosenLayers = parser.computeLayers(pixieParams);
+	  console.log(`Here are the layers for ${metar}. Are they the layers we want to compose?`); 
+	  let layerUrlPaths = chosenLayers.map( (eachLayer) => eachLayer.path );
+          console.log(layerUrlPaths); 
+          draw(layerUrlPaths);
+        });
 
+        // static bootstrapping list from earlier draw();
         const layerFilesToCompose = [ "pixifier/pixies/backgrounds/nightcometbkg.png",
                                       "pixifier/pixies/skycond/overcast.png",
                                       "pixifier/pixies/pixieselfie/pixie-cool.png" ];
 
-         draw(layerFilesToCompose);
       }
 
      handleOnload();

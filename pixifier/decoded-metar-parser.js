@@ -1,6 +1,6 @@
 'use strict';
-// const { icaoToLocationMap } = require('./icao.js');
 import { icaoToLocationMap } from './icao.js'; 
+import { layerDefs } from './layerDefs.js'; 
 
 // PixieReport decoded-metar-parser.js
 //
@@ -591,9 +591,9 @@ var addDollLayerReturnDescText = function(image_layers, no_doll, doll_layers, te
   return ddtext;
 }
 
-var computeTheLayers = function(parsedData, layerDefs) {
+const computeTheLayers = function(parsedData, layerDefsLocal) {
   var layerfile = [];
-  layerfile[0] = layerDefs.bkgd[1]; // default to gray for no sun position
+  layerfile[0] = layerDefsLocal.bkgd[1]; // default to gray for no sun position
   //  Civil and nautical twilight occur at solar zenith
   //  angles of 96 and 102 degrees respectively.
   //  Details of objects become visible at civil twilight.
@@ -601,25 +601,25 @@ var computeTheLayers = function(parsedData, layerDefs) {
   if (parsedData.sunPos && parsedData.sunPos.zenithAngle) {
     const z = parsedData.sunPos.zenithAngle;
     if (z < 89) {
-      layerfile[0] = layerDefs.bkgd[3]; // day
+      layerfile[0] = layerDefsLocal.bkgd[3]; // day
     } else if (z < 96) {
-      layerfile[0] = layerDefs.bkgd[2]; // pink
+      layerfile[0] = layerDefsLocal.bkgd[2]; // pink
     } else if (z < 102) {
-      layerfile[0] = layerDefs.bkgd[1]; // gray
+      layerfile[0] = layerDefsLocal.bkgd[1]; // gray
     } else {
-      layerfile[0] = layerDefs.bkgd[0]; // night
+      layerfile[0] = layerDefsLocal.bkgd[0]; // night
     }
   }
-  layerfile[1] = layerDefs.skyhash[parsedData['skyCover']];
+  layerfile[1] = layerDefsLocal.skyhash[parsedData['skyCover']];
 
   // lightning: after clouds, before doll and precipitation
   // fragile, depends on exact match on weather in decoded METAR (as other weather conditions)
   if (parsedData.weather && parsedData.weather.includes('Lightning observed')) {
-    layerfile.push(layerDefs.lightningLayer);
+    layerfile.push(layerDefsLocal.lightningLayer);
   }
 
-  var dollDescText = addDollLayerReturnDescText(layerfile, layerDefs.noDollLayer,
-            layerDefs.dollLayerByTemp, parsedData.degreesC);
+  var dollDescText = addDollLayerReturnDescText(layerfile, layerDefsLocal.noDollLayer,
+            layerDefsLocal.dollLayerByTemp, parsedData.degreesC);
 
   parsedData.dollDescText = dollDescText;
 
@@ -632,27 +632,31 @@ var computeTheLayers = function(parsedData, layerDefs) {
     var mph = wspd.MPHNUM;
     var windwarning;
     if (mph > 73) {
-      windwarning = layerDefs.dayhighwind[3];
+      windwarning = layerDefsLocal.dayhighwind[3];
     } else if (mph > 54) {
-      windwarning = layerDefs.dayhighwind[2];
+      windwarning = layerDefsLocal.dayhighwind[2];
     } else if (mph > 38) {
-      windwarning = layerDefs.dayhighwind[1];
+      windwarning = layerDefsLocal.dayhighwind[1];
     } else {
-      windwarning = layerDefs.dayhighwind[0];
+      windwarning = layerDefsLocal.dayhighwind[0];
     }
     layerfile.push(windwarning);
   }
 
   if (parsedData.weather) {
     for (const cond of parsedData.weather) {
-       const weatherfile = layerDefs.weatherhash[cond];
+       const weatherfile = layerDefsLocal.weatherhash[cond];
        if (weatherfile) {
          layerfile.push(weatherfile);
        }
     }
   }
-  layerfile.push(layerDefs.frame);
+  layerfile.push(layerDefsLocal.frame);
   return layerfile;
+};
+
+const computeLayers = function(parsedData) {
+  return computeTheLayers(parsedData, layerDefs);
 };
 
 var worldMapLink = function(parsedData) {
@@ -685,5 +689,4 @@ var worldMapLink = function(parsedData) {
 // export const computeSceneText = computeSceneText;
 // export const worldMapLink = worldMapLink;
 
-export { decodedToParamObject, windSpeed, computeAltText, Layer, computeTheLayers, computeSceneText, worldMapLink };
- 
+export { decodedToParamObject, windSpeed, computeAltText, Layer, computeLayers, computeSceneText, worldMapLink };

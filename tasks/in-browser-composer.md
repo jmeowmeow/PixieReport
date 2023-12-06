@@ -29,7 +29,7 @@ versus import is different and incompatible.
 6 and 7 in either order.
 
 - [x] 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);
-- [ ] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. The tedious bit here is the entanglement of Node filesystem and canvas logic with the image resource path definitions. See the pixie-layers.js file for a start.
+- [x] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. The tedious bit here is the entanglement of Node filesystem and canvas logic with the image resource path definitions. See the pixie-layers.js file for a start.
 - [ ] 8. Join 6 and 7 to take a textual report and compose an image with alt text.
 - [ ] 9. Demo. Consider cleanup. Consider architecture.
 
@@ -44,6 +44,12 @@ Parameterization and potential inputs from user
 
 Canvas to PNG and Alt Text
 - The relevant DOM API items are [OffscreenCanvas.convertToBlob()](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob) which can export PNGs as image/png and [URL.createObjectURL()](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static); see also the [object URL image display example](https://developer.mozilla.org/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images).
+
+Creating and exporting thoughts from Wolf Mermelstein:
+
+* headless browser / selenium / devtools / print to PDF (though I probably want images)
+* headless browser / selenium / devtools / screenshot (to capture an output image)
+* puppeteer for equivalent functionality
 
 (thanks @erikareads for milestone breakdown conversation, and for Mitchell Hashimoto's demo-driven milestone approach).
 

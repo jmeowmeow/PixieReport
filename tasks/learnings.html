@@ -99,3 +99,10 @@ an in-browser program.</p>
 94-  // FIXME
 95-  // the previous load needs to be composed with a set of
 96-  // layers to draw into the canvas!</code></p>
+<p>Wed 06 Dec 2023 10:05:31 AM PST</p>
+<h2>A JS Class is an Object Constructor</h2>
+<p>The thought sequence here was:
+1. I can snapshot a JS object structure's console dump, right? The one I need is just a bunch of keys and values used as structured data.
+2. Sort of? It won't parse as JSON because it has class names.
+3. Oh. If I remove the class names from the console dump, it parses as JSON.</p>
+<p>So: the class names are part of the to-string of objects dumped to the console.</p>

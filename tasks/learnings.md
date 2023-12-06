@@ -148,3 +148,14 @@ Work in progress below.
 ```
 
 
+Wed 06 Dec 2023 10:05:31 AM PST
+
+## A JS Class is an Object Constructor
+
+The thought sequence here was:
+1. I can snapshot a JS object structure's console dump, right? The one I need is just a bunch of keys and values used as structured data.
+2. Sort of? It won't parse as JSON because it has class names.
+3. Oh. If I remove the class names from the console dump, it parses as JSON.
+
+So: the class names are part of the to-string of objects dumped to the console.
+
