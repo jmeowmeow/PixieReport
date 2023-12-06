@@ -1,0 +1,13 @@
+SAN FRANCISCO INTERNATIONAL  AIRPORT , CA, United States (KSFO) 37-37N 122-22W 26M
+Dec 06, 2023 - 12:56 PM EST / 2023.12.06 1756 UTC
+Wind: from the S (190 degrees) at 14 MPH (12 KT):0
+Visibility: 10 mile(s):0
+Sky conditions: mostly cloudy
+Precipitation last hour: A trace
+Temperature: 61.0 F (16.1 C)
+Dew Point: 53.1 F (11.7 C)
+Relative Humidity: 75%
+Pressure (altimeter): 30.09 in. Hg (1018 hPa)
+Pressure tendency: 0.04 inches (1.3 hPa) higher than three hours ago
+ob: KSFO 061756Z 19012KT 10SM SCT024 BKN100 16/12 A3009 RMK AO2 DZE02 SLP188 P0000 60000 T01610117 10161 20094 51013 
+cycle: 18

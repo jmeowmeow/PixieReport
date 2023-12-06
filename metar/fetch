@@ -1,0 +1,10 @@
+#!/bin/bash
+
+SITE=$1
+[ -z "$SITE" ] && SITE='KSEA'
+
+>&2 echo ${SITE}.TXT $(date)
+
+curl -s https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${SITE}.TXT > ${SITE}.TXT
+
+cat ${SITE}.TXT

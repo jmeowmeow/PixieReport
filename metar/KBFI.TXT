@@ -1,12 +1,13 @@
 SEATTLE BOEING FIELD, WA, United States (KBFI) 47-33N 122-19W 4M
-Aug 24, 2023 - 11:53 PM EDT / 2023.08.25 0353 UTC
-Wind: Variable at 5 MPH (4 KT):0
-Visibility: 10 mile(s):0
-Sky conditions: clear
-Weather: smoke
-Temperature: 66.9 F (19.4 C)
-Dew Point: 52.0 F (11.1 C)
-Relative Humidity: 58%
-Pressure (altimeter): 29.94 in. Hg (1013 hPa)
-ob: KBFI 250353Z VRB04KT 10SM FU CLR 19/11 A2994 RMK AO2 SLP137 T01940111
-cycle: 4
+Dec 06, 2023 - 12:53 PM EST / 2023.12.06 1753 UTC
+Wind: Calm:0
+Visibility: 5 mile(s):0
+Sky conditions: overcast
+Weather: mist
+Temperature: 50.0 F (10.0 C)
+Dew Point: 48.0 F (8.9 C)
+Relative Humidity: 92%
+Pressure (altimeter): 29.81 in. Hg (1009 hPa)
+Pressure tendency: 0.03 inches (1.0 hPa) lower than three hours ago
+ob: KBFI 061753Z 00000KT 5SM BR BKN009 OVC027 10/09 A2981 RMK AO2 SLP095 60000 T01000089 10100 20089 58010
+cycle: 18
