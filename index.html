@@ -71,7 +71,7 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
           metarinput.value = metar;
         }
 	// return the value for use in looking up weather reports
-	const known = ["ZGOW", "KBFI", "KSEA", "KPAE", "KBLI", "KSFO" ];
+	const known = ["ZGOW", "KBFI", "KSEA", "KPAE", "KBLI", "KSFO", "EGLC", "EGGD" ];
 	return known.includes(metar) ? metar : "KSEA";
       }
 
@@ -85,12 +85,6 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
           console.log(layerUrlPaths); 
           draw(layerUrlPaths, pixieParams);
         });
-
-        // static bootstrapping list from earlier draw();
-        const layerFilesToCompose = [ "pixifier/pixies/backgrounds/nightcometbkg.png",
-                                      "pixifier/pixies/skycond/overcast.png",
-                                      "pixifier/pixies/pixieselfie/pixie-cool.png" ];
-
       }
 
      handleOnload();
@@ -110,6 +104,8 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
     <a href="/index.html?metar=KBLI" />KBLI</a>
     <a href="/index.html?metar=KSFO" />KSFO</a>
     <a href="/index.html?metar=KPAE" />KPAE</a>
+    <a href="/index.html?metar=EGLC" />EGLC</a>
+    <a href="/index.html?metar=EGGD" />EGGD</a>
     </p>
     <p>
     <form action="/index.html" method="get">

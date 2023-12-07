@@ -1,11 +1,12 @@
 BELLINGHAM INTERNATIONAL  AIRPORT, WA, United States (KBLI) 48-48N 122-32W 50M
-Dec 06, 2023 - 01:16 PM EST / 2023.12.06 1816 UTC
-Wind: from the SSW (200 degrees) at 6 MPH (5 KT):0
-Visibility: 7 mile(s):0
-Sky conditions: mostly cloudy
-Temperature: 46.9 F (8.3 C)
-Dew Point: 46.9 F (8.3 C)
-Relative Humidity: 100%
-Pressure (altimeter): 29.81 in. Hg (1009 hPa)
-ob: KBLI 061816Z 20005KT 7SM BKN004 BKN015 08/08 A2981 RMK AO2 T00830083
-cycle: 18
+Dec 06, 2023 - 07:53 PM EST / 2023.12.07 0053 UTC
+Wind: from the NW (320 degrees) at 6 MPH (5 KT):0
+Visibility: 4 mile(s):0
+Sky conditions: overcast
+Weather: mist
+Temperature: 46.0 F (7.8 C)
+Dew Point: 45.0 F (7.2 C)
+Relative Humidity: 95%
+Pressure (altimeter): 29.71 in. Hg (1006 hPa)
+ob: KBLI 070053Z 32005KT 4SM BR BKN005 OVC029 08/07 A2971 RMK AO2 SLP068 T00780072
+cycle: 1

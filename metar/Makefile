@@ -5,3 +5,5 @@ update:
 	./fetch KSEA
 	./fetch KSFO
 	./fetch ZGOW
+	./fetch EGLC
+	./fetch EGGD
