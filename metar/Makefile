@@ -7,3 +7,9 @@ update:
 	./fetch ZGOW
 	./fetch EGLC
 	./fetch EGGD
+	./fetch KNYC
+	./fetch LIMC
+	./fetch EHRD
+	./fetch VABB
+	./fetch SAWH
+	./fetch ENQA

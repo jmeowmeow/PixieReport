@@ -1,0 +1,12 @@
+NEW YORK CITY CENTRAL PARK, NY, United States (KNYC) 40-47N 073-58W 48M
+Dec 07, 2023 - 03:51 PM EST / 2023.12.07 2051 UTC
+Wind: from the W (280 degrees) at 9 MPH (8 KT) (direction variable):0
+Visibility: 9 mile(s):0
+Sky conditions: overcast
+Temperature: 37.9 F (3.3 C)
+Dew Point: 30.0 F (-1.1 C)
+Relative Humidity: 72%
+Pressure (altimeter): 29.99 in. Hg (1015 hPa)
+Pressure tendency: 0.00 inches (0.1 hPa) lower than three hours ago
+ob: KNYC 072051Z AUTO 28008KT 250V310 9SM OVC017 03/M01 A2999 RMK AO2 SLP150 T00331011 55001 
+cycle: 21

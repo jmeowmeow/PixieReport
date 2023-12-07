@@ -151,4 +151,4 @@ const layerDefSnapshot =
     path: 'pixifier/pixies/backgrounds/blackframe.png'
   }
 };
-export const layerDefs = layerDefSnapshot;
+export const layerDefsSelfie = layerDefSnapshot;

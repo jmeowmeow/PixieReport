@@ -3,7 +3,7 @@ const layerDefSnapshot =
   bkgd: [
     {
       desc: 'night',
-      path: 'pixifier/pixies/backgrounds/nightcometbkg.png'
+      path: 'pixifier/pixies/backgrounds/starrynightbkg.png'
     },
     {
       desc: 'gray twilight',
@@ -54,24 +54,24 @@ const layerDefSnapshot =
   },
   dollLayerByTemp: {
     '0': {
-      desc: 'Too-ticky from Moomin, wearing a small blue cap with red top button, a blue neck scarf, a red-and-white striped sweater, red mittens, blue pants, and bare clawed feet, with snowflakes drifting down from her fingertips.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-icy.png'
+      desc: "Beatrix Potter's Mrs. Rabbit with a covered basket, red mittens, fluffy gray shawl and headcloth, and white apron over a red-and-white striped dress.",
+      path: 'pixifier/pixies/pixiebunny/pixie-icy.png'
     },
     '1': {
-      desc: 'Snufkin from Moomin, wearing a wide-brimmed, pointed green cap with red feather, smoking a pipe, wearing a long-sleeved green tunic over black pants and boots.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-cold.png'
+      desc: "Beatrix Potter's Mrs. Rabbit with a basket, folded blue umbrella, pink headscarf, bright pink shawl, and white apron over a maroon and gold striped dress.",
+      path: 'pixifier/pixies/pixiebunny/pixie-cold.png'
     },
     '2': {
-      desc: 'Mymble\'s Daughter from Moomin, red hair in a vertical bun, looking upward past floating hearts, wearing a white blouse with a yellow bow, a deep pink dress, striped bloomers, and black shoes.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-cool.png'
+      desc: "Beatrix Potter's Mrs. Rabbit in a pale blue dress and white apron and pink shawl, stirring a red cooking pot.",
+      path: 'pixifier/pixies/pixiebunny/pixie-cool.png'
     },
     '3': {
-      desc: 'Snork Maiden from Moomin, sniffing a plucked flower, looking to one side, with a golden fringe of hair and pale purple skin, wearing only a golden anklet.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-warm.png'
+      desc: "Beatrix Potter's Mrs. Rabbit in a blue dress and white apron with a basket.",
+      path: 'pixifier/pixies/pixiebunny/pixie-warm.png'
     },
     '4': {
-      desc: 'Moominmamma, fanning drops of sweat from her head with a pink fan, carrying a black purse and wearing only a red-and-white striped apron.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-hot.png'
+      desc: "Beatrix Potter's Peter Rabbit diving into a garden watering can with drops of water splashing out.",
+      path: 'pixifier/pixies/pixiebunny/pixie-hot.png'
     }
   },
   dayhighwind: [
@@ -151,4 +151,4 @@ const layerDefSnapshot =
     path: 'pixifier/pixies/backgrounds/blackframe.png'
   }
 };
-export const layerDefsMoomin = layerDefSnapshot;
+export const layerDefsBunny = layerDefSnapshot;

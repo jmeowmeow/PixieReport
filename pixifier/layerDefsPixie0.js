@@ -3,7 +3,7 @@ const layerDefSnapshot =
   bkgd: [
     {
       desc: 'night',
-      path: 'pixifier/pixies/backgrounds/nightcometbkg.png'
+      path: 'pixifier/pixies/backgrounds/starrynightbkg.png'
     },
     {
       desc: 'gray twilight',
@@ -54,24 +54,24 @@ const layerDefSnapshot =
   },
   dollLayerByTemp: {
     '0': {
-      desc: 'Too-ticky from Moomin, wearing a small blue cap with red top button, a blue neck scarf, a red-and-white striped sweater, red mittens, blue pants, and bare clawed feet, with snowflakes drifting down from her fingertips.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-icy.png'
+      desc: "a slim young woman in a bright red hooded parka with gold fuzz framing her face, a gray mask covering mouth and nose, a transparent visor, a black-and-white neck scarf, yellow mittens, black pants and aqua-blue knee boots.",
+      path: 'pixifier/pixies/pixie0/pixie-icy.png'
     },
     '1': {
-      desc: 'Snufkin from Moomin, wearing a wide-brimmed, pointed green cap with red feather, smoking a pipe, wearing a long-sleeved green tunic over black pants and boots.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-cold.png'
+      desc: "a slim young woman with black hair and a broad pink face with one eyebrow raised, wearing red earmuffs, a red neck scarf, a pale yellow cable-knit sweater, red mittens, black pants with a red belt, and bright red knee boots.",
+      path: 'pixifier/pixies/pixie0/pixie-cold.png'
     },
     '2': {
-      desc: 'Mymble\'s Daughter from Moomin, red hair in a vertical bun, looking upward past floating hearts, wearing a white blouse with a yellow bow, a deep pink dress, striped bloomers, and black shoes.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-cool.png'
+      desc: "a slim young woman with black hair and a broad pink face with one eyebrow raised, wearing a pale yellow cable-knit sweater, light brown corduroy pants, and brown shoes.",
+      path: 'pixifier/pixies/pixie0/pixie-cool.png'
     },
     '3': {
-      desc: 'Snork Maiden from Moomin, sniffing a plucked flower, looking to one side, with a golden fringe of hair and pale purple skin, wearing only a golden anklet.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-warm.png'
+      desc: "a slim young woman with black hair and a broad pink face with one eyebrow raised, wearing a black short-sleeved shirt with a large sunflower blossom, blue jeans, and yellow shoes.",
+      path: 'pixifier/pixies/pixie0/pixie-warm.png'
     },
     '4': {
-      desc: 'Moominmamma, fanning drops of sweat from her head with a pink fan, carrying a black purse and wearing only a red-and-white striped apron.',
-      path: 'pixifier/pixies/pixiemoomin/pixie-hot.png'
+      desc: "a slim young woman with black hair and a broad pink face with one eyebrow raised, barefoot, wearing a yellow short-sleeved shirt with a large green and orange sunflower blossom, and blue denim shorts.",
+      path: 'pixifier/pixies/pixie0/pixie-hot.png'
     }
   },
   dayhighwind: [
@@ -151,4 +151,4 @@ const layerDefSnapshot =
     path: 'pixifier/pixies/backgrounds/blackframe.png'
   }
 };
-export const layerDefsMoomin = layerDefSnapshot;
+export const layerDefsPixie0 = layerDefSnapshot;

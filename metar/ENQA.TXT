@@ -1,0 +1,10 @@
+Station name not available
+Dec 07, 2023 - 03:50 PM EST / 2023.12.07 2050 UTC
+Wind: from the SE (130 degrees) at 28 MPH (24 KT):0
+Visibility: greater than 7 mile(s):0
+Temperature: 39 F (4 C)
+Dew Point: 23 F (-5 C)
+Relative Humidity: 51%
+Pressure (altimeter): 29.97 in. Hg (1015 hPa)
+ob: ENQA 072050Z AUTO 13024KT CAVOK 04/M05 Q1015 W04/S4
+cycle: 21

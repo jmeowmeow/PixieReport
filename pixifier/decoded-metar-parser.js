@@ -1,8 +1,16 @@
 'use strict';
 import { icaoToLocationMap } from './icao.js';
 // TODO factor the pixel doll descriptions from the layer defs snapshots
-import { layerDefs } from './layerDefsMoomin.js';
-// import { layerDefs } from './layerDefsSelfie.js';
+import { layerDefsMoomin } from './layerDefsMoomin.js';
+import { layerDefsSelfie } from './layerDefsSelfie.js';
+import { layerDefsPixie0 } from './layerDefsPixie0.js';
+import { layerDefsHoliday } from './layerDefsHoliday.js';
+import { layerDefsBunny } from './layerDefsBunny.js';
+
+const layerDefsByPixie = [ layerDefsSelfie, layerDefsMoomin, layerDefsBunny, layerDefsPixie0, layerDefsHoliday ];
+
+const whichPixie = Math.floor(Math.random() * layerDefsByPixie.length);
+const layerDefs = layerDefsByPixie[whichPixie];
 
 // PixieReport decoded-metar-parser.js
 //

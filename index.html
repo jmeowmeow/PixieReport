@@ -52,7 +52,7 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
       async function loadSomeText(station) {
         const metarText = await fetch("metar/"+station+".TXT").then( body => body.text());
         const metarDiv = document.createElement("div");
-        metarDiv.innerHTML = '<pre>' + metarText + '</pre>';
+	metarDiv.innerHTML = ' <br/><strong>Weather Condition Report</strong><pre>' + metarText + '</pre>';
 	// can we parse it?
 	const pixieParam = parser.decodedToParamObject(metarText); 
         const pixiei = document.images[0]; // invisible placeholder image by this point I think
@@ -71,7 +71,8 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
           metarinput.value = metar;
         }
 	// return the value for use in looking up weather reports
-	const known = ["ZGOW", "KBFI", "KSEA", "KPAE", "KBLI", "KSFO", "EGLC", "EGGD" ];
+	const known = ["ZGOW", "KBFI", "KSEA", "KPAE", "KBLI", "KSFO", "EGLC", "EGGD",
+	               "KNYC", "LIMC", "EHRD", "VABB", "SAWH", "ENQA" ];
 	return known.includes(metar) ? metar : "KSEA";
       }
 
@@ -98,14 +99,21 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
     <!-- dynamic content inserted in DOM here -->
 
     <p>
-    Pixie Report for <a href="/index.html?metar=KSEA" />KSEA</a>
-    <a href="/index.html?metar=ZGOW" />ZGOW</a>
-    <a href="/index.html?metar=KBFI" />KBFI</a>
-    <a href="/index.html?metar=KBLI" />KBLI</a>
-    <a href="/index.html?metar=KSFO" />KSFO</a>
-    <a href="/index.html?metar=KPAE" />KPAE</a>
-    <a href="/index.html?metar=EGLC" />EGLC</a>
-    <a href="/index.html?metar=EGGD" />EGGD</a>
+    Pixie Report for
+    <a href="/index.html?metar=KSEA">Sea-Tac KSEA</a> 🌦️
+    <a href="/index.html?metar=ZGOW">Shantou China ZGOW</a> 🌦️
+    <a href="/index.html?metar=KBFI">Boeing Field KBFI</a> 🌦️ 
+    <a href="/index.html?metar=KBLI">Bellingham WA USA KBLI</a> 🌦️
+    <a href="/index.html?metar=KSFO">San Francisco CA KSFO</a> 🌦️ 
+    <a href="/index.html?metar=KPAE">Everett WA USA KPAE</a> 🌦️ 
+    <a href="/index.html?metar=EGLC">London City UK EGLC</a> 🌦️ 
+    <a href="/index.html?metar=EGGD">Bristol UK EGGD</a> 🌦️ 
+    <a href="/index.html?metar=KNYC">NYC Central Park KNYC</a> 🌦️ 
+    <a href="/index.html?metar=LIMC">Milan LIMC</a> 🌦️ 
+    <a href="/index.html?metar=ENQA">Troll-A ENQA</a> 🌦️ 
+    <a href="/index.html?metar=EHRD">Rotterdam EHRD</a> 🌦️ 
+    <a href="/index.html?metar=VABB">Mumbai VABB</a> 🌦️ 
+    <a href="/index.html?metar=SAWH">Ushuaia Patagonia SAWH</a> 🌦️ 
     </p>
     <p>
     <form action="/index.html" method="get">

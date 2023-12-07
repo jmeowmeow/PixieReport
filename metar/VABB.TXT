@@ -1,0 +1,11 @@
+Bombay / Santacruz, India (VABB) 19-07N 072-51E 14M
+Dec 07, 2023 - 04:00 PM EST / 2023.12.07 2100 UTC
+Wind: from the ENE (070 degrees) at 5 MPH (4 KT):0
+Visibility: 1 mile(s):0
+Weather: haze
+Temperature: 78 F (26 C)
+Dew Point: 69 F (21 C)
+Relative Humidity: 73%
+Pressure (altimeter): 29.83 in. Hg (1010 hPa)
+ob: VABB 072100Z 07004KT 2200 HZ NSC 26/21 Q1010 NOSIG
+cycle: 21

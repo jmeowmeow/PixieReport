@@ -1,0 +1,10 @@
+Ushuaia Aerodrome, Argentina (SAWH) 54-48S 068-19W 14M
+Dec 07, 2023 - 04:00 PM EST / 2023.12.07 2100 UTC
+Wind: from the WSW (240 degrees) at 22 MPH (19 KT):0
+Visibility: greater than 7 mile(s):0
+Temperature: 51 F (11 C)
+Dew Point: 41 F (5 C)
+Relative Humidity: 66%
+Pressure (altimeter): 29.97 in. Hg (1015 hPa)
+ob: SAWH 072100Z 24019KT CAVOK 11/05 Q1015 RMK PP000
+cycle: 21

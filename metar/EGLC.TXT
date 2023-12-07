@@ -1,10 +1,11 @@
 London City Airport, United Kingdom (EGLC) 51-30N 000-30W
-Dec 06, 2023 - 08:20 PM EST / 2023.12.07 0120 UTC
-Wind: from the E (090 degrees) at 6 MPH (5 KT):0
+Dec 07, 2023 - 03:50 PM EST / 2023.12.07 2050 UTC
+Wind: from the SE (140 degrees) at 8 MPH (7 KT) (direction variable):0
 Visibility: greater than 7 mile(s):0
-Temperature: 41 F (5 C)
-Dew Point: 37 F (3 C)
-Relative Humidity: 86%
-Pressure (altimeter): 29.97 in. Hg (1015 hPa)
-ob: EGLC 070120Z AUTO 09005KT 9999 NCD 05/03 Q1015
-cycle: 1
+Sky conditions: overcast
+Temperature: 44 F (7 C)
+Dew Point: 42 F (6 C)
+Relative Humidity: 93%
+Pressure (altimeter): 29.53 in. Hg (1000 hPa)
+ob: EGLC 072050Z AUTO 14007KT 110V170 9999 BKN009 OVC018 07/06 Q1000
+cycle: 21

@@ -1,0 +1,10 @@
+Milano / Malpensa, Italy (LIMC) 45-37N 008-44E 211M
+Dec 07, 2023 - 03:50 PM EST / 2023.12.07 2050 UTC
+Wind: from the NNE (030 degrees) at 2 MPH (2 KT):0
+Visibility: greater than 7 mile(s):0
+Temperature: 30 F (-1 C)
+Dew Point: 24 F (-4 C)
+Relative Humidity: 80%
+Pressure (altimeter): 30.12 in. Hg (1020 hPa)
+ob: LIMC 072050Z 03002KT CAVOK M01/M04 Q1020 NOSIG
+cycle: 21
