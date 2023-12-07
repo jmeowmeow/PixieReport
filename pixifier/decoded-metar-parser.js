@@ -1,6 +1,8 @@
 'use strict';
-import { icaoToLocationMap } from './icao.js'; 
-import { layerDefs } from './layerDefs.js'; 
+import { icaoToLocationMap } from './icao.js';
+// TODO factor the pixel doll descriptions from the layer defs snapshots
+import { layerDefs } from './layerDefsMoomin.js';
+// import { layerDefs } from './layerDefsSelfie.js';
 
 // PixieReport decoded-metar-parser.js
 //
