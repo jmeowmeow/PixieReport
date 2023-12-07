@@ -9,33 +9,27 @@
 <!--    <script src="pixifier/pixies/pixieselfie/dolldesc.js" />  -->
 <script type="module">
 import * as parser from './pixifier/decoded-metar-parser.js'; 
+import * as canvastext from './pixifier/pixie-canvas-text.js';
 
-      function loadAndComposeOver(drawcontext, paths) {
-        if (paths.length < 1) {
-          return;
-        }
-        const headpath = paths[0];
-        const tailpath = paths.slice(1);
-        // if there are more layers to load, set up another load after painting the layer
-        // because they have to paint in the given order
-        let tailcall = () => { loadAndComposeOver(drawcontext, tailpath); };
 
-        const loader = new Image();
-        loader.addEventListener(
-          "load",
-          () => {
-            // execute drawImage statements here,
-	    // compositing layers onto canvas
-            drawcontext.drawImage(loader, 0, 0);
-            tailcall();
-          },
-          false
-        );
-
-        loader.src = headpath; // fetch!
+     function loadImage(path) {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.addEventListener("load", () => resolve(img));
+          img.src = path;
+        });
       }
 
-      function draw(layerFilesToCompose) {
+      async function loadAndComposeOver(drawcontext, paths, paramsForText) {
+        const images = await Promise.all(paths.map(path => loadImage(path)));
+        for (const image of images) {
+          drawcontext.drawImage(image, 0, 0);
+        }
+	// text must follow all image compositing
+	canvastext.writePixieCanvasText(drawcontext, paramsForText);
+      }
+
+      function draw(layerFilesToCompose, paramsForText) {
         // (MDN Canvas tutorial)
 
         // loadimg callback requires a reference to the Canvas element
@@ -51,9 +45,8 @@ import * as parser from './pixifier/decoded-metar-parser.js';
         const pixieimg = document.images[0];
         pixieimg.style = "display: none";
 
-        loadAndComposeOver(ctx, layerFilesToCompose);       // async load-and-paint canvas
-        // -- this would be the place to add canvas text --
-        pixieimg.parentNode.insertBefore(canvas, pixieimg); // sync add canvas element to DOM
+        loadAndComposeOver(ctx, layerFilesToCompose, paramsForText);
+        pixieimg.parentNode.insertBefore(canvas, pixieimg); // sync add, so possibly a magenta flash
       }
 
       async function loadSomeText(station) {
@@ -90,7 +83,7 @@ import * as parser from './pixifier/decoded-metar-parser.js';
 	  console.log(`Here are the layers for ${metar}. Are they the layers we want to compose?`); 
 	  let layerUrlPaths = chosenLayers.map( (eachLayer) => eachLayer.path );
           console.log(layerUrlPaths); 
-          draw(layerUrlPaths);
+          draw(layerUrlPaths, pixieParams);
         });
 
         // static bootstrapping list from earlier draw();

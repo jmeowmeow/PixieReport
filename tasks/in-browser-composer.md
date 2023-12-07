@@ -29,7 +29,7 @@ versus import is different and incompatible.
 6 and 7 in either order.
 
 - [x] 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);
-- [x] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. The tedious bit here is the entanglement of Node filesystem and canvas logic with the image resource path definitions. See the pixie-layers.js file for a start.
+- [x] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. To avoid the entanglement of Node filesystem and canvas logic with the image resource path definitions, layerDefs.js provides a snapshot for the selfie pixie set.
 - [ ] 8. Join 6 and 7 to take a textual report and compose an image with alt text.
 - [ ] 9. Demo. Consider cleanup. Consider architecture.
 
