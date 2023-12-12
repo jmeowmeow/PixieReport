@@ -3,17 +3,17 @@
 <p>MILESTONES</p>
 <p>Paths and reading images</p>
 <ul>
-<li>[x] 0. Display a single PNG image resource in the page as an IMG resource.</li>
-<li>[x] 1. Display a single PNG image resource in the in-browser canvas. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images">MDN Canvas Tutorial</a></li>
-<li>[x] 2. Composite two images having transparency on the upper layer, you can use a background and a pixie.</li>
-<li>[x] 2a. Refactor to a tail recursive composition of an array of layer files.</li>
-<li>[x] 3. Read a pixie description file or another JSON blob and log it to the Javascript console or set the innerHTML of an element.</li>
-<li>[x] 4. Read a JSON resource and navigate to a sub value like a pixie text description. Echo like #3.</li>
+<li><input type="checkbox" checked="" disabled="" /> 0. Display a single PNG image resource in the page as an IMG resource.</li>
+<li><input type="checkbox" checked="" disabled="" /> 1. Display a single PNG image resource in the in-browser canvas. See <a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images">MDN Canvas Tutorial</a></li>
+<li><input type="checkbox" checked="" disabled="" /> 2. Composite two images having transparency on the upper layer, you can use a background and a pixie.</li>
+<li><input type="checkbox" checked="" disabled="" /> 2a. Refactor to a tail recursive composition of an array of layer files.</li>
+<li><input type="checkbox" checked="" disabled="" /> 3. Read a pixie description file or another JSON blob and log it to the Javascript console or set the innerHTML of an element.</li>
+<li><input type="checkbox" checked="" disabled="" /> 4. Read a JSON resource and navigate to a sub value like a pixie text description. Echo like #3.</li>
 </ul>
 <hr />
 <p>Excursion: Parsing request info using the DOM API.</p>
 <ul>
-<li>[x] 5. Using the local web server, can we use the <a href="http://purple.bikeshed.org">purple.bikeshed.org</a> approach via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">Location</a> DOM API? Try a FORM and/or link submit. <strong>YES.</strong></li>
+<li><input type="checkbox" checked="" disabled="" /> 5. Using the local web server, can we use the <a href="http://purple.bikeshed.org">purple.bikeshed.org</a> approach via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">Location</a> DOM API? Try a FORM and/or link submit. <strong>YES.</strong></li>
 </ul>
 <p>Where ARE we on all the scripting? as of Thu 24 Aug 2023, we are importing the
 pixifier (as &quot;parser&quot;) and should be able to exercise it in the browser js
@@ -24,17 +24,17 @@ consistent; though the functions may be the same, loading code with require
 versus import is different and incompatible.</p>
 <p>6 and 7 in either order.</p>
 <ul>
-<li>[x] 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);</li>
-<li>[x] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. To avoid the entanglement of Node filesystem and canvas logic with the image resource path definitions, layerDefs.js provides a snapshot for the selfie pixie set.</li>
-<li>[-] 8. Join 6 and 7 to take a textual report and compose an image with alt text. <em>Rollover post demo</em>.</li>
-<li>[x] 9. Demo. <em>Done 2023-12-07 at RC.</em> Consider cleanup. Consider architecture.</li>
+<li><input type="checkbox" checked="" disabled="" /> 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);</li>
+<li><input type="checkbox" checked="" disabled="" /> 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. To avoid the entanglement of Node filesystem and canvas logic with the image resource path definitions, layerDefs.js provides a snapshot for the selfie pixie set.</li>
+<li><input type="checkbox" disabled="" /> 8. Join 6 and 7 to take a textual report and compose an image with alt text. <em>Rollover post demo</em>.</li>
+<li><input type="checkbox" checked="" disabled="" /> 9. Demo. <em>Done 2023-12-07 at RC.</em> Consider cleanup. Consider architecture.</li>
 </ul>
 <hr />
 <p>Post-demo tasks</p>
 <ul>
-<li>[] 10. Take a textual report and create alt text for the pixie.</li>
-<li>[] 11. Compose to the canvas and generate a PNG.</li>
-<li>[] 12. Include alt text in the PNG img element's alt= attribute.</li>
+<li><input type="checkbox" disabled="" /> 10. Take a textual report and create alt text for the pixie.</li>
+<li><input type="checkbox" disabled="" /> 11. Compose to the canvas and generate a PNG.</li>
+<li><input type="checkbox" disabled="" /> 12. Include alt text in the PNG img element's alt= attribute.</li>
 </ul>
 <p>Candidate milestones</p>
 <hr />
@@ -56,9 +56,8 @@ versus import is different and incompatible.</p>
 <li>puppeteer for equivalent functionality</li>
 </ul>
 <p>(thanks @erikareads for milestone breakdown conversation, and for Mitchell Hashimoto's demo-driven milestone approach).</p>
-<p>To reproduce the MD to HTML in the dev's environment:</p>
+<p>To reproduce the MD to HTML in the dev's environment, try:</p>
 <pre><code>python3 -m markdown in-browser-composer.md &gt; in-browser-composer.html
-</code></pre>
-<p>or</p>
-<pre><code>cmark in-browser-composer.md -o in-browser-composer.html
+cmark in-browser-composer.md -o in-browser-composer.html
+cmark-gfm -e tasklist in-browser-composer.md &gt; in-browser-composer.html
 </code></pre>

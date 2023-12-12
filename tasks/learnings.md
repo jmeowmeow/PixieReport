@@ -57,7 +57,7 @@ Thu 24 Aug 2023 09:08:51 PM PDT
 ## Resync mental context, add some helpful shortcuts
 - npm start is still broken because there are a single set of JS files and require vs import is unresolved
 - python3 -m http.server works as a local static file server; there's probably a Node one that's equivalent.
-- local python HTTP server needed a <meta encoding="UTF-8"> in order to serve the embedded UTF-8 favicon SVG char
+- local python HTTP server needed a `<meta encoding="UTF-8">` in order to serve the embedded UTF-8 favicon SVG char
 - local python HTTP server logs a broken pipe error after serving index.html for no obvious reason
 - added "make http" (python http server), remake.sh (MD to HTML), "make remake" target for remake.sh
 - suggestion from Erika: perhaps adding test assertions, even in-browser, would help you stay focused on next small steps

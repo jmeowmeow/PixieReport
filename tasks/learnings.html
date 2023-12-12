@@ -41,7 +41,7 @@ import { thing } from './path.js';
 <ul>
 <li>npm start is still broken because there are a single set of JS files and require vs import is unresolved</li>
 <li>python3 -m http.server works as a local static file server; there's probably a Node one that's equivalent.</li>
-<li>local python HTTP server needed a <meta encoding="UTF-8"> in order to serve the embedded UTF-8 favicon SVG char</li>
+<li>local python HTTP server needed a <code>&lt;meta encoding=&quot;UTF-8&quot;&gt;</code> in order to serve the embedded UTF-8 favicon SVG char</li>
 <li>local python HTTP server logs a broken pipe error after serving index.html for no obvious reason</li>
 <li>added &quot;make http&quot; (python http server), remake.sh (MD to HTML), &quot;make remake&quot; target for remake.sh</li>
 <li>suggestion from Erika: perhaps adding test assertions, even in-browser, would help you stay focused on next small steps</li>

@@ -30,15 +30,15 @@ versus import is different and incompatible.
 
 - [x] 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);
 - [x] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. To avoid the entanglement of Node filesystem and canvas logic with the image resource path definitions, layerDefs.js provides a snapshot for the selfie pixie set.
-- [-] 8. Join 6 and 7 to take a textual report and compose an image with alt text. _Rollover post demo_.
+- [ ] 8. Join 6 and 7 to take a textual report and compose an image with alt text. _Rollover post demo_.
 - [x] 9. Demo. _Done 2023-12-07 at RC._ Consider cleanup. Consider architecture.
 
 ----
 Post-demo tasks
 
-- [] 10. Take a textual report and create alt text for the pixie.
-- [] 11. Compose to the canvas and generate a PNG.
-- [] 12. Include alt text in the PNG img element's alt= attribute.
+- [ ] 10. Take a textual report and create alt text for the pixie.
+- [ ] 11. Compose to the canvas and generate a PNG.
+- [ ] 12. Include alt text in the PNG img element's alt= attribute.
 
 Candidate milestones
 
@@ -62,11 +62,9 @@ Creating and exporting thoughts from Wolf Mermelstein:
 
 (thanks @erikareads for milestone breakdown conversation, and for Mitchell Hashimoto's demo-driven milestone approach).
 
-To reproduce the MD to HTML in the dev's environment:
+To reproduce the MD to HTML in the dev's environment, try:
 ```
 python3 -m markdown in-browser-composer.md > in-browser-composer.html
-```
-or
-```
 cmark in-browser-composer.md -o in-browser-composer.html
+cmark-gfm -e tasklist in-browser-composer.md > in-browser-composer.html
 ```
