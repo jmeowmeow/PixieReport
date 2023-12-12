@@ -7,21 +7,23 @@
 <li>Write down separately what you've learned.</li>
 </ul>
 <h2>Redirect stderr for stuff</h2>
-<p><code>cmd 2&gt;&amp;1 | less</code></p>
+<pre><code>cmd 2&gt;&amp;1 | less
+</code></pre>
 <h2>Javascript Module Loading</h2>
 <ul>
 <li>Context: convert PixieReport parsing and composing from Node to browser runtime.</li>
 <li>Pairing with @erikareads.</li>
-<li>&lt;script type="module"&gt; allows module loading and declarations</li>
+<li>&lt;script type=&quot;module&quot;&gt; allows module loading and declarations</li>
 <li>load from a path including '.js' so that the static web server thinks it's javascript and not plaintext</li>
 <li>export { identifier1, identifier2, identifier3 } ;</li>
 <li>export const identifier</li>
 <li>export class Identifier</li>
 </ul>
 <p>Javascript (ES6, not Node)</p>
-<p><code>import * as name from './path.js';
-import { thing } from './path.js';</code></p>
-<p>Node-isms; "require", which is a synchronously executed statement, vs. "import" which is deferred / async.</p>
+<pre><code>import * as name from './path.js';
+import { thing } from './path.js';
+</code></pre>
+<p>Node-isms; &quot;require&quot;, which is a synchronously executed statement, vs. &quot;import&quot; which is deferred / async.</p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">MDN JS import statement</a></p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export">MDN JS export statement</a></p>
 <hr />
@@ -30,8 +32,8 @@ import { thing } from './path.js';</code></p>
 <ul>
 <li>Javascript module names cannot be seen from global context</li>
 <li>Javascript module scripts can see document, location, etc. from global/document context</li>
-<li>Instead of onload="handleOnload()" make the last line in your module script a call to handleOnload();</li>
-<li>You don't need to mark a module script as "defer", it will automatically "defer" a module so that it doesn't attempt to run it as it's being loaded.</li>
+<li>Instead of onload=&quot;handleOnload()&quot; make the last line in your module script a call to handleOnload();</li>
+<li>You don't need to mark a module script as &quot;defer&quot;, it will automatically &quot;defer&quot; a module so that it doesn't attempt to run it as it's being loaded.</li>
 </ul>
 <hr />
 <p>Thu 24 Aug 2023 09:08:51 PM PDT</p>
@@ -41,7 +43,7 @@ import { thing } from './path.js';</code></p>
 <li>python3 -m http.server works as a local static file server; there's probably a Node one that's equivalent.</li>
 <li>local python HTTP server needed a <meta encoding="UTF-8"> in order to serve the embedded UTF-8 favicon SVG char</li>
 <li>local python HTTP server logs a broken pipe error after serving index.html for no obvious reason</li>
-<li>added "make http" (python http server), remake.sh (MD to HTML), "make remake" target for remake.sh</li>
+<li>added &quot;make http&quot; (python http server), remake.sh (MD to HTML), &quot;make remake&quot; target for remake.sh</li>
 <li>suggestion from Erika: perhaps adding test assertions, even in-browser, would help you stay focused on next small steps</li>
 <li>if you add assertions you can add a breaking test</li>
 <li>insert date in 'vi', <code>:read !date</code> or use the embedded date function whatever that is.</li>
@@ -59,50 +61,54 @@ and import details.</p>
 <p>Excursion: how do we insert the value of the vi date function?
 I think I bound it to F3 in my Microsoft configuration.</p>
 <p>Can we use:
-  :s/./strftime("%c", localtime())\&amp;/ ? nope not interpreted</p>
+:s/./strftime(&quot;%c&quot;, localtime())&amp;/ ? nope not interpreted</p>
 <p>Hmm maybe we can use append() ?
-  :append(strftime("%c", localtime()))
-nope, that's probably vim9 script, needs a "def" context.</p>
+:append(strftime(&quot;%c&quot;, localtime()))
+nope, that's probably vim9 script, needs a &quot;def&quot; context.</p>
 <p>Thu 23 Nov 2023 09:53:22 AM PST</p>
-<h2>Strict mode, MIME types, and "let"</h2>
+<h2>Strict mode, MIME types, and &quot;let&quot;</h2>
 <p>Paired with plocket!</p>
 <p>In the browser, there are several security related changes that had to be made.</p>
 <ol>
 <li>'let': because variables in JS are global by default, and global variables can't be created in strict mode, I saw failures to find the elements I was looking up.</li>
-<li>MIME type: when loading JS modules, they need to be served via HTTP(S) with the MIME type set correctly for Javascript. An answer from "phind.com" (in the Chumby wiki) described how to set up Busybox httpd to serve MIME types.</li>
-<li>Ways to use "phind": inspect the sources provided for the narrative answer, and visit the sources for more context and details.</li>
+<li>MIME type: when loading JS modules, they need to be served via HTTP(S) with the MIME type set correctly for Javascript. An answer from &quot;phind.com&quot; (in the Chumby wiki) described how to set up Busybox httpd to serve MIME types.</li>
+<li>Ways to use &quot;phind&quot;: inspect the sources provided for the narrative answer, and visit the sources for more context and details.</li>
 </ol>
 <p>Making these fixes allowed me to proceed.</p>
 <p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode#converting_mistakes_into_errors">MDN Strict Mode docs</a></p>
 <p>The Chumby wiki (one of the Phind source docs) had details on how to configure the Busybox web server for local development to return Javascript MIME types as needed for strict mode.</p>
-<p>```
-echo '.js:application/javascript' &gt;&gt; /etc/httpd.conf </p>
-<p>cat /etc/httpd.conf </p>
-<p>.js:application/javascript
-```</p>
+<pre><code>echo '.js:application/javascript' &gt;&gt; /etc/httpd.conf 
+
+cat /etc/httpd.conf 
+
+.js:application/javascript
+</code></pre>
 <p>Mon 04 Dec 2023 11:33:07 AM PST</p>
 <h2>Async and Promises</h2>
-<p>You can cash in a Javascript Promise in a non-async method using "then()". I'd 
-wanted to use "await" to assure the presence of a value depending on external 
-resources before proceeding, and had been informed by the runtime that it wasn't do-able. </p>
+<p>You can cash in a Javascript Promise in a non-async method using &quot;then()&quot;. I'd
+wanted to use &quot;await&quot; to assure the presence of a value depending on external
+resources before proceeding, and had been informed by the runtime that it wasn't do-able.</p>
 <p>I had felt thwarted, because the error message and the examples of async usage left
-me at a loss for what to do. </p>
-<p>Learning: <code>promise.then(</code> <em>callback</em> <code>)</code> operates regardless of "async" or "top-level".</p>
+me at a loss for what to do.</p>
+<p>Learning: <code>promise.then(</code> <em>callback</em> <code>)</code> operates regardless of &quot;async&quot; or &quot;top-level&quot;.</p>
 <p>Meta-learning: Read the API documentation a little more closely if you feel blocked.
 The examples may not cover your case, particularly when porting from a Node script to
 an in-browser program.</p>
 <p>Work in progress below.</p>
-<p><code>90-      function handleOnload() {
+<pre><code>90-      function handleOnload() {
 91-         let metar = processMetarQuery();
 92-         let paramPromise = loadSomeText(metar);
-93:         paramPromise.then( (value) =&gt; { console.log("Here is the promised pixie param."); console.log(value); });
-94-  // FIXME
-95-  // the previous load needs to be composed with a set of
-96-  // layers to draw into the canvas!</code></p>
+93:         paramPromise.then( (value) =&gt; { console.log(&quot;Here is the promised pixie param.&quot;); console.log(value); });
+94-	 // FIXME
+95-	 // the previous load needs to be composed with a set of
+96-	 // layers to draw into the canvas!
+</code></pre>
 <p>Wed 06 Dec 2023 10:05:31 AM PST</p>
 <h2>A JS Class is an Object Constructor</h2>
-<p>The thought sequence here was:
-1. I can snapshot a JS object structure's console dump, right? The one I need is just a bunch of keys and values used as structured data.
-2. Sort of? It won't parse as JSON because it has class names.
-3. Oh. If I remove the class names from the console dump, it parses as JSON.</p>
+<p>The thought sequence here was:</p>
+<ol>
+<li>I can snapshot a JS object structure's console dump, right? The one I need is just a bunch of keys and values used as structured data.</li>
+<li>Sort of? It won't parse as JSON because it has class names.</li>
+<li>Oh. If I remove the class names from the console dump, it parses as JSON.</li>
+</ol>
 <p>So: the class names are part of the to-string of objects dumped to the console.</p>

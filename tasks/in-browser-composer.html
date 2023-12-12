@@ -16,7 +16,7 @@
 <li>[x] 5. Using the local web server, can we use the <a href="http://purple.bikeshed.org">purple.bikeshed.org</a> approach via the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">Location</a> DOM API? Try a FORM and/or link submit. <strong>YES.</strong></li>
 </ul>
 <p>Where ARE we on all the scripting? as of Thu 24 Aug 2023, we are importing the
-pixifier (as "parser") and should be able to exercise it in the browser js
+pixifier (as &quot;parser&quot;) and should be able to exercise it in the browser js
 console. Note that part of the challenge so far (see 2a above) is that we're
 writing callback-oriented or async code, which isn't yet natural to compose.
 In addition, introducing ES6 import means that any dependent code must be
@@ -26,17 +26,29 @@ versus import is different and incompatible.</p>
 <ul>
 <li>[x] 6. Parse a textual weather report and output a pixie description object, via imported script from pixifier source, parser.decodedToParamObject(metarText);</li>
 <li>[x] 7. Take a pixie description and use it to compose an image. We have a tailcall compositor working on a static list of image paths (2a above), so the composition can proceed from a list of image resource paths to overlay, and then add rendered text. To avoid the entanglement of Node filesystem and canvas logic with the image resource path definitions, layerDefs.js provides a snapshot for the selfie pixie set.</li>
-<li>[ ] 8. Join 6 and 7 to take a textual report and compose an image with alt text.</li>
-<li>[ ] 9. Demo. Consider cleanup. Consider architecture.</li>
+<li>[-] 8. Join 6 and 7 to take a textual report and compose an image with alt text. <em>Rollover post demo</em>.</li>
+<li>[x] 9. Demo. <em>Done 2023-12-07 at RC.</em> Consider cleanup. Consider architecture.</li>
 </ul>
 <hr />
+<p>Post-demo tasks</p>
+<ul>
+<li>[] 10. Take a textual report and create alt text for the pixie.</li>
+<li>[] 11. Compose to the canvas and generate a PNG.</li>
+<li>[] 12. Include alt text in the PNG img element's alt= attribute.</li>
+</ul>
+<p>Candidate milestones</p>
+<hr />
 <p>Look what we've won, what's next? (candidates for next milestones)</p>
-<p>Parameterization and potential inputs from user
-- pixie image set
-- which weather station by code
-- can we use https://purple.bikeshed.com/ approach with lws? See MDN HTML DOM API documentation of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">Location</a> DOM API. YES, works.</p>
-<p>Canvas to PNG and Alt Text
-- The relevant DOM API items are <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob">OffscreenCanvas.convertToBlob()</a> which can export PNGs as image/png and <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static">URL.createObjectURL()</a>; see also the <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images">object URL image display example</a>.</p>
+<p>Parameterization and potential inputs from user</p>
+<ul>
+<li>pixie image set</li>
+<li>which weather station by code</li>
+<li>can we use https://purple.bikeshed.com/ approach with lws? See MDN HTML DOM API documentation of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Location">Location</a> DOM API. YES, works.</li>
+</ul>
+<p>Canvas to PNG and Alt Text</p>
+<ul>
+<li>The relevant DOM API items are <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob">OffscreenCanvas.convertToBlob()</a> which can export PNGs as image/png and <a href="https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static">URL.createObjectURL()</a>; see also the <a href="https://developer.mozilla.org/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images">object URL image display example</a>.</li>
+</ul>
 <p>Creating and exporting thoughts from Wolf Mermelstein:</p>
 <ul>
 <li>headless browser / selenium / devtools / print to PDF (though I probably want images)</li>
@@ -44,5 +56,9 @@ versus import is different and incompatible.</p>
 <li>puppeteer for equivalent functionality</li>
 </ul>
 <p>(thanks @erikareads for milestone breakdown conversation, and for Mitchell Hashimoto's demo-driven milestone approach).</p>
-<p>To reproduce the MD to HTML in the dev's environment:
-<code>python3 -m markdown in-browser-composer.md &gt; in-browser-composer.html</code></p>
+<p>To reproduce the MD to HTML in the dev's environment:</p>
+<pre><code>python3 -m markdown in-browser-composer.md &gt; in-browser-composer.html
+</code></pre>
+<p>or</p>
+<pre><code>cmark in-browser-composer.md -o in-browser-composer.html
+</code></pre>
