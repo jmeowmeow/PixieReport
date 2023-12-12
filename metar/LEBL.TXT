@@ -1,0 +1,11 @@
+Barcelona / Aeropuerto, Spain (LEBL) 41-17N 002-04E 6M
+Dec 12, 2023 - 03:30 PM EST / 2023.12.12 2030 UTC
+Wind: from the N (360 degrees) at 5 MPH (4 KT):0
+Visibility: greater than 7 mile(s):0
+Sky conditions: mostly clear
+Temperature: 55 F (13 C)
+Dew Point: 48 F (9 C)
+Relative Humidity: 76%
+Pressure (altimeter): 29.85 in. Hg (1011 hPa)
+ob: LEBL 122030Z 36004KT 9999 FEW030 13/09 Q1011 NOSIG
+cycle: 20

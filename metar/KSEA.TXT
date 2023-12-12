@@ -1,13 +1,13 @@
 SEATTLE-TACOMA INTERNATIONAL  AIRPORT , WA, United States (KSEA) 47-27N 122-19W 136M
-Dec 07, 2023 - 03:53 PM EST / 2023.12.07 2053 UTC
-Wind: from the SW (230 degrees) at 12 MPH (10 KT):0
-Visibility: 10 mile(s):0
-Sky conditions: overcast
-Precipitation last hour: A trace
-Temperature: 45.0 F (7.2 C)
-Dew Point: 39.0 F (3.9 C)
-Relative Humidity: 79%
-Pressure (altimeter): 29.85 in. Hg (1010 hPa)
-Pressure tendency: 0.04 inches (1.4 hPa) higher than three hours ago
-ob: KSEA 072053Z 23010KT 10SM SCT011 BKN017 OVC042 07/04 A2985 RMK AO2 RAE05 SLP117 P0000 60002 T00720039 53014
+Dec 12, 2023 - 03:53 PM EST / 2023.12.12 2053 UTC
+Wind: Calm:0
+Visibility: 2 mile(s):0
+Sky conditions: mostly cloudy
+Weather: mist
+Temperature: 39.0 F (3.9 C)
+Dew Point: 37.9 F (3.3 C)
+Relative Humidity: 95%
+Pressure (altimeter): 30.21 in. Hg (1023 hPa)
+Pressure tendency: 0.04 inches (1.4 hPa) lower than three hours ago
+ob: KSEA 122053Z 00000KT 2SM BR BKN004 BKN250 04/03 A3021 RMK AO2 SLP238 T00390033 56014
 cycle: 21

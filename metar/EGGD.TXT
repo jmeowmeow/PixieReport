@@ -1,11 +1,11 @@
 Bristol / Lulsgate , United Kingdom (EGGD) 51-23N 002-43W
-Dec 07, 2023 - 03:50 PM EST / 2023.12.07 2050 UTC
-Wind: from the SW (230 degrees) at 12 MPH (10 KT):0
+Dec 12, 2023 - 03:50 PM EST / 2023.12.12 2050 UTC
+Wind: from the W (260 degrees) at 12 MPH (10 KT):0
 Visibility: greater than 7 mile(s):0
-Sky conditions: mostly clear
-Temperature: 48 F (9 C)
+Sky conditions: overcast
+Temperature: 46 F (8 C)
 Dew Point: 44 F (7 C)
-Relative Humidity: 87%
-Pressure (altimeter): 29.47 in. Hg (0998 hPa)
-ob: EGGD 072050Z AUTO 23010KT 9999 FEW019 09/07 Q0998
+Relative Humidity: 93%
+Pressure (altimeter): 29.35 in. Hg (0994 hPa)
+ob: EGGD 122050Z AUTO 26010KT 9999 SCT003 OVC040 08/07 Q0994
 cycle: 21

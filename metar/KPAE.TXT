@@ -1,13 +1,12 @@
 EVERETT SNOHOMISH COUNTY, WA, United States (KPAE) 47-55N 122-17W 180M
-Dec 07, 2023 - 04:07 PM EST / 2023.12.07 2107 UTC
-Wind: from the WNW (300 degrees) at 9 MPH (8 KT) gusting to 17 MPH (15 KT):0
-Visibility: 5 mile(s):0
-Sky conditions: overcast
-Weather: light rain; mist
-Precipitation last hour: A trace
-Temperature: 41.0 F (5.0 C)
-Dew Point: 37.9 F (3.3 C)
-Relative Humidity: 88%
-Pressure (altimeter): 29.85 in. Hg (1010 hPa)
-ob: KPAE 072107Z 30008G15KT 5SM -RA BR BKN002 OVC007 05/03 A2985 RMK AO2 RAB2054 P0000 T00500033
+Dec 12, 2023 - 03:53 PM EST / 2023.12.12 2053 UTC
+Wind: Calm:0
+Visibility: 10 mile(s):0
+Sky conditions: clear
+Temperature: 48.0 F (8.9 C)
+Dew Point: 36.0 F (2.2 C)
+Relative Humidity: 62%
+Pressure (altimeter): 30.21 in. Hg (1023 hPa)
+Pressure tendency: 0.04 inches (1.4 hPa) lower than three hours ago
+ob: KPAE 122053Z 00000KT 10SM CLR 09/02 A3021 RMK AO2 SLP231 T00890022 58014
 cycle: 21

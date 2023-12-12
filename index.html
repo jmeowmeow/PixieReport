@@ -72,7 +72,7 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
         }
 	// return the value for use in looking up weather reports
 	const known = ["ZGOW", "KBFI", "KSEA", "KPAE", "KBLI", "KSFO", "EGLC", "EGGD",
-	               "KNYC", "LIMC", "EHRD", "VABB", "SAWH", "ENQA" ];
+	               "KNYC", "LIMC", "LEBL", "EHRD", "VABB", "SAWH", "ENQA", "NZSP" ];
 	return known.includes(metar) ? metar : "KSEA";
       }
 
@@ -102,18 +102,20 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
     Pixie Report for
     <a href="/index.html?metar=KSEA">Sea-Tac KSEA</a> 🌦️
     <a href="/index.html?metar=ZGOW">Shantou China ZGOW</a> 🌦️
-    <a href="/index.html?metar=KBFI">Boeing Field KBFI</a> 🌦️ 
+    <a href="/index.html?metar=KBFI">Boeing Field KBFI</a> 🌦️
     <a href="/index.html?metar=KBLI">Bellingham WA USA KBLI</a> 🌦️
-    <a href="/index.html?metar=KSFO">San Francisco CA KSFO</a> 🌦️ 
-    <a href="/index.html?metar=KPAE">Everett WA USA KPAE</a> 🌦️ 
-    <a href="/index.html?metar=EGLC">London City UK EGLC</a> 🌦️ 
-    <a href="/index.html?metar=EGGD">Bristol UK EGGD</a> 🌦️ 
-    <a href="/index.html?metar=KNYC">NYC Central Park KNYC</a> 🌦️ 
-    <a href="/index.html?metar=LIMC">Milan LIMC</a> 🌦️ 
-    <a href="/index.html?metar=ENQA">Troll-A ENQA</a> 🌦️ 
-    <a href="/index.html?metar=EHRD">Rotterdam EHRD</a> 🌦️ 
-    <a href="/index.html?metar=VABB">Mumbai VABB</a> 🌦️ 
-    <a href="/index.html?metar=SAWH">Ushuaia Patagonia SAWH</a> 🌦️ 
+    <a href="/index.html?metar=KSFO">San Francisco CA KSFO</a> 🌦️
+    <a href="/index.html?metar=KPAE">Everett WA USA KPAE</a> 🌦️
+    <a href="/index.html?metar=EGLC">London City UK EGLC</a> 🌦️
+    <a href="/index.html?metar=EGGD">Bristol UK EGGD</a> 🌦️
+    <a href="/index.html?metar=KNYC">NYC Central Park KNYC</a> 🌦️
+    <a href="/index.html?metar=LIMC">Milan LIMC</a> 🌦️
+    <a href="/index.html?metar=ENQA">Troll-A ENQA</a> 🌦️
+    <a href="/index.html?metar=EHRD">Rotterdam EHRD</a> 🌦️
+    <a href="/index.html?metar=LEBL">Barcelona LEBL</a> 🌦️
+    <a href="/index.html?metar=VABB">Mumbai VABB</a> 🌦️
+    <a href="/index.html?metar=SAWH">Ushuaia Patagonia SAWH</a> 🌦️
+    <a href="/index.html?metar=NZSP">South Pole NZSP</a> 🌦️
     </p>
     <p>
     <form action="/index.html" method="get">

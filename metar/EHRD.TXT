@@ -1,10 +1,12 @@
 Rotterdam Airport Zestienhoven, Netherlands (EHRD) 51-57N 004-27E -4M
-Dec 07, 2023 - 03:55 PM EST / 2023.12.07 2055 UTC
-Wind: from the SE (130 degrees) at 10 MPH (9 KT) (direction variable):0
+Dec 12, 2023 - 03:55 PM EST / 2023.12.12 2055 UTC
+Wind: from the S (190 degrees) at 9 MPH (8 KT):0
 Visibility: greater than 7 mile(s):0
-Temperature: 37 F (3 C)
-Dew Point: 30 F (-1 C)
-Relative Humidity: 74%
-Pressure (altimeter): 29.77 in. Hg (1008 hPa)
-ob: EHRD 072055Z AUTO 13009KT 100V170 9999 NSC 03/M01 Q1008 NOSIG
+Sky conditions: partly cloudy
+Weather: drizzle; Cumulonimbus clouds observed
+Temperature: 48 F (9 C)
+Dew Point: 44 F (7 C)
+Relative Humidity: 87%
+Pressure (altimeter): 29.41 in. Hg (0996 hPa)
+ob: EHRD 122055Z AUTO 19008KT 9999 DZ FEW015CB SCT040 09/07 Q0996 TEMPO 5000 SHRA
 cycle: 21

@@ -1,11 +1,11 @@
 Shantou, China (ZGOW) 23-24N 116-41E 3M
-Dec 07, 2023 - 04:00 PM EST / 2023.12.07 2100 UTC
-Wind: from the N (360 degrees) at 2 MPH (2 KT):0
-Visibility: 3 mile(s):0
-Weather: mist
-Temperature: 51 F (11 C)
-Dew Point: 50 F (10 C)
-Relative Humidity: 93%
-Pressure (altimeter): 30.06 in. Hg (1018 hPa)
-ob: ZGOW 072100Z 36001MPS 5000 BR NSC 11/10 Q1018 BECMG AT2230 2800
-cycle: 21
+Dec 12, 2023 - 03:00 PM EST / 2023.12.12 2000 UTC
+Wind: from the E (090 degrees) at 4 MPH (4 KT) (direction variable):0
+Visibility: greater than 7 mile(s):0
+Sky conditions: mostly cloudy
+Temperature: 66 F (19 C)
+Dew Point: 60 F (16 C)
+Relative Humidity: 82%
+Pressure (altimeter): 30.09 in. Hg (1019 hPa)
+ob: ZGOW 122000Z 09002MPS 050V140 9999 BKN026 19/16 Q1019 NOSIG
+cycle: 20

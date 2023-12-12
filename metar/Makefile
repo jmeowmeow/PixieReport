@@ -13,3 +13,5 @@ update:
 	./fetch VABB
 	./fetch SAWH
 	./fetch ENQA
+	./fetch NZSP
+	./fetch LEBL
