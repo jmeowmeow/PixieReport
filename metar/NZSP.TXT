@@ -1,10 +1,9 @@
 Amundsen-Scott South Pole Station, Antarctica (NZSP) 90-00S 00-00E 2835M
-Dec 12, 2023 - 12:50 PM EST / 2023.12.12 1750 UTC
-Wind: from the E (080 degrees) at 6 MPH (5 KT):0
+Jan 18, 2024 - 12:50 PM EST / 2024.01.18 1750 UTC
+Wind: from the E (080 degrees) at 3 MPH (3 KT):0
 Visibility: greater than 7 mile(s):0
 Sky conditions: partly cloudy
-Temperature: -20 F (-29 C)
-Windchill: -36 F (-38 C):2
-Pressure (altimeter): 28.59 in. Hg (968 hPa)
-ob: NZSP 121750Z 08005KT 9999 FEW015 SCT070 M29/ A2859 RMK CLN AIR 06005KT ALL WNDS GRID SDG/HDG
+Temperature: -25 F (-32 C)
+Pressure (altimeter): 28.87 in. Hg (977 hPa)
+ob: NZSP 181750Z 08003KT 9999 SCT060 M32/ A2887 RMK CLN AIR 08004KT ALL WNDS GRID SDG/HDG
 cycle: 18

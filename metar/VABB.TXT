@@ -1,11 +1,11 @@
 Bombay / Santacruz, India (VABB) 19-07N 072-51E 14M
-Dec 12, 2023 - 04:00 PM EST / 2023.12.12 2100 UTC
-Wind: from the E (080 degrees) at 6 MPH (5 KT):0
+Jan 18, 2024 - 01:00 PM EST / 2024.01.18 1800 UTC
+Wind: from the E (100 degrees) at 5 MPH (4 KT):0
 Visibility: 1 mile(s):0
 Weather: smoke
-Temperature: 78 F (26 C)
-Dew Point: 59 F (15 C)
-Relative Humidity: 50%
-Pressure (altimeter): 29.85 in. Hg (1011 hPa)
-ob: VABB 122100Z 08005KT 2500 FU NSC 26/15 Q1011 NOSIG
-cycle: 21
+Temperature: 73 F (23 C)
+Dew Point: 55 F (13 C)
+Relative Humidity: 53%
+Pressure (altimeter): 29.94 in. Hg (1014 hPa)
+ob: VABB 181800Z 10004KT 3000 FU NSC 23/13 Q1014 NOSIG
+cycle: 18

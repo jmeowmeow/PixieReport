@@ -1,12 +1,13 @@
 NEW YORK CITY CENTRAL PARK, NY, United States (KNYC) 40-47N 073-58W 48M
-Dec 12, 2023 - 03:51 PM EST / 2023.12.12 2051 UTC
-Wind: Calm:0
+Jan 18, 2024 - 12:51 PM EST / 2024.01.18 1751 UTC
+Wind: Variable at 3 MPH (3 KT):0
 Visibility: 10 mile(s):0
-Sky conditions: clear
-Temperature: 43.0 F (6.1 C)
-Dew Point: 21.9 F (-5.6 C)
-Relative Humidity: 42%
-Pressure (altimeter): 30.38 in. Hg (1028 hPa)
-Pressure tendency: 0.01 inches (0.5 hPa) lower than three hours ago
-ob: KNYC 122051Z AUTO 00000KT 10SM CLR 06/M06 A3038 RMK AO2 SLP279 T00611056 55005 
-cycle: 21
+Sky conditions: overcast
+Precipitation last hour: A trace
+Temperature: 28.0 F (-2.2 C)
+Dew Point: 15.1 F (-9.4 C)
+Relative Humidity: 57%
+Pressure (altimeter): 30.15 in. Hg (1020 hPa)
+Pressure tendency: 0.06 inches (2.0 hPa) lower than three hours ago
+ob: KNYC 181751Z AUTO VRB03KT 10SM FEW045 SCT055 OVC090 M02/M09 A3015 RMK AO2 SNE30 SLP204 P0000 60000 T10221094 11017 21044 58020 
+cycle: 18

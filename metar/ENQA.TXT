@@ -1,12 +1,11 @@
 Station name not available
-Dec 12, 2023 - 03:50 PM EST / 2023.12.12 2050 UTC
-Wind: from the SW (230 degrees) at 18 MPH (16 KT):0
-Visibility: greater than 7 mile(s):0
+Jan 18, 2024 - 12:50 PM EST / 2024.01.18 1750 UTC
+Wind: from the N (350 degrees) at 32 MPH (28 KT):0
 Sky conditions: overcast
-Weather: light rain showers
-Temperature: 39 F (4 C)
-Dew Point: 35 F (2 C)
-Relative Humidity: 86%
-Pressure (altimeter): 29.77 in. Hg (1008 hPa)
-ob: ENQA 122050Z AUTO 23016KT 9999 -SHRA OVC018/// 04/02 Q1008 W04/S4
-cycle: 21
+Temperature: 28 F (-2 C)
+Windchill: 12 F (-11 C):1
+Dew Point: 28 F (-2 C)
+Relative Humidity: 100%
+Pressure (altimeter): 29.26 in. Hg (0991 hPa)
+ob: ENQA 181750Z AUTO 35028KT //// BKN007/// OVC031/// M02/M02 Q0991 W00/S5
+cycle: 18
