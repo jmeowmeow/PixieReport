@@ -123,6 +123,16 @@ import * as canvastext from './pixifier/pixie-canvas-text.js';
     </form>
     </p>
     <p>
+    <form action="/cgi-bin/echo.cgi" method="post">
+    <label>Enter a METAR code like KSEA, ZGOW, KBFI, KBLI: <input id="metarinput" type="text" value="KSEA" name="metar" width="6" /></label> <input type="submit" value="CGI POST"/>
+    </form>
+    </p>
+    <p>
+    <form action="/cgi-bin/echo.cgi" method="get">
+    <label>Enter a METAR code like KSEA, ZGOW, KBFI, KBLI: <input id="metarinput" type="text" value="KSEA" name="metar" width="6" /></label> <input type="submit" value="CGI GET"/>
+    </form>
+    </p>
+    <p>
     We're loading this page with the METAR station code:
     <span id="metarlocation">(none)</span>
     </p>
