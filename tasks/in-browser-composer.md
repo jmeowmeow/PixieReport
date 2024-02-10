@@ -53,6 +53,7 @@ Parameterization and potential inputs from user
 
 Canvas to PNG and Alt Text
 - The relevant DOM API items are [OffscreenCanvas.convertToBlob()](https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas/convertToBlob) which can export PNGs as image/png and [URL.createObjectURL()](https://developer.mozilla.org/en-US/docs/Web/API/URL/createObjectURL_static); see also the [object URL image display example](https://developer.mozilla.org/en-US/docs/Web/API/File_API/Using_files_from_web_applications#example_using_object_urls_to_display_images).
+- You can use the working example from Exocolonist Memory Card Creator for PNG export.
 
 Creating and exporting thoughts from Wolf Mermelstein:
 
