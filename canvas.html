@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>PixieReport via Browser Runtime</title>
+    <!-- Lea Verou style emoji favicon, but first declare UTF-8 encoding  -->
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌦️</text></svg>">
+
+<!--    <script src="pixifier/pixies/pixieselfie/dolldesc.js" />  -->
+<script type="module">
+import * as parser from './pixifier/decoded-metar-parser.js'; 
+import * as canvastext from './pixifier/pixie-canvas-text.js';
+
+
+     function loadImage(path) {
+        return new Promise(resolve => {
+          const img = new Image();
+          img.addEventListener("load", () => resolve(img));
+          img.src = path;
+        });
+      }
+
+      async function loadAndComposeOver(drawcontext, paths, paramsForText) {
+        const images = await Promise.all(paths.map(path => loadImage(path)));
+        for (const image of images) {
+          drawcontext.drawImage(image, 0, 0);
+        }
+	// text must follow all image compositing
+	canvastext.writePixieCanvasText(drawcontext, paramsForText);
+      }
+
+      function draw(layerFilesToCompose, paramsForText) {
+        // (MDN Canvas tutorial)
+
+        // loadimg callback requires a reference to the Canvas element
+        // so let's make a Canvas element
+        const canvas = document.createElement("canvas");
+        canvas.setAttribute("width", 125);
+        canvas.setAttribute("height", 175);
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#f0f"; // magenta for base layer before compositing
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // hide the static image using the DOM API
+        const pixieimg = document.images[0];
+        pixieimg.style = "display: none";
+
+        loadAndComposeOver(ctx, layerFilesToCompose, paramsForText);
+        pixieimg.parentNode.insertBefore(canvas, pixieimg); // sync add, so possibly a magenta flash
+      }
+
+      async function loadSomeText(station) {
+        const metarText = await fetch("metar/"+station+".TXT").then( body => body.text());
+//        const metarDiv = document.createElement("div");
+//	metarDiv.innerHTML = ' <br/><strong>Weather Condition Report</strong><pre>' + metarText + '</pre>';
+	// can we parse it?
+	const pixieParam = parser.decodedToParamObject(metarText); 
+//        const pixiei = document.images[0]; // invisible placeholder image by this point I think
+//        pixiei.parentNode.insertBefore(metarDiv, pixiei.nextSibling); // sync add element to DOM
+        return pixieParam;
+      }
+
+      function processMetarQuery() {
+        let params = new URL(document.location).searchParams;
+        let metar = params.get("metar");
+        let qType = typeof(metar);
+//        if (qType == "string") {
+//          let metarlocation = document.getElementById("metarlocation", null);
+//          metarlocation.innerHTML = metar;
+//          let metarinput = document.getElementById("metarinput", null);
+//          metarinput.value = metar;
+//        }
+	// return the value for use in looking up weather reports
+	const known = ["ZGOW", "KBFI", "KSEA", "KPAE", "KBLI", "KSFO", "EGLC", "EGGD",
+	               "KNYC", "LIMC", "LEBL", "EHRD", "VABB", "SAWH", "ENQA", "NZSP" ];
+	return known.includes(metar) ? metar : "KSEA";
+      }
+
+      function handleOnload() {
+         let metar = processMetarQuery();
+         let paramPromise = loadSomeText(metar);
+         paramPromise.then( (pixieParams) => { 
+          let chosenLayers = parser.computeLayers(pixieParams);
+	  console.log(`Here are the layers for ${metar}. Are they the layers we want to compose?`); 
+	  let layerUrlPaths = chosenLayers.map( (eachLayer) => eachLayer.path );
+          console.log(layerUrlPaths); 
+          draw(layerUrlPaths, pixieParams);
+        });
+      }
+
+     handleOnload();
+    </script>
+</head>
+<body><img src="pixifier/pixies/backgrounds/starrynightbkg.png"/></body></html>
