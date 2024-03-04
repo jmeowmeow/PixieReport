@@ -159,3 +159,21 @@ The thought sequence here was:
 
 So: the class names are part of the to-string of objects dumped to the console.
 
+----
+
+Thu 29 Feb 2024 01:52:05 PM PST
+
+Assimilating suggestions on my sticky issue with image and text compositing.
+
+Background:
+* Initial compositing with templated SVG+JS (prototype) worked fine for display but hard to inline or pipeline.
+* node-canvas in a script worked OK but had issues of being fragile bc binary needs matched to arch and Node version.
+* HTML5 canvas works OK though we're back at "hard to inline or pipeline". Also fonts are a dice roll.
+
+Suggestions from Recurse Center for possible approaches:
+* Preload a Docker container with the node-canvas dependencies. Make the container the "compiled app" unit.
+* JIMP "Javascript Native" may be a happy hit for small images without fragility. [JIMP](https://github.com/jimp-dev/jimp)
+* Photon-Node (WASM). [Using Photon-Node](https://silvia-odwyer.github.io/photon/guide/using-photon-node/)
+* GoLang Native image processing support [Go Image Package](https://pkg.go.dev/image) FastCGI examples
+rley Noise](https://thewhodidthis.com/sketches/worley-noise/) etc.
+

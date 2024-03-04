@@ -112,3 +112,20 @@ an in-browser program.</p>
 <li>Oh. If I remove the class names from the console dump, it parses as JSON.</li>
 </ol>
 <p>So: the class names are part of the to-string of objects dumped to the console.</p>
+<hr />
+<p>Thu 29 Feb 2024 01:52:05 PM PST</p>
+<p>Assimilating suggestions on my sticky issue with image and text compositing.</p>
+<p>Background:</p>
+<ul>
+<li>Initial compositing with templated SVG+JS (prototype) worked fine for display but hard to inline or pipeline.</li>
+<li>node-canvas in a script worked OK but had issues of being fragile bc binary needs matched to arch and Node version.</li>
+<li>HTML5 canvas works OK though we're back at &quot;hard to inline or pipeline&quot;. Also fonts are a dice roll.</li>
+</ul>
+<p>Suggestions from Recurse Center for possible approaches:</p>
+<ul>
+<li>Preload a Docker container with the node-canvas dependencies. Make the container the &quot;compiled app&quot; unit.</li>
+<li>JIMP &quot;Javascript Native&quot; may be a happy hit for small images without fragility. <a href="https://github.com/jimp-dev/jimp">JIMP</a></li>
+<li>Photon-Node (WASM). <a href="https://silvia-odwyer.github.io/photon/guide/using-photon-node/">Using Photon-Node</a></li>
+<li>GoLang Native image processing support <a href="https://pkg.go.dev/image">Go Image Package</a> FastCGI examples
+rley Noise](https://thewhodidthis.com/sketches/worley-noise/) etc.</li>
+</ul>

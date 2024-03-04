@@ -34,13 +34,20 @@ versus import is different and incompatible.
 - [x] 9. Demo. _Done 2023-12-07 at RC._ Consider cleanup. Consider architecture.
 
 ----
-Post-demo tasks
-
-- [ ] 10. Take a textual report and create alt text for the pixie.
-- [ ] 11. Compose to the canvas and generate a PNG.
-- [ ] 12. Include alt text in the PNG img element's alt= attribute.
-
 Candidate milestones
+
+Prototype hosting tasks: weather report updates
+- [ ] 10. Prototype enabling tasks:
+- [ ] 11. CGI based pixie API which will deliver the picture
+- [ ] 12. CGI will refresh weather reports and redirect to the current index page and render in-page
+
+Post-demo result updates (alt text, downloadable, index.html or script)
+- [ ] 13. Take a textual report and create alt text for the pixie.
+- [ ] 14. Compose to the canvas and generate a PNG.
+- [ ] 15. Include alt text in the PNG img element's alt= attribute.
+
+Later:
+- [ ] 16. Headless Firefox for rendering canvas to PNG result
 
 ----
 
