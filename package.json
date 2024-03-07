@@ -11,7 +11,7 @@
     "url": "git+https://github.com/jmeowmeow/PixieReport.git"
   },
   "keywords": [
-    "node-canvas",
+    "jimp",
     "weather",
     "weatherpixie",
     "dollz"
@@ -23,8 +23,7 @@
   },
   "homepage": "https://github.com/jmeowmeow/PixieReport#readme",
   "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.5",
-    "canvas": "^2.7.0",
+    "jimp": "^0.22.12",
     "uninstall": "^0.0.0"
   },
   "devDependencies": {

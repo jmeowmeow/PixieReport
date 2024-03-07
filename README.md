@@ -7,4 +7,6 @@ Demo:
 
 * `npm start` will launch a server on localhost:3000 which will compose a sample pixie in html+png format.
 
+Note:
 
+* This is the **jimp-imaging** branch aimed at substituting pure-js [jimp](https://github.com/jimp-dev/jimp/tree/main/packages/jimp) in place of `node-canvas`.
