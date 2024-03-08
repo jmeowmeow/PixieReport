@@ -7,13 +7,16 @@ var jimpLibrary = {};
 var createImage = {};
 var readImage = {};
 var tamsin = {};
+var blank = {};
+
+jimpLibrary  = require('jimp');
+createImage  = jimpLibrary['create'];
+readImage    = jimpLibrary['read'];
+createImage('spec/resources/tamsinpixie.png').then((t) => {tamsin = t;});
 
 describe("iCanHazJimp has jimp library", function() {
   beforeAll(function() {
-    jimpLibrary = require('jimp');
-    createImage = jimpLibrary['create'];
-    readImage    = jimpLibrary['read'];
-    createImage('spec/resources/tamsinpixie.png').then((t) => {tamsin = t;});
+    blank = new jimpLibrary(125, 175, (e, i) => {});
   });
 
   it("should have loaded the jimp library", function() {
@@ -26,6 +29,15 @@ describe("iCanHazJimp has jimp library", function() {
 
   it("should have loaded jimp.read == jimp.create", function() {
     expect(readImage).not.toBe(null);
+  });
+
+  it("should have created the blank pixie image with new()", function() {
+    expect(blank).not.toBe(undefined);
+    expect(blank).not.toBe(null);
+    expect(blank.bitmap).not.toBe(undefined);
+    expect(blank.bitmap).not.toBe(null);
+    expect(blank.bitmap.width).toBe(125);
+    expect(blank.bitmap.height).toBe(175);
   });
 
   it("should have read the sample Tamsin pixie with create()", function() {
