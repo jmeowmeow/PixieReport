@@ -28,6 +28,7 @@
     "uninstall": "^0.0.0"
   },
   "devDependencies": {
-    "jasmine": "^3.7.0"
+    "jasmine": "^3.7.0",
+    "nodemon": "^3.1.0"
   }
 }
