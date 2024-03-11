@@ -8,8 +8,13 @@ app.get('/', (req, res) => {
 
 // parameters: airport code, C/F, which pixie set; optional!
 app.get('/pixie', (req, res) => {
+  // if either location or temp is not provided, redirect to /pixie?location=KSEA&temp=30
   const location = req.query.location; // ?location=KSEA (a METAR station)
-  const tempUnit = req.query.temp; // ?temp=30
+  const tempUnit = req.query.temp; // ?temp=F
+  if (location === undefined || tempUnit === undefined) {
+    res.redirect('/pixie?location=KSEA&temp=F');
+    return;
+  }
   res.setHeader('Content-Type', 'text/plain');
   res.send(`Hello from ${location}
 The temperature is 30 ${tempUnit}`)
