@@ -4,7 +4,8 @@
   "description": "Composes pixel doll weather images",
   "main": "index.js",
   "scripts": {
-    "test": "npx jasmine"
+    "test": "npx jasmine",
+    "dev": "npx nodemon server.js"
   },
   "repository": {
     "type": "git",
