@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/jmeowmeow/PixieReport#readme",
   "dependencies": {
+    "express": "^4.18.3",
     "jimp": "^0.22.12",
     "uninstall": "^0.0.0"
   },
