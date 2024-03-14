@@ -1,9 +1,15 @@
 const express = require('express');
 const app = express();
 const port = 3000;
+const {compose, Jimp} = require('./compose-async');
 
 app.get('/', (req, res) => {
   res.send('Hello');
+});
+
+app.get('/compose', async (req, res) => {
+  var pixie = await compose().catch(console.error);
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img src="${src}" />`) });
 });
 
 // parameters: airport code, C/F, which pixie set; optional!
