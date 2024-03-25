@@ -7,14 +7,22 @@ const {decodedToParamObject} = require('./pixifier/decoded-metar-parser');
 app.get('/', (req, res) => {
   let body = "";
   let link = "<a href='${url}'>${url}</a><br/>";
-  body += link.replace(/\${url}/g, '/metar?location=KSEA');
-  body += link.replace(/\${url}/g, '/metar?location=KPAE');
-  body += link.replace(/\${url}/g, '/metar?location=KBFI');
-  body += link.replace(/\${url}/g, '/metar?location=KSFO');
+  let metarLink = "<a href='/metar?location=${station}'>METAR ${station}</a>";
+  let jsonLink  = "<a href='/json?location=${station}'>JSON ${station}</a>";
+  let reportLink = metarLink + " " + jsonLink + "<br/>";
+  body += reportLink.replace(/\${station}/g, 'KSEA');
+  body += reportLink.replace(/\${station}/g, 'KPAE');
+  body += reportLink.replace(/\${station}/g, 'KBFI');
+  body += reportLink.replace(/\${station}/g, 'KSFO');
   body += link.replace(/\${url}/g, '/compose');
   body += link.replace(/\${url}/g, '/pixie');
   res.send(body);
 });
+
+const redirectDefaultLocation = (req, res) => {
+  let redirection = req.path + '?location=KSEA';
+  res.redirect(redirection);
+};
 
 const fetchMETAR = async (location) => {
   // note new METAR API endpoint after text server was announced
@@ -30,7 +38,12 @@ const fetchMETAR = async (location) => {
 }
 
 app.get('/json', async (req, res) => {
-  const textReport = await fetchMETAR('KSEA');
+  const location = req.query.location;
+  if (location === undefined) {
+    redirectDefaultLocation(req, res);
+    return;
+  }
+  const textReport = await fetchMETAR(location);
   const jsonReport = decodedToParamObject(textReport);
   res.setHeader('Content-Type', 'application/json');
   res.send(jsonReport);
@@ -39,9 +52,9 @@ app.get('/json', async (req, res) => {
 app.get('/metar', async (req, res) => {
   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   // if location is not provided, redirect to /metar?location=KSEA
-  const location = req.query.location; // ?location=KSEA (a METAR station)
+  const location = req.query.location;
   if (location === undefined) {
-    res.redirect('/metar?location=KSEA');
+    redirectDefaultLocation(req, res);
     return;
   }
   let report = await fetchMETAR(location);
