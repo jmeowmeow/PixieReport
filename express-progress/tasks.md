@@ -38,12 +38,31 @@ Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then((font) => {
 });
 ```
 
-Candidate tasks
+Tasks
 
-- [ ] Write image text using Jimp. "imagetext" [jimp image.print](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text)
-- [ ] Use the "fetch" template URL and node http client to get a METAR weather report. "proxy" [MDN fetch]()
+- [X] Write image text using Jimp. "imagetext" [jimp image.print](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text)
+- [X] Use the "fetch" template URL and node http client to get a METAR weather report. "proxy" [MDN fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 
 Pomodoros:
-* Get doc links, record in tasks above, and open in tabs.
-* ? Jimp imagetext
+* [X] Get doc links, record in tasks above, and open in tabs.
+* [X] Jimp imagetext
+
+Mon 25 Mar 2024 11:16:27 AM PDT
+
+Tasks
+
+- [X] Parse fetched weather report to pixie param JSON.
+
+We now have a launcher page at '/', and '/metar?location=', '/json?location=' endpoints.
+
+What would we need to get a '/pixie?location=' endpoint up?
+
+- [ ] Extract the layer file definitions from any Canvas references into a separate file.
+- [ ] Verify the layerfile composition, maybe /layers 
+- [ ] Rationalization of mostly-common weather and background vs. per-set pixie layers? idk.
+- [ ] Use JIMP to compose the loaded layers.
+- [ ] PNG output endpoint or PNG-data-img is fine.
+- [ ] Debug endpoint to see unpacked metadata alongside PNG output.
+- [ ] Choose a pixel doll set with UI/URL parameter
+
 
