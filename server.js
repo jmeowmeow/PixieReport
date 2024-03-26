@@ -66,7 +66,7 @@ app.get('/compose', async (req, res) => {
   var pixie = await compose().catch(console.error);
   // 8 or 16
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
-    pixie.print(font, 10, 10, "Hello world!");
+    pixie.print(font, 18, 153, "Hello world!");
   });
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img src="${src}" />`) });
 });

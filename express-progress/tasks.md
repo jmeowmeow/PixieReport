@@ -47,6 +47,8 @@ Pomodoros:
 * [X] Get doc links, record in tasks above, and open in tabs.
 * [X] Jimp imagetext
 
+![./jimp-selfie-text.png](./jimp-selfie-text.png)
+
 Mon 25 Mar 2024 11:16:27 AM PDT
 
 Tasks
