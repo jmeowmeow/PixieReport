@@ -9,4 +9,4 @@ Demo:
 
 Note:
 
-* This is the **jimp-imaging** branch aimed at substituting pure-js [jimp](https://github.com/jimp-dev/jimp/tree/main/packages/jimp) in place of `node-canvas`. See [express-progress/tasks.md](express-progress/tasks.md).
+* This is the **express-server** branch using pure-js [jimp](https://github.com/jimp-dev/jimp/tree/main/packages/jimp) in place of `node-canvas`, and [Express](https://expressjs.com/) as the NodeJS server framework. See [express-progress/tasks.md](express-progress/tasks.md).

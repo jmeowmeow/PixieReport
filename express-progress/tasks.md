@@ -66,7 +66,10 @@ Paired work @jmeowmeow / @binhrobles
 - [X] Use JIMP to compose the chosen layers and write param-specific text.
 
 * We now have `/compose?location=` with default `?location=KSEA`
-* `/compose` uses live weather report information fetched per request.
+* `/compose` uses live weather report information for location text and to choose day/night background.
+
+![./hello-EGHC-day.png](./hello-EGHC-day.png)
+![./hello-LIMC-night.png](./hello-LIMC-night.png)
 
 Next Small Steps
 - [ ] Add temperature-to-pixel-doll layer choice logic.
