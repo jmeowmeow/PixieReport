@@ -57,14 +57,30 @@ Tasks
 
 We now have a launcher page at '/', and '/metar?location=', '/json?location=' endpoints.
 
-What would we need to get a '/pixie?location=' endpoint up?
+Thu 28 Mar 2024 09:04:10 AM PDT
 
-- [ ] Extract the layer file definitions from any Canvas references into a separate file.
-- [ ] Verify the layerfile composition, maybe /layers 
-- [ ] Rationalization of mostly-common weather and background vs. per-set pixie layers? idk.
-- [ ] Use JIMP to compose the loaded layers.
-- [ ] PNG output endpoint or PNG-data-img is fine.
-- [ ] Debug endpoint to see unpacked metadata alongside PNG output.
+Paired work @jmeowmeow / @binhrobles
+
+- [X] Pass parsed params to "compose" logic, decide some layers, write some text.
+- [X] Unpack metadata (parsed weather params and sun angle) alongside PNG output.
+- [X] Use JIMP to compose the chosen layers and write param-specific text.
+
+* We now have `/compose?location=` with default `?location=KSEA`
+* `/compose` uses live weather report information fetched per request.
+
+Next Small Steps
+- [ ] Add temperature-to-pixel-doll layer choice logic.
+- [ ] Add cloud layer logic.
+- [ ] Add wind flag layer logic.
+
+Next Logical Steps
+- [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
+- [ ] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
+
+Full PixieReport function (minus the weather report location choosing wizard) needs
 - [ ] Choose a pixel doll set with UI/URL parameter
-
+- [ ] Organize pixie-set-specific layers separately from generic weather layers?  .
+- [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
+- [ ] Graceful error handling for missing report data or fetch failure
+- [ ] alt-text in the HTML page presentation using pre-existing logic
 

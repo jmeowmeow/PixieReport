@@ -63,12 +63,17 @@ app.get('/metar', async (req, res) => {
 });
 
 app.get('/compose', async (req, res) => {
-  var pixie = await compose().catch(console.error);
-  // 8 or 16
-  await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
-    pixie.print(font, 18, 153, "Hello world!");
-  });
-  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img src="${src}" />`) });
+  const location = req.query.location;
+  if (location === undefined) {
+    redirectDefaultLocation(req, res);
+    return;
+  }
+  let report = await fetchMETAR(location);
+  const params = decodedToParamObject(report);
+  params.text = `Hello from ${location}.`;
+  var pixie = await compose(params).catch(console.error);
+  let jsonOutput = JSON.stringify(params, null, 2);
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img src="${src}" /><br/><pre>${jsonOutput}</pre>`) });
 });
 
 // parameters: airport code, C/F, which pixie set; optional!
