@@ -71,17 +71,27 @@ Paired work @jmeowmeow / @binhrobles
 ![./hello-EGHC-day.png](./hello-EGHC-day.png)
 ![./hello-LIMC-night.png](./hello-LIMC-night.png)
 
-Next Small Steps
+Sat 30 Mar 2024 10:00:00 AM PDT
+
 - [X] Add temperature-to-pixel-doll layer choice logic.
 - [X] Add cloud layer logic.
-- [ ] Add wind flag layer logic.
+- [X] Add wind flag layer logic.
+
+![./hello-KJFK-windy-day.png](./hello-KJFK-windy-day.png)
+![./hello-NZSP-cold-twilight.png](./hello-NZSP-cold-twilight.png)
+
+Next Steps
 - [ ] Add weather layer logic.
+- [ ] Turn composition back into a stack of optionally composed layers.
+
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
 - [ ] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
+- [ ] Get a font matching the original WeatherPixie loaded into Jimp
+- [ ] Write the weather report text on the image
 - [ ] Choose a pixel doll set with UI/URL parameter
 - [ ] Organize pixie-set-specific layers separately from generic weather layers?  .
 - [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?

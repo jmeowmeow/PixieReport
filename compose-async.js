@@ -14,6 +14,10 @@ const layerMap = {
     "clear": "pixifier/pixies/skycond/blank.png",
     "cloudy": "pixifier/pixies/skycond/clouds.png",
     "overcast": "pixifier/pixies/skycond/overcast.png",
+    "warning": "pixifier/pixies/highwind/daywarn.png",
+    "gale": "pixifier/pixies/highwind/daygale.png",
+    "storm": "pixifier/pixies/highwind/daystorm.png",
+    "hurricane": "pixifier/pixies/highwind/dayhurricane.png",
 };
 
 function backgroundLayer(params) {
@@ -53,7 +57,6 @@ function cloudLayer(params) {
   }
 };
 
-
 // factored out from addDollLayerReturnDescText
 // because a pixel doll layer contains a description and a transparent image
 // We'll want to re-compose the image descriptions; the Express server
@@ -77,13 +80,35 @@ function dollLayer(params) {
   }
 }
 
+// Note that the original either adds or does not add a layer based on wind speed.
+// We need the MPHNUM value and cannot use windSpeedMph because a gusty wind
+// may be reported as windSpeedMph:"17-32".
+function windLayer(params) {
+  const mphString = params.windSpeed.MPHNUM;
+  const mph = parseFloat(mphString);
+  if (typeof mph === 'number' && isFinite(mph)) {
+    if (mph > 73) {
+      return layerMap.hurricane;
+    } else if (mph > 54) {
+      return layerMap.storm;
+    } else if (mph > 38) {
+      return layerMap.gale;
+    } else if (mph > 24) {
+      return layerMap.warning;
+    }
+  }
+  return layerMap.none;
+}
+
+
 async function compose(params) {
 
   const background = await Jimp.read(backgroundLayer(params));
   const cloudlayer = await Jimp.read(cloudLayer(params));
   const pixielayer = await Jimp.read(dollLayer(params));
+  const windlayer = await Jimp.read(windLayer(params));
 
-  let pixie = background.composite(cloudlayer, 0, 0, { }).composite(pixielayer, 0, 0, { });
+  let pixie = background.composite(cloudlayer, 0, 0, { }).composite(pixielayer, 0, 0, { }).composite(windlayer, 0,0, {});
 
   // 8 or 16
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
