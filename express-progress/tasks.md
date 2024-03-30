@@ -72,11 +72,12 @@ Paired work @jmeowmeow / @binhrobles
 ![./hello-LIMC-night.png](./hello-LIMC-night.png)
 
 Next Small Steps
-- [ ] Add temperature-to-pixel-doll layer choice logic.
-- [ ] Add cloud layer logic.
+- [X] Add temperature-to-pixel-doll layer choice logic.
+- [X] Add cloud layer logic.
 - [ ] Add wind flag layer logic.
+- [ ] Add weather layer logic.
 
-Next Logical Steps
+Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
 - [ ] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 
