@@ -81,7 +81,7 @@ Sat 30 Mar 2024 10:00:00 AM PDT
 ![./hello-NZSP-cold-twilight.png](./hello-NZSP-cold-twilight.png)
 
 Next Steps
-- [ ] Turn composition back into a stack of optionally composed layers.
+- [X] Turn composition back into a stack of optionally composed layers.
 - [ ] Add weather layer logic.
 
 Mon 01 Apr 2024 08:33:11 AM PDT
@@ -90,6 +90,8 @@ but predictable order. Maybe reintroduce the Layer class at some point.
 P1, P2 : progress. We're loading and composing an arbitrary list of layers, but not yet selecting a variable number.
 There are empty transparent layers which could be slipped..
 P3 : rabbit-hole on top index page table presentation (useful, but not specific to intention).
+P4 : factoring complete, but kept working past timer.
+Next intention: add weather layer logic.
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.

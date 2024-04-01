@@ -37,6 +37,10 @@ function backgroundLayer(params) {
   }
 }
 
+function addBackgroundLayer(layerFiles, params) {
+  layerFiles.push(backgroundLayer(params));
+}
+
 // coalesced from pixie-composer.js (skyhash, parsed sky condition to which cloud image)
 const skyhash = {
       'clear':         layerMap.clear,
@@ -48,74 +52,54 @@ const skyhash = {
       };
 
 // see skyCover parsing clouds in decoded-metar-parser.js ; cloudLayer uses the parsed value
-function cloudLayer(params) {
+function addCloudLayer(layerFiles, params) {
   let skyCover = params.skyCover;
   if (skyCover) {
-    return skyhash[skyCover];
-  } else {
-    return layerMap.clear;
+    layerFiles.push(skyhash[skyCover]);
   }
+  // default: add no layer.
 };
 
-// factored out from addDollLayerReturnDescText
+// adapted/extracted from addDollLayerReturnDescText
 // because a pixel doll layer contains a description and a transparent image
 // We'll want to re-compose the image descriptions; the Express server
-// endpoint only renders the overlaid images for his first pass.
-function dollLayer(params) {
+// endpoint only renders the overlaid images for this first pass.
+function addDollLayer(layerFiles, params) {
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {
     if (tempC < -9) {
-      return layerMap.icyPixie;
+      layerFiles.push(layerMap.icyPixie);
     } else if (tempC < 5) {
-      return layerMap.coldPixie;
+      layerFiles.push(layerMap.coldPixie);
     } else if (tempC < 19) {
-      return layerMap.coolPixie
+      layerFiles.push(layerMap.coolPixie);
     } else if (tempC < 28) {
-      return layerMap.warmPixie;
+      layerFiles.push(layerMap.warmPixie);
     } else {
-      return layerMap.hotPixie;
+      layerFiles.push(layerMap.hotPixie);
     }
-  } else {
-    return layerMap.none;
   }
 }
 
-// Note that the original either adds or does not add a layer based on wind speed.
 // We need the MPHNUM value and cannot use windSpeedMph because a gusty wind
 // may be reported as windSpeedMph:"17-32".
-function windLayer(params) {
-  const mphString = params.windSpeed.MPHNUM;
-  const mph = parseFloat(mphString);
-  if (typeof mph === 'number' && isFinite(mph)) {
-    if (mph > 73) {
-      return layerMap.hurricane;
-    } else if (mph > 54) {
-      return layerMap.storm;
-    } else if (mph > 38) {
-      return layerMap.gale;
-    } else if (mph > 24) {
-      return layerMap.warning;
+function addWindFlagLayer(layerFiles, params) {
+  if (params.windSpeed) {
+    const mphString = params.windSpeed.MPHNUM;
+    const mph = parseFloat(mphString);
+    if (typeof mph === 'number' && isFinite(mph)) {
+      if (mph > 73) {
+        layerFiles.push(layerMap.hurricane);
+      } else if (mph > 54) {
+        layerFiles.push(layerMap.storm);
+      } else if (mph > 38) {
+        layerFiles.push(layerMap.gale);
+      } else if (mph > 24) {
+        layerFiles.push(layerMap.warning);
+      }
     }
   }
-  return layerMap.none;
 }
-
-function addBackgroundLayer(layerFiles, params) {
-  layerFiles.push(backgroundLayer(params));
-}
-
-function addCloudLayer(layerFiles, params) {
-  layerFiles.push(cloudLayer(params));
-}
-
-function addDollLayer(layerFiles, params) {
-  layerFiles.push(dollLayer(params));
-}
-
-function addWindFlagLayer(layerFiles, params) {
-  layerFiles.push(windLayer(params));
-}
-
 
 async function compose(params) {
 
