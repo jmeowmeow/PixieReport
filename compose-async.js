@@ -103,12 +103,13 @@ function windLayer(params) {
 
 async function compose(params) {
 
-  const background = await Jimp.read(backgroundLayer(params));
-  const cloudlayer = await Jimp.read(cloudLayer(params));
-  const pixielayer = await Jimp.read(dollLayer(params));
-  const windlayer = await Jimp.read(windLayer(params));
+  const jimpLayers = [];
+  jimpLayers.push(await Jimp.read(backgroundLayer(params)));
+  jimpLayers.push(await Jimp.read(cloudLayer(params)));
+  jimpLayers.push(await Jimp.read(dollLayer(params)));
+  jimpLayers.push(await Jimp.read(windLayer(params)));
 
-  let pixie = background.composite(cloudlayer, 0, 0, { }).composite(pixielayer, 0, 0, { }).composite(windlayer, 0,0, {});
+  let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
 
   // 8 or 16
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {

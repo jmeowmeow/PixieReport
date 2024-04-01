@@ -452,8 +452,9 @@ var decodedToParamObject = function(decodedRawMetarReport) {
     if (typeof params.degreesF  === 'number' && isFinite(params.degreesF)) {
       params.degreesFstr = params.degreesF.toFixed(0);
     }
-    params.windSpeedKph = windSpeedKph(metar);
-    params.windSpeedMph = windSpeedMph(metar);
+    params.windSpeed    = windSpeed(metar); // keep details for high wind flags
+    params.windSpeedKph = windSpeedKph(metar); // rendered KPH text
+    params.windSpeedMph = windSpeedMph(metar); // rendered MPH text
     params.windDir = windDir(metar);
     params = withZuluTime(params, metar);
     params.skyCover = skyCover(decoded);

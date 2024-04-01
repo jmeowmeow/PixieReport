@@ -81,9 +81,12 @@ Sat 30 Mar 2024 10:00:00 AM PDT
 ![./hello-NZSP-cold-twilight.png](./hello-NZSP-cold-twilight.png)
 
 Next Steps
-- [ ] Add weather layer logic.
 - [ ] Turn composition back into a stack of optionally composed layers.
+- [ ] Add weather layer logic.
 
+Mon 01 Apr 2024 08:33:11 AM PDT
+Pomodoro intention: factor the composition into a list of variable length
+but predictable order. Maybe reintroduce the Layer class at some point.
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
