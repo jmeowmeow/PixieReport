@@ -103,11 +103,15 @@ function windLayer(params) {
 
 async function compose(params) {
 
+  const layerFiles = [];
+  layerFiles.push(backgroundLayer(params));
+  layerFiles.push(cloudLayer(params));
+  layerFiles.push(dollLayer(params));
+  layerFiles.push(windLayer(params));
+
   const jimpLayers = [];
-  jimpLayers.push(await Jimp.read(backgroundLayer(params)));
-  jimpLayers.push(await Jimp.read(cloudLayer(params)));
-  jimpLayers.push(await Jimp.read(dollLayer(params)));
-  jimpLayers.push(await Jimp.read(windLayer(params)));
+  const promises = layerFiles.map(async (layer) => { return await Jimp.read(layer);});
+  await Promise.allSettled(promises).then((results) => {results.forEach((result) => jimpLayers.push(result.value)) }).catch(console.error);
 
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
 
