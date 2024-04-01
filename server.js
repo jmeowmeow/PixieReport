@@ -7,13 +7,19 @@ const {decodedToParamObject} = require('./pixifier/decoded-metar-parser');
 app.get('/', (req, res) => {
   let body = "";
   let link = "<a href='${url}'>${url}</a><br/>";
-  let metarLink = "<a href='/metar?location=${station}'>METAR ${station}</a>";
-  let jsonLink  = "<a href='/json?location=${station}'>JSON ${station}</a>";
-  let reportLink = metarLink + " " + jsonLink + "<br/>";
+  let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
+  let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
+  let pixieLink  = "p <a title='pixie ${station}' href='/compose?location=${station}'>${station}</a>";
+  let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td></tr>\n`;
+  body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th></tr></thead>\n"
   body += reportLink.replace(/\${station}/g, 'KSEA');
   body += reportLink.replace(/\${station}/g, 'KPAE');
   body += reportLink.replace(/\${station}/g, 'KBFI');
   body += reportLink.replace(/\${station}/g, 'KSFO');
+  body += reportLink.replace(/\${station}/g, 'LIMC');
+  body += reportLink.replace(/\${station}/g, 'NZSP');
+  body += reportLink.replace(/\${station}/g, 'XKXK');
+  body += "</table><br/>"
   body += link.replace(/\${url}/g, '/compose');
   body += link.replace(/\${url}/g, '/pixie');
   res.send(body);
@@ -45,8 +51,8 @@ app.get('/json', async (req, res) => {
   }
   const textReport = await fetchMETAR(location);
   const jsonReport = decodedToParamObject(textReport);
-  res.setHeader('Content-Type', 'application/json');
-  res.send(jsonReport);
+  let jsonBody = `<pre>${JSON.stringify(jsonReport, null, 2)}</pre>`;
+  res.send(jsonBody);
 });
 
 app.get('/metar', async (req, res) => {
