@@ -100,15 +100,32 @@ function windLayer(params) {
   return layerMap.none;
 }
 
+function addBackgroundLayer(layerFiles, params) {
+  layerFiles.push(backgroundLayer(params));
+}
+
+function addCloudLayer(layerFiles, params) {
+  layerFiles.push(cloudLayer(params));
+}
+
+function addDollLayer(layerFiles, params) {
+  layerFiles.push(dollLayer(params));
+}
+
+function addWindFlagLayer(layerFiles, params) {
+  layerFiles.push(windLayer(params));
+}
+
 
 async function compose(params) {
 
   const layerFiles = [];
-  layerFiles.push(backgroundLayer(params));
-  layerFiles.push(cloudLayer(params));
-  layerFiles.push(dollLayer(params));
-  layerFiles.push(windLayer(params));
+  addBackgroundLayer(layerFiles, params);
+  addCloudLayer(layerFiles, params);
+  addDollLayer(layerFiles, params);
+  addWindFlagLayer(layerFiles, params);
 
+  console.log("layerFiles", layerFiles);
   const jimpLayers = [];
   const promises = layerFiles.map(async (layer) => { return await Jimp.read(layer);});
   await Promise.allSettled(promises).then((results) => {results.forEach((result) => jimpLayers.push(result.value)) }).catch(console.error);
