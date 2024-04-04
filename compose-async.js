@@ -10,7 +10,7 @@ const layerMap = {
     "coldPixie": "pixifier/pixies/pixieselfie/pixie-cold.png",
     "coolPixie": "pixifier/pixies/pixieselfie/pixie-cool.png",
     "warmPixie": "pixifier/pixies/pixieselfie/pixie-warm.png",
-    "hot": "pixifier/pixies/pixieselfie/pixie-hot.png",
+    "hotPixie": "pixifier/pixies/pixieselfie/pixie-hot.png",
     "clear": "pixifier/pixies/skycond/blank.png",
     "cloudy": "pixifier/pixies/skycond/clouds.png",
     "overcast": "pixifier/pixies/skycond/overcast.png",
@@ -19,6 +19,28 @@ const layerMap = {
     "storm": "pixifier/pixies/highwind/daystorm.png",
     "hurricane": "pixifier/pixies/highwind/dayhurricane.png",
 };
+
+// coalesced from pixie-composer.js
+// weather we show: keys of weatherhash (drizzle, rain, mist, fog, snow)
+// weather we don't: haze, smoke, dust, volcanic ash
+const weatherhash = {
+      'none':           'pixifier/pixies/weather/blank.png',
+      'light drizzle':  'pixifier/pixies/weather/ltrain.png',
+      'drizzle':        'pixifier/pixies/weather/drizzle.png',
+      'heavy drizzle':  'pixifier/pixies/weather/drizzle.png',
+      'light rain':     'pixifier/pixies/weather/ltrain.png',
+      'rain':           'pixifier/pixies/weather/rain.png',
+      'heavy rain':     'pixifier/pixies/weather/rain.png',
+      'mist':           'pixifier/pixies/weather/mist.png',
+      'fog':            'pixifier/pixies/weather/fog.png',
+      'patches of fog': 'pixifier/pixies/weather/fog.png',
+      'light snow':     'pixifier/pixies/weather/ltsnow.png',
+      'snow':           'pixifier/pixies/weather/snow.png',
+      'heavy snow':     'pixifier/pixies/weather/snow.png',
+      };
+
+// const lightningLayer = new Layer('lightning', path.join(cwd, './pixies/weather/lightning.png')); // after clouds, before doll
+// const frame = new Layer("frame", bgd + 'blackframe.png');
 
 function backgroundLayer(params) {
   if (params.sunPos && params.sunPos.zenithAngle) {
@@ -101,6 +123,17 @@ function addWindFlagLayer(layerFiles, params) {
   }
 }
 
+function addWeatherLayers(layerFiles, params) {
+  if (params.weather) {
+    for (const cond of params.weather) {
+       const weatherfile = weatherhash[cond];
+       if (weatherfile) {
+         layerFiles.push(weatherfile);
+       }
+    }
+  }
+}
+
 async function compose(params) {
 
   const layerFiles = [];
@@ -108,6 +141,7 @@ async function compose(params) {
   addCloudLayer(layerFiles, params);
   addDollLayer(layerFiles, params);
   addWindFlagLayer(layerFiles, params);
+  addWeatherLayers(layerFiles, params);
 
   console.log("layerFiles", layerFiles);
   const jimpLayers = [];
