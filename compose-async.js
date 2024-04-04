@@ -18,6 +18,7 @@ const layerMap = {
     "gale": "pixifier/pixies/highwind/daygale.png",
     "storm": "pixifier/pixies/highwind/daystorm.png",
     "hurricane": "pixifier/pixies/highwind/dayhurricane.png",
+    "lightning": "pixifier/pixies/weather/lightning.png",
 };
 
 // coalesced from pixie-composer.js
@@ -82,6 +83,13 @@ function addCloudLayer(layerFiles, params) {
   // default: add no layer.
 };
 
+function addLightningLayer(layerFiles, params) {
+  if (params.weather && params.weather.includes('Lightning observed')) {
+    layerFiles.push(layerMap.lightning);
+  }
+  // default: add no lightning.
+};
+
 // adapted/extracted from addDollLayerReturnDescText
 // because a pixel doll layer contains a description and a transparent image
 // We'll want to re-compose the image descriptions; the Express server
@@ -139,6 +147,7 @@ async function compose(params) {
   const layerFiles = [];
   addBackgroundLayer(layerFiles, params);
   addCloudLayer(layerFiles, params);
+  addLightningLayer(layerFiles, params);
   addDollLayer(layerFiles, params);
   addWindFlagLayer(layerFiles, params);
   addWeatherLayers(layerFiles, params);

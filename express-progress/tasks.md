@@ -98,6 +98,10 @@ Next intention: add weather layer logic.
 
 Thu 04 Apr 2024 08:47:09 AM PDT
 
+Working with Isaac.
+
+- [X] Restore lightning layer logic. (behind rain)
+
 ## Next Step Directions
 - [ ] Restore text-on-image (station text; report text)
 - [ ] Restore alt-text creation (reintroduce Layer?)
