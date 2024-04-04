@@ -82,7 +82,6 @@ Sat 30 Mar 2024 10:00:00 AM PDT
 
 Next Steps
 - [X] Turn composition back into a stack of optionally composed layers.
-- [ ] Add weather layer logic.
 
 Mon 01 Apr 2024 08:33:11 AM PDT
 Pomodoro intention: factor the composition into a list of variable length
@@ -92,6 +91,19 @@ There are empty transparent layers which could be slipped..
 P3 : rabbit-hole on top index page table presentation (useful, but not specific to intention).
 P4 : factoring complete, but kept working past timer.
 Next intention: add weather layer logic.
+
+- [X] Add weather layer logic.
+
+![./hello-KOAK-windy-rainy-day.png](./hello-KOAK-rainy-windy-day.png)
+
+Thu 04 Apr 2024 08:47:09 AM PDT
+
+## Next Step Directions
+- [ ] Restore text-on-image (station text; report text)
+- [ ] Restore alt-text creation (reintroduce Layer?)
+- [ ] Restore pixel doll sets (random; chosen by URL)
+
+---
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
@@ -105,4 +117,7 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Graceful error handling for missing report data or fetch failure
 - [ ] alt-text in the HTML page presentation using pre-existing logic
+
+Weather Report Choosing Wizard
+- [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
 
