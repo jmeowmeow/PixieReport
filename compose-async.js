@@ -19,6 +19,7 @@ const layerMap = {
     "storm": "pixifier/pixies/highwind/daystorm.png",
     "hurricane": "pixifier/pixies/highwind/dayhurricane.png",
     "lightning": "pixifier/pixies/weather/lightning.png",
+    "frame": "pixifier/pixies/backgrounds/blackframe.png",
 };
 
 // coalesced from pixie-composer.js
@@ -142,6 +143,11 @@ function addWeatherLayers(layerFiles, params) {
   }
 }
 
+function addFrame(layerFiles, params) {
+  layerFiles.push(layerMap.frame);
+}
+
+
 async function compose(params) {
 
   const layerFiles = [];
@@ -151,6 +157,8 @@ async function compose(params) {
   addDollLayer(layerFiles, params);
   addWindFlagLayer(layerFiles, params);
   addWeatherLayers(layerFiles, params);
+  addFrame(layerFiles, params);
+
 
   console.log("layerFiles", layerFiles);
   const jimpLayers = [];
@@ -159,10 +167,15 @@ async function compose(params) {
 
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
 
+  // write station and weather info
+
+
   // 8 or 16
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
     pixie.print(font, 2, 153, params.text); // 125x175 image; don't know text length
   });
+
+
   return pixie;
 
 }
