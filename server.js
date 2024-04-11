@@ -30,6 +30,11 @@ const redirectDefaultLocation = (req, res) => {
   res.redirect(redirection);
 };
 
+const defaultReport = (location) => {
+  let loc = location;
+  return `Could not retrieve observation from station code ${loc}.`;
+}
+
 const fetchMETAR = async (location) => {
   // note new METAR API endpoint after text server was announced
   // as discontinued but text URL is working 2024-03-25. Be wary.
@@ -39,7 +44,7 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   console.log("Fetching", url);
-  let report = await fetch(url).then(response => response.text()).catch(console.error);
+  let report = await fetch(url).then(response => response.text()).catch(error => { console.error(JSON.stringify(error, null, 2)); return defaultReport(location) });
   return report;
 }
 
