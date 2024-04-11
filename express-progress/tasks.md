@@ -107,7 +107,7 @@ Wed 10 Apr 2024 05:52:22 PM PDT
 - [X] Restore top-layer black frame under text (fixes messy fog etc).
 - [X] On network error, return a no-info default report.
 
-Next step detail breakdown.
+### Next step detail breakdown.
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
 - [ ] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
 - [ ] Assemble an object with the weather and station text.
