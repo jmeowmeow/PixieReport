@@ -102,8 +102,26 @@ Working with Isaac.
 
 - [X] Restore lightning layer logic. (behind rain)
 
+Wed 10 Apr 2024 05:52:22 PM PDT
+
+- [X] Restore top-layer black frame under text (fixes messy fog etc).
+- [X] On network error, return a no-info default report.
+
+Next step detail breakdown.
+- TO ACCOMPLISH: Restoring text-on-image (station text; report text)
+- [ ] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
+- [ ] Assemble an object with the weather and station text.
+- [ ] Write that object to the pixie compose page text (JSON.stringify)
+- [ ] Find a suitable console typeface/font for JIMP. Import it.
+- [ ] Create a white fixed font resource with the necessary glyphs.
+- [ ] Create a green fixed font resource with the necessary glyphs.
+- [ ] Investigate rotating text 90 degrees left for station name
+- [ ] Write white and green weather text from the assembled text object.
+- [ ] Refer to the pre-existing station name process (green fg, pink bg).
+- [ ] Write the vertical text for the station name.
+- [ ] THEREBY: Restoring text-on-image (station text; report text)
+
 ## Next Step Directions
-- [ ] Restore text-on-image (station text; report text)
 - [ ] Restore alt-text creation (reintroduce Layer?)
 - [ ] Restore pixel doll sets (random; chosen by URL)
 
