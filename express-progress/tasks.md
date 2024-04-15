@@ -12,7 +12,7 @@ Pomodoro intention: engage with task flow.
 
 Tasks
 
-- [X] Mask the broken Jasmine test for composer (node-canvas removed). 
+- [X] Mask the broken Jasmine test for composer (node-canvas removed).
 - [X] Verify jimp Jasmine test works.
 - [X] Verify jimp compose.js mini script works. `node compose.js` and compare pixie.png with above.
 - [X] Verify jimp express demo works. Use `npm run dev` and see [localhost:3000/pixie/](http://localhost:3000/pixie/)
@@ -107,7 +107,15 @@ Wed 10 Apr 2024 05:52:22 PM PDT
 - [X] Restore top-layer black frame under text (fixes messy fog etc).
 - [X] On network error, return a no-info default report.
 
-### Next step detail breakdown.
+
+Fri 12 Apr 2024 10:06:36 AM PDT
+
+Starting off net, so font tools to convert standard to bitmap are offline;
+  you could hack around with a BMP font to change its color.
+Accessible during bus commute: canned reports, alt text creation, pixel
+  doll set choice.
+
+### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
 - [ ] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
 - [ ] Assemble an object with the weather and station text.
@@ -121,8 +129,16 @@ Wed 10 Apr 2024 05:52:22 PM PDT
 - [ ] Write the vertical text for the station name.
 - [ ] THEREBY: Restoring text-on-image (station text; report text)
 
+### Alt text creation breakdown
+- TO ACCOMPLISH: Creating alt-text describing an image.
+- [ ] Introduce JimpLayer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
+- [ ] Replace image loads with layer loads including text.
+- [ ] Replace dynamic image load with preload stage, move layer metadata and text out of composer.
+- [ ] Add an alt-text composer based on computeSceneText (layer.desc), computeAltText.
+- [ ] Put the alt text in the alt= attribute of the composed image.
+- [ ] THEREBY: Restoring alt-text generation.
+
 ## Next Step Directions
-- [ ] Restore alt-text creation (reintroduce Layer?)
 - [ ] Restore pixel doll sets (random; chosen by URL)
 
 ---
