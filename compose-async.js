@@ -1,5 +1,43 @@
 const Jimp = require("jimp");
 
+class Layer {
+  constructor(desc, path) {
+    this.desc = desc;
+    this.path = path;
+  }
+}
+
+const layerDescMap = {
+  "none": "",
+  "night": "night",
+  "gray": "gray twilight",
+  "pink": "dusk",
+  "day": "day",
+  "noPixie": "no pixel doll shown",
+  "icyPixie": "a pixel doll dressed for icy weather",
+  "coldPixie": "a pixel doll dressed for cold weather",
+  "coolPixie": "a pixel doll dressed for cool weather",
+  "warmPixie": "a pixel doll dressed for warm weather",
+  "hotPixie": "a pixel doll dressed for hot weather",
+  "clear": "clear",
+  "cloudy": "cloudy",
+  "overcast": "overcast",
+  "warning": 'a red high wind warning pennant',
+  "gale": 'two red gale warning pennants',
+  "storm": 'a red and black storm warning flag',
+  "hurricane": 'two red and black hurricane warning flags',
+  "lightning": "lightning",
+  "frame": "black frame",
+  'drizzle': 'drizzle',
+  'light rain': 'light rain',
+  'rain': 'rain',
+  'mist': 'mist',
+  'fog': 'fog',
+  'light snow': 'light snow',
+  'snow': 'snow',
+  'heavy snow': 'heavy snow',
+};
+
 const layerMap = {
     "none": "pixifier/pixies/weather/blank.png",
     "night": "pixifier/pixies/backgrounds/starrynightbkg.png",
@@ -41,23 +79,30 @@ const weatherhash = {
       'heavy snow':     'pixifier/pixies/weather/snow.png',
       };
 
-// const lightningLayer = new Layer('lightning', path.join(cwd, './pixies/weather/lightning.png')); // after clouds, before doll
-// const frame = new Layer("frame", bgd + 'blackframe.png');
+
+const layerByName = function(name) {
+  let desc = layerDescMap[name];
+  let path = layerMap[name];
+  if (path === undefined) {
+    path = weatherhash[name];
+  }
+  return new Layer(desc, path);
+}
 
 function backgroundLayer(params) {
   if (params.sunPos && params.sunPos.zenithAngle) {
     const z = params.sunPos.zenithAngle;
     if (z < 89) {
-      return layerMap.day;
+      return layerByName("day");
     } else if (z < 96) {
-      return layerMap.pink;
+      return layerByName("pink");
     } else if (z < 102) {
-      return layerMap.gray;
+      return layerByName("gray");
     } else {
-      return layerMap.night;
+      return layerByName("night");
     }
   } else {
-    return layerMap.gray;
+    return layerByName("gray");
   }
 }
 
@@ -79,14 +124,14 @@ const skyhash = {
 function addCloudLayer(layerFiles, params) {
   let skyCover = params.skyCover;
   if (skyCover) {
-    layerFiles.push(skyhash[skyCover]);
+    layerFiles.push(new Layer(skyCover, skyhash[skyCover]));
   }
   // default: add no layer.
 };
 
 function addLightningLayer(layerFiles, params) {
   if (params.weather && params.weather.includes('Lightning observed')) {
-    layerFiles.push(layerMap.lightning);
+    layerFiles.push(new Layer('lightning', layerMap.lightning));
   }
   // default: add no lightning.
 };
@@ -99,16 +144,18 @@ function addDollLayer(layerFiles, params) {
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {
     if (tempC < -9) {
-      layerFiles.push(layerMap.icyPixie);
+      layerFiles.push(layerByName('icyPixie'));
     } else if (tempC < 5) {
-      layerFiles.push(layerMap.coldPixie);
+      layerFiles.push(layerByName('coldPixie'));
     } else if (tempC < 19) {
-      layerFiles.push(layerMap.coolPixie);
+      layerFiles.push(layerByName('coolPixie'));
     } else if (tempC < 28) {
-      layerFiles.push(layerMap.warmPixie);
+      layerFiles.push(layerByName('warmPixie'));
     } else {
-      layerFiles.push(layerMap.hotPixie);
+      layerFiles.push(layerByName('hotPixie'));
     }
+  } else {
+    layerFiles.push(new Layer(layerDescMap.noPixie, layerMap.none));
   }
 }
 
@@ -120,13 +167,13 @@ function addWindFlagLayer(layerFiles, params) {
     const mph = parseFloat(mphString);
     if (typeof mph === 'number' && isFinite(mph)) {
       if (mph > 73) {
-        layerFiles.push(layerMap.hurricane);
+        layerFiles.push(layerByName('hurricane'));
       } else if (mph > 54) {
-        layerFiles.push(layerMap.storm);
+        layerFiles.push(layerByName('storm'));
       } else if (mph > 38) {
-        layerFiles.push(layerMap.gale);
+        layerFiles.push(layerByName('gale'));
       } else if (mph > 24) {
-        layerFiles.push(layerMap.warning);
+        layerFiles.push(layerByName('warning'));
       }
     }
   }
@@ -137,30 +184,92 @@ function addWeatherLayers(layerFiles, params) {
     for (const cond of params.weather) {
        const weatherfile = weatherhash[cond];
        if (weatherfile) {
-         layerFiles.push(weatherfile);
+         layerFiles.push(new Layer(cond, weatherfile));
        }
     }
   }
 }
 
 function addFrame(layerFiles, params) {
-  layerFiles.push(layerMap.frame);
+  layerFiles.push(layerByName('frame'));
 }
+
+const asOxfordCommaList = function(terms) {
+  if (!terms || !terms.length) {
+     return '';
+  }
+
+  if (terms.length < 2) {
+     return terms[0];
+  }
+
+  const lastTerm = terms.pop();
+  const commaList = terms.join(', ');
+  return commaList + ' and ' + lastTerm;
+}
+
+// a clear/a cloudy/an overcast daytime/night/twilight scene with rain, snow, and haze
+const computeSceneText = function(imageLayers) {
+  // imageLayers stack of layers: [day/night, skycover, lightning?, pixie, wind?, weather?, frame]
+  // OK pixie is always [2] or if lightning is present, [3]; frame is always last
+  // a(n) $1 $0 scene [with wind flags, lightning, rain, and fog], showing [pixie]
+  const layerNames = imageLayers.map(layer => layer.desc);
+  const skycover = layerNames[1];
+  const daynight = layerNames[0];
+
+  var scenetext = '';
+  if (skycover == 'overcast') {
+    scenetext = 'an '; // overcast starts with a vowel
+  } else {
+    scenetext = 'a '; // cloudy, clear
+  }
+  scenetext = scenetext + skycover;
+  scenetext = scenetext + ' ' + daynight + ' scene';
+  // OK now we have maybe-lightning; pixel doll; maybe-wind, maybe-weather; frame
+
+  // this logic might be worth its own unit test
+  layerNames.shift(); // base layer
+  layerNames.shift(); // sky cover
+  layerNames.pop();   // the top layer frame
+
+  if (layerNames[0].match(/lightning/)) {
+    var ltng = layerNames.shift();
+    layerNames.shift();
+    layerNames.unshift(ltng);
+  } else {
+    // it's a doll description
+    layerNames.shift();
+  }
+  // OK now we have maybe-lightning, maybe-wind, maybe-weather
+  // whatever is left can be accumulated as weather
+  // [0]  ...scene'
+  // [1]  ...scene, with weather1'
+  // [2]  ...scene, with weather1 and weather2'
+  // [3]  ...scene, with weather1, weather2, and weather3'
+  // [4]  ...scene, with weather1, weather2, weather3, and weather4'
+  if (layerNames.length > 0) {
+    scenetext = scenetext + ', with ' + asOxfordCommaList(layerNames);
+  }
+  return scenetext;
+};
+
 
 
 async function compose(params) {
 
-  const layerFiles = [];
-  addBackgroundLayer(layerFiles, params);
-  addCloudLayer(layerFiles, params);
-  addLightningLayer(layerFiles, params);
-  addDollLayer(layerFiles, params);
-  addWindFlagLayer(layerFiles, params);
-  addWeatherLayers(layerFiles, params);
-  addFrame(layerFiles, params);
+  const layers = [];
+  addBackgroundLayer(layers, params);
+  addCloudLayer(layers, params);
+  addLightningLayer(layers, params);
+  addDollLayer(layers, params);
+  addWindFlagLayer(layers, params);
+  addWeatherLayers(layers, params);
+  addFrame(layers, params);
 
-
-  console.log("layerFiles", layerFiles);
+  const sceneText = computeSceneText(layers);
+  const layerFiles = layers.map( (each) => (each.path));
+  console.log("layerFiles", (JSON.stringify(layerFiles, null, 2)));
+  console.log(`sceneText\n${sceneText}`);
   const jimpLayers = [];
   const promises = layerFiles.map(async (layer) => { return await Jimp.read(layer);});
   await Promise.allSettled(promises).then((results) => {results.forEach((result) => jimpLayers.push(result.value)) }).catch(console.error);
@@ -170,7 +279,7 @@ async function compose(params) {
   // write station and weather info
 
 
-  // 8 or 16
+  // 8 or 16 sans white bitmap fonts available in Jimp starter package
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
     pixie.print(font, 2, 153, params.text); // 125x175 image; don't know text length
   });
