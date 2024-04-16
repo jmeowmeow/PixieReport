@@ -13,7 +13,7 @@ const layerDescMap = {
   "gray": "gray twilight",
   "pink": "dusk",
   "day": "day",
-  "noPixie": "no pixel doll shown",
+  "noPixie": "no pixel doll",
   "icyPixie": "a pixel doll dressed for icy weather",
   "coldPixie": "a pixel doll dressed for cold weather",
   "coolPixie": "a pixel doll dressed for cool weather",
@@ -209,11 +209,13 @@ const asOxfordCommaList = function(terms) {
 }
 
 // a clear/a cloudy/an overcast daytime/night/twilight scene with rain, snow, and haze
+// showing (a pixel doll dressed for the weather | no pixel doll)
 const computeSceneText = function(imageLayers) {
   // imageLayers stack of layers: [day/night, skycover, lightning?, pixie, wind?, weather?, frame]
   // OK pixie is always [2] or if lightning is present, [3]; frame is always last
   // a(n) $1 $0 scene [with wind flags, lightning, rain, and fog], showing [pixie]
   const layerNames = imageLayers.map(layer => layer.desc);
+  console.log("layerNames incl base, clouds, frame", (JSON.stringify(layerNames, null, 2)));
   const skycover = layerNames[1];
   const daynight = layerNames[0];
 
@@ -232,13 +234,17 @@ const computeSceneText = function(imageLayers) {
   layerNames.shift(); // sky cover
   layerNames.pop();   // the top layer frame
 
+  console.log("layerNames minus base, clouds, frame", (JSON.stringify(layerNames, null, 2)));
+
+  let pixieDesc = 'a pixel doll dressed for the weather';
+
   if (layerNames[0].match(/lightning/)) {
     var ltng = layerNames.shift();
     layerNames.shift();
     layerNames.unshift(ltng);
   } else {
     // it's a doll description
-    layerNames.shift();
+    pixieDesc = layerNames.shift();
   }
   // OK now we have maybe-lightning, maybe-wind, maybe-weather
   // whatever is left can be accumulated as weather
@@ -250,6 +256,8 @@ const computeSceneText = function(imageLayers) {
   if (layerNames.length > 0) {
     scenetext = scenetext + ', with ' + asOxfordCommaList(layerNames);
   }
+  // ..., showing (pixieDesc)
+  scenetext = scenetext + ', showing ' + pixieDesc;
   return scenetext;
 };
 
@@ -268,7 +276,7 @@ async function compose(params) {
 
   const sceneText = computeSceneText(layers);
   const layerFiles = layers.map( (each) => (each.path));
-  console.log("layerFiles", (JSON.stringify(layerFiles, null, 2)));
+  console.log("layers", (JSON.stringify(layers, null, 2)));
   console.log(`sceneText\n${sceneText}`);
   const jimpLayers = [];
   const promises = layerFiles.map(async (layer) => { return await Jimp.read(layer);});
