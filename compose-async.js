@@ -69,8 +69,11 @@ const weatherhash = {
       'drizzle':        'pixifier/pixies/weather/drizzle.png',
       'heavy drizzle':  'pixifier/pixies/weather/drizzle.png',
       'light rain':     'pixifier/pixies/weather/ltrain.png',
+      'light rain with thunder':     'pixifier/pixies/weather/ltrain.png',
       'rain':           'pixifier/pixies/weather/rain.png',
+      'rain with thunder':           'pixifier/pixies/weather/rain.png',
       'heavy rain':     'pixifier/pixies/weather/rain.png',
+      'heavy rain with thunder':           'pixifier/pixies/weather/rain.png',
       'mist':           'pixifier/pixies/weather/mist.png',
       'fog':            'pixifier/pixies/weather/fog.png',
       'patches of fog': 'pixifier/pixies/weather/fog.png',
@@ -215,7 +218,6 @@ const computeSceneText = function(imageLayers) {
   // OK pixie is always [2] or if lightning is present, [3]; frame is always last
   // a(n) $1 $0 scene [with wind flags, lightning, rain, and fog], showing [pixie]
   const layerNames = imageLayers.map(layer => layer.desc);
-  console.log("layerNames incl base, clouds, frame", (JSON.stringify(layerNames, null, 2)));
   const skycover = layerNames[1];
   const daynight = layerNames[0];
 
@@ -233,8 +235,6 @@ const computeSceneText = function(imageLayers) {
   layerNames.shift(); // base layer
   layerNames.shift(); // sky cover
   layerNames.pop();   // the top layer frame
-
-  console.log("layerNames minus base, clouds, frame", (JSON.stringify(layerNames, null, 2)));
 
   let pixieDesc = 'a pixel doll dressed for the weather';
 
@@ -276,7 +276,6 @@ async function compose(params) {
 
   const sceneText = computeSceneText(layers);
   const layerFiles = layers.map( (each) => (each.path));
-  console.log("layers", (JSON.stringify(layers, null, 2)));
   console.log(`sceneText\n${sceneText}`);
   const jimpLayers = [];
   const promises = layerFiles.map(async (layer) => { return await Jimp.read(layer);});
