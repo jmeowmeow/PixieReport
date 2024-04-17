@@ -115,11 +115,25 @@ Starting off net, so font tools to convert standard to bitmap are offline;
 Accessible during bus commute: canned reports, alt text creation, pixel
   doll set choice.
 
+Tue 16 Apr 2024 08:16:07 AM PDT
+
+On Monday (bus and after): restored Layer class; draft alt-text composition.
+
+Tuesday Intentions:
+* inspect console.log() statements; make to-dos? scrub? (Scrub.)
+* return alt-text to web output (not yet)
+* compose weather text, see pixie-composer/writeTextOnPixie
+
+Tuesday intentions complete.
+
+Incidental fix re KLAN.TXT report:
+- [X] Thundershowers ("light rain with thunder", "rain with thunder") now render as rain.
+
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
 - [ ] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
-- [ ] Assemble an object with the weather and station text.
-- [ ] Write that object to the pixie compose page text (JSON.stringify)
+- [X] Assemble an object with the weather and station text.
+- [X] Write that object to the ~~pixie compose~~ *JSON report* page text (JSON.stringify)
 - [ ] Find a suitable console typeface/font for JIMP. Import it.
 - [ ] Create a white fixed font resource with the necessary glyphs.
 - [ ] Create a green fixed font resource with the necessary glyphs.
@@ -131,10 +145,11 @@ Accessible during bus commute: canned reports, alt text creation, pixel
 
 ### Alt text creation breakdown
 - TO ACCOMPLISH: Creating alt-text describing an image.
+- [X] Introduce Layer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
+- [X] Add an alt-text composer based on computeSceneText (layer.desc), computeAltText.
 - [ ] Introduce JimpLayer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
 - [ ] Replace image loads with layer loads including text.
 - [ ] Replace dynamic image load with preload stage, move layer metadata and text out of composer.
-- [ ] Add an alt-text composer based on computeSceneText (layer.desc), computeAltText.
 - [ ] Put the alt text in the alt= attribute of the composed image.
 - [ ] THEREBY: Restoring alt-text generation.
 
