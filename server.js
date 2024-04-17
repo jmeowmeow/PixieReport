@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const {compose, Jimp} = require('./compose-async');
 const {decodedToParamObject} = require('./pixifier/decoded-metar-parser');
+const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 app.get('/', (req, res) => {
   let body = "";
@@ -30,9 +31,25 @@ const redirectDefaultLocation = (req, res) => {
   res.redirect(redirection);
 };
 
+const KLAN = `
+CAPITAL CITY AIRPORT, MI, United States (KLAN) 42-47N 084-35W 264M
+Aug 11, 2021 - 11:30 PM EDT / 2021.08.12 0330 UTC
+Wind: from the S (190 degrees) at 10 MPH (9 KT):0
+Visibility: 6 mile(s):0
+Sky conditions: mostly cloudy
+Weather: light rain with thunder; mist; Lightning observed
+Precipitation last hour: 0.03 inches
+Temperature: 72.0 F (22.2 C)
+Dew Point: 69.1 F (20.6 C)
+Relative Humidity: 90%
+Pressure (altimeter): 29.88 in. Hg (1011 hPa)
+ob: KLAN 120330Z 19009KT 6SM -TSRA BR FEW049 SCT075 BKN110 22/21 A2988 RMK AO2 LTG DSNT ALQDS TSE0258B30 P0003 T02220206
+cycle: 3`;
+
 const defaultReport = (location) => {
   let loc = location;
-  return `Could not retrieve observation from station code ${loc}.`;
+  return KLAN;
+//  return `Could not retrieve observation from station code ${loc}.`;
 }
 
 const fetchMETAR = async (location) => {
@@ -56,7 +73,8 @@ app.get('/json', async (req, res) => {
   }
   const textReport = await fetchMETAR(location);
   const jsonReport = decodedToParamObject(textReport);
-  let jsonBody = `<pre>${JSON.stringify(jsonReport, null, 2)}</pre>`;
+  const imageText = JSON.stringify(computeImageTextValues(jsonReport));
+  let jsonBody = `<pre>${JSON.stringify(jsonReport, null, 2)}\n${imageText}</pre>`;
   res.send(jsonBody);
 });
 
