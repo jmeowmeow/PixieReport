@@ -120,15 +120,21 @@ Tue 16 Apr 2024 08:16:07 AM PDT
 On Monday (bus and after): restored Layer class; draft alt-text composition.
 
 Tuesday Intentions:
-* inspect console.log() statements; make to-dos? scrub? (Scrub.)
-* return alt-text to web output (not yet)
-* compose weather text, see pixie-composer/writeTextOnPixie
+- [X] inspect console.log() statements; make to-dos? scrub? (Scrub.)
+- [ ]  return alt-text to web output (not yet)
+- [X] compose weather text, see pixie-composer/writeTextOnPixie
 
-Tuesday intentions complete.
+Tuesday intentions mostly complete.
 
 Incidental fix re KLAN.TXT report:
 - [X] Thundershowers ("light rain with thunder", "rain with thunder") now render as rain.
 
+Wed 17 Apr 2024 08:14:07 AM PDT
+Wednesday Intentions:
+- [X] add alt-text to web output as alt=""
+- [ ] description text varies by pixie set and/or background style (fireworks?)
+
+![./hello-KSEA-alt-text.png](./hello-KSEA-alt-text.png)
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
 - [ ] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.

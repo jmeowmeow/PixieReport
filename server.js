@@ -99,10 +99,11 @@ app.get('/compose', async (req, res) => {
   }
   let report = await fetchMETAR(location);
   const params = decodedToParamObject(report);
-  params.text = `Hello from ${location}.`;
-  var pixie = await compose(params).catch(console.error);
+  let title = `Hello from ${location}.`;
+  params.text = title;
+  var [pixie, alt]= await compose(params).catch(console.error);
   let jsonOutput = JSON.stringify(params, null, 2);
-  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img src="${src}" /><br/><pre>${jsonOutput}</pre>`) });
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><pre>${jsonOutput}</pre>`) });
 });
 
 // parameters: airport code, C/F, which pixie set; optional!

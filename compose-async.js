@@ -1,4 +1,5 @@
 const Jimp = require("jimp");
+const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 class Layer {
   constructor(desc, path) {
@@ -240,7 +241,7 @@ const computeSceneText = function(imageLayers) {
 
   if (layerNames[0].match(/lightning/)) {
     var ltng = layerNames.shift();
-    layerNames.shift();
+    pixieDesc = layerNames.shift(); // did we drop it if there's lightning?
     layerNames.unshift(ltng);
   } else {
     // it's a doll description
@@ -283,16 +284,16 @@ async function compose(params) {
 
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
 
-  // write station and weather info
-
+  // write station and weather info (compute-image-text.js) - console.log for now
+  const imageText = JSON.stringify(computeImageTextValues(params));
+  console.log(`imageText: ${imageText}`);
 
   // 8 or 16 sans white bitmap fonts available in Jimp starter package
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
     pixie.print(font, 2, 153, params.text); // 125x175 image; don't know text length
   });
 
-
-  return pixie;
+  return [ pixie, sceneText ];
 
 }
 
