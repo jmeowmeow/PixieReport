@@ -262,7 +262,13 @@ const computeSceneText = function(imageLayers) {
   return scenetext;
 };
 
-
+function printLocationText(pixie, locationFont, locationLabel) {
+  pixie.rotate(-90.0);
+  // we might want to measure the text and put a transparent pink underlay
+  // like the original Canvas style; or we could do it in the font bitmap?
+  pixie.print(locationFont, 30, 3, locationLabel); // 175x125 image when rotated
+  pixie.rotate(90.0);
+}
 
 async function compose(params) {
 
@@ -285,8 +291,12 @@ async function compose(params) {
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
 
   // write station and weather info (compute-image-text.js) - console.log for now
-  const imageText = JSON.stringify(computeImageTextValues(params));
-  console.log(`imageText: ${imageText}`);
+  const imageTextValues = computeImageTextValues(params);
+  const imageTextDump = JSON.stringify(imageTextValues);
+  console.log(`imageText: ${imageTextDump}`);
+  await Jimp.loadFont(Jimp.FONT_SANS_8_WHITE).then((font) => {
+    printLocationText(pixie, font, imageTextValues.locationLabel);
+  });
 
   // 8 or 16 sans white bitmap fonts available in Jimp starter package
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {

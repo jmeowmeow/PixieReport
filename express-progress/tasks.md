@@ -134,6 +134,9 @@ Wednesday Intentions:
 - [X] add alt-text to web output as alt=""
 - [ ] description text varies by pixie set and/or background style (fireworks?)
 
+Wednesday also did:
+- [X] prototype vertical location text on pixie (rotate -90 deg, print, rotate +90 deg).
+
 ![./hello-KSEA-alt-text.png](./hello-KSEA-alt-text.png)
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
@@ -143,7 +146,7 @@ Wednesday Intentions:
 - [ ] Find a suitable console typeface/font for JIMP. Import it.
 - [ ] Create a white fixed font resource with the necessary glyphs.
 - [ ] Create a green fixed font resource with the necessary glyphs.
-- [ ] Investigate rotating text 90 degrees left for station name
+- [X] Investigate rotating text 90 degrees left for station name
 - [ ] Write white and green weather text from the assembled text object.
 - [ ] Refer to the pre-existing station name process (green fg, pink bg).
 - [ ] Write the vertical text for the station name.
@@ -153,14 +156,17 @@ Wednesday Intentions:
 - TO ACCOMPLISH: Creating alt-text describing an image.
 - [X] Introduce Layer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
 - [X] Add an alt-text composer based on computeSceneText (layer.desc), computeAltText.
+- [X] Put the alt text in the alt= attribute of the composed image.
+- [X] THEREBY: Restoring alt-text generation.
+
+### Jimp Layer and Pixie Preload breakdown
 - [ ] Introduce JimpLayer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
 - [ ] Replace image loads with layer loads including text.
 - [ ] Replace dynamic image load with preload stage, move layer metadata and text out of composer.
-- [ ] Put the alt text in the alt= attribute of the composed image.
-- [ ] THEREBY: Restoring alt-text generation.
+- [ ] THEREBY: preloading local resources to simplify composition stage
 
 ## Next Step Directions
-- [ ] Restore pixel doll sets (random; chosen by URL)
+- [ ] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
 
 ---
 
@@ -175,7 +181,7 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [ ] Organize pixie-set-specific layers separately from generic weather layers?  .
 - [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Graceful error handling for missing report data or fetch failure
-- [ ] alt-text in the HTML page presentation using pre-existing logic
+- [X] alt-text in the HTML page presentation using pre-existing logic
 
 Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
