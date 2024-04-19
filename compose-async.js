@@ -266,7 +266,7 @@ function printLocationText(pixie, locationFont, locationLabel) {
   pixie.rotate(-90.0);
   // we might want to measure the text and put a transparent pink underlay
   // like the original Canvas style; or we could do it in the font bitmap?
-  pixie.print(locationFont, 30, 3, locationLabel); // 175x125 image when rotated
+  pixie.print(locationFont, 27, 3, locationLabel); // 175x125 image when rotated
   pixie.rotate(90.0);
 }
 
@@ -300,7 +300,7 @@ async function compose(params) {
 
   // 8 or 16 sans white bitmap fonts available in Jimp starter package
   await Jimp.loadFont(Jimp.FONT_SANS_16_WHITE).then((font) => {
-    pixie.print(font, 2, 153, params.text); // 125x175 image; don't know text length
+    pixie.print(font, 2, 153, params.text); // 125x175 image; Jimp.measureText(font, text) for x
   });
 
   return [ pixie, sceneText ];

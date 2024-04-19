@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -52,6 +53,17 @@ const defaultReport = (location) => {
 //  return `Could not retrieve observation from station code ${loc}.`;
 }
 
+const fetchMetarFile = async (location) => {
+  let metarFile = `spec/resources/${location}.TXT`;
+  try {
+    let report = fs.readFileSync(metarFile, 'utf-8');
+    return report;
+  } catch(error) {
+    console.error(JSON.stringify(error, null, 2));
+  }
+  return defaultReport(location);
+};
+
 const fetchMETAR = async (location) => {
   // note new METAR API endpoint after text server was announced
   // as discontinued but text URL is working 2024-03-25. Be wary.
@@ -61,7 +73,8 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   console.log("Fetching", url);
-  let report = await fetch(url).then(response => response.text()).catch(error => { console.error(JSON.stringify(error, null, 2)); return defaultReport(location) });
+//  let report = await fetch(url).then(response => response.text()).catch(error => { console.error(JSON.stringify(error, null, 2)); return defaultReport(location) });
+  let report = await fetch(url).then(response => response.text()).catch(error => { console.error(JSON.stringify(error, null, 2)); return fetchMetarFile(location) });
   return report;
 }
 

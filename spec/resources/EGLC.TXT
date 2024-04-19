@@ -1,0 +1,12 @@
+London City Airport, United Kingdom (EGLC) 51-30N 000-30W
+Apr 18, 2024 - 03:20 PM EDT / 2024.04.18 1920 UTC
+Wind: from the WSW (250 degrees) at 16 MPH (14 KT) (direction variable):0
+Visibility: greater than 7 mile(s):0
+Sky conditions: mostly cloudy
+Weather: light rain
+Temperature: 51 F (11 C)
+Dew Point: 35 F (2 C)
+Relative Humidity: 53%
+Pressure (altimeter): 30.12 in. Hg (1020 hPa)
+ob: EGLC 181920Z AUTO 25014KT 220V280 9999 -RA BKN046 11/02 Q1020
+cycle: 19

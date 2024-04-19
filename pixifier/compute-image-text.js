@@ -1,9 +1,64 @@
-const useMetric = function(params) {
-  return true;
+var tightenLocationSpacing = function(location) {
+  var loc = location;
+  loc = loc.replace(" *", " ");
+  loc = loc.replace(/( ){2,}/g, " ");
+  loc = loc.replace(/ ,/g, ",");
+  return loc;
 }
 
-const abbreviateLocation = function(location_label) {
-  return location_label;
+var abbreviateLocation = function(location) {
+  var loc = location;
+  loc = loc.replace(/^([A-Za-z ]*), (\1)/, '$1'); // "City, City Airport..."
+  loc = loc.replace("Automatic", "Auto");
+  loc = loc.replace("AUTOMATIC", "AUTO");
+  loc = loc.replace("International", "Intl");
+  loc = loc.replace("INTERNATIONAL", "INTL");
+  loc = loc.replace('INTERNTL', 'INTL'); // KLAX
+  loc = loc.replace("Regional", "Regl");
+  loc = loc.replace("REGIONAL", "REGL");
+  loc = loc.replace("Municipal", "Muni");
+  loc = loc.replace("MUNICIPAL", "MUNI");
+  loc = loc.replace("Airport", "Apt");
+  loc = loc.replace("AIRPORT", "APT");
+  loc = loc.replace("Field", "Fld");
+  loc = loc.replace("FIELD", "FLD");
+  loc = loc.replace("Station", "Stn");
+  loc = loc.replace("STATION", "STN");
+  loc = loc.replace("Island", "Isl");
+  loc = loc.replace("ISLAND", "ISL");
+  loc = loc.replace("Lake ", "Lk "); // Lakenheath Royal Air Force Base
+  loc = loc.replace("LAKE ", "LK ");
+  loc = loc.replace("Auxiliary", "Aux");
+  loc = loc.replace("AUXILIARY", "AUX");
+  loc = loc.replace("AIR FORCE BASE", "AFB");
+  loc = loc.replace("Air Force Base", "AFB");
+  loc = loc.replace("AIR FORCE", "AF"); // must come after AFB
+  loc = loc.replace("Air Force", "AF");
+  loc = loc.replace("United States", "USA");
+  loc = loc.replace("UNITED STATES", "USA");
+  loc = loc.replace("United Kingdom", "UK");
+  loc = loc.replace("UNITED KINGDOM", "UK");
+  loc = loc.replace("New Zealand", "NZ");
+  loc = loc.replace("NEW ZEALAND", "NZ");
+  loc = tightenLocationSpacing(loc);
+  return loc;
+}
+
+function useMetric(params) {
+  if (params.stationCode.startsWith("K")) {
+    return false; // Continental US plus one 'VI'
+  }
+  if (params.stationCode.startsWith("TJ")) {
+    return false; // Puerto Rico
+  }
+  if (params.stationCode.startsWith("PH")) {
+    return false; // Hawaii
+  }
+  if (params.stationCode.startsWith("P") && params.latlong.degLat > 50.0) {
+    return false; // Alaska
+  }
+  // "P...": missing some stations in US Pacific island territories
+  return true;
 }
 
 const computeImageTextValues = function (params) {
