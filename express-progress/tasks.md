@@ -138,9 +138,28 @@ Wednesday also did:
 - [X] prototype vertical location text on pixie (rotate -90 deg, print, rotate +90 deg).
 
 ![./hello-KSEA-alt-text.png](./hello-KSEA-alt-text.png)
+
+Thursday did:
+* Improve image text computation, extract to a pure-function file.
+* Added fallback to a saved local METAR for better offline (bus) work.
+
+Fri 19 Apr 2024 09:36:17 AM PDT
+* Fixed fallback by using a sync read and catch block.
+* Checked in Thursday work.
+
+Friday intentions: Typeface/font or pixie choice
+- [X] Attempt using The Gimp to transform white typeface to green.
+- [ ] Online? try transforming a monospace font to white and to green
+- [ ] Choose a pixie set in the API. This may drive a preload of layers.
+
+![green-open-sans-8.png](./green-open-sans-8.png)
+
+Result: It looks like I might want a genuinely bitmapped font; Open Sans doesn't
+do a great job at 8-point (or whatever the size unit is).
+
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
-- [ ] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
+- [X] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
 - [X] Assemble an object with the weather and station text.
 - [X] Write that object to the ~~pixie compose~~ *JSON report* page text (JSON.stringify)
 - [ ] Find a suitable console typeface/font for JIMP. Import it.

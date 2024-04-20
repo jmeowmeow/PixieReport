@@ -294,7 +294,9 @@ async function compose(params) {
   const imageTextValues = computeImageTextValues(params);
   const imageTextDump = JSON.stringify(imageTextValues);
   console.log(`imageText: ${imageTextDump}`);
-  await Jimp.loadFont(Jimp.FONT_SANS_8_WHITE).then((font) => {
+//  let locationFontPath = Jimp.FONT_SANS_8_WHITE;
+  let locationFontPath = "pixifier/fonts/open-sans-8-green/open-sans-8-green.fnt"
+  await Jimp.loadFont(locationFontPath).then((font) => {
     printLocationText(pixie, font, imageTextValues.locationLabel);
   });
 
