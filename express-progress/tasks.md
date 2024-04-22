@@ -157,6 +157,9 @@ Friday intentions: Typeface/font or pixie choice
 Result: It looks like I might want a genuinely bitmapped font; Open Sans doesn't
 do a great job at 8-point (or whatever the size unit is).
 
+Mon 22 Apr 2024 08:21:23 AM PDT
+
+
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
 - [X] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
@@ -179,13 +182,15 @@ do a great job at 8-point (or whatever the size unit is).
 - [X] THEREBY: Restoring alt-text generation.
 
 ### Jimp Layer and Pixie Preload breakdown
-- [ ] Introduce JimpLayer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
-- [ ] Replace image loads with layer loads including text.
-- [ ] Replace dynamic image load with preload stage, move layer metadata and text out of composer.
+- [ ] Create resources.js to preload image/desc layers and fonts, like pixie-composer.js .
+- [ ] Refer to resources in composer, removing layer metadata, text, and image loads.
 - [ ] THEREBY: preloading local resources to simplify composition stage
 
 ## Next Step Directions
 - [ ] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
+- [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
+- [ ] METAR stations as a queryable database; how to query? what lists?
+- [ ] Pick METAR stations from a map, like FedWiki map marker plugin.
 
 ---
 
