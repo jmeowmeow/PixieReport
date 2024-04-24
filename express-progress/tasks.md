@@ -187,14 +187,28 @@ picking and for map based lookup.
 
 - [X] Preload and return icao.js stations as part of preloads.js
 - [X] Show icao station info on pixie rendering or json page
-- [ ] Preload and return weather layer map as part of preloads.js
-- [ ] Preload and return one pixie set's layers.
-- [ ] Preload and return all pixie sets' layers (by number and name?)
+
+Defer next steps.
 
 Incidentally:
 - [X] Render weather text info onto bottom weather bar. Needs a good font still.
 
 ![KLAN-all-but-the-font.png](./KLAN-all-but-the-font.png)
+
+Wed 24 Apr 2024 08:45:23 AM PDT
+
+Experiment: find a BMFont generator. Apparently BMFont is a format used
+for computer game development, and that's where some of the tools are.
+For example, [Hiero](https://libgdx.com/wiki/tools/hiero) is a BMFont-capable tool in a suite of gamedev tools.
+It fails to launch on my installed Java version. LibGDX suggests "Adoptium's OpenJDK 8".
+[Adoptium.net](https://adoptium.net/index.html)
+
+Wednesday intentions: preloads, an offline finer point.
+
+- [ ] Preload and return weather layer map as part of preloads.js
+- [ ] Preload and return one pixie set's layers.
+- [ ] Preload and return all pixie sets' layers (by number and name?)
+- [X] If a station code is absent from "stations" (icao.js), don't fallback to Lansing.
 
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)

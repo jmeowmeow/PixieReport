@@ -51,8 +51,11 @@ cycle: 3`;
 
 const defaultReport = (location) => {
   let loc = location;
-  return KLAN;
-//  return `Could not retrieve observation from station code ${loc}.`;
+  if (stations[loc]) {
+    return KLAN;
+  } else {
+    return `Could not retrieve observation from station code ${loc}.`;
+  }
 }
 
 const fetchMetarFile = async (location) => {
