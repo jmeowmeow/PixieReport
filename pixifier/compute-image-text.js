@@ -86,7 +86,7 @@ const computeImageTextValues = function (params) {
         }
     } else { // non-metric
         if (params.degreesFstr) {
-            temphum = temphum + params.degreesFstr + 'F ';
+            temphum = temphum + params.degreesFstr + 'F  ';
         } else {
             temphum = '     ';
         }
@@ -121,7 +121,6 @@ const computeImageTextValues = function (params) {
         zuluTime: params.zuluTime,
         locationLabel: location_label,
     };
-    console.log(`imageText: \n${JSON.stringify(imageText, null, 2)}`);
     return imageText;
 }
 

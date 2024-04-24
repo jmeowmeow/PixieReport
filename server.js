@@ -2,8 +2,9 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
-const {compose, Jimp} = require('./compose-async');
-const {decodedToParamObject} = require('./pixifier/decoded-metar-parser');
+const {stations, resources, Jimp} = require('./pixifier/preloads');
+const {compose} = require('./compose-async');
+const {decodedToParamObject} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 app.get('/', (req, res) => {
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
   body += reportLink.replace(/\${station}/g, 'KSEA');
   body += reportLink.replace(/\${station}/g, 'KPAE');
   body += reportLink.replace(/\${station}/g, 'KBFI');
+  body += reportLink.replace(/\${station}/g, 'KBLI');
   body += reportLink.replace(/\${station}/g, 'KSFO');
   body += reportLink.replace(/\${station}/g, 'LIMC');
   body += reportLink.replace(/\${station}/g, 'NZSP');
@@ -116,7 +118,11 @@ app.get('/compose', async (req, res) => {
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
   let jsonOutput = JSON.stringify(params, null, 2);
-  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { res.send(`<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><pre>${jsonOutput}</pre>`) });
+  // add a "stations" lookup
+  let icaoLocData = stations[location];
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { 
+    const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><pre>${jsonOutput}</pre>`;
+    res.send(responseBody); });
 });
 
 // parameters: airport code, C/F, which pixie set; optional!

@@ -157,8 +157,44 @@ Friday intentions: Typeface/font or pixie choice
 Result: It looks like I might want a genuinely bitmapped font; Open Sans doesn't
 do a great job at 8-point (or whatever the size unit is).
 
+Tuesday: Or I could try a brighter but less saturated green, 7f7 instead of 0f0.
+
 Mon 22 Apr 2024 08:21:23 AM PDT
 
+Jimp fonts are BMFont format, see AngelCode's conversion tool. I don't
+really need all the font metrics and kerning info if I'm going to use
+fixed width bitmap fonts - maybe not even anti-aliasing - but I need
+the font descriptor file and the image. I mean, I suppose I could sprite
+a font and turn it into images and stick the character and rendered
+string images into resources and do everything with image compositing.
+HTML-5 Canvas and save-as-PNG are right there, and the list of characters
+is present in the Jimp font XML file. They look like Unicode code points
+for most of the printable characters 32-255 plus Euro Sign. It's tempting!
+32-126 (US-ASCII printables), 161-255, 8364 (Euro). Checking 129-160,
+129 is Euro (though maybe 129 is a problematic codepoint?), Glyphs for
+codepoints 130-160 appear OK to dispense with.
+
+Tue 23 Apr 2024 08:14:02 AM PDT
+
+Tuesday intentions: preloads.js for resources. I suppose we could
+import Jimp there because otherwise it's not clear how we get from
+a loaded file to a Jimp image.
+
+The "resources" container returned from preload includes a layer
+map including pixie doll layers by type. Maybe we preload the ICAO
+METAR stations as well, which sets us up for random weather station
+picking and for map based lookup.
+
+- [X] Preload and return icao.js stations as part of preloads.js
+- [X] Show icao station info on pixie rendering or json page
+- [ ] Preload and return weather layer map as part of preloads.js
+- [ ] Preload and return one pixie set's layers.
+- [ ] Preload and return all pixie sets' layers (by number and name?)
+
+Incidentally:
+- [X] Render weather text info onto bottom weather bar. Needs a good font still.
+
+![KLAN-all-but-the-font.png](./KLAN-all-but-the-font.png)
 
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
