@@ -205,10 +205,32 @@ It fails to launch on my installed Java version. LibGDX suggests "Adoptium's Ope
 
 Wednesday intentions: preloads, an offline finer point.
 
+Considering how to mix preloaded and lazy-loaded layers in compose-async.
+Ultimately the Jimp images are overlaid in order. The existing code
+peels off the file paths, turns them into Jimp object constructors,
+and uses Promise.all() to wait for all the images to be loaded.
+
+If some layers are preloaded, should I render them as fulfilled
+promises? Or can I mingle them in the peel / construct / overlay
+loops somehow? Maybe debugging through the composition loops would
+be most helpful.
+
+Fulfilled promise example (MDN):
+
+const promiseA = new Promise((res, rej)) => { resolve(123); } );
+
 - [ ] Preload and return weather layer map as part of preloads.js
 - [ ] Preload and return one pixie set's layers.
 - [ ] Preload and return all pixie sets' layers (by number and name?)
 - [X] If a station code is absent from "stations" (icao.js), don't fallback to Lansing.
+
+Thu 25 Apr 2024 06:01:05 PM PDT
+
+Thursday intentions: continue with Layer/Promise.
+- [X] Add Layer method toJimp() returning a Promise to load the path.
+- [X] Preloads for "none" and "black frame" return a pre-fulfilled Promise.
+
+We're now a modest step from moving some or all to preloads.
 
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)

@@ -5,8 +5,30 @@ class Layer {
   constructor(desc, path) {
     this.desc = desc;
     this.path = path;
+    this.img = undefined;
+  }
+
+  myPromise() {
+    const fulfilled = new Promise((resolve, reject) => { resolve(this.img); });
+    return fulfilled;
+  }
+
+  async toJimp() {
+    if (this.img) {
+      return this.myPromise();
+    } else {
+      let jp = Jimp.read(this.path);
+      jp.then( (result) => { this.img = result; } );
+      return jp;
+    } 
   }
 }
+
+const noLayer = new Layer("none", "pixifier/pixies/weather/blank.png");
+const frameLayer = new Layer("frame", "pixifier/pixies/backgrounds/blackframe.png");
+
+noLayer.toJimp();
+frameLayer.toJimp();
 
 const layerDescMap = {
   "none": "",
@@ -85,6 +107,13 @@ const weatherhash = {
 
 
 const layerByName = function(name) {
+  // testing preloaded images
+  if (name === "blank") {
+    return noLayer;
+  }
+  if (name === "frame") {
+    return frameLayer;
+  }
   let desc = layerDescMap[name];
   let path = layerMap[name];
   if (path === undefined) {
@@ -281,11 +310,15 @@ async function compose(params) {
   addWeatherLayers(layers, params);
   addFrame(layers, params);
 
+  // OK here, can we mingle preloaded and path-ref layers?
+  // we're peeling off the paths and then reading them in order;
+  // for preloaded layers, we should be able to return a fulfilled
+  // Promise instead.
+
   const sceneText = computeSceneText(layers);
-  const layerFiles = layers.map( (each) => (each.path));
   console.log(`sceneText\n${sceneText}`);
   const jimpLayers = [];
-  const promises = layerFiles.map(async (layer) => { return await Jimp.read(layer);});
+  const promises = layers.map(async (layer) => { return layer.toJimp();});
   await Promise.allSettled(promises).then((results) => {results.forEach((result) => jimpLayers.push(result.value)) }).catch(console.error);
 
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
@@ -294,7 +327,6 @@ async function compose(params) {
   const imageTextValues = computeImageTextValues(params);
   const imageTextDump = JSON.stringify(imageTextValues);
   console.log(`imageText: ${imageTextDump}`);
-//  let locationFontPath = Jimp.FONT_SANS_8_WHITE;
   let locationFontPath = "pixifier/fonts/open-sans-8-green/open-sans-8-green.fnt"
   await Jimp.loadFont(locationFontPath).then((font) => {
     printLocationText(pixie, font, imageTextValues.locationLabel);
