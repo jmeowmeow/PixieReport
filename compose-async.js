@@ -1,34 +1,6 @@
-const Jimp = require("jimp"); // used here and in preloads. Dispense with it here?
+const {stations, resources, Jimp, Layer} = require('./pixifier/preloads');
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
-class Layer {
-  constructor(desc, path) {
-    this.desc = desc;
-    this.path = path;
-    this.img = undefined;
-  }
-
-  myPromise() {
-    const fulfilled = new Promise((resolve, reject) => { resolve(this.img); });
-    return fulfilled;
-  }
-
-  async toJimp() {
-    if (this.img) {
-      return this.myPromise();
-    } else {
-      let jp = Jimp.read(this.path);
-      jp.then( (result) => { this.img = result; } );
-      return jp;
-    } 
-  }
-}
-
-const noLayer = new Layer("none", "pixifier/pixies/weather/blank.png");
-const frameLayer = new Layer("frame", "pixifier/pixies/backgrounds/blackframe.png");
-
-noLayer.toJimp();
-frameLayer.toJimp();
 
 const layerDescMap = {
   "none": "",
@@ -107,12 +79,12 @@ const weatherhash = {
 
 
 const layerByName = function(name) {
-  // testing preloaded images
+  // testing preloaded images from resources
   if (name === "blank") {
-    return noLayer;
+    return resources.noLayer;
   }
   if (name === "frame") {
-    return frameLayer;
+    return resources.frameLayer;
   }
   let desc = layerDescMap[name];
   let path = layerMap[name];

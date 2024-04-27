@@ -232,18 +232,50 @@ Thursday intentions: continue with Layer/Promise.
 
 We're now a modest step from moving some or all to preloads.
 
+Fri 26 Apr 2024 09:21:28 AM PDT
+
+After yesterday's trouble finding useful BMFont resources, RedBlobGames
+suggests this project for TTF to BMFont: [msdf-bmfont-xml](https://github.com/soimy/msdf-bmfont-xml).
+
+From RedBlobGames' [Distance Field Effects](https://www.redblobgames.com/x/2404-distance-field-effects/) post.
+
+System TTF files here: /usr/share/fonts/truetype/
+
+```
+$ find /usr/share/fonts/truetype/ -print | grep Mono
+```
+
+Hopefully msdf-bmfont-xml  won't be a bust on binary library requirements
+like Hiero (not yet trying JDK8 as suggested), though I believe I have
+Cairo-lib available. Anyway we'll struggle on with the BMFonts in Jimp.
+
+See Soimy's (Shen Yiming, Shader Studio) [msdf-bmfont-xml](https://soimy.github.io/msdf-bmfont-xml/)
+
+$ msdf-bmfont --help
+
+Well uh. "signed distance format" is not useful for me in any direct way. Jimp can
+use it for print() but SDF/BMFont sprites encode geometry rather than pixel rendering.
+
+So back to AngelCode BMFont, JDK8 and Hiero, or [Shoebox](http://renderhjs.net/shoebox/).
+
+Friday intentions
+- [X] Move blank and black frame in resources/preloads.
+- [ ] Move weather into preloads.
+- [ ] Dispatch to a specific pixie set somehow.
+
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)
 - [X] Open the JIMP docs for [printing text](https://github.com/jimp-dev/jimp/tree/main/packages/jimp#writing-text) to the image using bitmap fonts.
 - [X] Assemble an object with the weather and station text.
 - [X] Write that object to the ~~pixie compose~~ *JSON report* page text (JSON.stringify)
+- [X] Investigate rotating text 90 degrees left for station name
+- [X] Write white and green weather text from the assembled text object.
+- [X] Write the vertical text for the station name.
 - [ ] Find a suitable console typeface/font for JIMP. Import it.
 - [ ] Create a white fixed font resource with the necessary glyphs.
 - [ ] Create a green fixed font resource with the necessary glyphs.
-- [X] Investigate rotating text 90 degrees left for station name
-- [ ] Write white and green weather text from the assembled text object.
 - [ ] Refer to the pre-existing station name process (green fg, pink bg).
-- [ ] Write the vertical text for the station name.
+- [ ] Revise prototype writing to use preferred fonts.
 - [ ] THEREBY: Restoring text-on-image (station text; report text)
 
 ### Alt text creation breakdown
@@ -254,6 +286,7 @@ We're now a modest step from moving some or all to preloads.
 - [X] THEREBY: Restoring alt-text generation.
 
 ### Jimp Layer and Pixie Preload breakdown
+- [X] Prototype preloading Jimp resources and mixing with lazy layers.
 - [ ] Create resources.js to preload image/desc layers and fonts, like pixie-composer.js .
 - [ ] Refer to resources in composer, removing layer metadata, text, and image loads.
 - [ ] THEREBY: preloading local resources to simplify composition stage
