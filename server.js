@@ -7,7 +7,22 @@ const {compose} = require('./compose-async');
 const {decodedToParamObject} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
+const codes = [];
+for (const stn of stations.keys()) {codes.push(stn);};
+const randomStation = function () {
+ const scount = 8696.0;
+ const idx = Math.trunc(Math.random() * scount);
+ return codes[idx];
+}
+
 app.get('/', (req, res) => {
+  const stationChoices = [
+  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'LIMC',
+  ];
+  stationChoices.push(randomStation());
+  stationChoices.push(randomStation());
+  stationChoices.push(randomStation());
+  stationChoices.push(randomStation());
   let body = "";
   let link = "<a href='${url}'>${url}</a><br/>";
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
@@ -15,12 +30,7 @@ app.get('/', (req, res) => {
   let pixieLink  = "p <a title='pixie ${station}' href='/compose?location=${station}'>${station}</a>";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td></tr>\n`;
   body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th></tr></thead>\n"
-  body += reportLink.replace(/\${station}/g, 'KSEA');
-  body += reportLink.replace(/\${station}/g, 'KPAE');
-  body += reportLink.replace(/\${station}/g, 'KBFI');
-  body += reportLink.replace(/\${station}/g, 'KBLI');
-  body += reportLink.replace(/\${station}/g, 'KSFO');
-  body += reportLink.replace(/\${station}/g, 'LIMC');
+  stationChoices.map(stn => { body += reportLink.replace(/\${station}/g, stn);});
   body += reportLink.replace(/\${station}/g, 'NZSP');
   body += reportLink.replace(/\${station}/g, 'XKXK');
   body += "</table><br/>"

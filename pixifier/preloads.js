@@ -35,8 +35,10 @@ frameLayer.toJimp();
 resources.noLayer = noLayer;
 resources.frameLayer = frameLayer;
 
+const metarToLocationMap = new Map();
+Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
 // many image load promises; also need import "fs"; see compose-async.js for models
-exports.stations = icaoToLocationMap;
+exports.stations = metarToLocationMap;
 exports.resources = resources;
 exports.Jimp = Jimp;
 exports.Layer = Layer;
