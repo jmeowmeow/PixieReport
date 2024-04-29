@@ -256,12 +256,24 @@ $ msdf-bmfont --help
 Well uh. "signed distance format" is not useful for me in any direct way. Jimp can
 use it for print() but SDF/BMFont sprites encode geometry rather than pixel rendering.
 
-So back to AngelCode BMFont, JDK8 and Hiero, or [Shoebox](http://renderhjs.net/shoebox/).
+So back to AngelCode BMFont, JDK8 and Hiero, or [Shoebox](http://renderhjs.net/shoebox/). Oops no not Shoebox, not for Linux.
 
 Friday intentions
 - [X] Move blank and black frame in resources/preloads.
 - [ ] Move weather into preloads.
 - [ ] Dispatch to a specific pixie set somehow.
+
+Mon 29 Apr 2024 08:05:30 AM PDT
+Monday intentions:
+- [ ] Dispatch to a specific pixie set somehow.
+- [ ] Move weather into preloads.
+
+Pixie set: Is the doll description JS re-work on the browser branch of Git?
+
+Art inspiration spotted on the bus: kitten-toast dangle on a
+light purple ita bag. kitten face framed by light brown bread
+crust and a little spongy surface, back part of kitten sticking
+out behind the slice of bread.
 
 ### Next step detail breakdown
 - TO ACCOMPLISH: Restoring text-on-image (station text; report text)

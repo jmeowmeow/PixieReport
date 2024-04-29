@@ -1,5 +1,6 @@
 // Preloads of pixie resources
 const { icaoToLocationMap } = require('./icao.js');
+const { pixies } = require('./pixies.js');
 const Jimp = require("jimp"); // used here and in composer.
 const resources = {};
 
