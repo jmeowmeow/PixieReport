@@ -132,7 +132,7 @@ app.get('/compose', async (req, res) => {
   var [pixie, alt]= await compose(params).catch(console.error);
   let jsonOutput = JSON.stringify(params, null, 2);
   // add a "stations" lookup
-  let icaoLocData = stations[location];
+  let icaoLocData = stations.get(location);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => { 
     const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><pre>${jsonOutput}</pre>`;
     res.send(responseBody); });
