@@ -17,7 +17,7 @@ const randomStation = function () {
 
 app.get('/', (req, res) => {
   const stationChoices = [
-  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'LIMC',
+  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'EGLC', 'LIMC',
   ];
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
@@ -68,6 +68,7 @@ const defaultReport = (location) => {
   }
 }
 
+// allows offline testing using fixed cache-for-test
 const fetchMetarFile = async (location) => {
   let metarFile = `spec/resources/${location}.TXT`;
   try {
