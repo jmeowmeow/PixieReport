@@ -283,12 +283,17 @@ out behind the slice of bread.
 - [X] Investigate rotating text 90 degrees left for station name
 - [X] Write white and green weather text from the assembled text object.
 - [X] Write the vertical text for the station name.
-- [ ] Find a suitable console typeface/font for JIMP. Import it.
-- [ ] Create a white fixed font resource with the necessary glyphs.
-- [ ] Create a green fixed font resource with the necessary glyphs.
+- [X] Find a suitable console typeface/font for JIMP. Import it.
+- [X] Create a white fixed font resource with the necessary glyphs.
+- [X] Create a green fixed font resource with the necessary glyphs.
 - [ ] Refer to the pre-existing station name process (green fg, pink bg).
 - [ ] Revise prototype writing to use preferred fonts.
 - [ ] THEREBY: Restoring text-on-image (station text; report text)
+
+Iosevska SS04 claims to be Menlo-like. I've used Hiero to create
+BMFont pixel font definitions. The rendering doesn't seem as crisp
+as I'd like (TrueType to pixel, rather than native pixel font) but
+I can dot it in since I want a fixed-width font.
 
 ### Alt text creation breakdown
 - TO ACCOMPLISH: Creating alt-text describing an image.
@@ -301,6 +306,7 @@ out behind the slice of bread.
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
 - [ ] Create resources.js to preload image/desc layers and fonts, like pixie-composer.js .
 - [ ] Refer to resources in composer, removing layer metadata, text, and image loads.
+- [ ] Pixel doll layer resources use specific descriptions by set/doll.
 - [ ] THEREBY: preloading local resources to simplify composition stage
 
 ## Next Step Directions
@@ -316,13 +322,13 @@ Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
-- [ ] Get a font matching the original WeatherPixie loaded into Jimp
-- [ ] Write the weather report text on the image
+- [X] Get a font matching the original WeatherPixie loaded into Jimp
+- [X] Write the weather report text on the image
+- [X] alt-text in the HTML page presentation using pre-existing logic
 - [ ] Choose a pixel doll set with UI/URL parameter
 - [ ] Organize pixie-set-specific layers separately from generic weather layers?  .
 - [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Graceful error handling for missing report data or fetch failure
-- [X] alt-text in the HTML page presentation using pre-existing logic
 
 Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
