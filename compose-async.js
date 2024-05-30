@@ -265,8 +265,10 @@ const computeSceneText = function(imageLayers) {
 
 function printLocationText(pixie, locationFont, locationLabel) {
   pixie.rotate(-90.0);
-  // we might want to measure the text and put a transparent pink underlay
-  // like the original Canvas style; or we could do it in the font bitmap?
+  let textLength = Jimp.measureText(locationFont, locationLabel+' ');
+  console.log(`Length of text ${locationLabel} plus a space is ${textLength}.`);
+  let undergray = new Jimp(textLength, 15, "#80808080");
+  pixie.composite(undergray, 25, 0); // nudge toward frame
   pixie.print(locationFont, 27, 0, locationLabel); // 175x125 image when rotated
   pixie.rotate(90.0);
 }
@@ -285,7 +287,8 @@ async function compose(params) {
   // OK here, can we mingle preloaded and path-ref layers?
   // we're peeling off the paths and then reading them in order;
   // for preloaded layers, we should be able to return a fulfilled
-  // Promise instead.
+  // Promise instead. See preloads.js for Layer.toJimp() which can
+  // be called before taking a web request.
 
   const sceneText = computeSceneText(layers);
   console.log(`sceneText\n${sceneText}`);
