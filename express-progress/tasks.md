@@ -309,7 +309,7 @@ used, including font resources and the Recurse Center.
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
-- [ ] Create resources.js to preload image/desc layers and fonts, like pixie-composer.js .
+- [X] Create preloads.js to preload image/desc layers and fonts, like pixie-composer.js .
 - [ ] Refer to resources in composer, removing layer metadata, text, and image loads.
 - [ ] Pixel doll layer resources use specific descriptions by set/doll.
 - [ ] THEREBY: preloading local resources to simplify composition stage

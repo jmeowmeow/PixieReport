@@ -79,7 +79,7 @@ const weatherhash = {
 
 
 const layerByName = function(name) {
-  // testing preloaded images from resources
+  // preloaded images from resources
   if (name === "blank") {
     return resources.noLayer;
   }
@@ -136,7 +136,7 @@ function addCloudLayer(layerFiles, params) {
 
 function addLightningLayer(layerFiles, params) {
   if (params.weather && params.weather.includes('Lightning observed')) {
-    layerFiles.push(new Layer('lightning', layerMap.lightning));
+    layerFiles.push(layerByName('lightning'));
   }
   // default: add no lightning.
 };
