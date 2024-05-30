@@ -295,6 +295,11 @@ BMFont pixel font definitions. The rendering doesn't seem as crisp
 as I'd like (TrueType to pixel, rather than native pixel font) but
 I can dot it in since I want a fixed-width font.
 
+![KLAN-iosevska-ss04.png](./KLAN-iosevska-ss04.png)
+
+Maybe I want a /credits or /about which describes tools and stuff
+used, including font resources and the Recurse Center.
+
 ### Alt text creation breakdown
 - TO ACCOMPLISH: Creating alt-text describing an image.
 - [X] Introduce Layer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
@@ -319,7 +324,7 @@ I can dot it in since I want a fixed-width font.
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
-- [ ] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
+- [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp
