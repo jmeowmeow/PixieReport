@@ -4,7 +4,7 @@ const app = express();
 const port = 3000;
 const {stations, resources, Jimp} = require('./pixifier/preloads');
 const {compose} = require('./compose-async');
-const {decodedToParamObject} = require('./pixifier/decoded-metar-parser'); //icao.js used
+const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 const codes = [];
@@ -133,8 +133,13 @@ app.get('/compose', async (req, res) => {
   let jsonOutput = JSON.stringify(params, null, 2);
   // add a "stations" lookup
   let icaoLocData = stations.get(location);
+  let mapUrl = worldMapLink(params);
+  let mapLink = '';
+  if (mapUrl.startsWith('http')) {
+     mapLink = `<a href="${mapUrl}">${mapUrl}</a>`;
+  }
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => { 
-    const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><pre>${jsonOutput}</pre>`;
+    const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><pre>${jsonOutput}</pre>`;
     res.send(responseBody); });
 });
 

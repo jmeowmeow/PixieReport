@@ -300,6 +300,20 @@ I can dot it in since I want a fixed-width font.
 Maybe I want a /credits or /about which describes tools and stuff
 used, including font resources and the Recurse Center.
 
+Thu 30 May 2024 09:08:57 AM PDT
+
+The Express/Jimp/Node stack is producing acceptable pixies with text.
+
+We still need to be able to use and choose alternate pixie sets.
+
+Thursday intentions:
+- [X] Collect necessary tasks from above and move below. *(we're good, actually)*
+- [X] Investigate longitude logic. I think EGLC is wrong in parsing minutes of longitude. *It's actually fine, the disagreement was ICAO.js (03 min east) versus the live report (30 min west)*.
+- [X] Collect a task group for soft launch. Use "Full PixieReport" below.
+- [ ] Collect a task group for being ready for code review / promotion to main.
+ 
+* Tasks from above are reflected in "Jimp Layer and Pixie Preload breakdown" and "Next Step Directions" below.
+
 ### Alt text creation breakdown
 - TO ACCOMPLISH: Creating alt-text describing an image.
 - [X] Introduce Layer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
@@ -319,6 +333,23 @@ used, including font resources and the Recurse Center.
 - [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [ ] METAR stations as a queryable database; how to query? what lists?
 - [ ] Pick METAR stations from a map, like FedWiki map marker plugin.
+- [X] Restore open street map link. *In prototype Express web UI.*
+
+### Tasks to be Ready for Main Branch / Code Review
+
+* Presumes "Full PixieReport Function" below (pixie sets, etc.)
+
+- [ ] Remove unused files and functions.
+- [ ] Remove console.log for routine operations.
+- [ ] Update the prospectus document.
+- [ ] Add an about/credits/source/acknowledgements page.
+- [ ] Consider assertions as a prelude to tests.
+- [ ] Is there a jslint to run for suggested cleanup?
+- [ ] Express.js model app format to review?
+- [ ] Replace let or global with const as possible.
+- [ ] Name output template strings rather than leaving nameless inline.
+
+
 
 ---
 
