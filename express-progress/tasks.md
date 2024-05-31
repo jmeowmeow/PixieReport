@@ -300,6 +300,13 @@ I can dot it in since I want a fixed-width font.
 Maybe I want a /credits or /about which describes tools and stuff
 used, including font resources and the Recurse Center.
 
+### Alt text creation breakdown (complete in mechanism, pending user UI composition)
+- TO ACCOMPLISH: Creating alt-text describing an image.
+- [X] Introduce Layer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
+- [X] Add an alt-text composer based on computeSceneText (layer.desc), computeAltText.
+- [X] Put the alt text in the alt= attribute of the composed image.
+- [X] THEREBY: Restoring alt-text generation.
+
 Thu 30 May 2024 09:08:57 AM PDT
 
 The Express/Jimp/Node stack is producing acceptable pixies with text.
@@ -310,16 +317,17 @@ Thursday intentions:
 - [X] Collect necessary tasks from above and move below. *(we're good, actually)*
 - [X] Investigate longitude logic. I think EGLC is wrong in parsing minutes of longitude. *It's actually fine, the disagreement was ICAO.js (03 min east) versus the live report (30 min west)*.
 - [X] Collect a task group for soft launch. Use "Full PixieReport" below.
-- [ ] Collect a task group for being ready for code review / promotion to main.
+- [X] Collect a task group for being ready for code review / promotion to main.
  
 * Tasks from above are reflected in "Jimp Layer and Pixie Preload breakdown" and "Next Step Directions" below.
+* Approaches to a common preload / overload mechanism.
+    * We have `layerDefsPixie0.js`, etc., whose weather and bg defs are largely redundant.
+    * We could keep the weatherhash, skyhash, etc. with Pixie0.js or factor them out.
+    * Maybe each pixie set will have a named layer map with pixie layers and any overrides.
+    * "overrides" = right now the night fireworks background, or the night comet for Moomin.
+* Probably easier to read the data setup if we pull out the standard weather/bg/cloud layers.
 
-### Alt text creation breakdown
-- TO ACCOMPLISH: Creating alt-text describing an image.
-- [X] Introduce Layer class following the pattern for Layer, mainLayerDefs in pixie-composer.js .
-- [X] Add an alt-text composer based on computeSceneText (layer.desc), computeAltText.
-- [X] Put the alt text in the alt= attribute of the composed image.
-- [X] THEREBY: Restoring alt-text generation.
+- [ ] When no data loads: put in the METAR station code, not ????; align "no time".
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.

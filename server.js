@@ -127,7 +127,7 @@ app.get('/compose', async (req, res) => {
   }
   let report = await fetchMETAR(location);
   const params = decodedToParamObject(report);
-  let title = `Hello from ${location}.`;
+  let title = `Pixel Doll Weather Report from  ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
   let jsonOutput = JSON.stringify(params, null, 2);
