@@ -330,6 +330,7 @@ Thursday intentions:
 
 ## Next Step Directions
 - [ ] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
+- [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [ ] METAR stations as a queryable database; how to query? what lists?
 - [ ] Pick METAR stations from a map, like FedWiki map marker plugin.
@@ -340,6 +341,7 @@ Thursday intentions:
 * Presumes "Full PixieReport Function" below (pixie sets, etc.)
 
 - [ ] Remove unused files and functions.
+- [ ] Remove neglected endpoint handlers which have served their purpose
 - [ ] Remove console.log for routine operations.
 - [ ] Update the prospectus document.
 - [ ] Add an about/credits/source/acknowledgements page.
