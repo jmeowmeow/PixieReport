@@ -327,7 +327,33 @@ Thursday intentions:
     * "overrides" = right now the night fireworks background, or the night comet for Moomin.
 * Probably easier to read the data setup if we pull out the standard weather/bg/cloud layers.
 
-- [ ] When no data loads: put in the METAR station code, not ????; align "no time".
+- [ ] When no data loads: put in the METAR station code, not ????; align "no time". *When investigating this, I see it's part of the METAR parser.*
+
+
+Fri 31 May 2024 08:56:00 AM PDT
+
+Friday intentions:
+
+- [ ] Move forward on the preloads extraction.
+
+So far: pixies.js is aggregating the various pixie sets but
+wants to be re-done with actual Jimp Layers I think.
+
+Mon 03 Jun 2024 08:41:38 AM PDT
+
+Monday intentions:
+
+- [ ] Move forward on the extraction of layers from compose-async to preloads
+
+Results: a promise doesn't hold the current working directory, so anything
+escaping "preloads" ends up as a file-not-found. Awkward coupling outside
+of the original Layer definitions that wants an extra trip to the filesystem
+to resolve.
+
+Tue 04 Jun 2024 08:45:28 AM PDT
+
+- [ ] Get the preloaded layers working. It's OK to put a Promise.all() to provoke loads.
+
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
