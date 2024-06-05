@@ -80,6 +80,9 @@ const weatherhash = {
 
 const layerByName = function(name) {
   // preloaded images from resources
+  // resources.namedLayers first.
+  let layer = resources.namedLayers.get(name);
+  if (layer) { console.log(`found ${name} in namedLayers`); return layer; }
   if (name === "blank") {
     return resources.noLayer;
   }

@@ -67,6 +67,7 @@ namedLayers.set("hurricane", new Layer('two red and black hurricane warning flag
 
 let promises = [];
 namedLayers.forEach(layer => { promises.push(layer.toJimp())});
+// Resolution gets printed after the "Server listening" message.
 Promise.allSettled(promises).then((results) => {console.log(results.length)}).catch(console.error);
 
 const layerDescMap = {
@@ -144,7 +145,7 @@ for (const entry of namedLayers.entries()) {console.log(JSON.stringify(entry)); 
 
 const metarToLocationMap = new Map();
 Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
-// many image load promises; also need import "fs"; see compose-async.js for models
+
 exports.stations = metarToLocationMap;
 exports.resources = resources;
 exports.Jimp = Jimp;
