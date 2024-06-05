@@ -82,7 +82,7 @@ const layerByName = function(name) {
   // preloaded images from resources
   // resources.namedLayers first.
   let layer = resources.namedLayers.get(name);
-  if (layer) { console.log(`found ${name} in namedLayers`); return layer; }
+  if (layer) { return layer; } else {console.log(`didn't find ${name} in namedLayers`); }
   if (name === "blank") {
     return resources.noLayer;
   }
@@ -286,7 +286,7 @@ async function compose(params) {
   addWindFlagLayer(layers, params);
   addWeatherLayers(layers, params);
   addFrame(layers, params);
-
+  console.log(`we now have ${layers.length} layers`);
   // OK here, can we mingle preloaded and path-ref layers?
   // we're peeling off the paths and then reading them in order;
   // for preloaded layers, we should be able to return a fulfilled
@@ -295,11 +295,13 @@ async function compose(params) {
 
   const sceneText = computeSceneText(layers);
   console.log(`sceneText\n${sceneText}`);
+  let blankCanvas = new Jimp(125, 175, "#000000");
   const jimpLayers = [];
+  jimpLayers.push(blankCanvas);
   const promises = layers.map(async (layer) => { return layer.toJimp();});
   await Promise.allSettled(promises).then((results) => {results.forEach((result) => jimpLayers.push(result.value)) }).catch(console.error);
 
-  let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // layer 0 is initial accumulator
+  let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // accumulate on fresh blank layer 0
 
   // write station and weather info (compute-image-text.js) - console.log for now
   const imageTextValues = computeImageTextValues(params);
