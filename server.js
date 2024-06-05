@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
-const {stations, resources, Jimp} = require('./pixifier/preloads');
+const {stations, resources, Jimp} = require('./preloads');
 const {compose} = require('./compose-async');
 const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
@@ -127,7 +127,7 @@ app.get('/compose', async (req, res) => {
   }
   let report = await fetchMETAR(location);
   const params = decodedToParamObject(report);
-  let title = `Pixel Doll Weather Report from  ${location}.`;
+  let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
   let jsonOutput = JSON.stringify(params, null, 2);

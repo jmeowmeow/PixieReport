@@ -1,4 +1,4 @@
-const {stations, resources, Jimp, Layer} = require('./pixifier/preloads');
+const {stations, resources, Jimp, Layer} = require('./preloads');
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 
