@@ -83,12 +83,6 @@ const layerByName = function(name) {
   // resources.namedLayers first.
   let layer = resources.namedLayers.get(name);
   if (layer) { return layer; } else {console.log(`didn't find ${name} in namedLayers`); }
-  if (name === "blank") {
-    return resources.noLayer;
-  }
-  if (name === "frame") {
-    return resources.frameLayer;
-  }
   let desc = layerDescMap[name];
   let path = layerMap[name];
   if (path === undefined) {
@@ -268,12 +262,19 @@ const computeSceneText = function(imageLayers) {
 
 function printLocationText(pixie, locationFont, locationLabel) {
   pixie.rotate(-90.0);
+  const textHeight = 15;
   let textLength = Jimp.measureText(locationFont, locationLabel+' ');
-  console.log(`Length of text ${locationLabel} plus a space is ${textLength}.`);
-  let undergray = new Jimp(textLength, 15, "#80808080");
-  pixie.composite(undergray, 25, 0); // nudge toward frame
+  let undergray = new Jimp(textLength, textHeight, "#80808080");
+  pixie.composite(undergray, 25, 0); // nudge text bkgd toward frame
   pixie.print(locationFont, 27, 0, locationLabel); // 175x125 image when rotated
   pixie.rotate(90.0);
+}
+
+function printTimeText(pixie, font, timeText) {
+    const pixieWidth = 125; // this is effectively global; naming it here.
+    const timeTextLength = Jimp.measureText(font, timeText);
+    const startX = pixieWidth - timeTextLength; // right-justify text
+    pixie.print(font, startX, 150, timeText); // below image, in text frame
 }
 
 async function compose(params) {
@@ -303,14 +304,13 @@ async function compose(params) {
 
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // accumulate on fresh blank layer 0
 
-  // write station and weather info (compute-image-text.js) - console.log for now
+  // write station and weather info (compute-image-text.js)
   const imageTextValues = computeImageTextValues(params);
-  const imageTextDump = JSON.stringify(imageTextValues);
-  console.log(`imageText: ${imageTextDump}`);
+  // add the fonts to preloads?
   let locationFontPath = "pixifier/bmfont/iosevska-ss04-bold-10green.fnt";
   await Jimp.loadFont(locationFontPath).then((font) => {
     printLocationText(pixie, font, imageTextValues.locationLabel);
-    pixie.print(font, 92, 150, imageTextValues.zuluTime);
+    printTimeText(pixie, font, imageTextValues.zuluTime);
   });
 
   let weatherFontPath = "pixifier/bmfont/iosevska-ss04-bold-13white.fnt";
