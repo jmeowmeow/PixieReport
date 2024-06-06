@@ -352,8 +352,26 @@ to resolve.
 
 Tue 04 Jun 2024 08:45:28 AM PDT
 
-- [ ] Get the preloaded layers working. It's OK to put a Promise.all() to provoke loads.
+Tuesday intentions:
 
+- [X] Get the preloaded layers working. It's OK to put a Promise.all() to provoke loads.
+
+The Promise.allSettled() is logged right after the server starts to listen. Since
+I gave up on ES6 modules, we have messier behavior around forced-async loads of
+necessary resources.
+
+Working for background, clouds, and weather. Fixed an issue where we were
+accumulating layers onto the background by adding a fresh blank image buffer
+to composite the pixie layers. Yay!
+
+Wed 05 Jun 2024 08:53:25 AM PDT
+
+Wednesday intentions:
+
+- [X] Complete extraction of weather and wind layers from compose-async to preloads. _We could use better logic for missing weather conditions, maybe addByNameIfDefined()._
+- [ ] Choose naming scheme for pixie set via get layer by name
+- [ ] Use preloaded pixel doll layers
+- [ ] Use alternate backgrounds for Moomin night, holiday night
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.

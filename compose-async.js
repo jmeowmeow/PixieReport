@@ -86,9 +86,14 @@ const layerByName = function(name) {
   let desc = layerDescMap[name];
   let path = layerMap[name];
   if (path === undefined) {
-    path = weatherhash[name];
+    path = weatherhash[name]; // not reliable! need to check if present (ice crystals?)
   }
-  return new Layer(desc, path);
+  if (path) {
+    return new Layer(desc, path);
+  } else {
+    console.log("no layer for "+name);
+    return null;
+  }
 }
 
 function backgroundLayer(params) {
@@ -184,10 +189,20 @@ function addWindFlagLayer(layerFiles, params) {
 function addWeatherLayers(layerFiles, params) {
   if (params.weather) {
     for (const cond of params.weather) {
+       const layer = layerByName(cond);
+       if (layer) {
+         console.log("using preloaded weather for "+cond);
+         layerFiles.push(layer);
+       } else {
+       console.log("no preloaded weather for "+cond);
        const weatherfile = weatherhash[cond];
        if (weatherfile) {
          layerFiles.push(new Layer(cond, weatherfile));
+       } else {
+         console.log("nor any layer defined for "+cond);
        }
+      }
+
     }
   }
 }
