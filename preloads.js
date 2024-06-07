@@ -86,6 +86,7 @@ namedLayers.set('patches of fog', namedLayers.get('fog'));
 namedLayers.set('light snow', new Layer('light snow', 'pixifier/pixies/weather/ltsnow.png'));
 namedLayers.set('snow', new Layer('snow', 'pixifier/pixies/weather/snow.png'));
 namedLayers.set('heavy snow', namedLayers.get('snow'));
+namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lightning.png'));
 
 let promises = [];
 namedLayers.forEach(layer => { promises.push(layer.toJimp())});

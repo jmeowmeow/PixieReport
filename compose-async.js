@@ -21,7 +21,7 @@ const layerDescMap = {
   "gale": 'two red gale warning pennants',
   "storm": 'a red and black storm warning flag',
   "hurricane": 'two red and black hurricane warning flags',
-  "lightning": "lightning",
+//  "lightning": "lightning",
   "frame": "black frame",
   'drizzle': 'drizzle',
   'light rain': 'light rain',
@@ -51,7 +51,7 @@ const layerMap = {
     "gale": "pixifier/pixies/highwind/daygale.png",
     "storm": "pixifier/pixies/highwind/daystorm.png",
     "hurricane": "pixifier/pixies/highwind/dayhurricane.png",
-    "lightning": "pixifier/pixies/weather/lightning.png",
+//    "lightning": "pixifier/pixies/weather/lightning.png",
     "frame": "pixifier/pixies/backgrounds/blackframe.png",
 };
 
@@ -86,13 +86,13 @@ const layerByName = function(name) {
   let desc = layerDescMap[name];
   let path = layerMap[name];
   if (path === undefined) {
-    path = weatherhash[name]; // not reliable! need to check if present (ice crystals?)
+    path = weatherhash[name];
   }
   if (path) {
     return new Layer(desc, path);
   } else {
     console.log("no layer for "+name);
-    return null;
+    return null; // cannot return blank because of image weather text description
   }
 }
 
@@ -194,12 +194,12 @@ function addWeatherLayers(layerFiles, params) {
          console.log("using preloaded weather for "+cond);
          layerFiles.push(layer);
        } else {
-       console.log("no preloaded weather for "+cond);
        const weatherfile = weatherhash[cond];
        if (weatherfile) {
+         console.log("need to add a preload for "+cond);
          layerFiles.push(new Layer(cond, weatherfile));
        } else {
-         console.log("nor any layer defined for "+cond);
+         console.log("no preload nor any layer defined for "+cond);
        }
       }
 
