@@ -2,80 +2,9 @@ const {stations, resources, Jimp, Layer} = require('./preloads');
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 
-const layerDescMap = {
-  "none": "",
-  "night": "night",
-  "gray": "gray twilight",
-  "pink": "dusk",
-  "day": "day",
-  "noPixie": "no pixel doll",
-  "icyPixie": "a pixel doll dressed for icy weather",
-  "coldPixie": "a pixel doll dressed for cold weather",
-  "coolPixie": "a pixel doll dressed for cool weather",
-  "warmPixie": "a pixel doll dressed for warm weather",
-  "hotPixie": "a pixel doll dressed for hot weather",
-  "clear": "clear",
-  "cloudy": "cloudy",
-  "overcast": "overcast",
-  "warning": 'a red high wind warning pennant',
-  "gale": 'two red gale warning pennants',
-  "storm": 'a red and black storm warning flag',
-  "hurricane": 'two red and black hurricane warning flags',
-//  "lightning": "lightning",
-  "frame": "black frame",
-  'drizzle': 'drizzle',
-  'light rain': 'light rain',
-  'rain': 'rain',
-  'mist': 'mist',
-  'fog': 'fog',
-  'light snow': 'light snow',
-  'snow': 'snow',
-  'heavy snow': 'heavy snow',
-};
 
-const layerMap = {
-    "none": "pixifier/pixies/weather/blank.png",
-    "night": "pixifier/pixies/backgrounds/starrynightbkg.png",
-    "gray": "pixifier/pixies/backgrounds/graybackground.png",
-    "pink": "pixifier/pixies/backgrounds/pinkbackground.png",
-    "day": "pixifier/pixies/backgrounds/sunnybackground.png",
-    "icyPixie": "pixifier/pixies/pixieselfie/pixie-icy.png",
-    "coldPixie": "pixifier/pixies/pixieselfie/pixie-cold.png",
-    "coolPixie": "pixifier/pixies/pixieselfie/pixie-cool.png",
-    "warmPixie": "pixifier/pixies/pixieselfie/pixie-warm.png",
-    "hotPixie": "pixifier/pixies/pixieselfie/pixie-hot.png",
-    "clear": "pixifier/pixies/skycond/blank.png",
-    "cloudy": "pixifier/pixies/skycond/clouds.png",
-    "overcast": "pixifier/pixies/skycond/overcast.png",
-    "warning": "pixifier/pixies/highwind/daywarn.png",
-    "gale": "pixifier/pixies/highwind/daygale.png",
-    "storm": "pixifier/pixies/highwind/daystorm.png",
-    "hurricane": "pixifier/pixies/highwind/dayhurricane.png",
-//    "lightning": "pixifier/pixies/weather/lightning.png",
-    "frame": "pixifier/pixies/backgrounds/blackframe.png",
-};
-
-// coalesced from pixie-composer.js
-// weather we show: keys of weatherhash (drizzle, rain, mist, fog, snow)
-// weather we don't: haze, smoke, dust, volcanic ash
-const weatherhash = {
-      'none':           'pixifier/pixies/weather/blank.png',
-      'light drizzle':  'pixifier/pixies/weather/ltrain.png',
-      'drizzle':        'pixifier/pixies/weather/drizzle.png',
-      'heavy drizzle':  'pixifier/pixies/weather/drizzle.png',
-      'light rain':     'pixifier/pixies/weather/ltrain.png',
-      'light rain with thunder':     'pixifier/pixies/weather/ltrain.png',
-      'rain':           'pixifier/pixies/weather/rain.png',
-      'rain with thunder':           'pixifier/pixies/weather/rain.png',
-      'heavy rain':     'pixifier/pixies/weather/rain.png',
-      'heavy rain with thunder':           'pixifier/pixies/weather/rain.png',
-      'mist':           'pixifier/pixies/weather/mist.png',
-      'fog':            'pixifier/pixies/weather/fog.png',
-      'patches of fog': 'pixifier/pixies/weather/fog.png',
-      'light snow':     'pixifier/pixies/weather/ltsnow.png',
-      'snow':           'pixifier/pixies/weather/snow.png',
-      'heavy snow':     'pixifier/pixies/weather/snow.png',
-      };
+// weather we show: drizzle, rain, mist, fog, snow
+// weather we don't: haze, smoke, dust, volcanic ash, ice crystals
 
 
 const layerByName = function(name) {
@@ -83,18 +12,9 @@ const layerByName = function(name) {
   // resources.namedLayers first.
   let layer = resources.namedLayers.get(name);
   if (layer) { return layer; } else {console.log(`didn't find ${name} in namedLayers`); }
-  let desc = layerDescMap[name];
-  let path = layerMap[name];
-  if (path === undefined) {
-    path = weatherhash[name];
+  console.log("no layer for "+name);
+  return null; // cannot return blank because of image weather text description
   }
-  if (path) {
-    return new Layer(desc, path);
-  } else {
-    console.log("no layer for "+name);
-    return null; // cannot return blank because of image weather text description
-  }
-}
 
 function backgroundLayer(params) {
   if (params.sunPos && params.sunPos.zenithAngle) {
@@ -117,21 +37,11 @@ function addBackgroundLayer(layerFiles, params) {
   layerFiles.push(backgroundLayer(params));
 }
 
-// coalesced from pixie-composer.js (skyhash, parsed sky condition to which cloud image)
-const skyhash = {
-      'clear':         layerMap.clear,
-      'mostly clear':  layerMap.cloudy,
-      'partly cloudy': layerMap.cloudy,
-      'mostly cloudy': layerMap.cloudy,
-      'overcast':      layerMap.overcast,
-      'obscured':      layerMap.overcast
-      };
-
 // see skyCover parsing clouds in decoded-metar-parser.js ; cloudLayer uses the parsed value
 function addCloudLayer(layerFiles, params) {
   let skyCover = params.skyCover;
   if (skyCover) {
-    layerFiles.push(new Layer(skyCover, skyhash[skyCover]));
+    layerFiles.push(layerByName(skyCover));
   }
   // default: add no layer.
 };
@@ -162,7 +72,7 @@ function addDollLayer(layerFiles, params) {
       layerFiles.push(layerByName('hotPixie'));
     }
   } else {
-    layerFiles.push(new Layer(layerDescMap.noPixie, layerMap.none));
+    layerFiles.push(layerByName('noPixie'));
   }
 }
 
@@ -194,18 +104,12 @@ function addWeatherLayers(layerFiles, params) {
          console.log("using preloaded weather for "+cond);
          layerFiles.push(layer);
        } else {
-       const weatherfile = weatherhash[cond];
-       if (weatherfile) {
-         console.log("need to add a preload for "+cond);
-         layerFiles.push(new Layer(cond, weatherfile));
-       } else {
          console.log("no preload nor any layer defined for "+cond);
        }
       }
 
     }
   }
-}
 
 function addFrame(layerFiles, params) {
   layerFiles.push(layerByName('frame'));
@@ -231,7 +135,10 @@ const computeSceneText = function(imageLayers) {
   // imageLayers stack of layers: [day/night, skycover, lightning?, pixie, wind?, weather?, frame]
   // OK pixie is always [2] or if lightning is present, [3]; frame is always last
   // a(n) $1 $0 scene [with wind flags, lightning, rain, and fog], showing [pixie]
-  const layerNames = imageLayers.map(layer => layer.desc);
+
+  // all right where is this null coming from? it's the pixel doll!
+
+  const layerNames = imageLayers.map(layer => { if (layer) { return layer.desc; } else { return "NULL LAYER"; }});
   const skycover = layerNames[1];
   const daynight = layerNames[0];
 

@@ -6,6 +6,27 @@
 // image loading unless we embed the images as String
 // resources and decode them.
 
+var dollsByWeather;
+const moomindescs = require('./pixifier/pixies/pixiemoomin/dolldesc.js');
+const pixie0descs = require('./pixifier/pixies/pixie0/dolldesc.js');
+const bunnydescs  = require('./pixifier/pixies/pixiebunny/dolldesc.js');
+const selfiedescs = require('./pixifier/pixies/pixieselfie/dolldesc.js');
+const xmasdescs   = require('./pixifier/pixies/pixiexmas/dolldesc.js');
+
+const dd = new Map();
+dd.set('moomin', moomindescs.dollsByWeather);
+dd.set('pixie0', pixie0descs.dollsByWeather);
+dd.set('selfie', selfiedescs.dollsByWeather);
+dd.set('bunny', bunnydescs.dollsByWeather);
+dd.set('xmas', xmasdescs.dollsByWeather);
+
+const pixiesets = new Map();
+pixiesets.set('moomin', './pixifier/pixies/pixiemoomin/');
+pixiesets.set('pixie0', './pixifier/pixies/pixie0/');
+pixiesets.set('selfie', './pixifier/pixies/pixieselfie/');
+pixiesets.set('bunny', './pixifier/pixies/pixiebunny/');
+pixiesets.set('xmas', './pixifier/pixies/pixiexmas/');
+const pixieFiles = ['pixie-icy.png', 'pixie-cold.png', 'pixie-cool.png', 'pixie-warm.png', 'pixie-hot.png'];
 const { icaoToLocationMap } = require('./pixifier/icao.js');
 const Jimp = require("jimp"); // used here and in composer.
 const resources = {};
@@ -47,6 +68,19 @@ resources.namedLayers = namedLayers;
 namedLayers.set("none", noLayer);
 namedLayers.set("frame", frameLayer);
 
+// let's make some pixie layers!
+// name = pixiesets key / icyPixie ... hotPixie, path (pixiesets) X (pixieFiles)
+const icyBunny = new Layer(dd.get('bunny')[0], ''+pixiesets.get('bunny')+pixieFiles[0]);
+const coldBunny = new Layer(dd.get('bunny')[1], ''+pixiesets.get('bunny')+pixieFiles[1]);
+const coolBunny = new Layer(dd.get('bunny')[2], ''+pixiesets.get('bunny')+pixieFiles[2]);
+const warmBunny = new Layer(dd.get('bunny')[3], ''+pixiesets.get('bunny')+pixieFiles[3]);
+const hotBunny = new Layer(dd.get('bunny')[4], ''+pixiesets.get('bunny')+pixieFiles[4]);
+namedLayers.set('icyPixie', icyBunny);
+namedLayers.set('coldPixie', coldBunny);
+namedLayers.set('coolPixie', coolBunny);
+namedLayers.set('warmPixie', warmBunny);
+namedLayers.set('hotPixie', hotBunny);
+
 namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
 namedLayers.set("pink", new Layer("dusk", "pixifier/pixies/backgrounds/pinkbackground.png"));
@@ -55,6 +89,11 @@ namedLayers.set("noPixie", new Layer("no pixel doll", "pixifier/pixies/weather/b
 namedLayers.set("clear", new Layer("clear", "pixifier/pixies/skycond/blank.png"));
 namedLayers.set("cloudy", new Layer("cloudy", "pixifier/pixies/skycond/clouds.png"));
 namedLayers.set("overcast", new Layer("overcast", "pixifier/pixies/skycond/overcast.png"));
+
+namedLayers.set('mostly clear', namedLayers.get('cloudy'));
+namedLayers.set('partly cloudy', namedLayers.get('cloudy'));
+namedLayers.set('mostly cloudy', namedLayers.get('cloudy'));
+namedLayers.set('obscured', namedLayers.get('overcast'));
 
 namedLayers.set("warning", new Layer('a red high wind warning pennant', "pixifier/pixies/highwind/daywarn.png"));;
 namedLayers.set("gale", new Layer('two red gale warning pennants', "pixifier/pixies/highwind/daygale.png"));

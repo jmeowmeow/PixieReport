@@ -369,9 +369,20 @@ Wed 05 Jun 2024 08:53:25 AM PDT
 Wednesday intentions:
 
 - [X] Complete extraction of weather and wind layers from compose-async to preloads. _We could use better logic for missing weather conditions, maybe addByNameIfDefined()._
+
+Pixel doll items rolled over to Thursday, Friday
+
+Thu 06 Jun 2024 09:21:46 AM PDT
+
+EoD: scrubbed all non-preloads, left with setting up the pixel doll image loading.
+
+Fri 07 Jun 2024 09:18:51 AM PDT
+
+Pixel doll layers and alternate backgrounds. Rolling over items from Wednesday.
 - [ ] Choose naming scheme for pixie set via get layer by name
 - [ ] Use preloaded pixel doll layers
 - [ ] Use alternate backgrounds for Moomin night, holiday night
+
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
