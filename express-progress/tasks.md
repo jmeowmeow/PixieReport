@@ -378,16 +378,18 @@ EoD: scrubbed all non-preloads, left with setting up the pixel doll image loadin
 
 Fri 07 Jun 2024 09:18:51 AM PDT
 
+Pixel doll image preloads were a bit of a mess.
+
 Pixel doll layers and alternate backgrounds. Rolling over items from Wednesday.
 - [ ] Choose naming scheme for pixie set via get layer by name
-- [ ] Use preloaded pixel doll layers
+- [X] Use preloaded pixel doll layers (pixiebunny)
 - [ ] Use alternate backgrounds for Moomin night, holiday night
 
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
 - [X] Create preloads.js to preload image/desc layers and fonts, like pixie-composer.js .
-- [ ] Refer to resources in composer, removing layer metadata, text, and image loads.
+- [X] Refer to resources in composer, removing layer metadata, text, and image loads.
 - [ ] Pixel doll layer resources use specific descriptions by set/doll.
 - [ ] THEREBY: preloading local resources to simplify composition stage
 
