@@ -385,12 +385,22 @@ Pixel doll layers and alternate backgrounds. Rolling over items from Wednesday.
 - [X] Use preloaded pixel doll layers (pixiebunny)
 - [ ] Use alternate backgrounds for Moomin night, holiday night
 
+Mon 10 Jun 2024
+* Deployed previous ("selfie") version of the dev server publicly.
+
+Tue 11 Jun 2024 10:23:52 AM PDT
+* Deployed latest ("bunny", pixie preloads) version of the dev server publicly.
+
+Tuesday intentions:
+- [ ] Preload all doll sets with alt-text descriptions.
+- [ ] Choose naming scheme for pixie set via get layer by name
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
 - [X] Create preloads.js to preload image/desc layers and fonts, like pixie-composer.js .
 - [X] Refer to resources in composer, removing layer metadata, text, and image loads.
-- [ ] Pixel doll layer resources use specific descriptions by set/doll.
+- [X] Pixel doll layer resources use specific descriptions by set/doll.
+- [ ] All doll sets are preloaded.
 - [ ] THEREBY: preloading local resources to simplify composition stage
 
 ## Next Step Directions

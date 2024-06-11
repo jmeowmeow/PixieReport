@@ -54,19 +54,10 @@ class Layer {
   }
 }
 
-const noLayer = new Layer("none", "pixifier/pixies/weather/blank.png");
-const frameLayer = new Layer("black frame", "pixifier/pixies/backgrounds/blackframe.png");
-
-noLayer.toJimp();
-frameLayer.toJimp();
-
-resources.noLayer = noLayer;
-resources.frameLayer = frameLayer;
-
 const namedLayers = new Map();
 resources.namedLayers = namedLayers;
-namedLayers.set("none", noLayer);
-namedLayers.set("frame", frameLayer);
+namedLayers.set("none", new Layer("none", "pixifier/pixies/weather/blank.png"));
+namedLayers.set("frame", new Layer("black frame", "pixifier/pixies/backgrounds/blackframe.png"));
 
 // let's make some pixie layers!
 // name = pixiesets key / icyPixie ... hotPixie, path (pixiesets) X (pixieFiles)
