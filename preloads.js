@@ -20,12 +20,12 @@ dd.set('selfie', selfiedescs.dollsByWeather);
 dd.set('bunny', bunnydescs.dollsByWeather);
 dd.set('xmas', xmasdescs.dollsByWeather);
 
-const pixiesets = new Map();
-pixiesets.set('moomin', './pixifier/pixies/pixiemoomin/');
-pixiesets.set('pixie0', './pixifier/pixies/pixie0/');
-pixiesets.set('selfie', './pixifier/pixies/pixieselfie/');
-pixiesets.set('bunny', './pixifier/pixies/pixiebunny/');
-pixiesets.set('xmas', './pixifier/pixies/pixiexmas/');
+const pixiepaths = new Map();
+pixiepaths.set('moomin', './pixifier/pixies/pixiemoomin/');
+pixiepaths.set('pixie0', './pixifier/pixies/pixie0/');
+pixiepaths.set('selfie', './pixifier/pixies/pixieselfie/');
+pixiepaths.set('bunny', './pixifier/pixies/pixiebunny/');
+pixiepaths.set('xmas', './pixifier/pixies/pixiexmas/');
 const pixieFiles = ['pixie-icy.png', 'pixie-cold.png', 'pixie-cool.png', 'pixie-warm.png', 'pixie-hot.png'];
 const { icaoToLocationMap } = require('./pixifier/icao.js');
 const Jimp = require("jimp"); // used here and in composer.
@@ -59,18 +59,39 @@ resources.namedLayers = namedLayers;
 namedLayers.set("none", new Layer("none", "pixifier/pixies/weather/blank.png"));
 namedLayers.set("frame", new Layer("black frame", "pixifier/pixies/backgrounds/blackframe.png"));
 
-// let's make some pixie layers!
-// name = pixiesets key / icyPixie ... hotPixie, path (pixiesets) X (pixieFiles)
-const icyBunny = new Layer(dd.get('bunny')[0], ''+pixiesets.get('bunny')+pixieFiles[0]);
-const coldBunny = new Layer(dd.get('bunny')[1], ''+pixiesets.get('bunny')+pixieFiles[1]);
-const coolBunny = new Layer(dd.get('bunny')[2], ''+pixiesets.get('bunny')+pixieFiles[2]);
-const warmBunny = new Layer(dd.get('bunny')[3], ''+pixiesets.get('bunny')+pixieFiles[3]);
-const hotBunny = new Layer(dd.get('bunny')[4], ''+pixiesets.get('bunny')+pixieFiles[4]);
-namedLayers.set('icyPixie', icyBunny);
-namedLayers.set('coldPixie', coldBunny);
-namedLayers.set('coolPixie', coolBunny);
-namedLayers.set('warmPixie', warmBunny);
-namedLayers.set('hotPixie', hotBunny);
+// let's make some pixie layers! and save them in the layer lookups!
+const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, layers) {
+  const tempLevel = ['icy', 'cold', 'cool', 'warm', 'hot'];
+  let pixieLayers = [];
+  for (const i in [0,1,2,3,4]) {
+    const dollLayer = new Layer(dollDescs.get(whichPixie)[i], ''+dollPaths.get(whichPixie)+dollFiles[i]);
+    pixieLayers.push(dollLayer);
+    const pixieNameBySetAndTemp = ''+whichPixie+'/'+tempLevel[i]+'Pixie';
+    layers.set(pixieNameBySetAndTemp, dollLayer); // shared layers
+  }
+  return pixieLayers; // this set's layers only
+}
+
+const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+const bunnyLayers  = savePixieLayers(setNames[0], dd, pixiepaths, pixieFiles, namedLayers);
+const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, namedLayers);
+const pixie0Layers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, namedLayers);
+const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
+
+// We should probably pick the doll set in the server or composer, but for now, here.
+
+const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers];
+const chosenDollSet = dollLayerSets[Math.trunc(Math.random()*4)];
+const icyDoll  = chosenDollSet[0];
+const coldDoll = chosenDollSet[1];
+const coolDoll = chosenDollSet[2];
+const warmDoll = chosenDollSet[3];
+const hotDoll  = chosenDollSet[4];
+namedLayers.set('icyPixie', icyDoll);
+namedLayers.set('coldPixie', coldDoll);
+namedLayers.set('coolPixie', coolDoll);
+namedLayers.set('warmPixie', warmDoll);
+namedLayers.set('hotPixie', hotDoll);
 
 namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
@@ -121,7 +142,7 @@ namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lig
 let promises = [];
 namedLayers.forEach(layer => { promises.push(layer.toJimp())});
 // Resolution gets printed after the "Server listening" message.
-Promise.allSettled(promises).then((results) => {console.log(results.length)}).catch(console.error);
+Promise.allSettled(promises).then((results) => {console.log(`named layers size = ${results.length}`)}).catch(console.error);
 
 for (const entry of namedLayers.entries()) {console.log(JSON.stringify(entry)); console.log('');}
 

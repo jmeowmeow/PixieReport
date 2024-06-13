@@ -318,7 +318,7 @@ Thursday intentions:
 - [X] Investigate longitude logic. I think EGLC is wrong in parsing minutes of longitude. *It's actually fine, the disagreement was ICAO.js (03 min east) versus the live report (30 min west)*.
 - [X] Collect a task group for soft launch. Use "Full PixieReport" below.
 - [X] Collect a task group for being ready for code review / promotion to main.
- 
+
 * Tasks from above are reflected in "Jimp Layer and Pixie Preload breakdown" and "Next Step Directions" below.
 * Approaches to a common preload / overload mechanism.
     * We have `layerDefsPixie0.js`, etc., whose weather and bg defs are largely redundant.
@@ -394,6 +394,47 @@ Tue 11 Jun 2024 10:23:52 AM PDT
 Tuesday intentions:
 - [ ] Preload all doll sets with alt-text descriptions.
 - [ ] Choose naming scheme for pixie set via get layer by name
+
+Wed 12 Jun 2024 09:18:25 AM PDT
+
+Deploying was super fun because I got to hit the URL and see it
+working and I got to share with M.D. Hill and others.
+
+A thought: right now the response for the / and the /compose
+endpoints are really developer views.
+What would the user view be? Other stations nearby?
+What would the navigation be?
+
+The site, in my imagination:
+* has a landing page
+* has left or top nav - what are minimum ARIA
+* has a pixie builder wizard
+* can support bookmarking or redirection
+* can serve just-the-picture or an image transclusion-as-iframe
+    * can an iframe support javascript or SVG+js doc content?
+* should be kind of usable with different devices: media selectors?
+
+Right. iFrames. The Frame plugin.
+
+I guess I'll, idk, ask the question in a couple of forums?
+
+Also, recall that HTTP headers (or meta tags) support content
+refresh, which was the neat trick behind the Web Slideshow:
+serving a header which instructed the browser to refresh the
+view, then serving a Location for the content. Can an iFrame
+have "meta refresh" in it to pull the same trick? Saves us
+a pile of client-side javascript.
+
+Wednesday intentions: rollover Tuesday
+- [ ] Preload all doll sets with alt-text descriptions.
+- [ ] Choose naming scheme for pixie set via get layer by name
+
+Thu 13 Jun 2024 09:39:59 AM PDT
+
+Thursday intentions: rollover Wednesday
+- [X] Preload all doll sets with alt-text descriptions.
+- [X] Choose naming scheme for pixie set via get layer by name
+- [ ] Address which pixie set via params.
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.

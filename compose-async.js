@@ -1,6 +1,7 @@
 const {stations, resources, Jimp, Layer} = require('./preloads');
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
+const LIGHTNING_PARSED = 'Lightning observed';
 
 
 // weather we show: drizzle, rain, mist, fog, snow
@@ -47,7 +48,7 @@ function addCloudLayer(layerFiles, params) {
 };
 
 function addLightningLayer(layerFiles, params) {
-  if (params.weather && params.weather.includes('Lightning observed')) {
+  if (params.weather && params.weather.includes(LIGHTNING_PARSED)) {
     layerFiles.push(layerByName('lightning'));
   }
   // default: add no lightning.
@@ -99,17 +100,25 @@ function addWindFlagLayer(layerFiles, params) {
 function addWeatherLayers(layerFiles, params) {
   if (params.weather) {
     for (const cond of params.weather) {
-       const layer = layerByName(cond);
-       if (layer) {
-         console.log("using preloaded weather for "+cond);
-         layerFiles.push(layer);
-       } else {
-         console.log("no preload nor any layer defined for "+cond);
-       }
+      if (cond == LIGHTNING_PARSED) {
+        // known case handled elsewhere, skip
+      } else {
+        const layer = layerByName(cond);
+        if (layer) {
+          // known weather types and aliases; this is us
+          // translating Weather Service text into images;
+          // the mappings are in namedLayers in preloads.js
+          // e.g. TSRA- = "light rain with thunder" = ltrain.png
+          console.log("using preloaded weather for " + cond);
+          layerFiles.push(layer);
+        } else {
+          // ice crystals, smoke, frogs, unknown weather types
+          console.log("no preload nor any weather layer defined for " + cond);
+        }
       }
-
     }
   }
+}
 
 function addFrame(layerFiles, params) {
   layerFiles.push(layerByName('frame'));
@@ -159,6 +168,7 @@ const computeSceneText = function(imageLayers) {
 
   let pixieDesc = 'a pixel doll dressed for the weather';
 
+  // implicitly assert layer name is string-like, not null or undefined
   if (layerNames[0].match(/lightning/)) {
     var ltng = layerNames.shift();
     pixieDesc = layerNames.shift(); // did we drop it if there's lightning?
