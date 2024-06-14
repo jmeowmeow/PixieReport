@@ -11,7 +11,6 @@ const layerByName = function(name) {
   // resources.namedLayers first.
   let layer = resources.namedLayers.get(name);
   if (layer) { return layer; } else {console.log(`didn't find ${name} in namedLayers`); }
-  console.log("no layer for "+name);
   return null; // cannot return blank because of image weather text description
   }
 
@@ -111,11 +110,10 @@ function addWeatherLayers(layerFiles, params) {
           // translating Weather Service text into images;
           // the mappings are in namedLayers in preloads.js
           // e.g. TSRA- = "light rain with thunder" = ltrain.png
-          console.log("using preloaded weather for " + cond);
           layerFiles.push(layer);
         } else {
           // ice crystals, smoke, frogs, unknown weather types
-          console.log("no preload nor any weather layer defined for " + cond);
+          console.log("no weather layer defined for " + cond);
         }
       }
     }
@@ -221,15 +219,7 @@ async function compose(params) {
   addWindFlagLayer(layers, params);
   addWeatherLayers(layers, params);
   addFrame(layers, params);
-  console.log(`we now have ${layers.length} layers`);
-  // OK here, can we mingle preloaded and path-ref layers?
-  // we're peeling off the paths and then reading them in order;
-  // for preloaded layers, we should be able to return a fulfilled
-  // Promise instead. See preloads.js for Layer.toJimp() which can
-  // be called before taking a web request.
-
   const sceneText = computeSceneText(layers);
-  console.log(`sceneText\n${sceneText}`);
   let blankCanvas = new Jimp(125, 175, "#000000");
   const jimpLayers = [];
   jimpLayers.push(blankCanvas);

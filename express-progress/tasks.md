@@ -431,6 +431,9 @@ Wednesday intentions: rollover Tuesday
 
 Thu 13 Jun 2024 09:39:59 AM PDT
 
+compose-async.js addDollLayer is using a random pick now.
+Can we move the pick to the server code via the params?
+
 Thursday intentions: rollover Wednesday
 - [X] Preload all doll sets with alt-text descriptions.
 - [X] Choose naming scheme for pixie set via get layer by name
@@ -441,11 +444,11 @@ Thursday intentions: rollover Wednesday
 - [X] Create preloads.js to preload image/desc layers and fonts, like pixie-composer.js .
 - [X] Refer to resources in composer, removing layer metadata, text, and image loads.
 - [X] Pixel doll layer resources use specific descriptions by set/doll.
-- [ ] All doll sets are preloaded.
-- [ ] THEREBY: preloading local resources to simplify composition stage
+- [X] All doll sets are preloaded.
+- [X] THEREBY: preloading local resources to simplify composition stage
 
 ## Next Step Directions
-- [ ] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
+- [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [ ] METAR stations as a queryable database; how to query? what lists?
@@ -456,17 +459,17 @@ Thursday intentions: rollover Wednesday
 
 * Presumes "Full PixieReport Function" below (pixie sets, etc.)
 
-- [ ] Remove unused files and functions.
+- [ ] Remove unused files and functions from other versions.
 - [ ] Remove neglected endpoint handlers which have served their purpose
 - [ ] Remove console.log for routine operations.
 - [ ] Update the prospectus document.
 - [ ] Add an about/credits/source/acknowledgements page.
 - [ ] Consider assertions as a prelude to tests.
+- [ ] Consider TheDryPrinciple for resources.
 - [ ] Is there a jslint to run for suggested cleanup?
 - [ ] Express.js model app format to review?
 - [ ] Replace let or global with const as possible.
 - [ ] Name output template strings rather than leaving nameless inline.
-
 
 
 ---
@@ -480,7 +483,7 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [X] Write the weather report text on the image
 - [X] alt-text in the HTML page presentation using pre-existing logic
 - [ ] Choose a pixel doll set with UI/URL parameter
-- [ ] Organize pixie-set-specific layers separately from generic weather layers?  .
+- [ ] Group pixie-set-specific weather layers separately from generic weather?
 - [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Graceful error handling for missing report data or fetch failure
 
