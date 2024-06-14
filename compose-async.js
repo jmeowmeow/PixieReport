@@ -3,10 +3,8 @@ const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 const LIGHTNING_PARSED = 'Lightning observed';
 
-
 // weather we show: drizzle, rain, mist, fog, snow
 // weather we don't: haze, smoke, dust, volcanic ash, ice crystals
-
 
 const layerByName = function(name) {
   // preloaded images from resources
@@ -59,18 +57,22 @@ function addLightningLayer(layerFiles, params) {
 // We'll want to re-compose the image descriptions; the Express server
 // endpoint only renders the overlaid images for this first pass.
 function addDollLayer(layerFiles, params) {
+// bind the doll set here so that we can later use params to choose
+  const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+  const doll     = setNames[Math.trunc(Math.random()*4)];
+
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {
     if (tempC < -9) {
-      layerFiles.push(layerByName('icyPixie'));
+      layerFiles.push(layerByName(`${doll}/icyPixie`));
     } else if (tempC < 5) {
-      layerFiles.push(layerByName('coldPixie'));
+      layerFiles.push(layerByName(`${doll}/coldPixie`));
     } else if (tempC < 19) {
-      layerFiles.push(layerByName('coolPixie'));
+      layerFiles.push(layerByName(`${doll}/coolPixie`));
     } else if (tempC < 28) {
-      layerFiles.push(layerByName('warmPixie'));
+      layerFiles.push(layerByName(`${doll}/warmPixie`));
     } else {
-      layerFiles.push(layerByName('hotPixie'));
+      layerFiles.push(layerByName(`${doll}/hotPixie`));
     }
   } else {
     layerFiles.push(layerByName('noPixie'));
