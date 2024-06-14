@@ -74,7 +74,7 @@ const computeImageTextValues = function (params) {
             temphum = temphum + params.humidity;
         }
         if (!params.windDir) {
-            windbar = '       ';
+            windbar = '          ';
         } else if (params.windDir == "Calm") {
             windbar = '' + params.windDir + '  ';
         } else {

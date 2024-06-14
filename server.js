@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
   let link = "<a href='${url}'>${url}</a><br/>";
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
   let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
-  let pixieLink  = "p <a title='pixie ${station}' href='/compose?location=${station}'>${station}</a>";
+  let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td></tr>\n`;
   body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th></tr></thead>\n"
   stationChoices.map(stn => { body += reportLink.replace(/\${station}/g, stn);});
@@ -125,7 +125,7 @@ app.get('/compose', async (req, res) => {
     redirectDefaultLocation(req, res);
     return;
   }
-  let report = await fetchMETAR(location);
+  const report = await fetchMETAR(location);
   const params = decodedToParamObject(report);
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
@@ -138,23 +138,33 @@ app.get('/compose', async (req, res) => {
   if (mapUrl.startsWith('http')) {
      mapLink = `<a href="${mapUrl}">${mapUrl}</a>`;
   }
-  pixie.getBase64(Jimp.MIME_PNG, (err, src) => { 
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><pre>${jsonOutput}</pre>`;
     res.send(responseBody); });
 });
 
 // parameters: airport code, C/F, which pixie set; optional!
-app.get('/pixie', (req, res) => {
-  // if either location or temp is not provided, redirect to /pixie?location=KSEA&temp=F
-  const location = req.query.location; // ?location=KSEA (a METAR station)
-  const tempUnit = req.query.temp; // ?temp=F
-  if (location === undefined || tempUnit === undefined) {
-    res.redirect('/pixie?location=KSEA&temp=F');
+app.get('/pixie', async (req, res) => {
+  const location = req.query.location;
+  if (location === undefined) {
+    redirectDefaultLocation(req, res);
     return;
   }
-  res.setHeader('Content-Type', 'text/plain');
-  res.send(`Hello from ${location}
-The temperature is 30 ${tempUnit}`)
+  const myReport = await fetchMETAR(location);
+  const params = decodedToParamObject(myReport);
+  let title = `Pixel Doll Weather Report from ${location}.`;
+  params.text = title;
+  var [pixie, alt]= await compose(params).catch(console.error);
+  // add a "stations" lookup
+  let icaoLoc = stations.get(location);
+  let mapUrl = worldMapLink(params);
+  let mapLink = '';
+  if (mapUrl.startsWith('http')) {
+     mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
+  }
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
+    const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>${icaoLoc}</p>${mapLink}`;
+    res.send(responseBody); });
 });
 
 app.listen(port, () => {
