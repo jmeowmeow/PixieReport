@@ -437,7 +437,16 @@ Can we move the pick to the server code via the params?
 Thursday intentions: rollover Wednesday
 - [X] Preload all doll sets with alt-text descriptions.
 - [X] Choose naming scheme for pixie set via get layer by name
+- [X] Exercise the various pixie sets randomly.
 - [ ] Address which pixie set via params.
+
+
+Fri 14 Jun 2024 10:13:09 AM PDT
+
+Friday when I can:
+- [X] Fix the shortloc regex to key off the station name not parentheses.
+- [ ] Address which pixie set via params.
+- [ ] Scan launch readiness tasks below and pull up to next steps.
 
 ### Jimp Layer and Pixie Preload breakdown
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
@@ -463,7 +472,7 @@ Thursday intentions: rollover Wednesday
 - [ ] Remove neglected endpoint handlers which have served their purpose
 - [ ] Remove console.log for routine operations.
 - [ ] Update the prospectus document.
-- [ ] Add an about/credits/source/acknowledgements page.
+- [ ] Add an about/credits/source/acknowledgements page to the source.
 - [ ] Consider assertions as a prelude to tests.
 - [ ] Consider TheDryPrinciple for resources.
 - [ ] Is there a jslint to run for suggested cleanup?

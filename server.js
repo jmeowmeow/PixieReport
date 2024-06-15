@@ -17,16 +17,18 @@ const randomStation = function () {
 
 const shortStationName = function(stn) {
   let loc = stations.get(stn);
-  if (loc)
-    {loc = loc.replace(/\(.*/, ""); }
-  else
-    { loc = ""; }
+  if (loc) {
+    let tailExp = new RegExp("\\("+stn+".*");
+    loc = loc.replace(tailExp, "");
+  } else {
+    loc = "";
+  }
   return loc;
 }
 
 app.get('/', (req, res) => {
   const stationChoices = [
-  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC',
+  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH'
   ];
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
