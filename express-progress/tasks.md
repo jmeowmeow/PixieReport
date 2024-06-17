@@ -286,9 +286,9 @@ out behind the slice of bread.
 - [X] Find a suitable console typeface/font for JIMP. Import it.
 - [X] Create a white fixed font resource with the necessary glyphs.
 - [X] Create a green fixed font resource with the necessary glyphs.
-- [ ] Refer to the pre-existing station name process (green fg, pink bg).
-- [ ] Revise prototype writing to use preferred fonts.
-- [ ] THEREBY: Restoring text-on-image (station text; report text)
+- [X] Refer to the pre-existing station name process (green fg, pink bg).
+- [X] Revise prototype writing to use preferred fonts.
+- [X] THEREBY: Restoring text-on-image (station text; report text)
 
 Iosevska SS04 claims to be Menlo-like. I've used Hiero to create
 BMFont pixel font definitions. The rendering doesn't seem as crisp
@@ -407,6 +407,7 @@ What would the navigation be?
 
 The site, in my imagination:
 * has a landing page
+* responsive layout for main site pages
 * has left or top nav - what are minimum ARIA
 * has a pixie builder wizard
 * can support bookmarking or redirection
@@ -448,7 +449,14 @@ Friday when I can:
 - [ ] Address which pixie set via params.
 - [ ] Scan launch readiness tasks below and pull up to next steps.
 
-### Jimp Layer and Pixie Preload breakdown
+
+Mon 17 Jun 2024 08:58:38 AM PDT
+Monday intentions: rollover Friday.
+- [ ] Scan launch readiness tasks below and pull up to next steps.
+- [ ] Address which pixie set via params.
+- [ ] How about a favicon? I think the main branch has one.
+
+### Jimp Layer and Pixie Preload breakdown - complete
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.
 - [X] Create preloads.js to preload image/desc layers and fonts, like pixie-composer.js .
 - [X] Refer to resources in composer, removing layer metadata, text, and image loads.
@@ -458,6 +466,10 @@ Friday when I can:
 
 ## Next Step Directions
 - [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
+- [ ] Random pixie via hit and redirect instead of defaulting KSEA.
+- [ ] HTTP refresh header slideshow of random pixie
+- [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
+- [ ] Refresh ICAO.js by grabbing a whole-set zip and examining freshness.
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [ ] METAR stations as a queryable database; how to query? what lists?
