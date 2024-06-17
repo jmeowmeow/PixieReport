@@ -454,7 +454,9 @@ Mon 17 Jun 2024 08:58:38 AM PDT
 Monday intentions: rollover Friday.
 - [ ] Scan launch readiness tasks below and pull up to next steps.
 - [ ] Address which pixie set via params.
-- [ ] How about a favicon? I think the main branch has one.
+- [X] How about a favicon? I think the main branch has one.
+
+Initial Lea Verou favicon to main '/' response. Guess we might want templates.
 
 ### Jimp Layer and Pixie Preload breakdown - complete
 - [X] Prototype preloading Jimp resources and mixing with lazy layers.

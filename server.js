@@ -7,6 +7,10 @@ const {compose} = require('./compose-async');
 const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
+const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
+
+const pagehead = `<head>${favicon}</head>`;
+
 const codes = [];
 for (const stn of stations.keys()) {codes.push(stn);};
 const randomStation = function () {
@@ -53,7 +57,8 @@ app.get('/', (req, res) => {
   body += link.replace(/\${url}/g, '/compose');
   body += link.replace(/\${url}/g, '/pixie');
   body += link.replace(/\${url}/g, '/random');
-  res.send(body);
+  const responseBody = `${pagehead}<body>${body}</body>`;
+  res.send(responseBody);
 });
 
 const redirectDefaultLocation = (req, res) => {
