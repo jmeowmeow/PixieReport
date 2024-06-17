@@ -52,6 +52,7 @@ app.get('/', (req, res) => {
   body += "</table><br/>"
   body += link.replace(/\${url}/g, '/compose');
   body += link.replace(/\${url}/g, '/pixie');
+  body += link.replace(/\${url}/g, '/random');
   res.send(body);
 });
 
@@ -181,6 +182,12 @@ app.get('/pixie', async (req, res) => {
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>${icaoLoc}</p>${mapLink}`;
     res.send(responseBody); });
+});
+
+app.get('/random', async (req, res) => {
+  const station = randomStation();
+  let redirection = `/pixie?location=${station}`;
+  res.redirect(redirection);
 });
 
 app.listen(port, () => {
