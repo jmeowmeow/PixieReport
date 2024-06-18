@@ -196,8 +196,8 @@ app.get('/pixie', async (req, res) => {
 
 app.get('/random', async (req, res) => {
   const location = randomStation();
-  // can we add a response header like 'Refresh: "3"' for a slide show?
-  res.header('Refresh', '3');
+  // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
+  res.header('Refresh', '10');
   servePixie(req, res, location);
 });
 
