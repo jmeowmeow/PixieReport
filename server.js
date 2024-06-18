@@ -165,13 +165,8 @@ app.get('/compose', async (req, res) => {
     res.send(responseBody); });
 });
 
-// parameters: airport code, C/F, which pixie set; optional!
-app.get('/pixie', async (req, res) => {
-  const location = req.query.location;
-  if (location === undefined) {
-    redirectDefaultLocation(req, res);
-    return;
-  }
+// factored for param-request and random-request 
+const servePixie = async function(req, res, location) {
   const myReport = await fetchMETAR(location);
   const params = decodedToParamObject(myReport);
   let title = `Pixel Doll Weather Report from ${location}.`;
@@ -187,12 +182,23 @@ app.get('/pixie', async (req, res) => {
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>${icaoLoc}</p>${mapLink}`;
     res.send(responseBody); });
+}
+
+// parameters: airport code, C/F, which pixie set; optional!
+app.get('/pixie', async (req, res) => {
+  const location = req.query.location;
+  if (location === undefined) {
+    redirectDefaultLocation(req, res);
+    return;
+  }
+  servePixie(req, res, location);
 });
 
 app.get('/random', async (req, res) => {
-  const station = randomStation();
-  let redirection = `/pixie?location=${station}`;
-  res.redirect(redirection);
+  const location = randomStation();
+  // can we add a response header like 'Refresh: "3"' for a slide show?
+  res.header('Refresh', '3');
+  servePixie(req, res, location);
 });
 
 app.listen(port, () => {
