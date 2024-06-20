@@ -43,6 +43,7 @@ app.get('/', (req, res) => {
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
   let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
+  let pixieimg  = '<img alt="pixie for ${station}" src="/png?location=${station}" title="pixie for ${station}"/>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th><th>Location</th></tr></thead>\n"
@@ -57,6 +58,12 @@ app.get('/', (req, res) => {
   body += link.replace(/\${url}/g, '/compose');
   body += link.replace(/\${url}/g, '/pixie');
   body += link.replace(/\${url}/g, '/random');
+  body += "<p>"
+  stationChoices.map(stn =>
+  {
+    body += pixieimg.replace(/\${station}/g, stn);
+  });
+  body += "</p>"
   const responseBody = `${pagehead}<body>${body}</body>`;
   res.send(responseBody);
 });
@@ -201,6 +208,24 @@ app.get('/random', async (req, res) => {
   servePixie(req, res, location);
 });
 
+app.get('/png', async (req, res) => {
+  const location = req.query.location;
+  if (location === undefined) {
+    redirectDefaultLocation(req, res);
+    return;
+  }
+  const params = decodedToParamObject(await fetchMETAR(location));
+  var [pixie, alt]= await compose(params).catch(console.error);
+  const pngbuf = await pixie.getBufferAsync(Jimp.MIME_PNG);
+  res
+  .writeHead(200, {
+    'Content-Length': Buffer.byteLength(pngbuf),
+    'Content-Type': 'image/png'
+  })
+  .end(pngbuf);
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
+

@@ -452,23 +452,32 @@ Friday when I can:
 
 Mon 17 Jun 2024 08:58:38 AM PDT
 Monday intentions: rollover Friday.
-- [ ] Scan launch readiness tasks below and pull up to next steps.
-- [ ] Address which pixie set via params.
 - [X] How about a favicon? I think the main branch has one.
+
+Also added a page for tasks accomplished, separate from here.
 
 Initial Lea Verou favicon to main '/' response. Guess we might want templates.
 
-### Jimp Layer and Pixie Preload breakdown - complete
-- [X] Prototype preloading Jimp resources and mixing with lazy layers.
-- [X] Create preloads.js to preload image/desc layers and fonts, like pixie-composer.js .
-- [X] Refer to resources in composer, removing layer metadata, text, and image loads.
-- [X] Pixel doll layer resources use specific descriptions by set/doll.
-- [X] All doll sets are preloaded.
-- [X] THEREBY: preloading local resources to simplify composition stage
+Tue 18 Jun 2024 09:42:11 AM PDT
+(from Monday)
+- [X] Scan launch readiness tasks below and pull up to next steps.
+- [ ] Address which pixie set via params.
+- [ ] Track no-report ICAO METAR station codes to incrementally cull from icao.js
+- [ ] PNG output endpoint, either png/station (or select via .png path extension?)
+
+Wed 19 Jun 2024 09:34:28 AM PDT
+Attempted but failed (before commute) to find the bulk METAR data download
+in order to get a sense of which stations were updating with fresh reports.
+Maybe try [NOAA MADIS](https://madis.ncep.noaa.gov/madis_metar.shtml)
+
+Or use the URL in the comment next to fetchMETAR:
+[metars.cache.csv.gz](https://aviationweather.gov/data/cache/metars.cache.csv.gz)
+
+- [X] PNG output endpoint (and mini-gallery on root / path). We lose alt text.
 
 ## Next Step Directions
 - [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
-- [ ] Random pixie via hit and redirect instead of defaulting KSEA.
+- [ ] Instead of defaulting KSEA, random pixie via hit and redirect
 - [ ] HTTP refresh header slideshow of random pixie
 - [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
 - [ ] Refresh ICAO.js by grabbing a whole-set zip and examining freshness.
@@ -477,6 +486,8 @@ Initial Lea Verou favicon to main '/' response. Guess we might want templates.
 - [ ] METAR stations as a queryable database; how to query? what lists?
 - [ ] Pick METAR stations from a map, like FedWiki map marker plugin.
 - [X] Restore open street map link. *In prototype Express web UI.*
+
+### Jimp Layer and Pixie Preload - done, see [./done](./done.md).
 
 ### Tasks to be Ready for Main Branch / Code Review
 
@@ -509,6 +520,7 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [ ] Group pixie-set-specific weather layers separately from generic weather?
 - [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Graceful error handling for missing report data or fetch failure
+- [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
 Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
