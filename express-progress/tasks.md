@@ -475,6 +475,11 @@ Or use the URL in the comment next to fetchMETAR:
 
 - [X] PNG output endpoint (and linked mini-image gallery at / ). We lose alt text.
 - [ ] Pixie preview link in / or /random should include the pixie set as a param.
+- [ ] Bugfix needed in text handling for missing lat/long! Prominent crash in gallery.
+
+Also note: METAR station data is available as one-offs from detail URLs such as
+Station PANU (Nulato, Alaska) https://aviationweather.gov/data/metar/?id=PANU
+Since icao.js didn't have this station info available.
 
 ## Next Step Directions
 - [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text

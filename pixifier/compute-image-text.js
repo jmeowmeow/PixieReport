@@ -54,7 +54,12 @@ function useMetric(params) {
   if (params.stationCode.startsWith("PH")) {
     return false; // Hawaii
   }
-  if (params.stationCode.startsWith("P") && params.latlong.degLat > 50.0) {
+  if (params.stationCode.startsWith("PA")) {
+    return false; // Alaska though not all Alaska is "PA.."
+  }
+  // We have a station code always, but not always a location.
+  if (params.stationCode.startsWith("P") &&
+      params.latlong && params.latlong.degLat && params.latlong.degLat > 50.0) {
     return false; // Alaska
   }
   // "P...": missing some stations in US Pacific island territories

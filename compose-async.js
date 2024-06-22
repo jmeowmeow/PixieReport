@@ -229,6 +229,7 @@ async function compose(params) {
   let pixie = jimpLayers.reduce((acc, layer) => acc.composite(layer, 0, 0)); // accumulate on fresh blank layer 0
 
   // write station and weather info (compute-image-text.js)
+  // Note that location information is not available for all stations.
   const imageTextValues = computeImageTextValues(params);
   // add the fonts to preloads?
   let locationFontPath = "pixifier/bmfont/iosevska-ss04-bold-10green.fnt";
