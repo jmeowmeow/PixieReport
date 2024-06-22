@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL' ];
+const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU' ];
 const expectedParams = {
   KBLI: { degreesC: 1, zuluTime: '06:53Z',  zuluDayOfMonth: '03'},
   KFNT: { degreesC: 22, zuluTime: '03:21Z', zuluDayOfMonth: '12', windSpeedMph: '15-25'},
@@ -12,7 +12,8 @@ const expectedParams = {
   VEJS: { degreesC: 30, zuluTime: '03:05Z', zuluDayOfMonth: '12'},
   MHGS: { degreesC: 29, zuluTime: '22:00Z', zuluDayOfMonth: '16'},
   SVCJ: { degreesC: 31, zuluTime: '17:02Z', zuluDayOfMonth: '10'},
-  KBRL: { degreesC: 0, zuluTime: '15:45Z',  zuluDayOfMonth: '15', windSpeedMph: '5'}
+  KBRL: { degreesC: 0, zuluTime: '15:45Z',  zuluDayOfMonth: '15', windSpeedMph: '5'},
+  PANU: { degreesC: 18, zuluTime: '18:56Z',  zuluDayOfMonth: '22', windSpeedMph: '7'}
 };
 
 // Given an observation like
@@ -41,7 +42,8 @@ const expectedAltTextWords = {
   'KYIP': ['day', 'cloudy'],
   'KBLI': ['night', 'overcast', 'mist'],
   'MHGS': ['day', 'cloudy'], // towering cumulus not yet rendered
-  'SVCJ': ['day', 'clear']
+  'SVCJ': ['day', 'clear'],
+  'PANU': ['gray', 'cloudy'],
 };
 
 const {decodedToParamObject, computeAltText, Layer, computeTheLayers, computeSceneText} = require('../pixifier/decoded-metar-parser.js');

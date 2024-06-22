@@ -1,0 +1,11 @@
+Station name not available
+Jun 22, 2024 - 02:56 PM EDT / 2024.06.22 1856 UTC
+Wind: from the NW (310 degrees) at 7 MPH (6 KT):0
+Visibility: 10 mile(s):0
+Sky conditions: mostly cloudy
+Temperature: 64.9 F (18.3 C)
+Dew Point: 46.9 F (8.3 C)
+Relative Humidity: 52%
+Pressure (altimeter): 29.94 in. Hg (1013 hPa)
+ob: PANU 221856Z AUTO 31006KT 10SM BKN100 18/08 A2994 RMK AO2 SLP045 T01830083
+cycle: 19

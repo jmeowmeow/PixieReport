@@ -33,7 +33,8 @@ const shortStationName = function(stn) {
 
 app.get('/', (req, res) => {
   const stationChoices = [
-  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH'
+  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH',
+  'PANU', 'DTKA', 'LFSO'
   ];
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
@@ -219,6 +220,8 @@ app.get('/png', async (req, res) => {
     return;
   }
   const params = decodedToParamObject(await fetchMETAR(location));
+  // if this fails, we should probably return a default image.
+  console.log("before composing png for location ", location);
   var [pixie, alt]= await compose(params).catch(console.error);
   const pngbuf = await pixie.getBufferAsync(Jimp.MIME_PNG);
   res
