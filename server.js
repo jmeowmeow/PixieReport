@@ -2,7 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
-const {stations, resources, Jimp} = require('./preloads');
+const {stations, activeMetarStations, resources, Jimp} = require('./preloads');
 const {compose} = require('./compose-async');
 const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
@@ -13,10 +13,11 @@ const pagehead = `<head>${favicon}</head>`;
 
 const codes = [];
 for (const stn of stations.keys()) {codes.push(stn);};
+
 const randomStation = function () {
- const scount = 8696.0;
+ const scount = activeMetarStations.length;
  const idx = Math.trunc(Math.random() * scount);
- return codes[idx];
+ return activeMetarStations[idx];
 }
 
 const shortStationName = function(stn) {
@@ -43,7 +44,7 @@ app.get('/', (req, res) => {
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
   let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
-  let pixieimg  = '<img alt="pixie for ${station}" src="/png?location=${station}" title="pixie for ${station}"/>';
+  let pixieimg  = '<a href="pixie?location=${station}"><img alt="pixie for ${station}" src="/png?location=${station}" title="pixie for ${station}"/></a>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th><th>Location</th></tr></thead>\n"
@@ -59,9 +60,12 @@ app.get('/', (req, res) => {
   body += link.replace(/\${url}/g, '/pixie');
   body += link.replace(/\${url}/g, '/random');
   body += "<p>"
+  let tileNo = 0;
   stationChoices.map(stn =>
   {
     body += pixieimg.replace(/\${station}/g, stn);
+    tileNo++;
+    if (tileNo % 4 === 0) {body += "<br/>";}
   });
   body += "</p>"
   const responseBody = `${pagehead}<body>${body}</body>`;

@@ -473,14 +473,16 @@ Maybe try [NOAA MADIS](https://madis.ncep.noaa.gov/madis_metar.shtml)
 Or use the URL in the comment next to fetchMETAR:
 [metars.cache.csv.gz](https://aviationweather.gov/data/cache/metars.cache.csv.gz)
 
-- [X] PNG output endpoint (and mini-gallery on root / path). We lose alt text.
+- [X] PNG output endpoint (and linked mini-image gallery at / ). We lose alt text.
+- [ ] Pixie preview link in / or /random should include the pixie set as a param.
 
 ## Next Step Directions
 - [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
 - [ ] Instead of defaulting KSEA, random pixie via hit and redirect
-- [ ] HTTP refresh header slideshow of random pixie
+- [X] HTTP refresh header slideshow of random pixie /random 
+- [ ] /random - should also link individual slides and jump out of show
 - [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
-- [ ] Refresh ICAO.js by grabbing a whole-set zip and examining freshness.
+- [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [ ] METAR stations as a queryable database; how to query? what lists?

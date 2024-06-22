@@ -33,6 +33,12 @@ initial Express setup and async handlers.
 * Image layer lookup into named map, including pixel doll set prefix
 * Attempt and abandon goal to factor to ES6 modules.
 
+## Webapp Architecture
+* PNG download endpoint.
+
+## Webapp Design/Content
+* Gallery on home page, each pixie linked.
+
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
 
