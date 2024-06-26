@@ -116,10 +116,11 @@ const fetchMetarFile = async (location) => {
 
 const fetchMETAR = async (location) => {
   // note new METAR API endpoint after text server was announced
-  // as discontinued but text URL is working 2024-03-25. Be wary.
+  // as discontinued but text URL still works 2024-06-25. Be wary.
   // https://aviationweather.gov/data/api/#/Data/dataMetars
   //
-  // also note the bulk all-current-METARs cache updated by minute.
+  // also note the bulk all-current-METARs cache updated by minute,
+  // but non-decoded.
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   console.log("Fetching", url);
@@ -133,8 +134,7 @@ app.get('/json', async (req, res) => {
     redirectDefaultLocation(req, res);
     return;
   }
-  const textReport = await fetchMETAR(location);
-  const jsonReport = decodedToParamObject(textReport);
+  const jsonReport = decodedToParamObject(await fetchMETAR(location));
   const imageText = JSON.stringify(computeImageTextValues(jsonReport));
   let jsonBody = `<pre>${JSON.stringify(jsonReport, null, 2)}\n${imageText}</pre>`;
   res.send(jsonBody);
@@ -159,8 +159,7 @@ app.get('/compose', async (req, res) => {
     redirectDefaultLocation(req, res);
     return;
   }
-  const report = await fetchMETAR(location);
-  const params = decodedToParamObject(report);
+  const params = decodedToParamObject(await fetchMETAR(location));
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
@@ -179,8 +178,8 @@ app.get('/compose', async (req, res) => {
 
 // factored for param-request and random-request 
 const servePixie = async function(req, res, location) {
-  const myReport = await fetchMETAR(location);
-  const params = decodedToParamObject(myReport);
+  // which pixel doll? is this in 'req' or already 'params' ?
+  const params = decodedToParamObject(await fetchMETAR(location));
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);

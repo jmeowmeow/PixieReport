@@ -142,9 +142,7 @@ namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lig
 let promises = [];
 namedLayers.forEach(layer => { promises.push(layer.toJimp())});
 // Resolution gets printed after the "Server listening" message.
-Promise.allSettled(promises).then((results) => {console.log(`named layers size = ${results.length}`)}).catch(console.error);
-
-for (const entry of namedLayers.entries()) {console.log(JSON.stringify(entry)); console.log('');}
+Promise.allSettled(promises).then((results) => {console.log(`Loaded named image layers, n= ${results.length}`)}).catch(console.error);
 
 const metarToLocationMap = new Map();
 Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
