@@ -28,6 +28,10 @@ initial Express setup and async handlers.
 * Convert other fonts to BMFont, choose a font
 * Choose and use a monospace font (Iosevska SS04 via Hiero/BMFont) 
 
+## Weather Data
+* Baseline parsed METAR endpoint.
+* Active station list from snapshot bulk METAR archive 2024-06-22.
+
 ## Resource Loading
 * Preloads. One-time image loading separate from composition
 * Image layer lookup into named map, including pixel doll set prefix

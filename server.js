@@ -45,7 +45,7 @@ app.get('/', (req, res) => {
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
   let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
-  let pixieimg  = '<a href="pixie?location=${station}"><img alt="pixie for ${station}" src="/png?location=${station}" title="pixie for ${station}"/></a>';
+  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th><th>Location</th></tr></thead>\n"
@@ -62,9 +62,11 @@ app.get('/', (req, res) => {
   body += link.replace(/\${url}/g, '/random');
   body += "<p>"
   let tileNo = 0;
+  let pixiesetnum = 4;
   stationChoices.map(stn =>
   {
-    body += pixieimg.replace(/\${station}/g, stn);
+    let dollset=Math.trunc(Math.random() * pixiesetnum);
+    body += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
     tileNo++;
     if (tileNo % 4 === 0) {body += "<br/>";}
   });
@@ -120,7 +122,7 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/api/#/Data/dataMetars
   //
   // also note the bulk all-current-METARs cache updated by minute,
-  // but non-decoded.
+  // with the METAR reports in raw, non-decoded form.
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   console.log("Fetching", url);
@@ -160,6 +162,7 @@ app.get('/compose', async (req, res) => {
     return;
   }
   const params = decodedToParamObject(await fetchMETAR(location));
+  params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
@@ -180,6 +183,7 @@ app.get('/compose', async (req, res) => {
 const servePixie = async function(req, res, location) {
   // which pixel doll? is this in 'req' or already 'params' ?
   const params = decodedToParamObject(await fetchMETAR(location));
+  params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
@@ -219,8 +223,8 @@ app.get('/png', async (req, res) => {
     return;
   }
   const params = decodedToParamObject(await fetchMETAR(location));
+  params.dollset = req.query.set;
   // if this fails, we should probably return a default image.
-  console.log("before composing png for location ", location);
   var [pixie, alt]= await compose(params).catch(console.error);
   const pngbuf = await pixie.getBufferAsync(Jimp.MIME_PNG);
   res
@@ -232,6 +236,6 @@ app.get('/png', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
+  console.log(`${new Date().toLocaleTimeString()} Server listening at http://localhost:${port}`);
 });
 

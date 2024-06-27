@@ -51,14 +51,26 @@ function addLightningLayer(layerFiles, params) {
   // default: add no lightning.
 };
 
+// bind the doll set here so that we can later use params to choose
+const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ]; // order matches preloads
+
 // adapted/extracted from addDollLayerReturnDescText
 // because a pixel doll layer contains a description and a transparent image
 // We'll want to re-compose the image descriptions; the Express server
 // endpoint only renders the overlaid images for this first pass.
 function addDollLayer(layerFiles, params) {
-// bind the doll set here so that we can later use params to choose
-  const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
-  const doll     = setNames[Math.trunc(Math.random()*4)];
+  let dollset = params.dollset;
+  let dollname;
+  if (dollset) {
+    if (setNames.includes(dollset)) {
+      dollname = dollset;
+    } else {
+      if (setNames[dollset]) {
+        dollname = setNames[dollset];
+      }
+    }
+  }
+  const doll = (dollname) ? dollname : setNames[Math.trunc(Math.random()*4)];
 
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {

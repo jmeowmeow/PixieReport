@@ -475,11 +475,61 @@ Or use the URL in the comment next to fetchMETAR:
 
 - [X] PNG output endpoint (and linked mini-image gallery at / ). We lose alt text.
 - [ ] Pixie preview link in / or /random should include the pixie set as a param.
-- [ ] Bugfix needed in text handling for missing lat/long! Prominent crash in gallery.
+- [X] Bugfix needed in text handling for missing lat/long! Prominent crash in gallery.
+
+Sat 22 Jun 2024
+- [X] Implemented active METAR list as part of random station selection.
 
 Also note: METAR station data is available as one-offs from detail URLs such as
 Station PANU (Nulato, Alaska) https://aviationweather.gov/data/metar/?id=PANU
 Since icao.js didn't have this station info available.
+
+Tue 25 Jun 2024 09:16:50 AM PDT
+
+Two notes on bulk METAR fetch:
+
+Note 1. The METARS cache file with raw METAR readouts is a reminder that it might be
+useful to create a parsing stage which will take a METAR and extract weather
+information comparable to the parsed METAR endpoint we're hitting.
+
+Note 2. The pixie tableau on / is a reminder that each uncached image render is a
+double latency hit: browser to PixieReport server, PixieReport server to
+NOAA METAR server, and the NOAA METAR requests are a burst that sometimes
+results in a timeout. So maybe a little cache is in order! I can feel a
+little architecture on its way. And we could do a little preload at server
+start!
+
+How about a pixel set parameter? Do we have a params story in general for
+bookmarking or defaults?
+
+Rollover from previous days of possible Tuesday intentions
+
+- [ ] Address which pixie set via params.
+- [ ] Pixie preview link in / or /random should include the pixie set as a param.
+- [ ] Image cache with 5-10min duration. Add a nocache param? but redirect if seen.
+
+**Cache Thoughts**
+
+Possibly extract this to a design note.
+
+For a METAR cache, we need no pixie param.
+
+For an image cache, we do, and we need logic around where to bind a pixie param.
+If no pixie set was chosen, we can serve from most-recent for that station.
+So we're starting to get into a notion of resources and views in the REST sense.
+
+The pixie results (rendered pixie, alt text) depend on
+* a METAR report to be parsed
+* which pixie set (random, requested, configured)
+
+How long are we willing to serve from cache? Do we tell the client a longer time
+than the server? Do we fall back from a METAR no-fetch to the cache?
+
+A cache key for METAR is:   the station ID. (implicitly the clock)
+A cache value for METAR is: the METAR text. (and the cached timestamp), OR the params.
+
+If we cache the params it will change the pixie render workflow, so maybe we
+start with a smaller step, just caching the METAR text.
 
 ## Next Step Directions
 - [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
