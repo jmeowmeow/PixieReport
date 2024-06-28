@@ -39,6 +39,7 @@ initial Express setup and async handlers.
 
 ## Webapp Architecture
 * PNG download endpoint.
+* URL param args for station (location=KPAE) and dollset (set=0,1,2,3)
 
 ## Webapp Design/Content
 * Gallery on home page, each pixie linked.

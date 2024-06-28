@@ -502,34 +502,17 @@ start!
 How about a pixel set parameter? Do we have a params story in general for
 bookmarking or defaults?
 
-Rollover from previous days of possible Tuesday intentions
+Rollover from previous days of possible Tuesday intentions.
 
-- [ ] Address which pixie set via params.
-- [ ] Pixie preview link in / or /random should include the pixie set as a param.
+Some progress Wednesday-Thursday for pixie sets.
+
+- [X] Address which pixie set via params. set=0,1,2,3 or set=bunny,selfie,pixie0,moomin
+- [X] Pixie preview link in / or /random should include the pixie set as a param.
 - [ ] Image cache with 5-10min duration. Add a nocache param? but redirect if seen.
 
 **Cache Thoughts**
 
-Possibly extract this to a design note.
-
-For a METAR cache, we need no pixie param.
-
-For an image cache, we do, and we need logic around where to bind a pixie param.
-If no pixie set was chosen, we can serve from most-recent for that station.
-So we're starting to get into a notion of resources and views in the REST sense.
-
-The pixie results (rendered pixie, alt text) depend on
-* a METAR report to be parsed
-* which pixie set (random, requested, configured)
-
-How long are we willing to serve from cache? Do we tell the client a longer time
-than the server? Do we fall back from a METAR no-fetch to the cache?
-
-A cache key for METAR is:   the station ID. (implicitly the clock)
-A cache value for METAR is: the METAR text. (and the cached timestamp), OR the params.
-
-If we cache the params it will change the pixie render workflow, so maybe we
-start with a smaller step, just caching the METAR text.
+Extracted to [./cache.md](./cache.md)
 
 ## Next Step Directions
 - [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
