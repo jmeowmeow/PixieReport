@@ -179,7 +179,7 @@ app.get('/compose', async (req, res) => {
     res.send(responseBody); });
 });
 
-// factored for param-request and random-request 
+// factored for param-request and random-request
 const servePixie = async function(req, res, location) {
   // which pixel doll? is this in 'req' or already 'params' ?
   const params = decodedToParamObject(await fetchMETAR(location));
@@ -187,6 +187,7 @@ const servePixie = async function(req, res, location) {
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await compose(params).catch(console.error);
+  let dollset = params.dollset; // if bound in compose(); TODO pull this to server
   // add a "stations" lookup
   let icaoLoc = stations.get(location);
   let mapUrl = worldMapLink(params);
@@ -194,9 +195,12 @@ const servePixie = async function(req, res, location) {
   if (mapUrl.startsWith('http')) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
   }
+  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="${alt}" src="${src}" title="${title}"/></a>';
+  const responseEntity = pixieimg.replace(/\${station}/g, location).replace(/\${dollset}/g, dollset).replace(/\${alt}/g, alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>${icaoLoc}</p>${mapLink}`;
-    res.send(responseBody); });
+    const responseBody = responseEntity.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
+    res.send(responseBody);
+  });
 }
 
 // parameters: airport code, C/F, which pixie set; optional!

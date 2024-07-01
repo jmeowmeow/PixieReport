@@ -70,7 +70,13 @@ function addDollLayer(layerFiles, params) {
       }
     }
   }
-  const doll = (dollname) ? dollname : setNames[Math.trunc(Math.random()*4)];
+  // messy write-to-request-params for late-bound dollset for "/random"
+  // TODO pull this up so we don't have to write to the params
+  let randomIdx = Math.trunc(Math.random()*4);
+  if (!params.dollset) {
+    params.dollset = randomIdx;
+  }
+  const doll = (dollname) ? dollname : setNames[randomIdx];
 
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {
