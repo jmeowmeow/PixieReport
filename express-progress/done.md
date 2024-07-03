@@ -47,5 +47,7 @@ initial Express setup and async handlers.
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
 
-
+- [X] Pick station from snapshot of active, recently reporting stations.
+- [X] Restore pixel doll sets (random; chosen by URL)
+- [X] Restore open street map link.
 

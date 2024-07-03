@@ -515,17 +515,26 @@ Some progress Wednesday-Thursday for pixie sets.
 Extracted to [./cache.md](./cache.md)
 
 ## Next Step Directions
-- [X] Restore pixel doll sets (random; chosen by URL) see above Pixie Preload with text
-- [ ] Instead of defaulting KSEA, random pixie via hit and redirect
+
+### Webapp Functions
 - [X] HTTP refresh header slideshow of random pixie /random 
-- [ ] /random - should also link individual slides and jump out of show
-- [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
-- [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
+- [X] /random - should also link individual slides and jump out of show
+- [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
+- [X] Instead of defaulting KSEA, random pixie via hit and redirect
+
+### Webapp architecture
+- [ ] favicon templated into every page
 - [ ] Rethink URL path handlers, remove unneeded ones.
-- [ ] Explore ICAO METAR stations (random, like Twitter PixieReport).
-- [ ] METAR stations as a queryable database; how to query? what lists?
+- [ ] Replace string with URL object with template/builder behavior for links/redirects.
+- [ ] Start an ops status / robustness / recovery list.
+
+### Reporting Stations
+- [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
+- [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
+- [ ] METAR stations as a queryable database; how to query? what lists? "near lat, long?"
 - [ ] Pick METAR stations from a map, like FedWiki map marker plugin.
-- [X] Restore open street map link. *In prototype Express web UI.*
+
+### Parity with Twitterbot pixies. See [./done](./done.md)
 
 ### Jimp Layer and Pixie Preload - done, see [./done](./done.md).
 
@@ -549,16 +558,16 @@ Extracted to [./cache.md](./cache.md)
 ---
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
-- [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
 - [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
+- [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp
 - [X] Write the weather report text on the image
 - [X] alt-text in the HTML page presentation using pre-existing logic
-- [ ] Choose a pixel doll set with UI/URL parameter
+- [X] Choose a pixel doll set with UI/URL parameter
+- [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Group pixie-set-specific weather layers separately from generic weather?
-- [ ] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Graceful error handling for missing report data or fetch failure
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 

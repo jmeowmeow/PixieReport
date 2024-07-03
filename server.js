@@ -75,8 +75,14 @@ app.get('/', (req, res) => {
   res.send(responseBody);
 });
 
-const redirectDefaultLocation = (req, res) => {
+const redirectToSetLocation = (req, res) => {
+  // We could use cookies or other preset info to set
+  // which location to use if absent from the request.
   let redirection = req.path + '?location=KSEA';
+  let location = randomStation();
+  if (location) {
+    redirection = req.path + `?location=${location}`;
+  }
   res.redirect(redirection);
 };
 
@@ -98,13 +104,14 @@ cycle: 3`;
 const defaultReport = (location) => {
   let loc = location;
   if (stations[loc]) {
+     // for a known station, return an arbitrary parsed METAR report
     return KLAN;
   } else {
+     // unknown stations are handled as unknown
     return `Could not retrieve observation from station code ${loc}.`;
   }
 }
 
-// allows offline testing using fixed cache-for-test
 const fetchMetarFile = async (location) => {
   let metarFile = `spec/resources/${location}.TXT`;
   try {
@@ -113,6 +120,7 @@ const fetchMetarFile = async (location) => {
   } catch(error) {
     console.error(JSON.stringify(error, null, 2));
   }
+  // allows offline testing using fixed cache-for-test
   return defaultReport(location);
 };
 
@@ -125,7 +133,6 @@ const fetchMETAR = async (location) => {
   // with the METAR reports in raw, non-decoded form.
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
-  console.log("Fetching", url);
   let report = await fetch(url).then(response => response.text()).catch(error => { console.error(JSON.stringify(error, null, 2)); return fetchMetarFile(location) });
   return report;
 }
@@ -133,7 +140,7 @@ const fetchMETAR = async (location) => {
 app.get('/json', async (req, res) => {
   const location = req.query.location;
   if (location === undefined) {
-    redirectDefaultLocation(req, res);
+    redirectToSetLocation(req, res);
     return;
   }
   const jsonReport = decodedToParamObject(await fetchMETAR(location));
@@ -144,10 +151,9 @@ app.get('/json', async (req, res) => {
 
 app.get('/metar', async (req, res) => {
   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-  // if location is not provided, redirect to /metar?location=KSEA
   const location = req.query.location;
   if (location === undefined) {
-    redirectDefaultLocation(req, res);
+    redirectToSetLocation(req, res);
     return;
   }
   let report = await fetchMETAR(location);
@@ -158,7 +164,7 @@ app.get('/metar', async (req, res) => {
 app.get('/compose', async (req, res) => {
   const location = req.query.location;
   if (location === undefined) {
-    redirectDefaultLocation(req, res);
+    redirectToSetLocation(req, res);
     return;
   }
   const params = decodedToParamObject(await fetchMETAR(location));
@@ -207,7 +213,7 @@ const servePixie = async function(req, res, location) {
 app.get('/pixie', async (req, res) => {
   const location = req.query.location;
   if (location === undefined) {
-    redirectDefaultLocation(req, res);
+    redirectToSetLocation(req, res);
     return;
   }
   servePixie(req, res, location);
@@ -223,7 +229,7 @@ app.get('/random', async (req, res) => {
 app.get('/png', async (req, res) => {
   const location = req.query.location;
   if (location === undefined) {
-    redirectDefaultLocation(req, res);
+    redirectToSetLocation(req, res);
     return;
   }
   const params = decodedToParamObject(await fetchMETAR(location));
