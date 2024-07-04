@@ -521,11 +521,14 @@ Extracted to [./cache.md](./cache.md)
 - [X] /random - should also link individual slides and jump out of show
 - [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [X] Instead of defaulting KSEA, random pixie via hit and redirect
+- [ ] Nearest other stations, based on geo-sort?
+- [ ] Station list view/search
 
 ### Webapp architecture
 - [ ] favicon templated into every page
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
+- [ ] Uptime page with stats (pixies served, uptime, error count?) or template footer
 - [ ] Start an ops status / robustness / recovery list.
 
 ### Reporting Stations

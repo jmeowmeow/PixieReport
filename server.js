@@ -1,3 +1,4 @@
+const tStart = Date.now();
 const fs = require('fs');
 const express = require('express');
 const app = express();
@@ -13,6 +14,10 @@ const pagehead = `<head>${favicon}</head>`;
 
 const codes = [];
 for (const stn of stations.keys()) {codes.push(stn);};
+
+const sinceStart = function() {
+  return Date.now() - tStart;
+}
 
 const randomStation = function () {
  const scount = activeMetarStations.length;
@@ -245,7 +250,37 @@ app.get('/png', async (req, res) => {
   .end(pngbuf);
 });
 
+const msecPerHr = 3600 * 1000;
+const msecPerMin =  60 * 1000;
+const to_hhmmss = function(msec) {
+  let hh = '00';
+  let mm = '00';
+  let ssmils = '00.000';
+
+  if (msec < 1000) {
+    return `${msec} msec`;
+  }
+  let rem = msec;
+  let hrs = Math.trunc(msec / msecPerHr);
+  rem = (rem - (msecPerHr * hrs));
+  let min = Math.trunc(rem / msecPerMin);
+  rem = (rem - (msecPerMin * min));
+  let ssdotmmm = rem
+  // Convert ssdotmmm to ss.mmm (GitHub Copilot)
+  let ss = Math.trunc(ssdotmmm / 1000);
+  let ms = ssdotmmm - (ss * 1000);
+  hh = (hrs < 10) ? `0${hrs}` : `${hrs}`;
+  mm = (min < 10) ? `0${min}` : `${min}`;
+  ssmils = (ss < 10) ? `0${ss}.${ms}` : `${ss}.${ms}`;
+ return `${hh}:${mm}:${ssmils}`
+}
+
+app.get('/uptime', (req, res) => {
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n`);
+});
+
 app.listen(port, () => {
-  console.log(`${new Date().toLocaleTimeString()} Server listening at http://localhost:${port}`);
+  console.log(`${new Date().toLocaleTimeString()} Server listening at http://localhost:${port} (${sinceStart()} msec)`);
 });
 
