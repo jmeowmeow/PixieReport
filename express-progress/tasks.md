@@ -525,11 +525,13 @@ Extracted to [./cache.md](./cache.md)
 - [ ] Station list view/search
 
 ### Webapp architecture
-- [ ] favicon templated into every page
+- [X] page template structure with navigation
+- [X] favicon templated into every page _mostly_ (only in HTML pages, not PNG or text/plain)
+- [ ] Basic uptime endpoint.
+- [ ] Useful uptime page with stats (pixies served, uptime, error count?) or in template footer
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
-- [ ] Uptime page with stats (pixies served, uptime, error count?) or template footer
-- [ ] Start an ops status / robustness / recovery list.
+- [X] Start an ops status / robustness / recovery list.
 
 ### Reporting Stations
 - [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
@@ -576,4 +578,22 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 
 Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
+
+
+## Operations Status, Robustness, and Recovery
+From the above item:
+- [X] Start an ops status / robustness / recovery list.
+
+### Service start / restart
+ - [ ] start-up script
+ - [ ] daemonization, better automatic restartability
+
+### Service load
+ - [ ] observe load and latency
+ - [ ] experiment with cache
+
+### Pixie Rendering Flaw Reporting and Handling
+ - [ ] What about rarely reporting stations? Should we refresh the snapshot more often?
+ - [ ] What about stations with no geodata? Is this something loggable in the uptime/debug page?
+ - [ ] What about weather conditions with no mapped image layer ("light rain showers"): loggable other than console?
 

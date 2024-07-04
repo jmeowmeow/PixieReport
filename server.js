@@ -12,8 +12,20 @@ const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='
 
 const pagehead = `<head>${favicon}</head>`;
 
-const codes = [];
-for (const stn of stations.keys()) {codes.push(stn);};
+const anchor = function(url, text) {
+  return `<a href="${url}">${text}</a>`;
+};
+
+const navigationLinks = [
+  {url: '/', text: 'Home'},
+  {url: '/about', text: 'About'},
+  {url: '/compose', text: 'Compose'},
+  {url: '/pixie', text: 'Pixie'},
+  {url: '/random', text: 'Random'},
+  {url: '/uptime', text: 'Uptime'},
+].map(link => anchor(link.url, link.text)).join(' | ');
+
+const navigation = `<p class="nav">${navigationLinks}</p>`;
 
 const sinceStart = function() {
   return Date.now() - tStart;
@@ -53,6 +65,8 @@ app.get('/', (req, res) => {
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
+  body += navigation;
+  body += "\n";
   body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th><th>Location</th></tr></thead>\n"
   stationChoices.map(stn =>
   {
@@ -75,7 +89,8 @@ app.get('/', (req, res) => {
     tileNo++;
     if (tileNo % 4 === 0) {body += "<br/>";}
   });
-  body += "</p>"
+  body += "</p>\n"
+  body += navigation;
   const responseBody = `${pagehead}<body>${body}</body>`;
   res.send(responseBody);
 });
@@ -186,7 +201,7 @@ app.get('/compose', async (req, res) => {
      mapLink = `<a href="${mapUrl}">${mapUrl}</a>`;
   }
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><pre>${jsonOutput}</pre>`;
+    const responseBody = `${navigation}\n<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${navigation}\n<pre>${jsonOutput}</pre>`;
     res.send(responseBody); });
 });
 
@@ -207,12 +222,35 @@ const servePixie = async function(req, res, location) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
   }
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="${alt}" src="${src}" title="${title}"/></a>';
-  const responseEntity = pixieimg.replace(/\${station}/g, location).replace(/\${dollset}/g, dollset).replace(/\${alt}/g, alt);
+  const imageHolder = pixieimg.replace(/\${station}/g, location).replace(/\${dollset}/g, dollset).replace(/\${alt}/g, alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = responseEntity.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
+    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
+    const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
     res.send(responseBody);
   });
 }
+
+app.get('/about', async (req, res) => {
+  let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus');
+  let body = "<p>This is a prototype server for PixieReport.</p>";
+  body += "<p>Briefly, this service constructs pixel paperdoll images from airport weather conditions. ";
+  body += "It is an homage to Tamsin Bowles' original Weatherpixie.com site.</p>";
+  body += "<p>The public version is intended to support bookmarking URLs for including PixieReport images in other pages, ";
+  body += "similar to the original.</p>";
+  body += `<p>For more information, see the ${doc} in the GitHub project source tree.</p>`;
+  const preamble = body;
+  const location = 'KSEA';
+  const dollset = 'selfie';
+  const params = decodedToParamObject(await fetchMETAR(location));
+  params.dollset = dollset;
+  var [pixie, alt]= await compose(params).catch(console.error);
+  const imageHolder  = `${preamble}<br/><img alt="${alt}" src="_SRC_" title="Author selfie"/>`;
+  pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
+    const body = imageHolder.replace(/_SRC_/g, src);
+    const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+    res.send(responseBody);
+  });
+});
 
 // parameters: airport code, C/F, which pixie set; optional!
 app.get('/pixie', async (req, res) => {
