@@ -126,8 +126,10 @@ namedLayers.set('light drizzle', new Layer('light rain', 'pixifier/pixies/weathe
 namedLayers.set('drizzle', new Layer('drizzle', 'pixifier/pixies/weather/drizzle.png'));
 namedLayers.set('heavy drizzle', namedLayers.get('drizzle'));
 namedLayers.set('light rain', namedLayers.get('light drizzle'));
+namedLayers.set('light rain showers', namedLayers.get('light drizzle'));
 namedLayers.set('light rain with thunder', namedLayers.get('light rain'));
 namedLayers.set('rain', new Layer('rain', 'pixifier/pixies/weather/rain.png'));
+namedLayers.set('rain showers', namedLayers.get('rain'));
 namedLayers.set('rain with thunder', namedLayers.get('rain'));
 namedLayers.set('heavy rain', namedLayers.get('rain'));
 namedLayers.set('heavy rain with thunder', namedLayers.get('rain'));
@@ -137,6 +139,7 @@ namedLayers.set('patches of fog', namedLayers.get('fog'));
 namedLayers.set('light snow', new Layer('light snow', 'pixifier/pixies/weather/ltsnow.png'));
 namedLayers.set('snow', new Layer('snow', 'pixifier/pixies/weather/snow.png'));
 namedLayers.set('heavy snow', namedLayers.get('snow'));
+namedLayers.set('blowing snow', namedLayers.get('light snow')); 
 namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lightning.png'));
 
 let promises = [];
