@@ -496,8 +496,8 @@ Note 2. The pixie tableau on / is a reminder that each uncached image render is 
 double latency hit: browser to PixieReport server, PixieReport server to
 NOAA METAR server, and the NOAA METAR requests are a burst that sometimes
 results in a timeout. So maybe a little cache is in order! I can feel a
-little architecture on its way. And we could do a little preload at server
-start!
+little architecture on its way. And we could do a little preload of METARs
+at server start!
 
 How about a pixel set parameter? Do we have a params story in general for
 bookmarking or defaults?
@@ -527,7 +527,7 @@ Extracted to [./cache.md](./cache.md)
 ### Webapp architecture
 - [X] page template structure with navigation
 - [X] favicon templated into every page _mostly_ (only in HTML pages, not PNG or text/plain)
-- [ ] Basic uptime endpoint.
+- [X] Basic uptime endpoint.
 - [ ] Useful uptime page with stats (pixies served, uptime, error count?) or in template footer
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
