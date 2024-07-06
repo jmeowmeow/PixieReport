@@ -27,6 +27,14 @@ const navigationLinks = [
 
 const navigation = `<p class="nav">${navigationLinks}</p>`;
 
+const nav = function(req) {
+  const url = req.url;
+  const pathquery = url.split('?');
+  if( pathquery.length != 2) { return navigation; }
+  let q = pathquery[1];
+  return navigation.replace('/compose', '/compose?'+q).replace('/pixie', '/pixie?'+q);
+};
+
 const sinceStart = function() {
   return Date.now() - tStart;
 }
@@ -200,8 +208,9 @@ app.get('/compose', async (req, res) => {
   if (mapUrl.startsWith('http')) {
      mapLink = `<a href="${mapUrl}">${mapUrl}</a>`;
   }
+  const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `${navigation}\n<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${navigation}\n<pre>${jsonOutput}</pre>`;
+    const responseBody = `${mynav}\n<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
     res.send(responseBody); });
 });
 
@@ -223,9 +232,11 @@ const servePixie = async function(req, res, location) {
   }
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="${alt}" src="${src}" title="${title}"/></a>';
   const imageHolder = pixieimg.replace(/\${station}/g, location).replace(/\${dollset}/g, dollset).replace(/\${alt}/g, alt);
+  console.log(JSON.stringify(req.url));
+  const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
-    const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+    const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
     res.send(responseBody);
   });
 }
