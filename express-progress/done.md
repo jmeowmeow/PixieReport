@@ -43,6 +43,7 @@ initial Express setup and async handlers.
 
 ## Webapp Design/Content
 * Gallery on home page, each pixie linked.
+* Navigation links among pages on HTML pages.
 
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
