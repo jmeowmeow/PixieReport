@@ -44,7 +44,6 @@ Public alpha, needs:
 * status and statistics page (all we have is uptime and the console)
 
 
-
 **Cache Thoughts**
 
 Extracted to [./cache.md](./cache.md)
@@ -52,7 +51,7 @@ Extracted to [./cache.md](./cache.md)
 ## Next Step Directions
 
 ### Webapp Functions
-- [X] HTTP refresh header slideshow of random pixie /random 
+- [X] HTTP refresh header slideshow of random pixie /random
 - [X] /random - should also link individual slides and jump out of show
 - [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [X] Instead of defaulting KSEA, random pixie via hit and redirect
@@ -121,14 +120,24 @@ From the above item:
 
 ### Service start / restart
  - [ ] start-up script
- - [ ] daemonization, better automatic restartability
+ - [ ] daemonization, better automatic restartability. Consider PM2
 
 ### Service load
  - [ ] observe load and latency
  - [ ] experiment with cache
 
 ### Pixie Rendering Flaw Reporting and Handling
- - [ ] What about rarely reporting stations? Should we refresh the snapshot more often?
+ - [ ] What about rarely reporting stations? Should we refresh the active snapshot more often?
+ - [ ] What about stations with an unchanging old report?
  - [ ] What about stations with no geodata? Is this something loggable in the uptime/debug page?
  - [ ] What about weather conditions with no mapped image layer ("light rain showers"): loggable other than console?
+
+### Full METAR parse from raw METAR report.
+ - [ ] Add a fromRawMetar section to debug output.
+ - [ ] Reproduce the 'Decoded METAR" parsing logic for...
+     - [ ] temperature
+     - [ ] humidity (argh)
+     - [ ] wind
+     - [ ] sky cover
+     - [ ] weather conds
 
