@@ -43,7 +43,7 @@ const expectedAltTextWords = {
   'KBLI': ['night', 'overcast', 'mist'],
   'MHGS': ['day', 'cloudy'], // towering cumulus not yet rendered
   'SVCJ': ['day', 'clear'],
-  'PANU': ['gray', 'cloudy'],
+  'PANU': ['day', 'cloudy'], // after adding location, we resolve "day"
 };
 
 const {decodedToParamObject, computeAltText, Layer, computeTheLayers, computeSceneText} = require('../pixifier/decoded-metar-parser.js');
