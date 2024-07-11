@@ -9,6 +9,7 @@ const { cache } = require('../webapp/cache.js');
 const fs = require('fs');
 const resourceDir = __dirname + '/resources';
 const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU' ];
+
 const loadMetarText = function(icaoName) {
     var metarFile = resourceDir + '/' + icaoName + '.TXT';
     expect(fs.existsSync(resourceDir)).toBeTrue();
@@ -17,7 +18,7 @@ const loadMetarText = function(icaoName) {
     return metarText;
 };
 
-describe("metar to param parser", function() {
+describe("cache basic functions", function() {
   beforeAll(function() {
     expect(cache).not.toBe(null);
     expect(cache).not.toBe(undefined);
@@ -25,6 +26,8 @@ describe("metar to param parser", function() {
     expect(loadMetarText('NZSP')).toMatch('.*South Pole.*');
   });
 
+// probably needs a beforeEach, cache.clear()
+	
   it("should have a cache module loaded", function() {
      expect(JSON.stringify(cache)).toMatch('{"keyValue":{}}');
   });
@@ -33,5 +36,12 @@ describe("metar to param parser", function() {
      expect(cache.clear()).toBe(cache);
   });
 
+  it("should store and retrieve a value", function() {
+    cache.clear();
+    const theNow = Date.now();
+    expect(undefined === cache.get('hello', theNow));
+    expect(cache.put('hello', 'world', theNow)).toBe(cache);
+    expect(cache.get('hello', theNow)).toBe('world');
+  }); 
 
 });
