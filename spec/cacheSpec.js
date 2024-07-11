@@ -28,4 +28,10 @@ describe("metar to param parser", function() {
   it("should have a cache module loaded", function() {
      expect(JSON.stringify(cache)).toMatch('{"keyValue":{}}');
   });
+
+  it("should accept cache.clear()", function() {
+     expect(cache.clear()).toBe(cache);
+  });
+
+
 });

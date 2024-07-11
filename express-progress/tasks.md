@@ -44,6 +44,21 @@ Public alpha, needs:
 * status and statistics page (all we have is uptime and the console)
 
 
+Thu 11 Jul 2024 08:45:38 AM PDT
+
+Yesterday: fixed NPM tests. There's still an occasional race condition
+with the Jimp tests, maybe Jasmine is in a little hurry with evaluating
+unresolved promises?
+
+Check-in of initial METAR cache and spec. Going to try and develop this with
+spec tracking cache behavior.
+
+Thoughts from yesterday near sunset: day/night of report may lag the current
+time enough to see as "hey, shouldn't it be twilight already?" so the relevant
+thought is: when should we use clock time for day/night rather than report time?
+
+Intention: more cache tests?
+
 **Cache Thoughts**
 
 Extracted to [./cache.md](./cache.md)

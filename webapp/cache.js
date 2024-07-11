@@ -20,10 +20,18 @@ const get = function (key, tstamp) {
 }
 
 
+const clear = function() {
+	this.keyValue = new Map();
+	return this;
+}
+
 const cache = {
 	put: put,
 	get: get,
-	keyValue: keyValue
+	clear: clear,
+	keyValue: undefined
 }
+
+cache.clear();
 
 exports.cache = cache;
