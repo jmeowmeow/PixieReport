@@ -29,7 +29,8 @@ const cache = {
 	put: put,
 	get: get,
 	clear: clear,
-	keyValue: undefined
+	keyValue: undefined,
+	durationMsec: cacheDurationMsec
 }
 
 cache.clear();

@@ -31,7 +31,7 @@ describe("cache basic functions", function() {
   });
 	
   it("should have a cache module loaded", function() {
-     expect(JSON.stringify(cache)).toMatch('{"keyValue":{}}');
+     expect(JSON.stringify(cache)).toMatch('{"keyValue":{},"durationMsec":300000}');
   });
 
   it("should accept cache.clear()", function() {
@@ -44,5 +44,14 @@ describe("cache basic functions", function() {
     expect(cache.put('hello', 'world', theNow)).toBe(cache);
     expect(cache.get('hello', theNow)).toBe('world');
   }); 
+
+  it("should return undefined for expired values", function() {
+    const theNow = Date.now();
+    const theFuture = theNow + (1 + cache.durationMsec);
+    expect(undefined === cache.get('hello', theNow));
+    expect(cache.put('hello', 'world', theNow)).toBe(cache);
+    expect(undefined === cache.get('hello', theFuture));
+  });
+
 
 });
