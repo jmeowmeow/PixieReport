@@ -7,6 +7,7 @@ const {stations, activeMetarStations, resources, Jimp} = require('./preloads');
 const {compose} = require('./compose-async');
 const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
+const {cache} = require('./webapp/cache');
 
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
@@ -137,6 +138,11 @@ const defaultReport = (location) => {
   }
 }
 
+// offline testing of METAR report cache, given
+// that an old snapshot is presumed current.
+// But subtract four minutes from the cache.
+cache.put('KLAN', KLAN, Date.now() - (4 * 60 * 1000));
+
 const fetchMetarFile = async (location) => {
   let metarFile = `spec/resources/${location}.TXT`;
   try {
@@ -149,6 +155,7 @@ const fetchMetarFile = async (location) => {
   return defaultReport(location);
 };
 
+
 const fetchMETAR = async (location) => {
   // note new METAR API endpoint after text server was announced
   // as discontinued but text URL still works 2024-06-25. Be wary.
@@ -157,8 +164,16 @@ const fetchMETAR = async (location) => {
   // also note the bulk all-current-METARs cache updated by minute,
   // with the METAR reports in raw, non-decoded form.
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
+  let cached = cache.get(location, Date.now());
+  if (cached) {
+      console.log(`found a cached report for ${location}`);
+      return cached;
+    } else {
+      console.log(`${location} cache contents is ${cached}`);
+    }
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
-  let report = await fetch(url).then(response => response.text()).catch(error => { console.error(JSON.stringify(error, null, 2)); return fetchMetarFile(location) });
+  let report = await fetch(url).then(response => { return response.text() }).catch(error => { console.error(JSON.stringify(error, null, 2)); return fetchMetarFile(location) });
+
   return report;
 }
 
