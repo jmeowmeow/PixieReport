@@ -26,7 +26,9 @@ describe("cache basic functions", function() {
     expect(loadMetarText('NZSP')).toMatch('.*South Pole.*');
   });
 
-// probably needs a beforeEach, cache.clear()
+  beforeEach(function() {
+    cache.clear();
+  });
 	
   it("should have a cache module loaded", function() {
      expect(JSON.stringify(cache)).toMatch('{"keyValue":{}}');
@@ -37,7 +39,6 @@ describe("cache basic functions", function() {
   });
 
   it("should store and retrieve a value", function() {
-    cache.clear();
     const theNow = Date.now();
     expect(undefined === cache.get('hello', theNow));
     expect(cache.put('hello', 'world', theNow)).toBe(cache);
