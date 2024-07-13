@@ -59,6 +59,16 @@ thought is: when should we use clock time for day/night rather than report time?
 
 Intention: more cache tests?
 
+Fri 12 Jul 2024 12:10:06 PM PDT
+
+Today: deployed to pixiereport.com, but I see more cache misses than I would
+expect when reloading the home page (which is mostly the same set of stations).
+
+1. Is there some non-shared-context going on with Express?
+2. Maybe I need a cache list page.
+3. Oh oops I forgot to make a fetch generate a cache.put();
+
+
 **Cache Thoughts**
 
 Extracted to [./cache.md](./cache.md)

@@ -11,7 +11,8 @@ const {cache} = require('./webapp/cache');
 
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
-const pagehead = `<head>${favicon}</head>`;
+const pagetitle = "PixieReport Webapp";
+const pagehead = `<head>${pagetitle}\n${favicon}</head>`; // maybe <title/> is in order?
 
 const anchor = function(url, text) {
   return `<a href="${url}">${text}</a>`;
@@ -24,6 +25,7 @@ const navigationLinks = [
   {url: '/pixie', text: 'Pixie'},
   {url: '/random', text: 'Random'},
   {url: '/uptime', text: 'Uptime'},
+  {url: '/cache', text: 'Cache'},
 ].map(link => anchor(link.url, link.text)).join(' | ');
 
 const navigation = `<p class="nav">${navigationLinks}</p>`;
@@ -172,7 +174,11 @@ const fetchMETAR = async (location) => {
       console.log(`${location} cache contents is ${cached}`);
     }
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
-  let report = await fetch(url).then(response => { return response.text() }).catch(error => { console.error(JSON.stringify(error, null, 2)); return fetchMetarFile(location) });
+  let report = await fetch(url).then(
+    response => { const text = response.text();
+                  cache.put(location, text, Date.now()); // potential race?
+                  return text; }).catch(
+      error => { console.error(JSON.stringify(error, null, 2)); return fetchMetarFile(location) });
 
   return report;
 }
@@ -339,6 +345,20 @@ const to_hhmmss = function(msec) {
 app.get('/uptime', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   res.send(`Uptime: ${to_hhmmss(sinceStart())}\n`);
+});
+
+app.get('/cache', (req, res) => {
+  res.setHeader('Content-Type', 'text/html');
+  let body;
+  let theMap = cache.keyValue;
+  let size = cache.keyValue.size;
+  let e = [];
+  let keys = [...cache.keyValue.keys()].reduce((a,b) => `${a}, ${b}`);
+  let activekeys = [...cache.keyValue.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
+  let expiredkeys = [...cache.keyValue.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
+  body = `<p>Cache size = ${size}</p><p>Keys=<br/>${keys}</p><p>Active keys:<br/>${activekeys}<p>Expired keys:<br/>${expiredkeys}</p></p>`
+  const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+  res.send(responseBody);
 });
 
 app.listen(port, () => {
