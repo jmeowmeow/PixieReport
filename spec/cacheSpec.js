@@ -31,7 +31,7 @@ describe("cache basic functions", function() {
   });
 	
   it("should have a cache module loaded", function() {
-     expect(JSON.stringify(cache)).toMatch('{"keyValue":{},"durationMsec":300000}');
+     expect(JSON.stringify(cache)).toMatch('{"keyValue":{},"durationMsec":300000,"size":0}');
   });
 
   it("should accept cache.clear()", function() {

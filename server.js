@@ -23,6 +23,7 @@ const navigationLinks = [
   {url: '/about', text: 'About'},
   {url: '/compose', text: 'Compose'},
   {url: '/pixie', text: 'Pixie'},
+  {url: '/png', text: 'PNG image'},
   {url: '/random', text: 'Random'},
   {url: '/uptime', text: 'Uptime'},
   {url: '/cache', text: 'Cache'},
@@ -35,7 +36,10 @@ const nav = function(req) {
   const pathquery = url.split('?');
   if( pathquery.length != 2) { return navigation; }
   let q = pathquery[1];
-  return navigation.replace('/compose', '/compose?'+q).replace('/pixie', '/pixie?'+q);
+  return navigation.replace(
+    '/compose', '/compose?'+q).replace(
+      '/pixie', '/pixie?'+q).replace(
+       '/png', '/png?'+q);
 };
 
 const sinceStart = function() {
@@ -250,7 +254,6 @@ const servePixie = async function(req, res, location) {
   }
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="${alt}" src="${src}" title="${title}"/></a>';
   const imageHolder = pixieimg.replace(/\${station}/g, location).replace(/\${dollset}/g, dollset).replace(/\${alt}/g, alt);
-  console.log(JSON.stringify(req.url));
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
@@ -349,14 +352,12 @@ app.get('/uptime', (req, res) => {
 
 app.get('/cache', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
+  res.header('Refresh', '10');
   let body;
-  let theMap = cache.keyValue;
-  let size = cache.keyValue.size;
-  let e = [];
-  let keys = [...cache.keyValue.keys()].reduce((a,b) => `${a}, ${b}`);
-  let activekeys = [...cache.keyValue.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
-  let expiredkeys = [...cache.keyValue.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
-  body = `<p>Cache size = ${size}</p><p>Keys=<br/>${keys}</p><p>Active keys:<br/>${activekeys}<p>Expired keys:<br/>${expiredkeys}</p></p>`
+  let keys = [...cache.keys()].reduce((a,b) => `${a}, ${b}`);
+  let activekeys = [...cache.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
+  let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
+  body = `<p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><p>Active keys:<br/>${activekeys}<p>Expired keys:<br/>${expiredkeys}</p></p>`
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
   res.send(responseBody);
 });
