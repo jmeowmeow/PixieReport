@@ -11,7 +11,6 @@ const get = function (key, tstamp) {
 	let entry = this.keyValue.get(key);
 	if (entry) {
 		let entryTs = entry.ts;
-		let diff = tstamp - entryTs;
 		if (tstamp - entryTs <= cacheDurationMsec) {
 			return entry.value;
 		}

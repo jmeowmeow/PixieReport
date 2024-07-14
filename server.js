@@ -12,7 +12,7 @@ const {cache} = require('./webapp/cache');
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
 const pagetitle = "PixieReport Webapp";
-const pagehead = `<head>${pagetitle}\n${favicon}</head>`; // maybe <title/> is in order?
+const pagehead = `<head><title>${pagetitle}</title>\n${favicon}</head>`; // maybe <title/> is in order?
 
 const anchor = function(url, text) {
   return `<a href="${url}">${text}</a>`;
@@ -21,12 +21,13 @@ const anchor = function(url, text) {
 const navigationLinks = [
   {url: '/', text: 'Home'},
   {url: '/about', text: 'About'},
-  {url: '/compose', text: 'Compose'},
-  {url: '/pixie', text: 'Pixie'},
-  {url: '/png', text: 'PNG image'},
   {url: '/random', text: 'Random'},
-  {url: '/uptime', text: 'Uptime'},
-  {url: '/cache', text: 'Cache'},
+  {url: '/pixie', text: 'Pixie'},
+  {url: '/compose', text: 'devpixie'},
+  {url: '/png', text: 'img'},
+  {url: '/metar', text: 'metar'},
+  {url: '/uptime', text: 'uptime'},
+  {url: '/cache', text: 'cache'},
 ].map(link => anchor(link.url, link.text)).join(' | ');
 
 const navigation = `<p class="nav">${navigationLinks}</p>`;
@@ -39,7 +40,8 @@ const nav = function(req) {
   return navigation.replace(
     '/compose', '/compose?'+q).replace(
       '/pixie', '/pixie?'+q).replace(
-       '/png', '/png?'+q);
+      '/png', '/png?'+q).replace(
+       '/metar', '/metar?'+q);
 };
 
 const sinceStart = function() {
@@ -73,7 +75,6 @@ app.get('/', (req, res) => {
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
   let body = "";
-  let link = "<a href='${url}'>${url}</a><br/>";
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
   let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
@@ -172,10 +173,10 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let cached = cache.get(location, Date.now());
   if (cached) {
-      console.log(`found a cached report for ${location}`);
+      console.log(`metar cache: found report for ${location}`);
       return cached;
     } else {
-      console.log(`${location} cache contents is ${cached}`);
+      console.log(`metar cache: need to fetch ${location}`);
     }
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   let report = await fetch(url).then(
@@ -211,6 +212,36 @@ app.get('/metar', async (req, res) => {
   res.send(`Hello from ${location}, report follows:\n ${report}`);
 });
 
+const pixieAlt = async function(params) {
+  // a first-cut parameter for caching would be the request query param string
+  // location=ABCD&set=3  where location=params.stationCode and set=params.dollset
+
+  let location = params.stationCode;
+  let set = params.dollset;
+  let pixieKey;
+  if (set) {
+    pixieKey = `location=${location}&set=${set}`;
+  } else {
+    pixieKey = `location=${location}`;
+  }
+  const cachedPixie = cache.get(pixieKey, Date.now());
+  if (cachedPixie) {
+    console.log(`image cache: found ${pixieKey}`)
+    return cachedPixie;
+  } else {
+    console.log(`image cache: need new image for ${pixieKey}`)
+  }
+  var [pixie, alt]= await compose(params).catch(console.error);
+  cache.put(pixieKey, [pixie, alt], Date.now());
+  console.log(`image cache: saved [image, alt] ${pixieKey}`)
+  let keyWithDollset = `location=${location}&set=${params.dollset}`; // late bound dollset?
+  if (pixieKey != keyWithDollset) {
+    cache.put(keyWithDollset, [pixie, alt], Date.now());
+    console.log(`image cache: saved [image, alt] ${keyWithDollset}`)
+  }
+  return [pixie, alt];
+}
+
 app.get('/compose', async (req, res) => {
   const location = req.query.location;
   if (location === undefined) {
@@ -221,7 +252,7 @@ app.get('/compose', async (req, res) => {
   params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
-  var [pixie, alt]= await compose(params).catch(console.error);
+  var [pixie, alt]= await pixieAlt(params).catch(console.error);
   let jsonOutput = JSON.stringify(params, null, 2);
   // add a "stations" lookup
   let icaoLocData = stations.get(location);
@@ -243,7 +274,7 @@ const servePixie = async function(req, res, location) {
   params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
-  var [pixie, alt]= await compose(params).catch(console.error);
+  var [pixie, alt]= await pixieAlt(params).catch(console.error);
   let dollset = params.dollset; // if bound in compose(); TODO pull this to server
   // add a "stations" lookup
   let icaoLoc = stations.get(location);
@@ -253,7 +284,11 @@ const servePixie = async function(req, res, location) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
   }
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="${alt}" src="${src}" title="${title}"/></a>';
-  const imageHolder = pixieimg.replace(/\${station}/g, location).replace(/\${dollset}/g, dollset).replace(/\${alt}/g, alt);
+  const imageHolder = pixieimg.replace(
+    /\${station}/g, location).replace(
+      /\${dollset}/g, dollset).replace(
+        /\${alt}/g, alt).replace(
+          /\${title}/g, title);
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
@@ -275,7 +310,7 @@ app.get('/about', async (req, res) => {
   const dollset = 'selfie';
   const params = decodedToParamObject(await fetchMETAR(location));
   params.dollset = dollset;
-  var [pixie, alt]= await compose(params).catch(console.error);
+  var [pixie, alt]= await pixieAlt(params).catch(console.error);
   const imageHolder  = `${preamble}<br/><img alt="${alt}" src="_SRC_" title="Author selfie"/>`;
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/_SRC_/g, src);
@@ -310,7 +345,7 @@ app.get('/png', async (req, res) => {
   const params = decodedToParamObject(await fetchMETAR(location));
   params.dollset = req.query.set;
   // if this fails, we should probably return a default image.
-  var [pixie, alt]= await compose(params).catch(console.error);
+  var [pixie, alt]= await pixieAlt(params).catch(console.error);
   const pngbuf = await pixie.getBufferAsync(Jimp.MIME_PNG);
   res
   .writeHead(200, {
