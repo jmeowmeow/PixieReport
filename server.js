@@ -392,8 +392,9 @@ app.get('/cache', (req, res) => {
   let keys = [...cache.keys()].reduce((a,b) => `${a}, ${b}`);
   let activekeys = [...cache.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
-  body = `<p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><p>Active keys:<br/>${activekeys}<p>Expired keys:<br/>${expiredkeys}</p></p>`
+  body = `<p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+  cache.expire();
   res.send(responseBody);
 });
 

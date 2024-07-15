@@ -19,6 +19,12 @@ const get = function (key, tstamp) {
 	return undefined;
 }
 
+const del = function (key) {
+	this.keyValue.delete(key);
+	this.size = this.keyValue.size;
+	return this;
+}
+
 const keys = function () {
 	return this.keyValue.keys();
 }
@@ -29,11 +35,19 @@ const clear = function() {
 	return this;
 }
 
+const expire = function() {
+  let expiredkeys = [...this.keys()].filter(
+	k => (undefined === cache.get(k, Date.now()))).map(
+		(expiredKey) => this.delete(expiredKey));
+}
+
 const cache = {
 	put: put,
 	get: get,
+	delete: del,
 	keys: keys,
 	clear: clear,
+	expire: expire,
 	keyValue: undefined,
 	durationMsec: cacheDurationMsec,
 	size: 0
