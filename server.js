@@ -78,7 +78,7 @@ app.get('/', (req, res) => {
   let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
   let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
-  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
+  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += navigation;
@@ -263,7 +263,7 @@ app.get('/compose', async (req, res) => {
   }
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `${mynav}\n<img alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
+    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
     res.send(responseBody); });
 });
 
@@ -283,7 +283,7 @@ const servePixie = async function(req, res, location) {
   if (mapUrl.startsWith('http')) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
   }
-  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img alt="${alt}" src="${src}" title="${title}"/></a>';
+  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="${alt}" src="${src}" title="${title}"/></a>';
   const imageHolder = pixieimg.replace(
     /\${station}/g, location).replace(
       /\${dollset}/g, dollset).replace(
@@ -311,7 +311,7 @@ app.get('/about', async (req, res) => {
   const params = decodedToParamObject(await fetchMETAR(location));
   params.dollset = dollset;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
-  const imageHolder  = `${preamble}<br/><img alt="${alt}" src="_SRC_" title="Author selfie"/>`;
+  const imageHolder  = `${preamble}<br/><img width="125" alt="${alt}" src="_SRC_" title="Author selfie"/>`;
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/_SRC_/g, src);
     const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
