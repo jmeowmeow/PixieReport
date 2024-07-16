@@ -7,6 +7,9 @@ default:
 start:
 	npm run dev
 
+production:
+	npx pm2 server.js
+
 test:
 	npm test
 
