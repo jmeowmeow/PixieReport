@@ -8710,6 +8710,7 @@ ZYYY: "SHENYANG/DONGTA, China (ZYYY), 41-47N 123-30E 43M"
 // downloaded 20 Oct 2020, with edits
 // caution: not all of these stations give timely full reports
 // some slight location differences from METAR reports (e.g. EGLC)
+// Station records added and revised for active stations based on web search/site lookup.
 exports.icaoToLocationMap = icaoLocMap;
 
 const activeMetarStations = [
