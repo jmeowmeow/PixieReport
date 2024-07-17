@@ -15,6 +15,9 @@ const layerByName = function(name) {
   }
 
 function backgroundLayer(params) {
+  if (params.metar == "") {
+    return layerByName("noreport");
+  }
   if (params.sunPos && params.sunPos.zenithAngle) {
     const z = params.sunPos.zenithAngle;
     if (z < 89) {

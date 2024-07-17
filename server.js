@@ -173,10 +173,10 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let cached = cache.get(location, Date.now());
   if (cached) {
-      console.log(`metar cache: found report for ${location}`);
+//      console.log(`metar cache: found report for ${location}`);
       return cached;
     } else {
-      console.log(`metar cache: need to fetch ${location}`);
+//      console.log(`metar cache: need to fetch ${location}`);
     }
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   let report = await fetch(url).then(
@@ -216,6 +216,9 @@ const pixieAlt = async function(params) {
   // a first-cut parameter for caching would be the request query param string
   // location=ABCD&set=3  where location=params.stationCode and set=params.dollset
 
+  // params.stationCode appears as '????' if the fetch fails, and we cache that.
+  // maybe a more explicit no-report-found would be better?
+  // "the sky over the port was the the color of a television tuned to an empty channel"
   let location = params.stationCode;
   let set = params.dollset;
   let pixieKey;
@@ -226,23 +229,24 @@ const pixieAlt = async function(params) {
   }
   const cachedPixie = cache.get(pixieKey, Date.now());
   if (cachedPixie) {
-    console.log(`image cache: found ${pixieKey}`)
+    // console.log(`image cache: found ${pixieKey}`)
     return cachedPixie;
   } else {
-    console.log(`image cache: need new image for ${pixieKey}`)
+    // console.log(`image cache: need new image for ${pixieKey}`)
   }
   var [pixie, alt]= await compose(params).catch(console.error);
   cache.put(pixieKey, [pixie, alt], Date.now());
-  console.log(`image cache: saved [image, alt] ${pixieKey}`)
+  // console.log(`image cache: saved [image, alt] ${pixieKey}`)
   let keyWithDollset = `location=${location}&set=${params.dollset}`; // late bound dollset?
   if (pixieKey != keyWithDollset) {
     cache.put(keyWithDollset, [pixie, alt], Date.now());
-    console.log(`image cache: saved [image, alt] ${keyWithDollset}`)
+  //   console.log(`image cache: saved [image, alt] ${keyWithDollset}`)
   }
   return [pixie, alt];
 }
 
 app.get('/compose', async (req, res) => {
+  // Developer's view of a pixie render.
   const location = req.query.location;
   if (location === undefined) {
     redirectToSetLocation(req, res);

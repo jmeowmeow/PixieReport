@@ -93,6 +93,7 @@ namedLayers.set('coolPixie', coolDoll);
 namedLayers.set('warmPixie', warmDoll);
 namedLayers.set('hotPixie', hotDoll);
 
+namedLayers.set("noreport", new Layer("video static", "pixifier/pixies/backgrounds/nosignal-bkg.png"));
 namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
 namedLayers.set("pink", new Layer("dusk", "pixifier/pixies/backgrounds/pinkbackground.png"));
