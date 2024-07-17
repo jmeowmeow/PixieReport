@@ -73,6 +73,27 @@ expect when reloading the home page (which is mostly the same set of stations).
 
 Extracted to [./cache.md](./cache.md)
 
+
+Tue 16 Jul 2024 09:26:27 AM PDT
+
+* Cache implemented and deployed. It could use an automatic expire.
+* PM2 rolled out as new production launcher. First one's free! [pm2.io](https://pm2.io).
+* Updated [./cache.md](./cache.md) and [./done.md](./done.md).
+
+Tuesday intentions:
+* Review the prospectus. (check.)
+* Consider launch tasks:
+    * How do we set up a HTTPS cert for *.pixiereport.com ?
+    * reverse proxy via nginx or other?
+* Consider nearest-sites using icao.js geolocations near in lat or long.
+* Add some list of nearest sites to the devpixie / compose page.
+
+Wilder ideas (not today):
+* Bring Your Own Pictures via PaperJS or a simpler "load to canvas, add transparency".
+* As well as /png, have /randompng for a slide show of includable images. Alt text to HTTP headers?
+* As well as /png, have /gif for gif89a animated pics or slideshow stacks of multiple locs.
+* Multiple "location" query params to make your own matrix (or gif). Redirect to a canonical version for URL based caching if you like.
+
 ## Next Step Directions
 
 ### Webapp Functions
@@ -144,20 +165,22 @@ From the above item:
 - [X] Start an ops status / robustness / recovery list.
 
 ### Service start / restart
- - [ ] start-up script
- - [ ] daemonization, better automatic restartability. Consider PM2
+ - [X] start-up script? Replace "nohup node server.js", ^Z, "bg"  (pm2 below)
+ - [X] daemonization, better automatic restartability. Using PM2 [pm2.io](https://pm2.io).
 
 ### Service load
- - [ ] observe load and latency
- - [ ] experiment with cache
+ - [ ] observe load and latency (Express or Node runtime obs? PM2 builtins?)
+ - [X] experiment with cache. Implemented cache.
 
 ### Pixie Rendering Flaw Reporting and Handling
+Add more information in an ops page, maybe frame-in some specific logs.
  - [ ] What about rarely reporting stations? Should we refresh the active snapshot more often?
- - [ ] What about stations with an unchanging old report?
+ - [ ] What about stations with an unchanging old report? (time/date detection)
  - [ ] What about stations with no geodata? Is this something loggable in the uptime/debug page?
  - [ ] What about weather conditions with no mapped image layer ("light rain showers"): loggable other than console?
 
 ### Full METAR parse from raw METAR report.
+These items would enable running from a bulk METAR latest fetch.
  - [ ] Add a fromRawMetar section to debug output.
  - [ ] Reproduce the 'Decoded METAR" parsing logic for...
      - [ ] temperature
