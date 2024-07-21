@@ -5750,7 +5750,7 @@ LFBO: "TOULOUSE/BLAGNAC, FRANCE (LFBO), 43-37N 001-22E 150M",
 LFBP: "PONT-LONG-UZEIN/, FRANCE (LFBP), 43-23N 000-25W 182M",
 LFBR: "MURET/LHERM, France (LFBR), 43-27N 001-16E 189M",
 LFBS: "BISCAROSSE/PAREN, FRANCE (LFBS), 44-22N 001-08W 39M",
-LFBT: "TARBES/OSSUN, FRANCE (LFBT), 43-11N 000-01E 359M",
+LFBT: "TARBES/OSSUN, FRANCE (LFBT), 43-11N 000-00E 359M",
 LFBU: "BRIE CHAMPNIERS, FRANCE (LFBU), 45-43N 000-13E 124M",
 LFBV: "BRIVE/LA ROCHE(A, France (LFBV), 45-08N 001-28E 117M",
 LFBX: "PERIGUEUX/BASSIL, France (LFBX), 45-12N 000-49E 97M",
@@ -13695,7 +13695,7 @@ const latlong = function(stationCode) {
 let stationsLatLong = [];
 // many active stations have no geodata defined here
 activeMetarStations.forEach((station) => { let ll = latlong(station); if (ll.desc) { stationsLatLong.push( latlong(station) )} });
-const ifdef = function(val) { if (val) { return val;} else { return 9999; }}
+const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
 let stationsByLat  = stationsLatLong.toSorted( (a, b) => (ifdef(a.lat) - ifdef(b.lat)));
 let stationsByLong = stationsLatLong.toSorted( (a, b) => (ifdef(a.long) - ifdef(b.long)));
 console.log("StationsByLat  1-10:");
