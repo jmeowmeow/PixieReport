@@ -27,7 +27,7 @@ pixiepaths.set('selfie', './pixifier/pixies/pixieselfie/');
 pixiepaths.set('bunny', './pixifier/pixies/pixiebunny/');
 pixiepaths.set('xmas', './pixifier/pixies/pixiexmas/');
 const pixieFiles = ['pixie-icy.png', 'pixie-cold.png', 'pixie-cool.png', 'pixie-warm.png', 'pixie-hot.png'];
-const { icaoToLocationMap, activeMetarStations } = require('./pixifier/icao.js');
+const { icaoToLocationMap, activeMetarStations, stationsByLat, stationsByLong } = require('./pixifier/icao.js');
 const Jimp = require("jimp"); // used here and in composer.
 const resources = {};
 
@@ -152,6 +152,8 @@ const metarToLocationMap = new Map();
 Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
 
 exports.stations = metarToLocationMap;
+exports.stationsByLat = stationsByLat;
+exports.stationsByLong = stationsByLong;
 exports.activeMetarStations = activeMetarStations;
 exports.resources = resources;
 exports.Jimp = Jimp;

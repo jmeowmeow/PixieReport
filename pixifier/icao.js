@@ -1,3 +1,5 @@
+const { stations } = require("../preloads");
+
 const icaoLocMap = {
 AAWR: "WOOMERA AERODRO, Australia (AAWR), 31-08S 136-48E 167M",
 ABCV: "CHARLEVILLE ARP, Australia (ABCV), 26-25S 146-16E 304M",
@@ -5748,7 +5750,7 @@ LFBO: "TOULOUSE/BLAGNAC, FRANCE (LFBO), 43-37N 001-22E 150M",
 LFBP: "PONT-LONG-UZEIN/, FRANCE (LFBP), 43-23N 000-25W 182M",
 LFBR: "MURET/LHERM, France (LFBR), 43-27N 001-16E 189M",
 LFBS: "BISCAROSSE/PAREN, FRANCE (LFBS), 44-22N 001-08W 39M",
-LFBT: "TARBES/OSSUN, FRANCE (LFBT), 43-11N 000-00E 359M",
+LFBT: "TARBES/OSSUN, FRANCE (LFBT), 43-11N 000-01E 359M",
 LFBU: "BRIE CHAMPNIERS, FRANCE (LFBU), 45-43N 000-13E 124M",
 LFBV: "BRIVE/LA ROCHE(A, France (LFBV), 45-08N 001-28E 117M",
 LFBX: "PERIGUEUX/BASSIL, France (LFBX), 45-12N 000-49E 97M",
@@ -7701,6 +7703,7 @@ SKPE: "PEREIRA/MATECANA, COLOMBIA (SKPE), 04-49N 075-44W 1341M",
 SKPI: "PITALITO, Colombia (SKPI), 01-52N 076-02W 1320M",
 SKPP: "POPAYAN/GUILLERM, COLOMBIA (SKPP), 02-28N 076-35W 1730M",
 SKPS: "PASTO/ANTONIO NA, Colombia (SKPS), 01-24N 077-17W 1798M",
+SKPV: "Providencia Isla / El Embrujo, Colombia (SKPV) 13-22N 081-21W",
 SKQU: "MARIQUITA, Colombia (SKQU), 05-13N 074-52W 467M",
 SKRG: "RIONEGRO/JOSE MA, COLOMBIA (SKRG), 06-10N 075-25W 2132M",
 SKRH: "RIOHACHA/ALMIRAN, Colombia (SKRH), 11-31N 072-55W 11M",
@@ -8061,6 +8064,7 @@ URWI: "ELISTA, RUSSIA (URWI), 46-22N 044-20E 145M",
 URWW: "VOLGOGRAD/GUMRAK, RUSSIA (URWW), 48-47N 044-20E 131M",
 USCC: "CHELYABINSK-BALA, RUSSIA (USCC), 55-18N 061-30E 227M",
 USCM: "MAGNITOGORSK, RUSSIA (USCM), 53-24N 058-45E 425M",
+USDA: "Sabetta, Yamalo-Nenets, Russia (USDD), 71-13N 072-03E 14M",
 USDD: "SALEKHARD, Russia (USDD), 66-35N 066-37E 67M",
 USHH: "KHANTY-MANSIYSK, RUSSIA (USHH), 61-02N 069-05E 46M",
 USMM: "NADYM, Russia (USMM), 65-29N 072-42E 15M",
@@ -12687,6 +12691,7 @@ const activeMetarStations = [
 'NZAA',
 'NZCH',
 'NZCM',
+'NZSP',
 'NZWN',
 'OBBI',
 'OEAB',
@@ -13663,6 +13668,39 @@ const activeMetarStations = [
 'ZYTL',
 'ZYTX'
 ];
-// activeMetarStations n=4948 acquired 20 Jun 2024 from 
+// activeMetarStations n=4948 acquired 20 Jun 2024 from
 // https://aviationweather.gov/data/cache/metars.cache.csv.gz
 exports.activeMetarStations = activeMetarStations;
+
+// adapted from decoded-metar-parser
+const latlongex = /\b(\d\d?)-(\d\d)(-(\d\d))?([NS]) (\d\d?\d?)-(\d\d)(-(\d\d))?([EW])/;
+const latlong = function(stationCode) {
+  let geodata = icaoLocMap[stationCode];
+  var result = latlongex.exec(geodata);
+  var latLongReturned = { station: stationCode };
+  if (result) {
+    var lat, long;
+    lat  = Number(result[1])+(Number(result[2]) / 60);
+    if (result[4]) { lat = lat + Number(result[4]) / 3600 };
+    if (result[5] == "S") { lat = lat * -1 };
+    long = Number(result[6])+(Number(result[7]) / 60);
+    if (result[9]) { long = long + Number(result[9]) / 3600 };
+    if (result[10] == "W") { long = long * -1 };
+    latLongReturned = { station: stationCode, desc: geodata, lat: lat, long: long };
+  }
+  return latLongReturned;
+}
+
+// Active stations sorted by latitude, active stations sorted by longitude.
+let stationsLatLong = [];
+// many active stations have no geodata defined here
+activeMetarStations.forEach((station) => { let ll = latlong(station); if (ll.desc) { stationsLatLong.push( latlong(station) )} });
+const ifdef = function(val) { if (val) { return val;} else { return 9999; }}
+let stationsByLat  = stationsLatLong.toSorted( (a, b) => (ifdef(a.lat) - ifdef(b.lat)));
+let stationsByLong = stationsLatLong.toSorted( (a, b) => (ifdef(a.long) - ifdef(b.long)));
+console.log("StationsByLat  1-10:");
+console.log(JSON.stringify(stationsByLat.slice(0, 10), 0, 2));
+console.log("StationsByLong  1-10:");
+console.log(JSON.stringify(stationsByLong.slice(0, 10), 0, 2));
+exports.stationsByLat = stationsByLat;
+exports.stationsByLong = stationsByLong;

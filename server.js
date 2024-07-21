@@ -3,7 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const port = 3000;
-const {stations, activeMetarStations, resources, Jimp} = require('./preloads');
+const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, Jimp} = require('./preloads');
 const {compose} = require('./compose-async');
 const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
@@ -396,11 +396,28 @@ app.get('/cache', (req, res) => {
   let keys = [...cache.keys()].reduce((a,b) => `${a}, ${b}`);
   let activekeys = [...cache.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
-  body = `<p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
   cache.expire();
   res.send(responseBody);
 });
+
+app.get('/stations', async (req, res) => {
+  const location = req.query.location;
+  if (location === undefined) {
+    // okay
+  } else {
+    const params = decodedToParamObject(await fetchMETAR(location));
+    const latlong = params.latlong;
+  }
+  let body;
+  let slat  = stationsByLat.reduce((a, b) => (`${a}<br/>\n${b.lat.toFixed(2)} ${b.station} ${b.desc}`), "");
+  let slong = stationsByLong.reduce((a, b) => (`${a}<br/>\n${b.long.toFixed(2)} ${b.station} ${b.desc}`), "");
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>Stations by Latitude:<br/>${slat}</p><hr/><p>Stations by Longitude:<br/>${slong}</p>`;
+  const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+  res.send(responseBody);
+});
+
 
 app.listen(port, () => {
   console.log(`${new Date().toLocaleTimeString()} Server listening at http://localhost:${port} (${sinceStart()} msec)`);
