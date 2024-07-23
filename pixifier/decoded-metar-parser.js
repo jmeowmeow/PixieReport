@@ -436,11 +436,16 @@ var stripCarriageReturns = function(maybeItsText) {
   }
 }
 
-var decodedToParamObject = function(decodedRawMetarReport) {
+    // Recomposing decodedToParamObject here with codeRequested
+    // is a push toward composing the METAR parsing and fallbacks
+    // more gracefully.
+var decodedToParamsForStation = function(decodedRawMetarReport, codeRequested) {
     var decoded = stripCarriageReturns(decodedRawMetarReport);
     var params = {}
     var metar = metarObsLine(decoded);
-    params.stationCode = stationCode(metar);
+    params.stationCode = stationCode(metar); // we're wiring '????' for undefined.
+    // messy clause for decodedToParamObject no-metar-report '????' behavior
+    if (codeRequested && ('????' == params.stationCode || !params.stationCode)) { params.stationCode = codeRequested;}
     params.stationDesc = stationDesc(params.stationCode, decoded, icaoToLocationMap);
     params.hectoPressure = hectoPressure(metar);
     params.inHgPressure = inHgPressure(metar);
@@ -468,6 +473,10 @@ var decodedToParamObject = function(decodedRawMetarReport) {
     }
     return params;
 };
+
+var decodedToParamObject = function(decodedRawMetarReport) {
+  return decodedToParamsForStation(decodedRawMetarReport, null);
+}
 
 var computeAltText = function(params) {
   var alttext_label = "Weatherpixie image for ";
@@ -669,13 +678,14 @@ var worldMapLink = function(parsedData) {
     return nolink;
   }
   //sample: https://www.openstreetmap.org/#map=10/47.6233/-122.4316
-  
+
   const link = `https://www.openstreetmap.org/#map=11/${degLat.toFixed(2)}/${degLong.toFixed(2)}`;
- 
+
   return link;
 };
 
 exports.decodedToParamObject = decodedToParamObject;
+exports.decodedToParamsForStation = decodedToParamsForStation;
 exports.windSpeed = windSpeed;
 exports.computeAltText = computeAltText;
 exports.Layer = Layer;

@@ -83,7 +83,7 @@ Tue 16 Jul 2024 09:26:27 AM PDT
 Tuesday intentions:
 * Review the prospectus. (check.)
 * Consider launch tasks:
-    * How do we set up a HTTPS cert for *.pixiereport.com ?
+    * How do we set up a HTTPS cert for \*.pixiereport.com ?
     * reverse proxy via nginx or other?
 * Consider nearest-sites using icao.js geolocations near in lat or long.
 * Add some list of nearest sites to the devpixie / compose page.
@@ -93,6 +93,11 @@ Wilder ideas (not today):
 * As well as /png, have /randompng for a slide show of includable images. Alt text to HTTP headers?
 * As well as /png, have /gif for gif89a animated pics or slideshow stacks of multiple locs.
 * Multiple "location" query params to make your own matrix (or gif). Redirect to a canonical version for URL based caching if you like.
+
+Mon 22 Jul 2024 05:06:14 PM PDT
+
+* Working on sorted grid of stations by lat/log for "nearest stations to this one".
+
 
 ## Next Step Directions
 

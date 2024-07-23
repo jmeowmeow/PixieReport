@@ -46,7 +46,7 @@ const expectedAltTextWords = {
   'PANU': ['day', 'cloudy'], // after adding location, we resolve "day"
 };
 
-const {decodedToParamObject, computeAltText, Layer, computeTheLayers, computeSceneText} = require('../pixifier/decoded-metar-parser.js');
+const { decodedToParamsForStation, decodedToParamObject, computeAltText, Layer, computeTheLayers, computeSceneText} = require('../pixifier/decoded-metar-parser.js');
 const resourceDir = __dirname + '/resources';
 const { layerDefs } = require(resourceDir + '/' + 'layerDefsTest.js'); // snapshot from main prog layer defs
 
@@ -73,6 +73,13 @@ describe("decoded metar to param parser", function() {
     expect(emptyParsedToParam).toBeDefined();
     expect(emptyParsedToParam).not.toBe(null);
     expect(emptyParsedToParam.stationCode).toBe('????');
+  });
+
+  it("should default empty metar to requested station code", function() {
+    const emptyParsedToParam = decodedToParamsForStation('', 'KYYX');
+    expect(emptyParsedToParam).toBeDefined();
+    expect(emptyParsedToParam).not.toBe(null);
+    expect(emptyParsedToParam.stationCode).toBe('KYYX');
   });
 
   it("should parse the sample decoded reports", function() {

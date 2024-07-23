@@ -5,7 +5,7 @@ const app = express();
 const port = 3000;
 const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, Jimp} = require('./preloads');
 const {compose} = require('./compose-async');
-const {decodedToParamObject, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
+const {decodedToParamObject, decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 const {cache} = require('./webapp/cache');
 
@@ -196,7 +196,7 @@ app.get('/json', async (req, res) => {
     redirectToSetLocation(req, res);
     return;
   }
-  const jsonReport = decodedToParamObject(await fetchMETAR(location));
+  const jsonReport = decodedToParamsForStation(await fetchMETAR(location), location);
   const imageText = JSON.stringify(computeImageTextValues(jsonReport));
   let jsonBody = `<pre>${JSON.stringify(jsonReport, null, 2)}\n${imageText}</pre>`;
   res.send(jsonBody);
@@ -254,7 +254,7 @@ app.get('/compose', async (req, res) => {
     redirectToSetLocation(req, res);
     return;
   }
-  const params = decodedToParamObject(await fetchMETAR(location));
+  const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
@@ -276,7 +276,7 @@ app.get('/compose', async (req, res) => {
 // factored for param-request and random-request
 const servePixie = async function(req, res, location) {
   // which pixel doll? is this in 'req' or already 'params' ?
-  const params = decodedToParamObject(await fetchMETAR(location));
+  const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
@@ -314,7 +314,7 @@ app.get('/about', async (req, res) => {
   const preamble = body;
   const location = 'KSEA';
   const dollset = 'selfie';
-  const params = decodedToParamObject(await fetchMETAR(location));
+  const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = dollset;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
   const imageHolder  = `${preamble}<br/><img width="125" alt="${alt}" src="_SRC_" title="Author selfie"/>`;
@@ -348,7 +348,7 @@ app.get('/png', async (req, res) => {
     redirectToSetLocation(req, res);
     return;
   }
-  const params = decodedToParamObject(await fetchMETAR(location));
+  const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = req.query.set;
   // if this fails, we should probably return a default image.
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
@@ -415,7 +415,7 @@ app.get('/stations', async (req, res) => {
     if (icaoLocData) {
       myLocation = icaoLocData.substring(1+icaoLocData.lastIndexOf(', '));
     }
-    const params = decodedToParamObject(await fetchMETAR(location));
+    const params = decodedToParamsForStation(await fetchMETAR(location), location);
     const latlong = params.latlong;
     if (latlong) {
       myLocation = myLocation + " " + JSON.stringify(latlong);
