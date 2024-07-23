@@ -1,5 +1,3 @@
-const { stations } = require("../preloads");
-
 const icaoLocMap = {
 AAWR: "WOOMERA AERODRO, Australia (AAWR), 31-08S 136-48E 167M",
 ABCV: "CHARLEVILLE ARP, Australia (ABCV), 26-25S 146-16E 304M",
