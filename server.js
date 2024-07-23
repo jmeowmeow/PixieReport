@@ -27,6 +27,7 @@ const navigationLinks = [
   {url: '/png', text: 'img'},
   {url: '/metar', text: 'metar'},
   {url: '/uptime', text: 'uptime'},
+  {url: '/stations', text: 'stations'},
   {url: '/cache', text: 'cache'},
 ].map(link => anchor(link.url, link.text)).join(' | ');
 
@@ -41,7 +42,8 @@ const nav = function(req) {
     '/compose', '/compose?'+q).replace(
       '/pixie', '/pixie?'+q).replace(
       '/png', '/png?'+q).replace(
-       '/metar', '/metar?'+q);
+       '/metar', '/metar?'+q).replace(
+       '/stations', '/stations?'+q);
 };
 
 const sinceStart = function() {
@@ -404,17 +406,27 @@ app.get('/cache', (req, res) => {
 
 app.get('/stations', async (req, res) => {
   const location = req.query.location;
+  let myLocation = "";
   if (location === undefined) {
     // okay
+    myLocation = "No location data."
   } else {
+    let icaoLocData = stations.get(location); // lat/long after last comma
+    if (icaoLocData) {
+      myLocation = icaoLocData.substring(1+icaoLocData.lastIndexOf(', '));
+    }
     const params = decodedToParamObject(await fetchMETAR(location));
     const latlong = params.latlong;
+    if (latlong) {
+      myLocation = myLocation + " " + JSON.stringify(latlong);
+    }
   }
   let body;
   let slat  = stationsByLat.reduce((a, b) => (`${a}<br/>\n${b.lat.toFixed(2)} ${b.station} ${b.desc}`), "");
   let slong = stationsByLong.reduce((a, b) => (`${a}<br/>\n${b.long.toFixed(2)} ${b.station} ${b.desc}`), "");
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>Stations by Latitude:<br/>${slat}</p><hr/><p>Stations by Longitude:<br/>${slong}</p>`;
-  const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+  const mynav = nav(req);
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p><p>Stations by Latitude:<br/>${slat}</p><hr/><p>Stations by Longitude:<br/>${slong}</p>`;
+  const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
 
