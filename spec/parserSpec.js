@@ -72,6 +72,7 @@ describe("decoded metar to param parser", function() {
     const emptyParsedToParam = decodedToParamObject('');
     expect(emptyParsedToParam).toBeDefined();
     expect(emptyParsedToParam).not.toBe(null);
+    expect(emptyParsedToParam.stationCode).toBe('????');
   });
 
   it("should parse the sample decoded reports", function() {
