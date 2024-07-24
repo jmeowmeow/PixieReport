@@ -13696,9 +13696,5 @@ activeMetarStations.forEach((station) => { let ll = latlong(station); if (ll.des
 const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
 let stationsByLat  = stationsLatLong.slice(0).sort( (a, b) => (ifdef(a.lat) - ifdef(b.lat)));
 let stationsByLong = stationsLatLong.slice(0).sort( (a, b) => (ifdef(a.long) - ifdef(b.long)));
-console.log("StationsByLat  1-10:");
-console.log(JSON.stringify(stationsByLat.slice(0, 10), 0, 2));
-console.log("StationsByLong  1-10:");
-console.log(JSON.stringify(stationsByLong.slice(0, 10), 0, 2));
 exports.stationsByLat = stationsByLat;
 exports.stationsByLong = stationsByLong;
