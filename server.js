@@ -406,7 +406,9 @@ app.get('/cache', (req, res) => {
 
 app.get('/stations', async (req, res) => {
   const location = req.query.location;
+  let body = '';
   let myLocation = "";
+  let allClosest = "";
   let myClosestStations = "";
   if (location === undefined) {
     // okay
@@ -419,7 +421,7 @@ app.get('/stations', async (req, res) => {
     const params = decodedToParamsForStation(await fetchMETAR(location), location);
     const latlong = params.latlong;
     if (latlong) {
-      const coslat = Math.cos(latlong.degLat / 180.0); // 180 degrees/radian
+      const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
       const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
       // a better metric weights longitude by cosine of latitude. (says Copilot, 3rd try)
       const diffwt = function(stn) {
@@ -427,18 +429,22 @@ app.get('/stations', async (req, res) => {
                   (Math.abs(ifdef(stn.lat) - latlong.degLat)));
         return dw;
       }
-      myLocation = myLocation + " " + JSON.stringify(latlong);
+      let myStation = stationsByLat.filter(stn => (stn.station === location));
+      console.log("myStation: " + JSON.stringify(myStation));
+      myLocation = myLocation + ' dist-to-self: ' +diffwt(stations.get(location)) + ' ' + JSON.stringify(latlong);
       let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
       // closest is probably "self" if the metric is correct.
-      const closestStnsStr  = JSON.stringify(closestStns.slice(0, 5), 0, 2);
+      closestStns.map(each => ( each.distance = diffwt(each))); // but what the heck
+      allClosest  = closestStns.reduce((a, b) => (`${a}<br/>\n${b.distance.toFixed(2)} ${b.station} ${b.desc}`), "");
+      let candidates = closestStns.slice(0, 5);
+      const closestStnsStr  = JSON.stringify(candidates, 0, 2);
       myClosestStations = `Closest (lat/long):<br/>\n<pre>${closestStnsStr}</pre>`;
     }
   }
-  let body;
   let slat  = stationsByLat.reduce((a, b) => (`${a}<br/>\n${b.lat.toFixed(2)} ${b.station} ${b.desc}`), "");
   let slong = stationsByLong.reduce((a, b) => (`${a}<br/>\n${b.long.toFixed(2)} ${b.station} ${b.desc}`), "");
   const mynav = nav(req);
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p><p>${myClosestStations}</p><p>Stations by Latitude:<br/>${slat}</p><hr/><p>Stations by Longitude:<br/>${slong}</p>`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p><p>${myClosestStations}</p><p>Stations by distance:<br/>${allClosest}</p><p>Stations by Latitude:<br/>${slat}</p><hr/><p>Stations by Longitude:<br/>${slong}</p>`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
