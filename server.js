@@ -431,20 +431,17 @@ app.get('/stations', async (req, res) => {
       }
       let myStation = stationsByLat.filter(stn => (stn.station === location));
       console.log("myStation: " + JSON.stringify(myStation));
-      myLocation = myLocation + ' dist-to-self: ' +diffwt(stations.get(location)) + ' ' + JSON.stringify(latlong);
+      myLocation = myLocation + ' ' + JSON.stringify(latlong);
       let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
-      // closest is probably "self" if the metric is correct.
-      closestStns.map(each => ( each.distance = diffwt(each))); // but what the heck
-      allClosest  = closestStns.reduce((a, b) => (`${a}<br/>\n${b.distance.toFixed(2)} ${b.station} ${b.desc}`), "");
-      let candidates = closestStns.slice(0, 5);
-      const closestStnsStr  = JSON.stringify(candidates, 0, 2);
-      myClosestStations = `Closest (lat/long):<br/>\n<pre>${closestStnsStr}</pre>`;
+      closestStns.map(each => ( each.distance = diffwt(each)));
+      // we could hotlink the closest stations
+      const closestStnsStr  = closestStns.slice(0,10).reduce((a, b) =>
+        (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station, b.station)} ${b.desc}`), "");
+      myClosestStations = `Closest (lat/long):<br/>\n${closestStnsStr}>`;
     }
   }
-  let slat  = stationsByLat.reduce((a, b) => (`${a}<br/>\n${b.lat.toFixed(2)} ${b.station} ${b.desc}`), "");
-  let slong = stationsByLong.reduce((a, b) => (`${a}<br/>\n${b.long.toFixed(2)} ${b.station} ${b.desc}`), "");
   const mynav = nav(req);
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p><p>${myClosestStations}</p><p>Stations by distance:<br/>${allClosest}</p><p>Stations by Latitude:<br/>${slat}</p><hr/><p>Stations by Longitude:<br/>${slong}</p>`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p><p>${myClosestStations}</p>`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
