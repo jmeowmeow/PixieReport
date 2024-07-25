@@ -12,7 +12,7 @@ const {cache} = require('./webapp/cache');
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
 const pagetitle = "PixieReport Webapp";
-const pagehead = `<head><title>${pagetitle}</title>\n${favicon}</head>`; // maybe <title/> is in order?
+const pagehead = `<head><title>${pagetitle}</title>\n${favicon}</head>`;
 
 const anchor = function(url, text) {
   return `<a href="${url}">${text}</a>`;
@@ -175,11 +175,8 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let cached = cache.get(location, Date.now());
   if (cached) {
-//      console.log(`metar cache: found report for ${location}`);
       return cached;
-    } else {
-//      console.log(`metar cache: need to fetch ${location}`);
-    }
+  }
   let url = `https://tgftp.nws.noaa.gov/data/observations/metar/decoded/${location}.TXT`;
   let report = await fetch(url).then(
     response => { const text = response.text();
@@ -408,7 +405,6 @@ app.get('/stations', async (req, res) => {
   const location = req.query.location;
   let body = '';
   let myLocation = "";
-  let allClosest = "";
   let myClosestStations = "";
   if (location === undefined) {
     // okay
@@ -423,7 +419,7 @@ app.get('/stations', async (req, res) => {
     if (latlong) {
       const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
       const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
-      // a better metric weights longitude by cosine of latitude. (says Copilot, 3rd try)
+      // approximate distance metric, weighting longitude decreasing by cosine of latitude.
       const diffwt = function(stn) {
         let dw = ((coslat * Math.abs(ifdef(stn.long) - latlong.degLong)) +
                   (Math.abs(ifdef(stn.lat) - latlong.degLat)));
@@ -434,14 +430,28 @@ app.get('/stations', async (req, res) => {
       myLocation = myLocation + ' ' + JSON.stringify(latlong);
       let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
       closestStns.map(each => ( each.distance = diffwt(each)));
-      // we could hotlink the closest stations
-      const closestStnsStr  = closestStns.slice(0,10).reduce((a, b) =>
+      // anchored list of closest METAR stations on our active station list
+      const closestTwelve = closestStns.slice(0,12);
+      const closestStnsStr  = closestTwelve.reduce((a, b) =>
         (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station, b.station)} ${b.desc}`), "");
-      myClosestStations = `Closest (lat/long):<br/>\n${closestStnsStr}>`;
+      myClosestStations = `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
+      // duplication from home page array
+      let tileNo = 0;
+      let pixiesetnum = 4;
+      let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
+      closestTwelve.map(each =>
+      {
+        let stn = each.station;
+        let dollset=Math.trunc(Math.random() * pixiesetnum);
+        myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
+        tileNo++;
+        if (tileNo % 4 === 0) {myClosestStations += "<br/>";}
+      });
+      myClosestStations += "</p>\n";
     }
   }
   const mynav = nav(req);
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p><p>${myClosestStations}</p>`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${myClosestStations}`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
