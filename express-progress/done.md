@@ -51,6 +51,7 @@ initial Express setup and async handlers.
 * Gallery on home page, each pixie linked.
 * Navigation links among webapp pages on HTML pages.
 * Use station and dollset params in navigation links.
+* Nearby Stations To This Station page.
 
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)

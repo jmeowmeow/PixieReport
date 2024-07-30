@@ -401,22 +401,62 @@ app.get('/cache', (req, res) => {
   res.send(responseBody);
 });
 
+const makeGridNav = function(path, latlong) {
+   const lat = latlong.degLat;
+   const long = latlong.degLong;
+   const template = '<td><a href="' + path + '?degLat=LAT&degLong=LONG">NAV</a></td>';
+   const lats = [Math.max(-90.0, lat - 5.0),
+                 Math.max(-90.0, lat - 1.0),
+                 Math.min(90.0, lat + 1.0),
+                 Math.min(90.0, lat + 5.0)
+                ];
+   const longs = [Math.max(-180.0, long - 5.0),
+                  Math.max(-180.0, long - 1.0),
+                  Math.min(180.0, long + 1.0),
+                  Math.min(180.0, long + 5.0)
+                ];
+   const latnavs =  ["&lt;&lt; S", "&lt; S", "N &gt;", "N &gt;&gt;"];
+   const longnavs = ["&lt;&lt; W", "&lt; W", "E &gt;", "E &gt;&gt;"];
+   let latnav = "";
+   let longnav = "";
+   const latTemplate = template.replace('LONG', long).replace('NAV', "NAV latitude");
+   const longTemplate = template.replace('LAT', lat).replace('NAV', "NAV longitude");
+   for (let idx = 0; idx < 4; idx += 1) {
+     latnav += latTemplate.replace('LAT', lats[idx]).replace('NAV', latnavs[idx]);
+     longnav += longTemplate.replace('LONG', longs[idx]).replace('NAV', longnavs[idx]);
+   }
+   let gridnav = '<table><tr>\n'+latnav + '</tr><tr>' + longnav + '</tr></table>\n';
+   return gridnav;
+}
+
 app.get('/stations', async (req, res) => {
   const location = req.query.location;
   let body = '';
-  let myLocation = "";
+  let myLocation = "Grid Coordinates";
+  let latlong = { degLat: 0.0, degLong: 0.0 }
   let myClosestStations = "";
+
   if (location === undefined) {
-    // okay
-    myLocation = "No location data."
+    // maybe there is a degLat/degLong passed as query params?
+    if (req.query.degLat && req.query.degLong) {
+      latlong = { degLat: Number.parseFloat(req.query.degLat),
+                  degLong: Number.parseFloat(req.query.degLong) };
+    } else {
+      // okay, use Zero Zero
+      let redirection = req.path + '?degLat=0.0&degLong=0.0';
+      res.redirect(redirection);
+      return;
+    }
   } else {
     let icaoLocData = stations.get(location); // lat/long after last comma
     if (icaoLocData) {
       myLocation = icaoLocData.substring(1+icaoLocData.lastIndexOf(', '));
     }
     const params = decodedToParamsForStation(await fetchMETAR(location), location);
-    const latlong = params.latlong;
-    if (latlong) {
+    latlong = params.latlong;
+  }
+  let gridnav="";
+  if (latlong) {
       const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
       const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
       // approximate distance metric, weighting longitude decreasing by cosine of latitude.
@@ -426,8 +466,9 @@ app.get('/stations', async (req, res) => {
         return dw;
       }
       let myStation = stationsByLat.filter(stn => (stn.station === location));
-      console.log("myStation: " + JSON.stringify(myStation));
+      console.log("myStation: " + JSON.stringify(myStation)); // singleton or empty list
       myLocation = myLocation + ' ' + JSON.stringify(latlong);
+      gridnav = '<p>\n'+makeGridNav(req.path, latlong)+'\n</p>\n';
       let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
       closestStns.map(each => ( each.distance = diffwt(each)));
       // anchored list of closest METAR stations on our active station list
@@ -448,10 +489,9 @@ app.get('/stations', async (req, res) => {
         if (tileNo % 4 === 0) {myClosestStations += "<br/>";}
       });
       myClosestStations += "</p>\n";
-    }
   }
   const mynav = nav(req);
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${myClosestStations}`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });

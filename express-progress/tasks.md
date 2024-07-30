@@ -96,7 +96,31 @@ Wilder ideas (not today):
 
 Mon 22 Jul 2024 05:06:14 PM PDT
 
-* Working on sorted grid of stations by lat/log for "nearest stations to this one".
+* Working on sorted grid of stations by lat/long for "nearest stations to this one".
+
+
+Mon 29 Jul 2024 09:24:17 AM PDT
+
+Done since last Monday:
+* Nearest-stations includes a grid of linked images.
+
+Intention:
+* Default View for Nearby Stations. See thoughts below.
+
+Thoughts on navigating nearby stations:
+* Nearby Stations Default View: Zero Zero Island, or /random active METAR station?
+* Nearby Stations Zoom by Decimation. Do we want to do some binning? Only the most remote
+stations have a large reach, because densely spaced stations give a small area.
+* Nearby Stations in each cardinal direction. Kind of nonsensical for high latitude but helpful if you're on a continent edge and your next-East or next-West station is a jump; also allows southern-edge stations more reach.
+* Nearby Stations by Lat-Long, with directional browsing. "Stations near LAT, LONG" and
+navigation with +/- degrees.
+* Of course there's much-thought-of, much-deferred OpenStreetMap Leaflet and linked pegs for navigation.
+* Client-side imagemap for nearby stations navigation. One could JUST DO THAT on a static world map or SVG world map, or pair of world / nearby station image maps.
+
+Wilder idea (from Sunday wiki):
+* External Federated Wiki server URL patterns, serving wiki-compatible JSON including
+sitemap and cache items. Try using Eric Dobbs' model of a wiki-compatible bookmarking
+site from Glitch, an "outpost" of Federated Wiki.
 
 
 ## Next Step Directions
