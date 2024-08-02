@@ -108,11 +108,11 @@ Intention:
 * Default View for Nearby Stations. See thoughts below.
 
 Thoughts on navigating nearby stations:
-* Nearby Stations Default View: Zero Zero Island, or /random active METAR station?
+* DONE. Nearby Stations Default View: Zero Zero Island (degLat, degLong)
 * Nearby Stations Zoom by Decimation. Do we want to do some binning? Only the most remote
 stations have a large reach, because densely spaced stations give a small area.
 * Nearby Stations in each cardinal direction. Kind of nonsensical for high latitude but helpful if you're on a continent edge and your next-East or next-West station is a jump; also allows southern-edge stations more reach.
-* Nearby Stations by Lat-Long, with directional browsing. "Stations near LAT, LONG" and
+* DONE. Nearby Stations by Lat-Long, with directional browsing. "Stations near LAT, LONG" and
 navigation with +/- degrees.
 * Of course there's much-thought-of, much-deferred OpenStreetMap Leaflet and linked pegs for navigation.
 * Client-side imagemap for nearby stations navigation. One could JUST DO THAT on a static world map or SVG world map, or pair of world / nearby station image maps.
@@ -122,6 +122,45 @@ Wilder idea (from Sunday wiki):
 sitemap and cache items. Try using Eric Dobbs' model of a wiki-compatible bookmarking
 site from Glitch, an "outpost" of Federated Wiki.
 
+Thu 01 Aug 2024 09:53:23 AM PDT
+
+Added OpenGraph "meta" properties for preview, though maybe the image should be static.
+
+Catch-up on notes and progress. Fetched from the Weatherpixie Prospectus,
+the features of Tamsin's site:
+
+## Weatherpixie.com Features
+
+### Tamsin's Model Site Features
+1. Pixie Creation Wizard:
+    1. Geographic picker to find the nearest airport to a location, or search by continent and country. Yields an airport code.
+    1. Pixie Doll Picker. Each has a description and is encoded by a small integer ID.
+    1. Unit picker (mph/kph, °F/°C)
+    1. Maybe other options? I don't recall
+2. Pixie Preview Page:
+    1. Rendered Weatherpixie.
+    1. URL to embed the image on your site.
+3. Site navigation
+    1. "About" page, site/project background, links to resources, etc.
+4. Pixie Renderer. Given an airport, a doll series, and display options, renders a scene. If there is no current METAR data for that airport, renders daytime/nighttime background and a flag.
+5. Rendered Pixies served as images
+6. HTTP Cookie to remember your chosen location, doll style, units.
+
+### PixieReport ExpressJS site features:
+- [ ] Pixie Creation Wizard
+    - [ ] Geographic picker
+    - [ ] Doll set picker
+    - [ ] C/F unit picker
+- [ ] Pixie Preview Page
+- [X] Site Navigation
+- [ ] Pixie Renderer
+    - [X] METAR code, doll series yield a scene
+    - [X] No-data mode: TV static if not available
+    - [ ] No-current-data mode: not yet sensitive to freshness.
+- [X] Rendered Pixies served as images
+    - [X] /png endpoint
+- [ ] HTTP Cookie to remember your chosen location, doll style, units.
+
 
 ## Next Step Directions
 
@@ -130,7 +169,7 @@ site from Glitch, an "outpost" of Federated Wiki.
 - [X] /random - should also link individual slides and jump out of show
 - [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [X] Instead of defaulting KSEA, random pixie via hit and redirect
-- [ ] Nearest other stations, based on geo-sort?
+- [X] Nearest other stations, based on geo-sort?
 - [ ] Station list view/search
 
 ### Webapp architecture
