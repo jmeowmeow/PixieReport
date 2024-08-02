@@ -233,30 +233,31 @@ Here it is:
 
 The CGI version starts with a template with distinctive tags to be replaced by strings from the weather report. The sample mockup version of **pixie-weathermockup.svg** linked below corresponds to the SVG document after Step 7 where template strings are replaced by extracted METAR weather-report text for display.
 
-```
-$ more /Library/WebServer/CGI-Executables/pixie-metar.cgi
-#!/bin/sh
-# probably don't need jot for real METAR but certainly need sed and perhaps date
-which -s jot sed date curl || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi needs jot, sed, date, curl -- not all found."' && exit 1) || exit 0
-Q=$(echo $QUERY_STRING | sed 's/[[:space:]]//g')
-echo $Q | egrep -q "^[A-Z][A-Z0-9]{3}$" || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi does not recognize weather station."' && exit 1) || exit 0
-TMP="/tmp/pixie-$$-$Q.txt"
-curl "https://aviationweather.gov/metar/data?ids=${Q}&format=decoded&date=0&hours=0&layout=off&taf=off" > $TMP || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi cannot fetch METAR weather report."' && exit 1) || exit 0
-grep -q "No data found" $TMP && echo "Content-Type: text/plain\n\n\nNo data found for METAR station $Q." && exit 0
-TEMP=$(grep Temperature $TMP | sed -e "s/^.*( *//" -e "s/\&deg.*//")
-# WSPD=$(grep Winds $TMP | sed -e 's/^.* at *//' -e 's/ MPH.*//')
-# WDIR=$(grep Winds $TMP | sed -e 's/^.*<td>//' -e 's/ at .*//' -e 's/variable direction winds/VRB/' -e 's/from the //' -e 's/ (.*//')
-WSPD=$(grep Winds $TMP | sed -e 's/^.* at *//' -e 's/ MPH.*/mph/' -e 's/.*calm.*/Calm/')
-WDIR=$(grep Winds $TMP | sed -e 's/.*calm.*//' -e 's/^.*<td>//' -e 's/ at .*//' -e 's/variable direction winds/VRB/' -e 's/from the //' -e 's/ (.*//')
-RH=$(grep 'RH' $TMP | sed -e "s/^.*\= *//" -e "s/%.*//")
-AP=$(grep Pressure $TMP | sed -e "s/ inches.*//" -e "s/^.*<td>//")
-echo "Content-Type: image/svg+xml"
-echo
-DT=$(date '+%H:%MPST')
-#HR=$(date '+%H')
-HR=$(jot -r 1 0 23)
-sed <pixie-weathermockup.svg -e "s/__TH/${TEMP}F ${RH}%/" -e "s/__W/${WDIR} ${WSPD}/" -e "s/__P/${AP}/" -e "s/__TIME/${DT}/" -e "s/__HOUR/${HR}/" -e "s/__TEMP/${TEMP}/"
-```
+<pre>
+  $ more /Library/WebServer/CGI-Executables/pixie-metar.cgi
+  #!/bin/sh
+  # probably don't need jot for real METAR but certainly need sed and perhaps date
+  which -s jot sed date curl || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi needs jot, sed, date, curl -- not all found."' && exit 1) || exit 0
+  Q=$(echo $QUERY\_STRING | sed 's/[[:space:]]//g')
+  echo $Q | egrep -q "^[A-Z][A-Z0-9]{3}$" || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi does not recognize weather station."' && exit 1) || exit 0
+  TMP="/tmp/pixie-$$-$Q.txt"
+  curl "https://aviationweather.gov/metar/data?ids=${Q}&format=decoded&date=0&hours=0&layout=off&taf=off" &gt; $TMP || (sh -c 'echo "Content-Type: text/plain\n\n\npixie.cgi cannot fetch METAR weather report."' && exit 1) || exit 0
+  grep -q "No data found" $TMP && echo "Content-Type: text/plain\n\n\nNo data found for METAR station $Q." && exit 0
+  TEMP=$(grep Temperature $TMP | sed -e "s/^.*( *//" -e "s/\&deg.*//")
+  # WSPD=$(grep Winds $TMP | sed -e 's/^.* at *//' -e 's/ MPH.*//')
+  # WDIR=$(grep Winds $TMP | sed -e 's/^.*&lt;td&gt;//' -e 's/ at .*//' -e 's/variable direction winds/VRB/' -e 's/from the //' -e 's/ (.*//')
+  WSPD=$(grep Winds $TMP | sed -e 's/^.* at *//' -e 's/ MPH.*/mph/' -e 's/.*calm.*/Calm/')
+  WDIR=$(grep Winds $TMP | sed -e 's/.*calm.*//' -e 's/^.*&lt;td&gt;//' -e 's/ at .*//' -e 's/variable direction winds/VRB/' -e 's/from the //' -e 's/ (.*//')
+  RH=$(grep 'RH' $TMP | sed -e "s/^.*\= *//" -e "s/%.*//")
+  AP=$(grep Pressure $TMP | sed -e "s/ inches.*//" -e "s/^.*&lt;td&gt;//")
+  echo "Content-Type: image/svg+xml"
+  echo
+  DT=$(date '+%H:%MPST')
+  #HR=$(date '+%H')
+  HR=$(jot -r 1 0 23)
+  sed &lt;pixie-weathermockup.svg -e "s/__TH/${TEMP}F ${RH}%/" -e "s/__W/${WDIR} ${WSPD}/" -e "s/__P/${AP}/" -e "s/__TIME/${DT}/" -e "s/__HOUR/${HR}/" -e "s/__TEMP/${TEMP}/"
+
+</pre>
 
 
 
