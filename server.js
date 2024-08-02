@@ -9,10 +9,37 @@ const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-me
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 const {cache} = require('./webapp/cache');
 
+// app activity counters: increment, clearout, showcounters
+const counters = new Map();
+const increment = function(...args) {
+  args.map( arg =>
+    { let c = counters.get(arg); if (!c) { c = 0; } counters.set(arg, c+1); })
+};
+const clearout = function(...args) {
+  args.map( arg => counters.set(arg, 0));
+};
+const showcounters = function() {
+  let e = counters.entries();
+  let a = new Array(...e);
+  a.sort();
+  return a;
+};
+clearout('imagecount', 'pixiecount');
+const dispcounters = function(brk) {
+  return showcounters().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
+}
+
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
+const ogTitle =    '<meta property="og:title" content="PixieReport" />\n';
+const ogType =     '<meta property="og:type" content="website" />\n';
+const ogImage =    '<meta property="og:image" content="/png?location=EGLC" />\n';
+const ogUrl =      '<meta property="og:url" content="pixiereport.com" />\n';
+const ogSiteName = '<meta property="og:site_name" content="PixieReport" />\n';
+const opengraph = `${ogTitle}${ogType}${ogImage}${ogUrl}${ogSiteName}`;
+
 const pagetitle = "PixieReport Webapp";
-const pagehead = `<head><title>${pagetitle}</title>\n${favicon}</head>`;
+const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}</head>`;
 
 const anchor = function(url, text) {
   return `<a href="${url}">${text}</a>`;
@@ -69,9 +96,12 @@ const shortStationName = function(stn) {
 
 app.get('/', (req, res) => {
   const stationChoices = [
-  'KSEA', 'KPAE', 'KBFI', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH',
-  'PANU', 'DTKA', 'LFSO'
+  'KSEA', 'KPAE', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH'
   ];
+  stationChoices.push(randomStation());
+  stationChoices.push(randomStation());
+  stationChoices.push(randomStation());
+  stationChoices.push(randomStation());
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
@@ -229,8 +259,10 @@ const pixieAlt = async function(params) {
   const cachedPixie = cache.get(pixieKey, Date.now());
   if (cachedPixie) {
     // console.log(`image cache: found ${pixieKey}`)
+    increment('pixiecache.hit');
     return cachedPixie;
   } else {
+    increment('pixiecache.miss');
     // console.log(`image cache: need new image for ${pixieKey}`)
   }
   var [pixie, alt]= await compose(params).catch(console.error);
@@ -267,7 +299,9 @@ app.get('/compose', async (req, res) => {
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
-    res.send(responseBody); });
+    res.send(responseBody);
+    increment('pixiecount');
+  });
 });
 
 // factored for param-request and random-request
@@ -297,6 +331,7 @@ const servePixie = async function(req, res, location) {
     const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
     const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
     res.send(responseBody);
+    increment('pixiecount');
   });
 }
 
@@ -319,6 +354,7 @@ app.get('/about', async (req, res) => {
     const body = imageHolder.replace(/_SRC_/g, src);
     const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
     res.send(responseBody);
+    increment('pixiecount');
   });
 });
 
@@ -356,6 +392,7 @@ app.get('/png', async (req, res) => {
     'Content-Type': 'image/png'
   })
   .end(pngbuf);
+  increment('imagecount');
 });
 
 const msecPerHr = 3600 * 1000;
@@ -385,7 +422,7 @@ const to_hhmmss = function(msec) {
 
 app.get('/uptime', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
-  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n`);
+  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\n`);
 });
 
 app.get('/cache', (req, res) => {
@@ -395,7 +432,7 @@ app.get('/cache', (req, res) => {
   let keys = [...cache.keys()].reduce((a,b) => `${a}, ${b}`);
   let activekeys = [...cache.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${dispcounters('<br/>\n')}</p><p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
   cache.expire();
   res.send(responseBody);
