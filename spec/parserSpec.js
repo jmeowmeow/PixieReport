@@ -31,6 +31,10 @@ const expectedParams = {
 // We can use obs age to assess freshness
 //
 // see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date
+// If we stick with decoded METAR, there are lines like this in the readout:
+//   Jun 22, 2024 - 02:56 PM EDT / 2024.06.22 1856 UTC
+// whose parsed date-time should cross-check with the METAR ob time, 221856Z
+//   ob: PANU 221856Z AUTO 31006KT 10SM BKN100 18/08 A2994 RMK AO2 SLP045 T01830083
 
 const expectedAltTextWords = {
   'KFNT': ['night', 'overcast', 'lightning', 'light rain'],
