@@ -1,34 +1,28 @@
 const tStart = Date.now();
-const fs = require('fs');
+
 const express = require('express');
 const app = express();
 const port = 3000;
+
+const fs = require('fs'); // fallback to load METARs for local testing
+
+// preloaded data files and image layers, Jimp image package
 const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, Jimp} = require('./preloads');
+// image composition
 const {compose} = require('./compose-async');
+// METAR parsing
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 const {cache} = require('./webapp/cache');
 
-// app activity counters: increment, clearout, showcounters
-// move to webapp/counters.js ?
-const counters = new Map();
-const increment = function(...args) {
-  args.map( arg =>
-    { let c = counters.get(arg); if (!c) { c = 0; } counters.set(arg, c+1); })
-};
-const clearout = function(...args) {
-  args.map( arg => counters.set(arg, 0));
-};
-const showcounters = function() {
-  let e = counters.entries();
-  let a = new Array(...e);
-  a.sort();
-  return a;
-};
-clearout('imagecount', 'pixiecount');
+// app activity counters
+const {increment, clearout, showcounters} = require ('./webapp/counters')
+
 const dispcounters = function(brk) {
   return showcounters().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
 }
+
+clearout('imagecount', 'pixiecount');
 
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
