@@ -94,7 +94,9 @@ namedLayers.set('warmPixie', warmDoll);
 namedLayers.set('hotPixie', hotDoll);
 
 namedLayers.set("noreport", new Layer("video static", "pixifier/pixies/backgrounds/nosignal-bkg.png"));
-namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
+// namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
+// Perseid special, though only visible on a non-overcast night (thus "night" desc)
+namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/nightcometbkg.png"));
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
 namedLayers.set("pink", new Layer("dusk", "pixifier/pixies/backgrounds/pinkbackground.png"));
 namedLayers.set("day", new Layer("day", "pixifier/pixies/backgrounds/sunnybackground.png"));

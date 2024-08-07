@@ -127,7 +127,21 @@ Thu 01 Aug 2024 09:53:23 AM PDT
 Added OpenGraph "meta" properties for preview, though maybe the image should be static.
 
 Catch-up on notes and progress. Fetched from the Weatherpixie Prospectus,
-the features of Tamsin's site:
+the features of Tamsin's site. See below, "Weatherpixie.com Features"
+
+Wed 07 Aug 2024 09:12:37 AM PDT
+
+Review prelaunch tasks.
+
+From a scan of the empty to-dos, it looks like I want a pixie creation wizard.
+
+Yesterday I looked at clipboard handling "copy to clipboard" on MDN,
+which appears to work without extra permissions if launched by a click
+handler.
+
+Better handling of the keys list when the app is idle. Enough with the
+list reduce error. We know the cache size so don't render an empty cache.
+
 
 ## Weatherpixie.com Features
 
@@ -152,6 +166,7 @@ the features of Tamsin's site:
     - [ ] Doll set picker
     - [ ] C/F unit picker
 - [ ] Pixie Preview Page
+    - [ ] Copy this URL / cookie-me this pixie / copy this embed
 - [X] Site Navigation
 - [ ] Pixie Renderer
     - [X] METAR code, doll series yield a scene
@@ -161,6 +176,9 @@ the features of Tamsin's site:
     - [X] /png endpoint
 - [ ] HTTP Cookie to remember your chosen location, doll style, units.
 
+Prelaunch
+- [ ] Caddy or Nginx proxy.
+- [ ] Certbot or similar.
 
 ## Next Step Directions
 
@@ -169,17 +187,18 @@ the features of Tamsin's site:
 - [X] /random - should also link individual slides and jump out of show
 - [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [X] Instead of defaulting KSEA, random pixie via hit and redirect
-- [X] Nearest other stations, based on geo-sort?
+- [X] Nearest other stations, based on geo-sort
 - [ ] Station list view/search
 
 ### Webapp architecture
 - [X] page template structure with navigation
 - [X] favicon templated into every page _mostly_ (only in HTML pages, not PNG or text/plain)
 - [X] Basic uptime endpoint.
-- [ ] Useful uptime page with stats (pixies served, uptime, error count?) or in template footer
+- [X] Useful uptime page with stats (pixies served, uptime, maybe error count) maybe in template footer
+- [X] Start an ops status / robustness / recovery list.
+- [ ] Most recent IP addresses requesting pages. ExpressJs request param?
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
-- [X] Start an ops status / robustness / recovery list.
 
 ### Reporting Stations
 - [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations

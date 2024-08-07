@@ -10,6 +10,7 @@ const {computeImageTextValues} = require('./pixifier/compute-image-text');
 const {cache} = require('./webapp/cache');
 
 // app activity counters: increment, clearout, showcounters
+// move to webapp/counters.js ?
 const counters = new Map();
 const increment = function(...args) {
   args.map( arg =>
@@ -430,10 +431,10 @@ app.get('/cache', (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.header('Refresh', '10');
   let body;
-  let keys = [...cache.keys()].reduce((a,b) => `${a}, ${b}`);
+  let keys = (cache.size > 0) ? [...cache.keys()].reduce((a,b) => `${a}, ${b}`) : '[ ]';
   let activekeys = [...cache.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${dispcounters('<br/>\n')}</p><p>Cache size = ${cache.size}</p><p>Keys=<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${dispcounters('<br/>\n')}</p><p>Cache size = ${cache.size}</p><p>Keys:<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
   cache.expire();
   res.send(responseBody);
