@@ -64,6 +64,9 @@ var withZuluTime = function(params, metar) {
    zuluDate.setUTCMinutes(Number(result[3].substring(0,2)));
    zuluDate.setUTCSeconds(0);
    zuluDate.setUTCMilliseconds(0);
+  // zHowOldIsReport = Date.now() - zuluDate[Symbol.toPrimitive]('number');
+  // is it an invalid date? (June 31? Feb 30?)
+  // is it negative? maybe we at a month or year turn and mistaken to use now.month or now.month/now.year.
   // TODO: heuristic fixes for (now - obs date) over a calendar turn, presuming fairly current obs.
   // example: ob 20201231 2023h as 312023, now 20210101 0030h, zuluDate ~ 20210131 2023h, future.
   // are we at a month turn? subtract a month so we're not in the future.
