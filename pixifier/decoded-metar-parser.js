@@ -58,6 +58,17 @@ var withZuluTime = function(params, metar) {
   if (result) {
    params.zuluTime = "" + result[2] + ':' + result[3];
    params.zuluDayOfMonth = "" + result[1];
+   let zuluDate = new Date(); // "now" provides year and month guesses
+   zuluDate.setUTCDate(Number(result[1]));
+   zuluDate.setUTCHours(Number(result[2]));
+   zuluDate.setUTCMinutes(Number(result[3].substring(0,2)));
+   zuluDate.setUTCSeconds(0);
+   zuluDate.setUTCMilliseconds(0);
+  // TODO: heuristic fixes for (now - obs date) over a calendar turn, presuming fairly current obs.
+  // example: ob 20201231 2023h as 312023, now 20210101 0030h, zuluDate ~ 20210131 2023h, future.
+  // are we at a month turn? subtract a month so we're not in the future.
+  // older than a month it's kinda what-do-we-do?
+   params.zuluDate = zuluDate;
   } else {
    params.zuluTime = "(no time)";
   }
@@ -288,7 +299,7 @@ const latlong = function(decoded, fallbackLocation) {
 }
 
 
-// format of a date line:
+// format of a date line from a decoded text report:
 //  Dec 07, 2020 - 12:53 AM EST / 2020.12.07 0553 UTC
 const dateTimeUTC = function(decoded) {
   const dtex = / (\d\d\d\d).(\d\d).(\d\d) (\d\d)(\d\d) UTC/
@@ -302,6 +313,14 @@ const dateTimeUTC = function(decoded) {
                     minutes: Number(result[5]),
                     seconds: 0,
                   }
+    let utcDate = new Date();
+    utcDate.setUTCFullYear(dtReturned.year);
+    utcDate.setUTCMonth(dtReturned.month - 1); // whyyyy zero based months?
+    utcDate.setUTCDate(dtReturned.day);
+    utcDate.setUTCHours(dtReturned.hours);
+    utcDate.setUTCMinutes(dtReturned.minutes);
+    utcDate.setUTCSeconds(dtReturned.seconds);
+    dtReturned.utcDate = utcDate;
     return dtReturned;
   } else {
     return null
@@ -467,7 +486,7 @@ var decodedToParamsForStation = function(decodedRawMetarReport, codeRequested) {
     params.weather  = weatherlist(decoded);
     params.metar = metar;
     params.latlong = latlong(decoded, icaoToLocationMap[params.stationCode]);
-    params.dateTimeUTC = dateTimeUTC(decoded);
+    params.dateTimeUTC = dateTimeUTC(decoded); // need full date for day/night calc
     if (params.latlong && params.dateTimeUTC) {
       params.sunPos = sunpos(params.dateTimeUTC, params.latlong);
     }
