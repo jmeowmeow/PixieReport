@@ -142,6 +142,27 @@ handler.
 Better handling of the keys list when the app is idle. Enough with the
 list reduce error. We know the cache size so don't render an empty cache.
 
+Sun 11 Aug 2024
+
+Pushed through the remaining steps to a soft launch with HTTPS and
+current prototype webapp. Announce on Twitter (PixieReport), Mastodon,
+and the RC social site.
+
+Opengraph preview image appears to work fine. I could even post it
+on Facebook. Uh-oh. Instant Slashdot/Reddit/Hacker News Effect?
+
+Mon 12 Aug 2024
+
+Discovered that "random pixie image" is already a feature,
+when using `pixiereport.com/png` as an image source URL.
+
+Without location and doll set, the endpoint redirects to a
+random station and renders that image. I can see embedded
+images already working in Obsidian's Markdown rendering,
+refreshing when a page is visited or reloaded.
+
+Time for an update of the prospectus document with the new
+milestone!
 
 ## Weatherpixie.com Features
 
@@ -177,14 +198,15 @@ list reduce error. We know the cache size so don't render an empty cache.
 - [ ] HTTP Cookie to remember your chosen location, doll style, units.
 
 Prelaunch
-- [ ] Caddy or Nginx proxy.
-- [ ] Certbot or similar.
+- [X] Caddy or Nginx reverse proxy. (Nginx)
+- [X] Certbot or similar. Certbot, but a one-off 2024-08-11. Because fedwiki occupies :80, I have to manually fetch new certs or script the down / up hooks.
 
 ## Next Step Directions
 
 ### Webapp Functions
 - [X] HTTP refresh header slideshow of random pixie /random
 - [X] /random - should also link individual slides and jump out of show
+- [X] /png - with no args, serves as a discovered "random pixie image" feature.
 - [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [X] Instead of defaulting KSEA, random pixie via hit and redirect
 - [X] Nearest other stations, based on geo-sort
@@ -196,7 +218,7 @@ Prelaunch
 - [X] Basic uptime endpoint.
 - [X] Useful uptime page with stats (pixies served, uptime, maybe error count) maybe in template footer
 - [X] Start an ops status / robustness / recovery list.
-- [ ] Most recent IP addresses requesting pages. ExpressJs request param?
+- [ ] Most recent IP addresses requesting pages. ExpressJs request param? Look for proxy headers with actual client IP address, not "localhost".
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
 
@@ -269,9 +291,10 @@ Add more information in an ops page, maybe frame-in some specific logs.
 ### Full METAR parse from raw METAR report.
 These items would enable running from a bulk METAR latest fetch.
  - [ ] Add a fromRawMetar section to debug output.
+ - [ ] Include a guess at report time / freshness.
  - [ ] Reproduce the 'Decoded METAR" parsing logic for...
      - [ ] temperature
-     - [ ] humidity (argh)
+     - [ ] relative humidity based on temp/dew point/pressure (argh)
      - [ ] wind
      - [ ] sky cover
      - [ ] weather conds

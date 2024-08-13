@@ -56,3 +56,8 @@ initial Express setup and async handlers.
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
 * PM2 [pm2.io](https://pm2.io) substituted for "npm run dev" as webapp launcher.
+
+## Public Launch
+* [pixiereport.com](https://pixiereport.com).
+* Let's Encrypt / Certbot certificate (manual one-off fetch).
+* Nginx reverse proxy from :443 to :3000.

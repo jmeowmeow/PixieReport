@@ -281,31 +281,56 @@ Ushuaia, Patagonia is cool in June.
 
 ## Production Web Application?
 
+_Notes updated from work on the ExpressJS webapp_.
+
 UI - navigable website, about, acknowledgments, etc.
 
-Static image cache
+Static image cache and METAR report cache. 
+* Update: The site launched with a memory cache. See [cache.md](../express-progress/cache.md).
 
 Query API -> pixie image (HTTP redirect to the static image URL?)
+* HTTP redirect used when a site or dollset is chosen at random.
 
 Automatic Refresh (of METAR data?)
+* Update: Not yet. At launch, METAR data is loaded station by station on request.
+* Improving the parser to use raw METAR data would allow less-frequent bulk fetches.
 
 What deployment choices are: Low-maintenance? Inexpensive to host? Pretty reliable?
+* All components deployed to a pre-existing virtual server shared with another app.
+* Easy to launch, modest (so far) hosting costs, excellent reliability to date.
 
 What should the deployment pipeline look like for code, for provisioned services, for data resources?
+* Continuing with the US National Weather Service METAR web datasource as upstream service.
+* All other resources (code and images) are in the source tree.
+* Starting out with `git pull && npx pm2 restart all`
 
 How to store the pixies and backgrounds for compositing? (transparent PNGs of matching size)
+* Still using individual PNGs in a filesystem folder tree, with auxiliary JS data.
 
 How to update new resources.
-
+* To make updating more open to contributions, I'm considering an endpoint which would display a current dollset and/or a template, using a suitable background to handle transparent overlays like snowflakes.
+* How we present an existing/new set may constrain options for new doll and background sets.
+* How can we offer sets sensitive to rain, snow or wind? Overlays of clothes / blowing hair?
+* How about optional pets?
+* A set may start with the standard backgrounds, clouds, and weather.
+* A set may not have to cover all cases or combinations (dolls for rain, snow, wind).
 
 ## Client Side Application?
 
-This could all fit into a mobile app.
+This could all fit into a mobile app or Electron style network app.
 
-As a client-side web application, it fights with the browser security model to fetch METARs from non-origin sites. The browser security model also treats local files as non-origin when loaded by JS.
+If the compositing logic lived in a client-side web application, the browser security model
+forbids using METARs from non-origin sites to drive application logic. The browser security model also treats local files as non-origin when loaded by JS. These limitations caused me
+to avoid a client-side web application.
 
+A local proxy server which served the webapp JS and proxied the METAR data from the
+same local port would satisfy the browser security model, since data and code would
+appear to be same-origin. Although at that point, perhaps one would choose to run
+a local PixieReport webapp instead.
 
-# PixieReport on Twitter 2020-2021+
+In either "local proxy" or "local webapp" cases, any image inclusion is strictly local.
+
+# PixieReport on Twitter 2020-2023
 
 
 ## General Approaches
@@ -321,7 +346,8 @@ When and how to take on bigger pieces
 
 _Acknowledgments to William Pietri for consultation and experience related to William's SFShips Twitter project._
 
-
+This project was concluded when Twitter decided to charge fees for the posting API,
+without a threshold for free API use.
 
 * Twitter bot.
     * Study model code.
@@ -332,7 +358,6 @@ _Acknowledgments to William Pietri for consultation and experience related to Wi
 
 
 ## Milestones / Deliverables
-
 
 
 1. Twitter Bot Pixie -- periodic pictures to Twitter. @PixieReport account
@@ -365,13 +390,9 @@ _Acknowledgments to William Pietri for consultation and experience related to Wi
 
 I may be good for 3 or four doll series, but pixel art is not my strong suit. (Yet.)
 
-
 ### Thoughts?
 
-
 ### Open questions
-
-
 
 * finding artists
 * how to collaborate
@@ -383,20 +404,20 @@ I may be good for 3 or four doll series, but pixel art is not my strong suit. (Y
 
 A Twitter bot is a good place to get some visibility while keeping the dimensions modest. (Acknowledgment: William Pietri).
 
+Most of these dimensions were kept low for the Twitter posting PixieReport.
 
-
-* one-way vs interactive
-* coverage (number of locations, size)
+* one-way vs interactive (one-way, only posted)
+* coverage (number of locations, size) (a list of stations with reports)
 * scale
-    * caching
-    * redundancy
-    * 
+    * caching    (none)
+    * redundancy (none; a timed script on a Macbook)
 * language and tooling
-    * dependency management
+    * dependency management?
+    * Implemented with OS timed executor service, bash and Node scripts
 * art
     * number of dolls
-    * number of artists
-    * number of sizes
+    * number of artists (one original artist, me; two non-original sets)
+    * number of sizes (original pixie size, one size)
 
 
 ---
@@ -488,9 +509,7 @@ Also to-do:
 #### What I did 2020-12-29:
 
 
-
 * Finished Beatrix Potter Mrs. Rabbit/Peter Rabbit pixies and set up to post as guest pixies.
-
 
 ![array of five dolls, four Mrs. Rabbit and one Peter Rabbit](images/image4.png "Beatrix Potter pixies")
 
@@ -533,7 +552,6 @@ What I did 2021-01-06/7:
 What I did 2020-01-07/8:
 
 
-
 * Picked at the icao.js list. TODO: regenerate it with US state / CA province included.
 * TODO I think a clear night layer with stars is probably indicated. For Moomin, maybe include a comet!
 
@@ -554,7 +572,6 @@ exports.icaoToLocationMap = icaoLocMap;
 ```
 
 What I did 2021-01-09/10:
-
 
 
 * Finished Moomin pixies, added night-with-stars-and-comet using The Gimp's "Sparks" brush. The Gimp is awkward but mostly does what I need.
@@ -727,8 +744,37 @@ Breaking this category out 2021-09-05, at a correspondent's suggestion for a Sla
 * a little polishing: check active sites not present in icao.js to see if their METAR report contains lat/long.
 * support for URL site preview format using HTML header properties. See [npm: link-preview-js](https://www.npmjs.com/package/link-preview-js) and [OpenGraph header tags](https://ogp.me/#metadata)
 * Slack bot integration, probably wants hosted API pixie server
-* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag. Next-step from local Node server?
+* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag. Next-step from local Node server? **Launched**, see below.
 * Hosted Twitter bot, following notifications for interactions, responding with tweets.
 * A Slack or Twitter bot integration could wrap common working code, using Alistair Cockburn's "Hexagonal Architecture" or "Ports and Adapters" which could later drive a website.
 * Migrate from my hand-rolled icao.js site list and the METAR service to [OpenWeatherMap API](https://openweathermap.org/appid). OpenWeatherMap advises caching information for at least 10 minutes since _The update frequency of the OpenWeather model is not higher than once in 10 minutes_. The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations.
 
+## Weatherpixie Site Revival
+
+* [pixiereport.com](https://pixiereport.com) initial launch 2024-08-11.
+
+The initial launch is a wrap-up of the Express app in a HTTPS reverse proxy.
+
+Features at launch:
+* Home page with sample array of pixie images.
+* Common navigation among HTML pages.
+* Pixie weather report available as a page with alt text and navigation.
+* Pixie weather report available as a plain PNG image.
+* Random sequence of reports available as a slide show with HTTP refresh.
+* A display of stations geographically near the current station, or near a location specified by latitude and longitude.
+
+Features missing:
+* Report URL builder / wizard, including:
+   * Station picker.
+   * Doll set picker. 
+   * Units picker (metric/US for temperature, wind speed and pressure)
+   * Copy-to-clipboard (img url, maybe iframe)
+
+Cleanup pending:
+* Streamline away "dev" features from UI.
+* Close the HTTP side door access.
+* Occasionally clear cache.
+
+Operator features:
+* Load average?
+* Recent requests by client IP address?
