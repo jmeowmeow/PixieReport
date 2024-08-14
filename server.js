@@ -39,22 +39,27 @@ const opengraph = `${ogTitle}${ogDesc}${ogType}${ogImage}${ogUrl}${ogSiteName}`;
 const pagetitle = "PixieReport Webapp";
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}</head>`;
 
-const anchor = function(url, text) {
-  return `<a href="${url}">${text}</a>`;
+const anchor = function(url, text, title) {
+  return `<a href="${url}" title="${title}">${text}</a>`;
 };
 
-const navigationLinks = [
-  {url: '/', text: 'Home'},
-  {url: '/about', text: 'About'},
-  {url: '/random', text: 'Random'},
-  {url: '/pixie', text: 'Pixie'},
-  {url: '/stations', text: 'Nearby'},
-  {url: '/compose', text: 'devpixie'},
-  {url: '/png', text: 'img'},
-  {url: '/metar', text: 'metar'},
-  {url: '/uptime', text: 'uptime'},
-  {url: '/cache', text: 'cache'},
-].map(link => anchor(link.url, link.text)).join(' | ');
+const userNav = [
+  {url: '/', text: 'Home', title: 'PixieReport Home'},
+  {url: '/about', text: 'About', title: 'About PixieReport'},
+  {url: '/random', text: 'Random', title: 'Random Pixie Slideshow'},
+  {url: '/pixie', text: 'Pixie', title: 'Pixie Page'},
+  {url: '/png', text: 'Image', title: 'Pixie Image'},
+  {url: '/stations', text: 'Nearby', title: 'Stations Near a Station or Location'},
+].map(link => anchor(link.url, link.text, link.title)).join(' | ');
+
+const devNav = [
+  {url: '/compose', text: 'devpixie', title: 'Pixie Page with Developer Details'},
+  {url: '/metar', text: 'metar', title: 'Weather Report Text' },
+  {url: '/uptime', text: 'uptime', title: 'Server Uptime and Metrics'},
+  {url: '/cache', text: 'cache', title: 'Weather Report and Image Cache'},
+].map(link => anchor(link.url, link.text, link.title)).join(' | ');
+
+const navigationLinks = userNav + "<br/>\n" + devNav;
 
 const navigation = `<p class="nav">${navigationLinks}</p>`;
 
@@ -337,7 +342,7 @@ const servePixie = async function(req, res, location, note) {
 }
 
 app.get('/about', async (req, res) => {
-  let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus');
+  let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus', 'PixieReport History, Notes, and Prospects');
   let body = "<p>About the PixieReport server.</p>";
   body += "<p>PixieReport constructs pixel paperdoll images from airport weather conditions. ";
   body += "It is an homage to Tamsin Bowles' original Weatherpixie.com site.</p>";
@@ -513,7 +518,7 @@ app.get('/stations', async (req, res) => {
       // anchored list of closest METAR stations on our active station list
       const closestTwelve = closestStns.slice(0,12);
       const closestStnsStr  = closestTwelve.reduce((a, b) =>
-        (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station, b.station)} ${b.desc}`), "");
+        (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station, b.station, 'Stations near '+b.station)} ${b.desc}`), "");
       myClosestStations = `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
       // duplication from home page array
       let tileNo = 0;
