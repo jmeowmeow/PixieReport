@@ -3,6 +3,8 @@ const tStart = Date.now();
 const express = require('express');
 const app = express();
 const port = 3000;
+const ipv4_localhost = '127.0.0.1';
+const host = ipv4_localhost;
 
 const fs = require('fs'); // fallback to load METARs for local testing
 
@@ -534,7 +536,7 @@ app.get('/stations', async (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`${new Date().toLocaleTimeString()} Server listening at http://localhost:${port} (${sinceStart()} msec)`);
+app.listen(port, host, () => {
+  console.log(`${new Date().toLocaleTimeString()} Server listening at http://${host}:${port} (${sinceStart()} msec)`);
 });
 
