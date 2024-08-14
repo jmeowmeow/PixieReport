@@ -301,7 +301,7 @@ app.get('/compose', async (req, res) => {
 });
 
 // factored for param-request and random-request
-const servePixie = async function(req, res, location) {
+const servePixie = async function(req, res, location, note) {
   // which pixel doll? is this in 'req' or already 'params' ?
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = req.query.set;
@@ -311,6 +311,9 @@ const servePixie = async function(req, res, location) {
   let dollset = params.dollset; // if bound in compose(); TODO pull this to server
   // add a "stations" lookup
   let icaoLoc = stations.get(location);
+  if (!icaoLoc) {
+    icaoLoc = `No information in database for station code ${location}.`;
+  }
   let mapUrl = worldMapLink(params);
   let mapLink = '';
   if (mapUrl.startsWith('http')) {
@@ -324,7 +327,7 @@ const servePixie = async function(req, res, location) {
           /\${title}/g, title);
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}`;
+    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${note}`;
     const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
     res.send(responseBody);
     increment('pixiecount');
@@ -369,7 +372,7 @@ app.get('/random', async (req, res) => {
   // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
   const refsec = '10';
   res.header('Refresh', refsec);
-  servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.`);
+  servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.</p>`);
 });
 
 app.get('/png', async (req, res) => {

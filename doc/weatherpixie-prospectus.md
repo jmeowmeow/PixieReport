@@ -778,3 +778,7 @@ Cleanup pending:
 Operator features:
 * Load average?
 * Recent requests by client IP address?
+
+Early requests:
+* More Snufkin.
+* More doll sets in general was a theme last time I asked.
