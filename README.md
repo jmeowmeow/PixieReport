@@ -1,12 +1,16 @@
 # PixieReport
 Pictorial weather reports inspired by Tamsin Bowles' Weatherpixie site.
 
+The engine backing [pixiereport.com](https://pixiereport.com).
+
 For background, history, and context see the [Weatherpixie Prospectus](doc/weatherpixie-prospectus.md).
 
-Demo:
+Server Demo:
 
-* `npm start` will launch a server on localhost:3000 which will compose a sample pixie in html+png format.
+* `npm start` will launch a server on localhost:3000 with an array of sample reports.
+* If you don't have Internet access, there is statically cached data for stations KBLI and EGLC.
+* See also [:3000/about](http://localhost:3000/about)
 
-Note:
+Weather Data:
 
-* This is the **express-server** branch using pure-js [jimp](https://github.com/jimp-dev/jimp/tree/main/packages/jimp) in place of `node-canvas`, and [Express](https://expressjs.com/) as the NodeJS server framework. See [express-progress/tasks.md](express-progress/tasks.md).
+* US National Weather Service METAR reports.

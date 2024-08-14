@@ -46,11 +46,11 @@ const navigationLinks = [
   {url: '/about', text: 'About'},
   {url: '/random', text: 'Random'},
   {url: '/pixie', text: 'Pixie'},
+  {url: '/stations', text: 'Nearby'},
   {url: '/compose', text: 'devpixie'},
   {url: '/png', text: 'img'},
   {url: '/metar', text: 'metar'},
   {url: '/uptime', text: 'uptime'},
-  {url: '/stations', text: 'stations'},
   {url: '/cache', text: 'cache'},
 ].map(link => anchor(link.url, link.text)).join(' | ');
 
@@ -333,11 +333,11 @@ const servePixie = async function(req, res, location) {
 
 app.get('/about', async (req, res) => {
   let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus');
-  let body = "<p>This is a prototype server for PixieReport.</p>";
-  body += "<p>Briefly, this service constructs pixel paperdoll images from airport weather conditions. ";
+  let body = "<p>About the PixieReport server.</p>";
+  body += "<p>PixieReport constructs pixel paperdoll images from airport weather conditions. ";
   body += "It is an homage to Tamsin Bowles' original Weatherpixie.com site.</p>";
-  body += "<p>The public version is intended to support bookmarking URLs for including PixieReport images in other pages, ";
-  body += "similar to the original.</p>";
+  body += "<p>The site is intended to support bookmarking URLs for including PixieReport images in other pages, ";
+  body += "similar to the original Weatherpixie.</p>";
   body += `<p>For more information, see the ${doc} in the GitHub project source tree.</p>`;
   const preamble = body;
   const location = 'KSEA';
@@ -361,14 +361,15 @@ app.get('/pixie', async (req, res) => {
     redirectToSetLocation(req, res);
     return;
   }
-  servePixie(req, res, location);
-});
+    servePixie(req, res, location, '');
+  });
 
 app.get('/random', async (req, res) => {
   const location = randomStation();
   // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
-  res.header('Refresh', '10');
-  servePixie(req, res, location);
+  const refsec = '10';
+  res.header('Refresh', refsec);
+  servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.`);
 });
 
 app.get('/png', async (req, res) => {
