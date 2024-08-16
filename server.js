@@ -429,7 +429,9 @@ const to_hhmmss = function(msec) {
 
 app.get('/uptime', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
-  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\n`);
+  // JSON dump of header object
+  let headers = JSON.stringify(req.headers, null, 2);
+  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\n\n${headers}\n`);
 });
 
 app.get('/cache', (req, res) => {

@@ -129,6 +129,10 @@ Added OpenGraph "meta" properties for preview, though maybe the image should be 
 Catch-up on notes and progress. Fetched from the Weatherpixie Prospectus,
 the features of Tamsin's site. See below, "Weatherpixie.com Features"
 
+Sun 04 Aug 2024
+
+Revise OpenGraph image source URL to GitHub hosted raw PNG.
+
 Wed 07 Aug 2024 09:12:37 AM PDT
 
 Review prelaunch tasks.
@@ -164,6 +168,25 @@ refreshing when a page is visited or reloaded.
 Time for an update of the prospectus document with the new
 milestone!
 
+Thu 15 Aug 2024 08:28:48 AM PDT
+
+Thursday thoughts.
+
+Do I need a robots.txt to allow /about but deny others?
+
+Post-initial launch. It looks like folks are hitting the
+endpoints now and then, not just me.
+
+Thursday intentions.
+
+- [X] Request header dump. (turns out it's an Object)
+    - [ ] Check on client IP header on public site.
+- [ ] Freshness of a METAR report, what's non-fresh?
+- [ ] Render non-fresh report time how? (hh:mm since?)
+- [ ] Cache clear without hitting /cache endpoint 
+
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
@@ -185,6 +208,7 @@ milestone!
 - [ ] Pixie Creation Wizard
     - [ ] Geographic picker
     - [ ] Doll set picker
+        - [ ] Which doll sets are available?
     - [ ] C/F unit picker
 - [ ] Pixie Preview Page
     - [ ] Copy this URL / cookie-me this pixie / copy this embed
@@ -202,6 +226,13 @@ Prelaunch
 - [X] Certbot or similar. Certbot, but a one-off 2024-08-11. Because fedwiki occupies :80, I have to manually fetch new certs or script the down / up hooks.
 
 ## Next Step Directions
+
+Generally:
+* User-friendliness
+* Dev features less obvious/obtrusive
+* Mobile stylings
+* Code cleanup, dev-doc system as built
+* Ops friendliness
 
 ### Webapp Functions
 - [X] HTTP refresh header slideshow of random pixie /random
@@ -221,6 +252,7 @@ Prelaunch
 - [ ] Most recent IP addresses requesting pages. ExpressJs request param? Look for proxy headers with actual client IP address, not "localhost".
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
+- [ ] Add robots.txt ?
 
 ### Reporting Stations
 - [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
