@@ -15,7 +15,19 @@ const {compose} = require('./compose-async');
 // METAR parsing
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
-const {cache} = require('./webapp/cache');
+// pixie cache and recent client IP addresses
+const {cache, clients} = require('./webapp/cache');
+
+const dispclients = function(brk) {
+  return clients.showclients().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
+}
+
+const tallyClientIp = function(req) {
+  let clientIp = req.headers["x-forwarded-for"];
+  if (clientIp) {
+    clients.increment(client, Date.now());
+  }
+}
 
 // app activity counters
 const {increment, clearout, showcounters} = require ('./webapp/counters')
@@ -98,6 +110,7 @@ const shortStationName = function(stn) {
 }
 
 app.get('/', (req, res) => {
+  tallyClientIp(req);
   const stationChoices = [
   'KSEA', 'KPAE', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH'
   ];
@@ -221,6 +234,7 @@ const fetchMETAR = async (location) => {
 }
 
 app.get('/json', async (req, res) => {
+  tallyClientIp(req);
   const location = req.query.location;
   if (location === undefined) {
     redirectToSetLocation(req, res);
@@ -233,6 +247,7 @@ app.get('/json', async (req, res) => {
 });
 
 app.get('/metar', async (req, res) => {
+  tallyClientIp(req);
   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   const location = req.query.location;
   if (location === undefined) {
@@ -280,6 +295,7 @@ const pixieAlt = async function(params) {
 }
 
 app.get('/compose', async (req, res) => {
+  tallyClientIp(req);
   // Developer's view of a pixie render.
   const location = req.query.location;
   if (location === undefined) {
@@ -342,6 +358,7 @@ const servePixie = async function(req, res, location, note) {
 }
 
 app.get('/about', async (req, res) => {
+  tallyClientIp(req);
   let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus', 'PixieReport History, Notes, and Prospects');
   let body = "<p>About the PixieReport server.</p>";
   body += "<p>PixieReport constructs pixel paperdoll images from airport weather conditions. ";
@@ -366,6 +383,7 @@ app.get('/about', async (req, res) => {
 
 // parameters: airport code, C/F, which pixie set; optional!
 app.get('/pixie', async (req, res) => {
+  tallyClientIp(req);
   const location = req.query.location;
   if (location === undefined) {
     redirectToSetLocation(req, res);
@@ -375,6 +393,7 @@ app.get('/pixie', async (req, res) => {
   });
 
 app.get('/random', async (req, res) => {
+  tallyClientIp(req);
   const location = randomStation();
   // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
   const refsec = '10';
@@ -383,6 +402,7 @@ app.get('/random', async (req, res) => {
 });
 
 app.get('/png', async (req, res) => {
+  tallyClientIp(req);
   const location = req.query.location;
   if (location === undefined) {
     redirectToSetLocation(req, res);
@@ -428,13 +448,15 @@ const to_hhmmss = function(msec) {
 }
 
 app.get('/uptime', (req, res) => {
+  tallyClientIp(req);
   res.setHeader('Content-Type', 'text/plain');
   // JSON dump of header object
   let headers = JSON.stringify(req.headers, null, 2);
-  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\n\n${headers}\n`);
+  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\n${dispclients('')}\n\n${headers}\n`);
 });
 
 app.get('/cache', (req, res) => {
+  tallyClientIp(req);
   res.setHeader('Content-Type', 'text/html');
   res.header('Refresh', '10');
   let body;
@@ -476,6 +498,7 @@ const makeGridNav = function(path, latlong) {
 }
 
 app.get('/stations', async (req, res) => {
+  tallyClientIp(req);
   const location = req.query.location;
   let body = '';
   let myLocation = "Grid Coordinates";
