@@ -25,7 +25,7 @@ const dispclients = function(brk) {
 const tallyClientIp = function(req) {
   let clientIp = req.headers["x-forwarded-for"];
   if (clientIp) {
-    clients.increment(client, Date.now());
+    clients.increment(clientIp, Date.now());
   }
 }
 
