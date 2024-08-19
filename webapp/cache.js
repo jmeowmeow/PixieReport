@@ -35,9 +35,10 @@ const clear = function() {
 	return this;
 }
 
-const expire = function() {
+const expire = function(tstamp) {
+  const dtNow = tstamp;
   let expiredkeys = [...this.keys()].filter(
-	k => (undefined === this.get(k, Date.now()))).map(
+	k => (undefined === this.get(k, dtNow))).map(
 		(expiredKey) => this.delete(expiredKey));
 }
 
@@ -64,8 +65,9 @@ const increment = function(client, tstamp) {
 };
 
 const showclients = function() {
-	this.expire();
-	let byCountDescending = [...this.keys()].map( key => [key, this.get(key, Date.now())]).sort( (u, v) => (v[1] - u[1]));
+        const dtNow = Date.now();
+	this.expire(dtNow);
+	let byCountDescending = [...this.keys()].map( key => [key, this.get(key, dtNow)]).sort( (u, v) => (v[1] - u[1]));
 	return byCountDescending;
   };
 

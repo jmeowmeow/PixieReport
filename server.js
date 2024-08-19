@@ -456,6 +456,7 @@ app.get('/uptime', (req, res) => {
 });
 
 app.get('/cache', (req, res) => {
+  const dtNow = Date.now();
   tallyClientIp(req);
   res.setHeader('Content-Type', 'text/html');
   res.header('Refresh', '10');
@@ -465,7 +466,7 @@ app.get('/cache', (req, res) => {
   let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${dispcounters('<br/>\n')}</p><p>Cache size = ${cache.size}</p><p>Keys:<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
-  cache.expire();
+  cache.expire(dtNow);
   res.send(responseBody);
 });
 
