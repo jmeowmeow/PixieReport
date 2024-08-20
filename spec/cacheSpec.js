@@ -29,7 +29,7 @@ describe("cache basic functions", function() {
   beforeEach(function() {
     cache.clear();
   });
-	
+
   it("should have a cache module loaded", function() {
      expect(JSON.stringify(cache)).toMatch('{"keyValue":{},"durationMsec":300000,"size":0}');
   });
@@ -53,5 +53,20 @@ describe("cache basic functions", function() {
     expect(undefined === cache.get('hello', theFuture));
   });
 
+  it("should remove expired values on expire()", function() {
+    const longAgo = 0;
+    const theNow = Date.now();
+    const theFuture = theNow + (1 + cache.durationMsec);
+    expect(cache.put('hello', 'world', theNow)).toBe(cache);
+    expect(cache.put('goodnight', 'Irene', theFuture)).toBe(cache);
+    expect(cache.size).toBe(2);
+    cache.expire(theFuture);
+    expect(cache.size).toBe(1);
+    expect(cache.get('hello', longAgo)).toBe(undefined);
+    expect(cache.get('hello', theNow)).toBe(undefined);
+    expect(cache.get('hello', theFuture)).toBe(undefined);
+    expect(cache.get('goodnight', theFuture)).toBe('Irene');
+
+  });
 
 });

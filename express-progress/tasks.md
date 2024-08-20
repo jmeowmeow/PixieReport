@@ -180,11 +180,26 @@ endpoints now and then, not just me.
 Thursday intentions.
 
 - [X] Request header dump. (turns out it's an Object)
-    - [ ] Check on client IP header on public site.
+    - [X] Check on client IP header on public site. "GoogleBot!"
 - [ ] Freshness of a METAR report, what's non-fresh?
 - [ ] Render non-fresh report time how? (hh:mm since?)
 - [ ] Cache clear without hitting /cache endpoint 
 
+Mon 19 Aug 2024 08:58:02 AM PDT
+
+First user of pixiereport include via img src, using the Tacoma station.
+
+Cache expiration and purge looks like a good target. Right now it's
+a side effect of looking at the /cache page. Should there be an
+implicit expire() inside cache.js or should that be in server.js ?
+
+Probably want to remove tab formatting in your dev laptop vim for js.
+
+Matrix pixie displays could be inline data: URLs to reduce multiple
+web client fetches.
+
+Thinking again about robots.txt . I compared a couple of public company
+websites. One had none. One had a saga.
 
 
 ## Weatherpixie.com Features
