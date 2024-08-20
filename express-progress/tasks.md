@@ -193,13 +193,20 @@ Cache expiration and purge looks like a good target. Right now it's
 a side effect of looking at the /cache page. Should there be an
 implicit expire() inside cache.js or should that be in server.js ?
 
-Probably want to remove tab formatting in your dev laptop vim for js.
+Added expire() in server.js
+
+- [X] Cache expire(dtNow) without hitting /cache endpoint (10% on a pixie image
+      cache miss).
+
+De-tabbed cache.js . Probably want to remove tab formatting in your dev
+laptop vim for js.
 
 Matrix pixie displays could be inline data: URLs to reduce multiple
 web client fetches.
 
-Thinking again about robots.txt . I compared a couple of public company
-websites. One had none. One had a saga.
+Thinking again about robots.txt after seeing GoogleBot represented as
+the most persistent visitor . I compared a couple of public company
+websites. One had no robots.txt file. One had a saga.
 
 
 ## Weatherpixie.com Features
