@@ -494,8 +494,9 @@ const makeGridNav = function(path, latlong) {
      latnav += latTemplate.replace('LAT', lats[idx]).replace('NAV', latnavs[idx]);
      longnav += longTemplate.replace('LONG', longs[idx]).replace('NAV', longnavs[idx]);
    }
-   // Experiment, width=100% so maybe lat/log grid navigation isn't so tiny on mobile?
-   let gridnav = '<table width="100%"><tr>\n'+latnav + '</tr><tr>' + longnav + '</tr></table>\n';
+   // Experiment, width=100% , add a spacer, so maybe lat/log grid navigation isn't so tiny on mobile?
+   let spacer = '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+   let gridnav = '<table width="100%"><tr>\n'+latnav + '</tr>\n'+spacer+'\n<tr>' + longnav + '</tr></table>\n';
    return gridnav;
 }
 
