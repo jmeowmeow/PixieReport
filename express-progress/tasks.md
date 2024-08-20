@@ -208,6 +208,14 @@ Thinking again about robots.txt after seeing GoogleBot represented as
 the most persistent visitor . I compared a couple of public company
 websites. One had no robots.txt file. One had a saga.
 
+Should I start with a larger image for the "radio static" layer and
+jitter the row, col start to give variety and try out image spriting?
+I guess that makes it Not Like Other Layers, but maybe the jitter can
+be set to a specific value when the compositing happens? Not sure.
+
+I suppose a composable layer in the layer list could have (dCols, dRows),
+or for the pixel dolls we'd know what the dCols would be for each temperature
+level pixie image.
 
 ## Weatherpixie.com Features
 
