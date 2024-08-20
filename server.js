@@ -274,22 +274,22 @@ const pixieAlt = async function(params) {
   } else {
     pixieKey = `location=${location}`;
   }
-  const cachedPixie = cache.get(pixieKey, Date.now());
+  const dtNow = Date.now();
+  const cachedPixie = cache.get(pixieKey, dtNow);
   if (cachedPixie) {
-    // console.log(`image cache: found ${pixieKey}`)
     increment('pixiecache.hit');
     return cachedPixie;
   } else {
     increment('pixiecache.miss');
-    // console.log(`image cache: need new image for ${pixieKey}`)
+    if (Math.random() < 0.1) {
+      cache.expire(dtNow);
+    }
   }
   var [pixie, alt]= await compose(params).catch(console.error);
-  cache.put(pixieKey, [pixie, alt], Date.now());
-  // console.log(`image cache: saved [image, alt] ${pixieKey}`)
+  cache.put(pixieKey, [pixie, alt], dtNow);
   let keyWithDollset = `location=${location}&set=${params.dollset}`; // late bound dollset?
   if (pixieKey != keyWithDollset) {
-    cache.put(keyWithDollset, [pixie, alt], Date.now());
-  //   console.log(`image cache: saved [image, alt] ${keyWithDollset}`)
+    cache.put(keyWithDollset, [pixie, alt], dtNow);
   }
   return [pixie, alt];
 }
