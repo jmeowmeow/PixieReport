@@ -202,10 +202,13 @@ De-tabbed cache.js . Probably want to remove tab formatting in your dev
 laptop vim for js.
 
 Matrix pixie displays could be inline data: URLs to reduce multiple
-web client fetches.
+web client fetches. Since I'm not using HTTP/2, the best I can hope
+for is HTTP/1.1 keep-alive, but I don't know if that's happening. Not
+too hard to check from the client side, esp with a transparent proxy
+of some sort.
 
 Thinking again about robots.txt after seeing GoogleBot represented as
-the most persistent visitor . I compared a couple of public company
+the most persistent visitor. I compared a couple of public company
 websites. One had no robots.txt file. One had a saga.
 
 Should I start with a larger image for the "radio static" layer and
@@ -216,6 +219,45 @@ be set to a specific value when the compositing happens? Not sure.
 I suppose a composable layer in the layer list could have (dCols, dRows),
 or for the pixel dolls we'd know what the dCols would be for each temperature
 level pixie image.
+
+Tue 20 Aug 2024 08:26:44 AM PDT
+
+Spaced out the lat/long navigation links for the "nearby stations" page
+and it helps a little but the text on mobile is super small.
+
+Deployed the cache expiration call. 1 in 10, whenever we're likely
+to add to the cache, first run an expire(). This gives us 1 or 2
+likely expire() calls per homepage or "stations nearby" fetches.
+
+Looking at the homepage and nearby, they're missing the descriptive
+alt text because we don't have it until we run a fetch, and for an
+image inclusion on the /png endpoint, the browser doesn't get it.
+
+I guess one could add something in the PNG properties but it's not
+like the browser would expose that detail in the view.
+
+Pulling to-dos from earlier: freshness.
+
+- [ ] Freshness of a METAR report, how old is non-fresh?
+- [ ] Render non-fresh report time how? (hh:mm since?)
+
+The computed pixie parameters have two dates available.
+* One uses the server date and the raw METAR, which has the UT day-of-month
+and clock time encoded. The "zuluDate" parameter has this information.
+* One is supplied from the parsed report, and is reported with the parameter "dateTimeUTC.utcDate" as a subfield of dateTimeUTC.
+
+If a decoded report hangs around long enough (which it can!), then
+you can get wildly different guesses between zuluDate (guesses at
+current or last month) and utcDate (set when the report is decoded).
+
+Here's the question behind this comparison: should we prefer a bulk
+METAR fetch to be less chatty with the public weather servers? If
+so, is that "bulk latest METAR" data all pretty recent, so that we
+can use zuluDate and a little fiddling around month and year turns?
+
+The first step is probably wiring a freshness number into the computed params,
+with a resolution of minutes since report time to server time of param
+computation.
 
 ## Weatherpixie.com Features
 
