@@ -222,6 +222,10 @@ level pixie image.
 
 Tue 20 Aug 2024 08:26:44 AM PDT
 
+Fetched from archived tasks, for lookup of active stations not in DB:
+Station PANU (Nulato, Alaska) https://aviationweather.gov/data/metar/?id=PANU
+Maybe try [NOAA MADIS](https://madis.ncep.noaa.gov/madis_metar.shtml)
+
 Spaced out the lat/long navigation links for the "nearby stations" page
 and it helps a little but the text on mobile is super small.
 
@@ -235,6 +239,10 @@ image inclusion on the /png endpoint, the browser doesn't get it.
 
 I guess one could add something in the PNG properties but it's not
 like the browser would expose that detail in the view.
+
+Two sides to doing the pixie matrix pages as img src=data server-side:
+    1. Having a client page pull 12 or 16 pixies is that much client-side chattiness.
+    2. Having the server pull 12 or 16 pixies is a potential hammering of the NWS METAR servers
 
 Pulling to-dos from earlier: freshness.
 
@@ -258,6 +266,22 @@ can use zuluDate and a little fiddling around month and year turns?
 The first step is probably wiring a freshness number into the computed params,
 with a resolution of minutes since report time to server time of param
 computation.
+
+
+Wed 21 Aug 2024 08:24:43 AM PDT
+
+Noticing a couple of no-icao-data reports. So:
+
+When neither report nor DB has location data, suggest on the pixie page:
+https://aviationweather.gov/data/metar/?id=${location}
+or possibly a MADIS lookup from there or directly?
+  [NOAA MADIS](https://madis.ncep.noaa.gov/madis_metar.shtml)
+"No information in database for station ${location}."
+Example stations:
+K1NN
+KX26
+
+
 
 ## Weatherpixie.com Features
 

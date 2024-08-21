@@ -314,6 +314,9 @@ app.get('/compose', async (req, res) => {
   let mapLink = '';
   if (mapUrl.startsWith('http')) {
      mapLink = `<a href="${mapUrl}">${mapUrl}</a>`;
+  } else {
+     mapLink = ' (no geodata)';
+     mapLink = mapLink + `, try aviationweather.gov for <a href="https://aviationweather.gov/data/metar/?id=${location}">${location}</a>\n`;
   }
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
@@ -336,6 +339,7 @@ const servePixie = async function(req, res, location, note) {
   let icaoLoc = stations.get(location);
   if (!icaoLoc) {
     icaoLoc = `No information in database for station code ${location}.`;
+    icaoLoc = icaoLoc + `\n<br/>Try NWS METAR for <a href="https://aviationweather.gov/data/metar/?id=${location}">${location}</a>\n`
   }
   let mapUrl = worldMapLink(params);
   let mapLink = '';
