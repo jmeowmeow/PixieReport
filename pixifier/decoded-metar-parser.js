@@ -50,6 +50,14 @@ var stationDesc = function(code, decoded, icaoMap) {
   }
 };
 
+// e.g. "12.3 minutes since the observation"
+// depends on Date.now() which we might want to pass in
+const minutesSince = function(obsDate) {
+  const msec_per_minute = 60 * 1000;
+  const msec_since = Date.now() - obsDate[Symbol.toPrimitive]('number');
+  return (msec_since / msec_per_minute).toFixed(1);
+}
+
 //ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016
 //example: 171550Z -> 17th of the month, 15:50 UT
 var withZuluTime = function(params, metar) {
@@ -64,7 +72,6 @@ var withZuluTime = function(params, metar) {
    zuluDate.setUTCMinutes(Number(result[3].substring(0,2)));
    zuluDate.setUTCSeconds(0);
    zuluDate.setUTCMilliseconds(0);
-  // zHowOldIsReport = Date.now() - zuluDate[Symbol.toPrimitive]('number');
   // is it an invalid date? (June 31? Feb 30?)
   // is it negative? maybe we at a month or year turn and mistaken to use now.month or now.month/now.year.
   // TODO: heuristic fixes for (now - obs date) over a calendar turn, presuming fairly current obs.
@@ -72,6 +79,7 @@ var withZuluTime = function(params, metar) {
   // are we at a month turn? subtract a month so we're not in the future.
   // older than a month it's kinda what-do-we-do?
    params.zuluDate = zuluDate;
+   params.zMinutesSince = minutesSince(zuluDate);
   } else {
    params.zuluTime = "(no time)";
   }
@@ -324,6 +332,7 @@ const dateTimeUTC = function(decoded) {
     utcDate.setUTCMinutes(dtReturned.minutes);
     utcDate.setUTCSeconds(dtReturned.seconds);
     dtReturned.utcDate = utcDate;
+    dtReturned.minutesSince = minutesSince(utcDate);
     return dtReturned;
   } else {
     return null

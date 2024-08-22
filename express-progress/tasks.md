@@ -281,6 +281,8 @@ Example stations:
 K1NN
 KX26
 
+Freshness looks like we could determine it right after or as part of
+calling decodedToParamsForStation, passing Date.now().
 
 
 ## Weatherpixie.com Features
