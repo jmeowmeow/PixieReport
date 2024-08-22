@@ -7,6 +7,7 @@ const ipv4_localhost = '127.0.0.1';
 const host = ipv4_localhost;
 
 const fs = require('fs'); // fallback to load METARs for local testing
+const robots_txt = fs.readFileSync("webapp/robots.txt");
 
 // preloaded data files and image layers, Jimp image package
 const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, Jimp} = require('./preloads');
@@ -108,6 +109,12 @@ const shortStationName = function(stn) {
   }
   return loc;
 }
+
+app.get('/robots.txt', (req, res) => {
+  // skip tallyClientIp if they just read robots.txt
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(robots_txt);
+});
 
 app.get('/', (req, res) => {
   tallyClientIp(req);

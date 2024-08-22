@@ -1,0 +1,14 @@
+# robots.txt
+User-agent: *
+Allow: /about
+
+User-agent: *
+Disallow: /json
+Disallow: /metar
+Disallow: /compose
+Disallow: /pixie
+Disallow: /random
+Disallow: /png
+Disallow: /uptime
+Disallow: /cache
+Disallow: /stations
