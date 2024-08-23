@@ -68,6 +68,7 @@ const userNav = [
 const devNav = [
   {url: '/compose', text: 'devpixie', title: 'Pixie Page with Developer Details'},
   {url: '/metar', text: 'metar', title: 'Weather Report Text' },
+  {url: '/json', text: 'params', title: 'Parsed Pixie Params' },
   {url: '/uptime', text: 'uptime', title: 'Server Uptime and Metrics'},
   {url: '/cache', text: 'cache', title: 'Weather Report and Image Cache'},
 ].map(link => anchor(link.url, link.text, link.title)).join(' | ');
@@ -86,6 +87,7 @@ const nav = function(req) {
       '/pixie', '/pixie?'+q).replace(
       '/png', '/png?'+q).replace(
        '/metar', '/metar?'+q).replace(
+       '/json', '/json?'+q).replace(
        '/stations', '/stations?'+q);
 };
 
@@ -130,15 +132,13 @@ app.get('/', (req, res) => {
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
   let body = "";
-  let metarLink = "m <a title='METAR ${station}' href='/metar?location=${station}'>${station}</a>";
-  let jsonLink  = "j <a title='json prettyprint ${station}' href='/json?location=${station}'>${station}</a>";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
   let locationLink = "${location}";
-  let reportLink = `<tr><td>${metarLink}</td><td>${jsonLink}</td><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
+  let reportLink = `<tr><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += navigation;
   body += "\n";
-  body += "<table border><thead><tr><th>METAR Report</th><th>Pixie Params</th><th>Composed Pixie</th><th>Location</th></tr></thead>\n"
+  body += "<table border><thead><tr><th>Composed Pixie</th><th>Location</th></tr></thead>\n"
   stationChoices.map(stn =>
   {
     let loc = shortStationName(stn);
