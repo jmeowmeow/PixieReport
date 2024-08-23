@@ -1,5 +1,7 @@
 describe("data resource modules should load OK", function() {
-  var icaoToLocationMap, icaoEntries, entryCount;
+  var icaoEntries, entryCount;
+
+  const { activeMetarStations, icaoToLocationMap } = require('../pixifier/icao.js');
 
   const pfx = '../pixifier/pixies/';
   const pixieDirs = [
@@ -26,15 +28,18 @@ describe("data resource modules should load OK", function() {
   };
 
   beforeAll(function() {
-    icaoToLocationMap = require('../pixifier/icao.js').icaoToLocationMap;
     icaoEntries = Object.entries(icaoToLocationMap);
     entryCount = icaoEntries.length;
+    // to-do: also check the active stations list for geodata?
     expect(icaoToLocationMap).toBeDefined();
     expect(icaoToLocationMap).not.toBe(null);
+    expect(activeMetarStations).toBeDefined();
+    expect(activeMetarStations).not.toBe(null);
+    activeCount = activeMetarStations.length;
   });
 
   it("location map should have this many entries", function() {
-    expect(entryCount).toBe(8709);
+    expect(entryCount).toBe(8710);
   });
 
   it("location map first entry should be", function() {
@@ -43,6 +48,10 @@ describe("data resource modules should load OK", function() {
 
   it("location map last entry should be", function() {
     expect(icaoEntries[entryCount-1][0]).toBe('ZYYY');
+  });
+
+  it("active stations should have this many entries (fwiw!)", function () {
+    expect(activeCount).toBe(4949);
   });
 
   it(`${pixieDirs[0]} should have moomin doll descriptions`, function() {
