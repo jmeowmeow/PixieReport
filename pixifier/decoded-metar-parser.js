@@ -50,12 +50,12 @@ var stationDesc = function(code, decoded, icaoMap) {
   }
 };
 
-// e.g. "12.3 minutes since the observation"
+const msec_per_hour = 60 * 60 * 1000;
+// e.g. "0.1 hours since the observation"
 // depends on Date.now() which we might want to pass in
-const minutesSince = function(obsDate) {
-  const msec_per_minute = 60 * 1000;
+const hoursSince = function(obsDate) {
   const msec_since = Date.now() - obsDate[Symbol.toPrimitive]('number');
-  return (msec_since / msec_per_minute).toFixed(1);
+  return (msec_since / msec_per_hour).toFixed(1);
 }
 
 //ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016
@@ -79,7 +79,7 @@ var withZuluTime = function(params, metar) {
   // are we at a month turn? subtract a month so we're not in the future.
   // older than a month it's kinda what-do-we-do?
    params.zuluDate = zuluDate;
-   params.zMinutesSince = minutesSince(zuluDate);
+   params.zHoursSince = hoursSince(zuluDate);
   } else {
    params.zuluTime = "(no time)";
   }
@@ -332,7 +332,7 @@ const dateTimeUTC = function(decoded) {
     utcDate.setUTCMinutes(dtReturned.minutes);
     utcDate.setUTCSeconds(dtReturned.seconds);
     dtReturned.utcDate = utcDate;
-    dtReturned.minutesSince = minutesSince(utcDate);
+    dtReturned.hoursSince = hoursSince(utcDate);
     return dtReturned;
   } else {
     return null
