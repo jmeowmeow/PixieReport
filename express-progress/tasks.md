@@ -284,6 +284,9 @@ KX26
 Freshness looks like we could determine it right after or as part of
 calling decodedToParamsForStation, passing Date.now().
 
+oops caused a test failure by adding two lines and forgetting to
+bump up the icao count.
+
 
 ## Weatherpixie.com Features
 

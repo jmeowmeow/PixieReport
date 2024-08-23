@@ -42,16 +42,19 @@ initial Express setup and async handlers.
 * PNG download endpoint.
 * URL param args for station (location=KPAE) and dollset (set=0,1,2,3)
 * Cache both METAR text and rendered pixie for 5m.
+* robots.txt disallows robots from all but / and /about
 
 ## Webapp Operations
 * Cache view
 * Uptime
+* Recent client IPs and request tally (via expiring counter).
 
 ## Webapp Design/Content
 * Gallery on home page, each pixie linked.
 * Navigation links among webapp pages on HTML pages.
 * Use station and dollset params in navigation links.
 * Nearby Stations To This Station page.
+* Nearby Stations To: navigate by +/- 1 or 5 degrees of lat/long.
 
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
