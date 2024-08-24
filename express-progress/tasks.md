@@ -288,6 +288,30 @@ oops caused a test failure by adding two lines and forgetting to
 bump up the icao count.
 
 
+Fri 23 Aug 2024 08:43:51 AM PDT
+
+Yesterday: deployed the tightened pixie landing page matrix.
+
+Thoughts:
+* Could the pixie detail page be a picker for doll set and maybe units?
+* "record locator" versus "unique ID" concept for doll sets? (numeric IDs ~ externally enumerable?)
+* interpreter endpoint, "do" or "token", parse the token and unpack it to a pixie or image request? This would allow bookmarkable behavior while rewriting the URLs as needed.
+
+
+A feature I would use:
+"Click here to copy alt text to system clipboard."
+
+Ops crisis: the National Weather Service rotated its TLS certificate, and the
+signing authority cert for Go Daddy was absent from both my dev laptop cert
+store and my droplet cert store.
+
+Fixed by:
+* Diagnosing the problem (certificate authority cert unrecognized).
+* Finding some options, trying them out, failing (didn't have new certs).
+* Finding working certs on a newer OS install, copying the Go Daddy certs, and installling them.
+* Laptop: installed in main cert store; Production: added to NodeJS extra certs.
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
