@@ -5,10 +5,13 @@ default:
 	@echo "make pixies   : navigate to :3000/pixie"
 
 start:
-	npm run dev
+	NODE_EXTRA_CA_CERTS=./webapp/go-daddy-certs.pem node server.js
+
+dev:
+	NODE_EXTRA_CA_CERTS=./webapp/go-daddy-certs.pem npm run dev
 
 production:
-	npx pm2 server.js
+	NODE_EXTRA_CA_CERTS=./webapp/go-daddy-certs.pem npx pm2 server.js
 
 test:
 	npm test
