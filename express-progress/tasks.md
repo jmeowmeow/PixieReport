@@ -311,6 +311,17 @@ Fixed by:
 * Finding working certs on a newer OS install, copying the Go Daddy certs, and installling them.
 * Laptop: installed in main cert store; Production: added to NodeJS extra certs.
 
+Mon 26 Aug 2024 08:37:46 AM PDT
+
+Next Obvious Steps
+
+- [ ] Make freshness more visible. We have it in params as hours.tenths now.
+- [ ] Factor doll sets into an object composed in preloads. That helps with a picker and duplicated logic across preloads, server, and composer.
+- [ ] Copy-to-clipboard functionality. Useful for URLs.
+
+Experiment
+
+- [ ] iFrame experiment, transcludable frame source endpoint like no-nav body of pixie.
 
 ## Weatherpixie.com Features
 

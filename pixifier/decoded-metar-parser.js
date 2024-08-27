@@ -55,7 +55,7 @@ const msec_per_hour = 60 * 60 * 1000;
 // depends on Date.now() which we might want to pass in
 const hoursSince = function(obsDate) {
   const msec_since = Date.now() - obsDate[Symbol.toPrimitive]('number');
-  return (msec_since / msec_per_hour).toFixed(1);
+  return (msec_since / msec_per_hour);  // leave as Number
 }
 
 //ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016

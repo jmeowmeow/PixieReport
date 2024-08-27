@@ -301,6 +301,14 @@ const pixieAlt = async function(params) {
   return [pixie, alt];
 }
 
+const elapsedMessage = function(hoursSince) {
+ if (typeof hoursSince === 'number' && isFinite(hoursSince)) {
+    return `${hoursSince.toFixed(1)} h since report.`;  // toFixed(1) makes it a string
+  } else {
+    return "No report time available."
+  }
+}
+
 app.get('/compose', async (req, res) => {
   tallyClientIp(req);
   // Developer's view of a pixie render.
@@ -325,9 +333,10 @@ app.get('/compose', async (req, res) => {
      mapLink = ' (no geodata)';
      mapLink = mapLink + `, try aviationweather.gov for <a href="https://aviationweather.gov/data/metar/?id=${location}">${location}</a>\n`;
   }
+  const elapsedMsg = elapsedMessage(params.zHoursSince);
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
+    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
     res.send(responseBody);
     increment('pixiecount');
   });
@@ -337,6 +346,9 @@ app.get('/compose', async (req, res) => {
 const servePixie = async function(req, res, location, note) {
   // which pixel doll? is this in 'req' or already 'params' ?
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
+  if (!note || note == '') {
+    note = `<p>${elapsedMessage(params.zHoursSince)}</p>\n`;
+  }
   params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
@@ -400,6 +412,7 @@ app.get('/pixie', async (req, res) => {
     redirectToSetLocation(req, res);
     return;
   }
+
     servePixie(req, res, location, '');
   });
 
