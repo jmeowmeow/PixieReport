@@ -1,14 +1,19 @@
 // counters.js
+// Update runtime tallies of pixies rendered, etc.
+// Naive wrapper over a Map(string, int).
 
 const counters = new Map();
 
-const increment = function(...args) {
-  args.map( arg =>
-    { let c = counters.get(arg); if (!c) { c = 0; } counters.set(arg, c+1); })
+// Tally one count to each named counter.
+const increment = function(...tallyNames) {
+  tallyNames.map( each =>
+    { let tally = counters.get(each); if (!tally) { tally = 0; } counters.set(each, tally+1); })
 };
 
-const clearout = function(...args) {
-  args.map( arg => counters.set(arg, 0));
+// Implicitly defines what counters we care to report on,
+// before any tallies, by zeroing the counters by name.
+const clearout = function(...tallyNames) {
+  tallyNames.map( each => counters.set(each, 0));
 };
 
 const showcounters = function() {

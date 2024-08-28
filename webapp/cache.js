@@ -1,3 +1,8 @@
+// Pixie cache and recent-clients cache,
+// using prototype-based inheritance and "this"
+// to glue together functions into object-like items
+// "cache" and "clients" for export.
+
 const cacheDurationMin = 5;
 const cacheDurationMsec = 1000 * 60 * cacheDurationMin;
 
@@ -65,11 +70,11 @@ const increment = function(client, tstamp) {
 };
 
 const showclients = function() {
-        const dtNow = Date.now();
+  const dtNow = Date.now();
   this.expire(dtNow);
   let byCountDescending = [...this.keys()].map( key => [key, this.get(key, dtNow)]).sort( (u, v) => (v[1] - u[1]));
   return byCountDescending;
-  };
+ };
 
 const clients = {
   increment: increment,
@@ -86,6 +91,7 @@ const clients = {
 }
 
 clients.clear();
+// Ephemeral synthetic transaction style test at start-up.
 let clientStart = Date.now();
 clients.increment('255.255.255.255', clientStart);
 clients.increment('255.255.255.255', clientStart);
