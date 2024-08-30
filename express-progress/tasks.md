@@ -315,13 +315,25 @@ Mon 26 Aug 2024 08:37:46 AM PDT
 
 Next Obvious Steps
 
-- [ ] Make freshness more visible. We have it in params as hours.tenths now.
+- [X] Make freshness more visible. We have it in params as hours.tenths now. (Added in /compose and /pixie)
+
+Tue 27 Aug 2024 08:49:39 AM PDT
+
+Comments and intention revealing temp variable names in cache/clients and counters.
+
+Wed 28 Aug 2024 08:45:22 AM PDT
+
+Rollover Monday intentions.
+
 - [ ] Factor doll sets into an object composed in preloads. That helps with a picker and duplicated logic across preloads, server, and composer.
+    - [X] Tag usages of the dollset names and cardinality in server and composer.
+    - [ ] Make these calls on the preloaded dollsets resource.
+    - [ ] Use the dollsets resource in new logic like a picker or displayer.
 - [ ] Copy-to-clipboard functionality. Useful for URLs.
 
 Experiment
 
-- [ ] iFrame experiment, transcludable frame source endpoint like no-nav body of pixie.
+- [ ] iFrame experiment, transcludable frame source endpoint like no-nav body of /pixie. Maybe mix up the subdomain a little bit? pixiereport.com with an iframe from www.pixiereport.com perhaps. Basically we're looking for image, alt text, and a link that opens a full page with navigation back on pixiereport.com with the iframe settings, maybe in a wizard or pixker.
 
 ## Weatherpixie.com Features
 
@@ -385,10 +397,11 @@ Generally:
 - [X] Basic uptime endpoint.
 - [X] Useful uptime page with stats (pixies served, uptime, maybe error count) maybe in template footer
 - [X] Start an ops status / robustness / recovery list.
-- [ ] Most recent IP addresses requesting pages. ExpressJs request param? Look for proxy headers with actual client IP address, not "localhost".
-- [ ] Rethink URL path handlers, remove unneeded ones.
+- [X] Most recent IP addresses requesting pages. ExpressJs request param? Look for proxy headers with actual client IP address, not "localhost".
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
-- [ ] Add robots.txt ?
+- [ ] Rethink URL path handlers, remove unneeded ones.
+- [ ] Document which URLs are designed to be supported
+- [X] Add robots.txt
 
 ### Reporting Stations
 - [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
@@ -431,6 +444,7 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Group pixie-set-specific weather layers separately from generic weather?
 - [ ] Graceful error handling for missing report data or fetch failure
+- [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
 Weather Report Choosing Wizard

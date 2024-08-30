@@ -149,6 +149,7 @@ app.get('/', (req, res) => {
   body += "</table><br/>"
   body += "<p>"
   let tileNo = 0;
+// TODO dollset resource
   let pixiesetnum = 4;
   stationChoices.map(stn =>
   {
@@ -346,14 +347,14 @@ app.get('/compose', async (req, res) => {
 const servePixie = async function(req, res, location, note) {
   // which pixel doll? is this in 'req' or already 'params' ?
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
-  if (!note || note == '') {
+  if (!note || note == '') { // patch contra factoring, had to be after params call.
     note = `<p>${elapsedMessage(params.zHoursSince)}</p>\n`;
   }
   params.dollset = req.query.set;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
-  let dollset = params.dollset; // if bound in compose(); TODO pull this to server
+  let dollset = params.dollset; // if bound in compose(); TODO pull late-bound set to server code?
   // add a "stations" lookup
   let icaoLoc = stations.get(location);
   if (!icaoLoc) {
@@ -391,6 +392,7 @@ app.get('/about', async (req, res) => {
   body += `<p>For more information, see the ${doc} in the GitHub project source tree.</p>`;
   const preamble = body;
   const location = 'KSEA';
+// TODO dollset resource lookup?
   const dollset = 'selfie';
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = dollset;
@@ -561,8 +563,6 @@ app.get('/stations', async (req, res) => {
                   (Math.abs(ifdef(stn.lat) - latlong.degLat)));
         return dw;
       }
-      let myStation = stationsByLat.filter(stn => (stn.station === location));
-      console.log("myStation: " + JSON.stringify(myStation)); // singleton or empty list
       myLocation = myLocation + ' ' + JSON.stringify(latlong);
       gridnav = '<p>\n'+makeGridNav(req.path, latlong)+'\n</p>\n';
       let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
@@ -574,11 +574,13 @@ app.get('/stations', async (req, res) => {
       myClosestStations = `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
       // duplication from home page array
       let tileNo = 0;
+// TODO dollset resource
       let pixiesetnum = 4;
       let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
+// TODO dollset resource
         let dollset=Math.trunc(Math.random() * pixiesetnum);
         myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
         tileNo++;

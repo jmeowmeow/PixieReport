@@ -55,6 +55,7 @@ function addLightningLayer(layerFiles, params) {
 };
 
 // bind the doll set here so that we can later use params to choose
+// TODO dollset resource
 const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ]; // order matches preloads
 
 // adapted/extracted from addDollLayerReturnDescText
@@ -75,6 +76,7 @@ function addDollLayer(layerFiles, params) {
   }
   // messy write-to-request-params for late-bound dollset for "/random"
   // TODO pull this up so we don't have to write to the params
+  // TODO dollset resource
   let randomIdx = Math.trunc(Math.random()*4);
   if (!params.dollset) {
     params.dollset = randomIdx;

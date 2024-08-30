@@ -6,6 +6,19 @@
 // image loading unless we embed the images as String
 // resources and decode them.
 
+// The preloads file exports these resources:
+// * Weather station database, both "active stations" and geodata/names.
+// These are variously in
+//   (geodata): exports.stations .stationsByLat .stationsByLong
+//   (actives): exports.activeMetarStations
+// * Pixel doll layer files (name, file path, Jimp image) + Layer and Jimp
+// * Weather and background layer files.
+// TODO dollsets in resources.*
+// These two are in resources.namedLayers in distributed form.
+// For a picker or survey, we should provide resources.pixieSets and
+// maybe resources.backgroundSets (e.g. the night-comet)
+
+// Load the resource descriptions expediently, grafting the old script's mechanism.
 var dollsByWeather;
 const moomindescs = require('./pixifier/pixies/pixiemoomin/dolldesc.js');
 const pixie0descs = require('./pixifier/pixies/pixie0/dolldesc.js');
@@ -54,24 +67,27 @@ class Layer {
   }
 }
 
+// namedLayers: main lookup repository for pixel doll composer
 const namedLayers = new Map();
 resources.namedLayers = namedLayers;
 namedLayers.set("none", new Layer("none", "pixifier/pixies/weather/blank.png"));
 namedLayers.set("frame", new Layer("black frame", "pixifier/pixies/backgrounds/blackframe.png"));
 
-// let's make some pixie layers! and save them in the layer lookups!
-const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, layers) {
+// Register a doll set across temperature levels for lookup in namedLayers by a composite key.
+// This is the "distributed" expression of the doll sets.
+const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, compositionLayers) {
   const tempLevel = ['icy', 'cold', 'cool', 'warm', 'hot'];
-  let pixieLayers = [];
+  let thisDollLayers = [];
   for (const i in [0,1,2,3,4]) {
     const dollLayer = new Layer(dollDescs.get(whichPixie)[i], ''+dollPaths.get(whichPixie)+dollFiles[i]);
-    pixieLayers.push(dollLayer);
-    const pixieNameBySetAndTemp = ''+whichPixie+'/'+tempLevel[i]+'Pixie';
-    layers.set(pixieNameBySetAndTemp, dollLayer); // shared layers
+    thisDollLayers.push(dollLayer);
+    const pixieNameBySetAndTemp = ''+whichPixie+'/'+tempLevel[i]+'Pixie'; // 'bunny/icyPixie'
+    compositionLayers.set(pixieNameBySetAndTemp, dollLayer);
   }
-  return pixieLayers; // this set's layers only
+  return thisDollLayers;
 }
 
+// TODO dollsets: we discard these after picking a "default" set
 const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
 const bunnyLayers  = savePixieLayers(setNames[0], dd, pixiepaths, pixieFiles, namedLayers);
 const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, namedLayers);
@@ -79,7 +95,7 @@ const pixie0Layers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, na
 const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
 
 // We should probably pick the doll set in the server or composer, but for now, here.
-
+// Vestigial code to select a doll set for a single run. Do we ever compose without a dollset?
 const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers];
 const chosenDollSet = dollLayerSets[Math.trunc(Math.random()*4)];
 const icyDoll  = chosenDollSet[0];
@@ -93,6 +109,7 @@ namedLayers.set('coolPixie', coolDoll);
 namedLayers.set('warmPixie', warmDoll);
 namedLayers.set('hotPixie', hotDoll);
 
+// day/night background and special "no report" layer.
 namedLayers.set("noreport", new Layer("video static", "pixifier/pixies/backgrounds/nosignal-bkg.png"));
 namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
 // save for Moomin doll set or meteor showers
@@ -100,7 +117,8 @@ namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starryn
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
 namedLayers.set("pink", new Layer("dusk", "pixifier/pixies/backgrounds/pinkbackground.png"));
 namedLayers.set("day", new Layer("day", "pixifier/pixies/backgrounds/sunnybackground.png"));
-namedLayers.set("noPixie", new Layer("no pixel doll", "pixifier/pixies/weather/blank.png"));
+
+// cloud cover image layers
 namedLayers.set("clear", new Layer("clear", "pixifier/pixies/skycond/blank.png"));
 namedLayers.set("cloudy", new Layer("cloudy", "pixifier/pixies/skycond/clouds.png"));
 namedLayers.set("overcast", new Layer("overcast", "pixifier/pixies/skycond/overcast.png"));
@@ -110,6 +128,10 @@ namedLayers.set('partly cloudy', namedLayers.get('cloudy'));
 namedLayers.set('mostly cloudy', namedLayers.get('cloudy'));
 namedLayers.set('obscured', namedLayers.get('overcast'));
 
+// special no-pixie, like clear sky, is another alias for transparent blank
+namedLayers.set("noPixie", new Layer("no pixel doll", "pixifier/pixies/weather/blank.png"));
+
+// high wind flags
 namedLayers.set("warning", new Layer('a red high wind warning pennant', "pixifier/pixies/highwind/daywarn.png"));;
 namedLayers.set("gale", new Layer('two red gale warning pennants', "pixifier/pixies/highwind/daygale.png"));
 namedLayers.set("storm", new Layer('a red and black storm warning flag', "pixifier/pixies/highwind/daystorm.png"));
