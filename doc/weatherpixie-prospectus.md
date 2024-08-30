@@ -744,10 +744,10 @@ Breaking this category out 2021-09-05, at a correspondent's suggestion for a Sla
 * a little polishing: check active sites not present in icao.js to see if their METAR report contains lat/long.
 * support for URL site preview format using HTML header properties. See [npm: link-preview-js](https://www.npmjs.com/package/link-preview-js) and [OpenGraph header tags](https://ogp.me/#metadata)
 * Slack bot integration, probably wants hosted API pixie server
-* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag. Next-step from local Node server? **Launched**, see below.
-* Hosted Twitter bot, following notifications for interactions, responding with tweets.
-* A Slack or Twitter bot integration could wrap common working code, using Alistair Cockburn's "Hexagonal Architecture" or "Ports and Adapters" which could later drive a website.
-* Migrate from my hand-rolled icao.js site list and the METAR service to [OpenWeatherMap API](https://openweathermap.org/appid). OpenWeatherMap advises caching information for at least 10 minutes since _The update frequency of the OpenWeather model is not higher than once in 10 minutes_. The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations.
+* Hosted API pixie server, serves PNG or embeddable &lt;img src="data:..." alt="..." /&gt; tag. Next-step from local Node server? **Launched** 2024 on [PixieReport.com](https://pixiereport.com), see below.
+* Hosted ~~Twitter~~ ActivityPub / Fediverse / Mastodon bot, following notifications for interactions, responding with tweets.
+* A Slack or ~~Twitter~~ ActivityPub bot integration could wrap common working code, using Alistair Cockburn's "Hexagonal Architecture" or "Ports and Adapters" which could later drive a website.
+* Migrate from my hand-rolled icao.js site list and the METAR service to [OpenWeatherMap API](https://openweathermap.org/appid). OpenWeatherMap advises caching information for at least 10 minutes since _The update frequency of the OpenWeather model is not higher than once in 10 minutes_. The [Geocoding API](https://openweathermap.org/api/geocoding-api) may be useful for looking up locations. Advantage: bookmark anywhere, no hours-old or days-old reports. Disadvantages: unknown. (Granularity? Upstream rate limit and reliability?)
 
 ## Weatherpixie Site Revival
 
@@ -763,6 +763,15 @@ Features at launch:
 * Random sequence of reports available as a slide show with HTTP refresh.
 * A display of stations geographically near the current station, or near a location specified by latitude and longitude.
 
+Cleanup accomplished since:
+* Close the HTTP side door access.
+* Occasionally clear cache.
+* (partial) Streamline away "dev" features from UI.
+
+Operator features accomplished:
+* Uptime, pixies served as PNG, served as data:png, cache hits and misses.
+* Recent requests by client IP address. This revealed Google and OpenAI crawlers.
+
 Features missing:
 * Report URL builder / wizard, including:
    * Station picker.
@@ -770,14 +779,8 @@ Features missing:
    * Units picker (metric/US for temperature, wind speed and pressure)
    * Copy-to-clipboard (img url, maybe iframe)
 
-Cleanup pending:
-* Streamline away "dev" features from UI.
-* Close the HTTP side door access.
-* Occasionally clear cache.
-
 Operator features:
 * Load average?
-* Recent requests by client IP address?
 
 Early requests:
 * More Snufkin.
