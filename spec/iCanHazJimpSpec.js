@@ -6,8 +6,7 @@
 var jimpLibrary = {};
 var createImage = {};
 var readImage = {};
-var tamsin = {};
-var blank = {};
+let tamsin, blank; // Make a slow load more obvious.
 
 jimpLibrary  = require('jimp');
 createImage  = jimpLibrary['create'];
