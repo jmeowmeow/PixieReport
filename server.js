@@ -149,11 +149,9 @@ app.get('/', (req, res) => {
   body += "</table><br/>"
   body += "<p>"
   let tileNo = 0;
-// TODO dollset resource
-  let pixiesetnum = 4;
   stationChoices.map(stn =>
   {
-    let dollset=Math.trunc(Math.random() * pixiesetnum);
+    let dollset=resources.randomDollSetNum();
     body += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
     tileNo++;
     if (tileNo % 4 === 0) {body += "<br/>";}
@@ -574,14 +572,11 @@ app.get('/stations', async (req, res) => {
       myClosestStations = `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
       // duplication from home page array
       let tileNo = 0;
-// TODO dollset resource
-      let pixiesetnum = 4;
       let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
-// TODO dollset resource
-        let dollset=Math.trunc(Math.random() * pixiesetnum);
+        let dollset=resources.randomDollSetNum(); // discards any URL param dollset
         myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
         tileNo++;
         if (tileNo % 4 === 0) {myClosestStations += "<br/>";}

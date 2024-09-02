@@ -87,17 +87,20 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
   return thisDollLayers;
 }
 
-// TODO dollsets: we discard these after picking a "default" set
 const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+resources.setNames    = setNames;
+resources.howManySets = setNames.length;
+resources.randomDollSetNum = function() { return Math.trunc(Math.random()*resources.howManySets) };
+// TODO dollsets: we discard these after picking a "default" set
 const bunnyLayers  = savePixieLayers(setNames[0], dd, pixiepaths, pixieFiles, namedLayers);
 const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, namedLayers);
 const pixie0Layers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, namedLayers);
 const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
 
 // We should probably pick the doll set in the server or composer, but for now, here.
-// Vestigial code to select a doll set for a single run. Do we ever compose without a dollset?
+// Vestigial code to select a doll set for a single run. Do we ever compose without choosing a dollset?
 const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers];
-const chosenDollSet = dollLayerSets[Math.trunc(Math.random()*4)];
+const chosenDollSet = dollLayerSets[resources.randomDollSetNum()];
 const icyDoll  = chosenDollSet[0];
 const coldDoll = chosenDollSet[1];
 const coolDoll = chosenDollSet[2];
