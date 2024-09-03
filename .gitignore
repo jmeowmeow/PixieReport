@@ -1,4 +1,5 @@
 pixie.png
 node_modules/
+.tool_versions
 .vscode/
 **/.DS_Store
