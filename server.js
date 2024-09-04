@@ -69,6 +69,7 @@ const devNav = [
   {url: '/compose', text: 'devpixie', title: 'Pixie Page with Developer Details'},
   {url: '/metar', text: 'metar', title: 'Weather Report Text' },
   {url: '/json', text: 'params', title: 'Parsed Pixie Params' },
+  {url: '/sets', text: 'sets', title: 'Pixel Doll Sets' },
   {url: '/uptime', text: 'uptime', title: 'Server Uptime and Metrics'},
   {url: '/cache', text: 'cache', title: 'Weather Report and Image Cache'},
 ].map(link => anchor(link.url, link.text, link.title)).join(' | ');
@@ -84,11 +85,11 @@ const nav = function(req) {
   let q = pathquery[1];
   return navigation.replace(
     '/compose', '/compose?'+q).replace(
-      '/pixie', '/pixie?'+q).replace(
-      '/png', '/png?'+q).replace(
-       '/metar', '/metar?'+q).replace(
-       '/json', '/json?'+q).replace(
-       '/stations', '/stations?'+q);
+    '/pixie', '/pixie?'+q).replace(
+    '/png', '/png?'+q).replace(
+    '/metar', '/metar?'+q).replace(
+    '/json', '/json?'+q).replace(
+     '/stations', '/stations?'+q);
 };
 
 const sinceStart = function() {
@@ -491,6 +492,14 @@ app.get('/cache', (req, res) => {
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${dispcounters('<br/>\n')}</p><p>Cache size = ${cache.size}</p><p>Keys:<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
   const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
   cache.expire(dtNow);
+  res.send(responseBody);
+});
+
+app.get('/sets', async (req, res) => {
+  tallyClientIp(req);
+  const mynav = nav(req);
+  let body = `<p>Pixel Doll Sets</p>`;
+  const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
 
