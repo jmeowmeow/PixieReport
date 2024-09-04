@@ -327,13 +327,20 @@ Rollover Monday intentions.
 
 - [ ] Factor doll sets into an object composed in preloads. That helps with a picker and duplicated logic across preloads, server, and composer.
     - [X] Tag usages of the dollset names and cardinality in server and composer.
-    - [ ] Make these calls on the preloaded dollsets resource.
+    - [X] Make these calls on the preloaded dollsets resource.
     - [ ] Use the dollsets resource in new logic like a picker or displayer.
 - [ ] Copy-to-clipboard functionality. Useful for URLs.
 
 Experiment
 
-- [ ] iFrame experiment, transcludable frame source endpoint like no-nav body of /pixie. Maybe mix up the subdomain a little bit? pixiereport.com with an iframe from www.pixiereport.com perhaps. Basically we're looking for image, alt text, and a link that opens a full page with navigation back on pixiereport.com with the iframe settings, maybe in a wizard or pixker.
+- [ ] iFrame experiment, transcludable frame source endpoint like no-nav body of /pixie. Maybe mix up the subdomain a little bit? pixiereport.com with an iframe from www.pixiereport.com perhaps. Basically we're looking for image, alt text, and a link that opens a full page with navigation back on pixiereport.com with the iframe settings, maybe in a wizard or picker.
+
+Tue 03 Sep 2024 09:12:51 AM PDT
+
+Tuesday.
+* Placeholder for pixel doll set page. Chose not to add the query params to /sets but maybe could use it to pre-set the chosen pixie doll set.
+* Finished initial version of '/sets'. Not interactive, but shows all the doll layers.
+
 
 ## Weatherpixie.com Features
 

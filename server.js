@@ -391,7 +391,7 @@ app.get('/about', async (req, res) => {
   body += `<p>For more information, see the ${doc} in the GitHub project source tree.</p>`;
   const preamble = body;
   const location = 'KSEA';
-// TODO dollset resource lookup?
+// TODO dollset resource lookup by set name?
   const dollset = 'selfie';
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = dollset;
@@ -495,10 +495,34 @@ app.get('/cache', (req, res) => {
   res.send(responseBody);
 });
 
+const toPixieImageElement = async function(pixieLayer) {
+  let desc = pixieLayer.desc;
+  let img = await pixieLayer.toJimp();
+  let element = '';
+  await img.getBase64(Jimp.MIME_PNG, (err, src) => {
+    const imageHolder  = `<img width="125" alt="${desc}" src="_SRC_" title="pixel doll preview"/>`;
+    element = imageHolder.replace(/_SRC_/g, src);
+  });
+  return element;
+}
+
 app.get('/sets', async (req, res) => {
   tallyClientIp(req);
   const mynav = nav(req);
-  let body = `<p>Pixel Doll Sets</p>`;
+  let body = '<p>Pixel Doll Sets</p>';
+  body = `${body}<br/><table><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
+  for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
+    const setName = resources.setNames[setNum];
+    const dollLayers = resources.dollSets[setNum]; // array 0..4 of desc, path, toJimp()
+    body = `${body}<tr><td>${setNum}</td>`;
+    body = `${body}<td>${await toPixieImageElement(dollLayers[0])}</td>`;
+    body = `${body}<td>${await toPixieImageElement(dollLayers[1])}</td>`;
+    body = `${body}<td>${await toPixieImageElement(dollLayers[2])}</td>`;
+    body = `${body}<td>${await toPixieImageElement(dollLayers[3])}</td>`;
+    body = `${body}<td>${await toPixieImageElement(dollLayers[4])}</td>`;
+    body = body + '</tr>\n';
+  }
+  body = body + '</table>';
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });

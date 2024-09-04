@@ -91,11 +91,12 @@ const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
 resources.setNames    = setNames;
 resources.howManySets = setNames.length;
 resources.randomDollSetNum = function() { return Math.trunc(Math.random()*resources.howManySets) };
-// TODO dollsets: we discard these after picking a "default" set
+
 const bunnyLayers  = savePixieLayers(setNames[0], dd, pixiepaths, pixieFiles, namedLayers);
 const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, namedLayers);
 const pixie0Layers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, namedLayers);
 const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
+resources.dollSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers];
 
 // We should probably pick the doll set in the server or composer, but for now, here.
 // Vestigial code to select a doll set for a single run. Do we ever compose without choosing a dollset?
