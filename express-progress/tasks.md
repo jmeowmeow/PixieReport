@@ -363,7 +363,7 @@ Tuesday.
 - [ ] Pixie Creation Wizard
     - [ ] Geographic picker
     - [ ] Doll set picker
-        - [ ] Which doll sets are available?
+        - [X] Which doll sets are available?
     - [ ] C/F unit picker
 - [ ] Pixie Preview Page
     - [ ] Copy this URL / cookie-me this pixie / copy this embed
@@ -424,10 +424,10 @@ Generally:
 
 * Presumes "Full PixieReport Function" below (pixie sets, etc.)
 
-- [ ] Remove unused files and functions from other versions.
+- [X] Remove unused files and functions from other versions.
 - [ ] Remove neglected endpoint handlers which have served their purpose
 - [ ] Remove console.log for routine operations.
-- [ ] Update the prospectus document.
+- [X] Update the prospectus document.
 - [ ] Add an about/credits/source/acknowledgements page to the source.
 - [ ] Consider assertions as a prelude to tests.
 - [ ] Consider TheDryPrinciple for resources.
