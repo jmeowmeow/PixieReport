@@ -299,7 +299,7 @@ Thoughts:
 
 
 A feature I would use:
-"Click here to copy alt text to system clipboard."
+"Click here to copy alt text to system clipboard." (see: MDN Clipboard API)
 
 Ops crisis: the National Weather Service rotated its TLS certificate, and the
 signing authority cert for Go Daddy was absent from both my dev laptop cert
@@ -328,7 +328,7 @@ Rollover Monday intentions.
 - [ ] Factor doll sets into an object composed in preloads. That helps with a picker and duplicated logic across preloads, server, and composer.
     - [X] Tag usages of the dollset names and cardinality in server and composer.
     - [X] Make these calls on the preloaded dollsets resource.
-    - [ ] Use the dollsets resource in new logic like a picker or displayer.
+    - [X] Use the dollsets resource in new logic like a picker or displayer. _Displayer_. See '/sets'.
 - [ ] Copy-to-clipboard functionality. Useful for URLs.
 
 Experiment
@@ -340,6 +340,15 @@ Tue 03 Sep 2024 09:12:51 AM PDT
 Tuesday.
 * Placeholder for pixel doll set page. Chose not to add the query params to /sets but maybe could use it to pre-set the chosen pixie doll set.
 * Finished initial version of '/sets'. Not interactive, but shows all the doll layers.
+
+Wed 04 Sep 2024 09:03:04 AM PDT
+
+- [X] Need a push and redeploy for /sets while crossing the UW wi-fi bubble.
+- Copy-to-clipboard feels like a soon-ish thing, and some sort of geographic picker.
+    - Note that clipboard.write() and clipboard.writeText() supposedly only work in a secure context and how do I even?
+    - But MDN's example is pretty straightforward, and one could catch and alert or whatever.
+    - [MDN Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard)
+- Styling for mobile browsers is still pretty terrible.
 
 
 ## Weatherpixie.com Features
@@ -450,7 +459,7 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [X] Choose a pixel doll set with UI/URL parameter
 - [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Group pixie-set-specific weather layers separately from generic weather?
-- [ ] Graceful error handling for missing report data or fetch failure
+- [?] Graceful error handling for missing report data or fetch failure (TV static image)
 - [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
