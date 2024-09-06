@@ -495,9 +495,26 @@ app.get('/cache', (req, res) => {
   res.send(responseBody);
 });
 
+
+const getDollSetCheckerboard = function() {
+  let underPixie  = new Jimp(125, 175, "#E0E0E0");
+  let blueBlock   = new Jimp( 21,  21, "#A0A0F0");
+  let oddrow = 0;
+  for (let row = 0; row < 175; row += 21) {
+    let dcol = (oddrow) ? 21 : 0;
+    for (let col=dcol; col < 125; col += 42) {
+      underPixie.composite(blueBlock, col, row);
+    }
+    oddrow = (1 - oddrow);
+  }
+  return underPixie;
+}
+
 const toPixieImageElement = async function(pixieLayer) {
+  let img = getDollSetCheckerboard();
   let desc = pixieLayer.desc;
-  let img = await pixieLayer.toJimp();
+  let doll = await pixieLayer.toJimp();
+  img.composite(doll, 0, 0);
   let element = '';
   await img.getBase64(Jimp.MIME_PNG, (err, src) => {
     const imageHolder  = `<img width="125" alt="${desc}" src="_SRC_" title="pixel doll preview"/>`;
