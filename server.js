@@ -67,9 +67,11 @@ const opengraph = `${ogTitle}${ogDesc}${ogType}${ogImage}${ogUrl}${ogSiteName}`;
 const pagetitle = "PixieReport Webapp";
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}</head>`;
 
+// in which we reinvent Lodash a method at a time, to avoid managing
+// a dependency stream
 const absentValue = function(val) {
   return ((val === undefined) || (val === null) || (val == "undefined"));
-}; 
+};
 
 const anchor = function(url, text, title) {
   return `<a href="${url}" title="${title}">${text}</a>`;
@@ -544,9 +546,7 @@ const toPixieImageElement = async function(pixieLayer) {
   return element;
 }
 
-const doSets = async function(req, res) {
-  tallyClientIp(req);
-  const mynav = nav(req);
+const makeSetTable = async function(req, res) {
   let body = '<p>Pixel Doll Sets</p>';
   body = `${body}<br/><table><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
   for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
@@ -561,12 +561,24 @@ const doSets = async function(req, res) {
     body = body + '</tr>\n';
   }
   body = body + '</table>';
-  const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
-  res.send(responseBody);
+  return body;
 }
 
-app.get('/make', async (req, res) => { doSets(req, res); }); // todo picker
-app.get('/sets', async (req, res) => { doSets(req, res); });
+app.get('/make', async (req, res) => {  // todo picker
+  tallyClientIp(req);
+  const mynav = nav(req);
+  const body = makeSetTable(req, res);
+  const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
+  res.send(responseBody);
+});
+
+app.get('/sets', async (req, res) => {
+  tallyClientIp(req);
+  const mynav = nav(req);
+  const body = makeSetTable(req, res);
+  const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
+  res.send(responseBody);
+});
 
 const makeGridNav = function(path, latlong) {
    const lat = latlong.degLat;
