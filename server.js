@@ -567,7 +567,7 @@ const makeSetTable = async function(req, res) {
 app.get('/make', async (req, res) => {  // todo picker
   tallyClientIp(req);
   const mynav = nav(req);
-  const body = makeSetTable(req, res);
+  const body = await makeSetTable(req, res);
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
@@ -575,7 +575,7 @@ app.get('/make', async (req, res) => {  // todo picker
 app.get('/sets', async (req, res) => {
   tallyClientIp(req);
   const mynav = nav(req);
-  const body = makeSetTable(req, res);
+  const body = await makeSetTable(req, res);
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
