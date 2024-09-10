@@ -90,7 +90,12 @@ const clients = {
   size: 0
 }
 
+const robots = {
+ ...clients  
+}
+
 clients.clear();
+robots.clear();
 // Ephemeral synthetic transaction style test at start-up.
 let clientStart = Date.now();
 clients.increment('255.255.255.255', clientStart);
@@ -101,3 +106,4 @@ clients.increment('192.168.0.1', clientStart);
 clients.increment('10.0.0.1', clientStart);
 
 exports.clients = clients;
+exports.robots = robots;

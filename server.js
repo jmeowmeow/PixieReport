@@ -17,10 +17,25 @@ const {compose} = require('./compose-async');
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 // pixie cache and recent client IP addresses
-const {cache, clients} = require('./webapp/cache');
+const {cache, clients, robots} = require('./webapp/cache');
+
+const dispRecentIps = function(brk, ipCache) {
+  return ipCache.showclients().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
+}
 
 const dispclients = function(brk) {
-  return clients.showclients().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
+  return dispRecentIps(brk, clients);
+}
+
+const disprobots = function(brk) {
+  return dispRecentIps(brk, robots);
+}
+
+const tallyRobotIp = function(req) {
+  let robotIp = req.headers["x-forwarded-for"];
+  if (robotIp) {
+    robots.increment(robotIp, Date.now());
+  }
 }
 
 const tallyClientIp = function(req) {
@@ -52,6 +67,10 @@ const opengraph = `${ogTitle}${ogDesc}${ogType}${ogImage}${ogUrl}${ogSiteName}`;
 const pagetitle = "PixieReport Webapp";
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}</head>`;
 
+const absentValue = function(val) {
+  return ((val === undefined) || (val === null) || (val == "undefined"));
+}; 
+
 const anchor = function(url, text, title) {
   return `<a href="${url}" title="${title}">${text}</a>`;
 };
@@ -60,6 +79,7 @@ const userNav = [
   {url: '/', text: 'Home', title: 'PixieReport Home'},
   {url: '/about', text: 'About', title: 'About PixieReport'},
   {url: '/random', text: 'Random', title: 'Random Pixie Slideshow'},
+  {url: '/make', text: 'Make', title: 'Make a Pixie URL'},
   {url: '/pixie', text: 'Pixie', title: 'Pixie Page'},
   {url: '/png', text: 'Image', title: 'Pixie Image'},
   {url: '/stations', text: 'Nearby', title: 'Stations Near a Station or Location'},
@@ -85,11 +105,12 @@ const nav = function(req) {
   let q = pathquery[1];
   return navigation.replace(
     '/compose', '/compose?'+q).replace(
+    '/make', '/make?'+q).replace(
     '/pixie', '/pixie?'+q).replace(
     '/png', '/png?'+q).replace(
     '/metar', '/metar?'+q).replace(
     '/json', '/json?'+q).replace(
-     '/stations', '/stations?'+q);
+    '/stations', '/stations?'+q);
 };
 
 const sinceStart = function() {
@@ -114,7 +135,7 @@ const shortStationName = function(stn) {
 }
 
 app.get('/robots.txt', (req, res) => {
-  // skip tallyClientIp if they just read robots.txt
+  tallyRobotIp(req);
   res.setHeader('Content-Type', 'text/plain');
   res.send(robots_txt);
 });
@@ -243,7 +264,7 @@ const fetchMETAR = async (location) => {
 app.get('/json', async (req, res) => {
   tallyClientIp(req);
   const location = req.query.location;
-  if (location === undefined) {
+  if (absentValue(location)) {
     redirectToSetLocation(req, res);
     return;
   }
@@ -257,7 +278,7 @@ app.get('/metar', async (req, res) => {
   tallyClientIp(req);
   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   const location = req.query.location;
-  if (location === undefined) {
+  if (absentValue(location)) {
     redirectToSetLocation(req, res);
     return;
   }
@@ -313,7 +334,7 @@ app.get('/compose', async (req, res) => {
   tallyClientIp(req);
   // Developer's view of a pixie render.
   const location = req.query.location;
-  if (location === undefined) {
+  if (absentValue(location)) {
     redirectToSetLocation(req, res);
     return;
   }
@@ -409,7 +430,7 @@ app.get('/about', async (req, res) => {
 app.get('/pixie', async (req, res) => {
   tallyClientIp(req);
   const location = req.query.location;
-  if (location === undefined) {
+  if (absentValue(location)) {
     redirectToSetLocation(req, res);
     return;
   }
@@ -429,7 +450,7 @@ app.get('/random', async (req, res) => {
 app.get('/png', async (req, res) => {
   tallyClientIp(req);
   const location = req.query.location;
-  if (location === undefined) {
+  if (absentValue(location)) {
     redirectToSetLocation(req, res);
     return;
   }
@@ -477,7 +498,7 @@ app.get('/uptime', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   // JSON dump of header object
   let headers = JSON.stringify(req.headers, null, 2);
-  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\n${dispclients('')}\n\n${headers}\n`);
+  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\ncallers ${dispclients('')}\nrobots ${disprobots('')}\n\n${headers}\n`);
 });
 
 app.get('/cache', (req, res) => {
@@ -523,7 +544,7 @@ const toPixieImageElement = async function(pixieLayer) {
   return element;
 }
 
-app.get('/sets', async (req, res) => {
+const doSets = async function(req, res) {
   tallyClientIp(req);
   const mynav = nav(req);
   let body = '<p>Pixel Doll Sets</p>';
@@ -542,7 +563,10 @@ app.get('/sets', async (req, res) => {
   body = body + '</table>';
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
-});
+}
+
+app.get('/make', async (req, res) => { doSets(req, res); }); // todo picker
+app.get('/sets', async (req, res) => { doSets(req, res); });
 
 const makeGridNav = function(path, latlong) {
    const lat = latlong.degLat;
@@ -582,7 +606,7 @@ app.get('/stations', async (req, res) => {
   let latlong = { degLat: 0.0, degLong: 0.0 }
   let myClosestStations = "";
 
-  if (location === undefined) {
+  if (absentValue(location)) {
     // maybe there is a degLat/degLong passed as query params?
     if (req.query.degLat && req.query.degLong) {
       latlong = { degLat: Number.parseFloat(req.query.degLat),

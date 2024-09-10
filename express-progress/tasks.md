@@ -350,6 +350,11 @@ Wed 04 Sep 2024 09:03:04 AM PDT
     - [MDN Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard)
 - Styling for mobile browsers is still pretty terrible.
 
+Mon 09 Sep 2024 08:52:13 AM PDT
+
+Can I whip up a picker? Let's start by passing the location and doll set a la the other
+navigation targets.
+
 
 ## Weatherpixie.com Features
 
