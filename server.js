@@ -100,6 +100,8 @@ const navigationLinks = userNav + "<br/>\n" + devNav;
 
 const navigation = `<p class="nav">${navigationLinks}</p>`;
 
+// Copy pixie query params into navigation links,
+// preserving location and set (dollset) during navigation.
 const nav = function(req) {
   const url = req.url;
   const pathquery = url.split('?');
@@ -546,13 +548,16 @@ const toPixieImageElement = async function(pixieLayer) {
   return element;
 }
 
-const makeSetTable = async function(req, res) {
-  let body = '<p>Pixel Doll Sets</p>';
-  body = `${body}<br/><table><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
+const makeSetTable = async function(withPicker) {
+  // TODO pass in which doll set starts as selected, for picker at least
+
+  let body = '<p>Pixel Doll Sets</p>\n';
+  body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
   for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
     const setName = resources.setNames[setNum];
     const dollLayers = resources.dollSets[setNum]; // array 0..4 of desc, path, toJimp()
-    body = `${body}<tr><td>${setNum}</td>`;
+    const radio = withPicker ? `<input type="radio" name="set" value="${setNum}"> `: '';
+    body = `${body}<tr><td>${radio}${setNum}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[0])}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[1])}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[2])}</td>`;
@@ -564,18 +569,42 @@ const makeSetTable = async function(req, res) {
   return body;
 }
 
+const asPicker = true; const asViewer = false;
+
+const makeSetPicker = async function() {
+  return makeSetTable(asPicker);
+}
+
+const makeSetViewer = async function() {
+  return makeSetTable(asViewer);
+}
+
+
 app.get('/make', async (req, res) => {  // todo picker
   tallyClientIp(req);
   const mynav = nav(req);
-  const body = await makeSetTable(req, res);
-  const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
+  // Don't redirect if station or set is undefined,
+  // we want this endpoint to potentially be re-entered
+  // during editing choices and allow undef values.
+  let location = req.query.location; // undef is ok
+  let dollset  = req.query.set; // undef is ok; filter out unknowns
+  // Depict the URLs being constructed, the important dimensions being:
+  // which endpoint: PNG or iframe source; maybe a multi-station array like "nearby"
+  // source/render choices, all optional: weather station, pixie set, C/F.
+  const model_url = "https://pixiereport.com/ENDPOINT?location=LOCATION&set=SET";
+  const urlSection = `<p>Model URL:<br/>${model_url}</p>`;
+  const unitsSection = '<p>Units for Report<br/><input type="radio" name="units" value="" checked> By station locale |' +
+		'<input type="radio" name="units" value="C"> C/hPa/kph |' +
+		'<input type="radio" name="units" value="F"> F/mmHg/mph </p>\n';
+  const table = await makeSetPicker();
+  const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
 
 app.get('/sets', async (req, res) => {
   tallyClientIp(req);
   const mynav = nav(req);
-  const body = await makeSetTable(req, res);
+  const body = await makeSetViewer();
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
@@ -655,8 +684,8 @@ app.get('/stations', async (req, res) => {
       const closestTwelve = closestStns.slice(0,12);
       const closestStnsStr  = closestTwelve.reduce((a, b) =>
         (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station, b.station, 'Stations near '+b.station)} ${b.desc}`), "");
-      myClosestStations = `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
-      // duplication from home page array
+
+      // code duplication from home page array
       let tileNo = 0;
       let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
@@ -668,6 +697,8 @@ app.get('/stations', async (req, res) => {
         if (tileNo % 4 === 0) {myClosestStations += "<br/>";}
       });
       myClosestStations += "</p>\n";
+      myClosestStations += `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
+
   }
   const mynav = nav(req);
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}`;
