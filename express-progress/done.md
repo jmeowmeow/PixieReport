@@ -47,7 +47,7 @@ initial Express setup and async handlers.
 ## Webapp Operations
 * Cache view
 * Uptime
-* Recent client IPs and request tally (via expiring counter).
+* Recent client IPs and request tally for site and robots.txt, via expiring counter.
 
 ## Webapp Design/Content
 * Gallery on home page, each pixie linked.
@@ -62,5 +62,5 @@ initial Express setup and async handlers.
 
 ## Public Launch
 * [pixiereport.com](https://pixiereport.com).
-* Let's Encrypt / Certbot certificate (manual one-off fetch).
+* Let's Encrypt / Certbot certificate (manual fetch), manually renewed 1x Sep 2024.
 * Nginx reverse proxy from :443 to :3000.

@@ -356,6 +356,30 @@ Can I whip up a picker? Let's start by passing the location and doll set a la th
 navigation targets.
 
 
+Mon 16 Sep 2024 08:54:12 AM PDT
+
+Okay where were we? Did I leave a breaking test as a prompt? (No.)
+
+Tempted to fool with the TV static image. There are three more versions from an easy vertical and/or horizontal mirror operation. It could also be an example of a pick-one-from-set operation when grouping image options.
+
+More to the point is the picker. Fiddling with picker result URLs to start.
+
+From the Recurse Center gamedev topic: [Derek Yu's Pixel Art Tutorial](https://derekyu.com/makegames/pixelart.html) with drawing stages for a 96x96 and 32x32 character sprite. He recommends a drawing tablet and just-about-any pixel paint program (Paint, Aseprite, others).
+
+How about this general thought:
+* A call to the pixie generator is a query rendered by endpoint and params.
+* The query operates on a time-varying database (the latest METAR report per station).
+* The query may return multiple results in one or more ways, to wit:
+    * A list-formed query returns a result set. Some list items may be "choose a random station."
+    * A "locations" query returns a result set ordered by nearness to a station or lat/long.
+    * A "favorites" query is a bookmarked list query.
+* A query may return varying results for subsequent calls.
+    * Unspecified parameters are bound randomly (station, doll set); the /random endpoint.
+    * An upstream weather report update.
+    * A cached image expires, the new image rebinds unbound params. Cache key includes params.
+
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features

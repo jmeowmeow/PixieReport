@@ -445,6 +445,7 @@ app.get('/pixie', async (req, res) => {
 app.get('/random', async (req, res) => {
   tallyClientIp(req);
   const location = randomStation();
+  // can we supply a doll set and C/F params (or other theming params?)
   // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
   const refsec = '10';
   res.header('Refresh', refsec);
@@ -550,11 +551,23 @@ const toPixieImageElement = async function(pixieLayer) {
 
 const makeSetTable = async function(withPicker) {
   // TODO pass in which doll set starts as selected, for picker at least
+  // TODO picker should also render a no-set-chosen row with radio button.
 
   let body = '<p>Pixel Doll Sets</p>\n';
   body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
+  if (withPicker) {
+    const noPixieLayer = resources.namedLayers.get("none");
+    const noPixie = await toPixieImageElement(noPixieLayer);
+    const noPixieRadio = '<input type="radio" name="set" value="none">';
+    body = `${body}<tr><td>${noPixieRadio}<br/>none<br/> set</td>`;
+    body = `${body}<td>${noPixie}</td>`;
+    body = `${body}<td>${noPixie}</td>`;
+    body = `${body}<td>${noPixie}</td>`;
+    body = `${body}<td>${noPixie}</td>`;
+    body = `${body}<td>${noPixie}</td>`;
+    body = body + '</tr>\n';
+  }
   for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
-    const setName = resources.setNames[setNum];
     const dollLayers = resources.dollSets[setNum]; // array 0..4 of desc, path, toJimp()
     const radio = withPicker ? `<input type="radio" name="set" value="${setNum}"> `: '';
     body = `${body}<tr><td>${radio}${setNum}</td>`;
@@ -579,20 +592,40 @@ const makeSetViewer = async function() {
   return makeSetTable(asViewer);
 }
 
+const withQueryParams = function(baseUrl, props) {
+  // location or nothing; dollset or nothing; units or nothing.
+  let qparams = [];
+  if (props.location) { qparams.push(`location=${props.location}`); }
+  if (props.dollset)  { qparams.push(`set=${props.dollset}`); }
+  if (props.units)    { qparams.push(`units=${props.units}`); }
+  let qUrl;
+  if (qparams.length == 0) {
+    qUrl = baseUrl;
+  } else {
+    qUrl = `${baseUrl}?${qparams.join('&')}`;
+  }
+  return `${baseUrl} : ${anchor(qUrl, qUrl, qUrl)}`;
+}
 
-app.get('/make', async (req, res) => {  // todo picker
+app.get('/make', async (req, res) => {  // wip picker
   tallyClientIp(req);
   const mynav = nav(req);
   // Don't redirect if station or set is undefined,
   // we want this endpoint to potentially be re-entered
   // during editing choices and allow undef values.
   let location = req.query.location; // undef is ok
-  let dollset  = req.query.set; // undef is ok; filter out unknowns
+  let dollset  = req.query.set; // undef is ok; filter out unknowns <0 >setnum
+  let units  = req.query.units; // C or F, upcased, undef is ok; filter out unknowns
+  const props = { units, dollset, location }; // 'units': units, etc.
   // Depict the URLs being constructed, the important dimensions being:
   // which endpoint: PNG or iframe source; maybe a multi-station array like "nearby"
   // source/render choices, all optional: weather station, pixie set, C/F.
-  const model_url = "https://pixiereport.com/ENDPOINT?location=LOCATION&set=SET";
-  const urlSection = `<p>Model URL:<br/>${model_url}</p>`;
+  const model_url = "/ENDPOINT?location=LOCATION&set=SET"; // relative URL!
+  const endpoints = [ "/pixie", "/png" ];
+  let endpointsWithParams = [];
+  endpoints.map( each => { endpointsWithParams.push(
+    `<br/>${each}: ${withQueryParams(each, props)}\n`); });
+  const urlSection = `<p>Model URL:<br/>${model_url}${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
   const unitsSection = '<p>Units for Report<br/><input type="radio" name="units" value="" checked> By station locale |' +
 		'<input type="radio" name="units" value="C"> C/hPa/kph |' +
 		'<input type="radio" name="units" value="F"> F/mmHg/mph </p>\n';
