@@ -549,16 +549,16 @@ const toPixieImageElement = async function(pixieLayer) {
   return element;
 }
 
-const makeSetTable = async function(withPicker) {
+const makeSetTable = async function(withPicker, dollset) {
   // TODO pass in which doll set starts as selected, for picker at least
   // TODO picker should also render a no-set-chosen row with radio button.
-
-  let body = '<p>Pixel Doll Sets</p>\n';
-  body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
+let body = '<p>Pixel Doll Sets</p>\n';
+body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
   if (withPicker) {
     const noPixieLayer = resources.namedLayers.get("whichpixie");
     const noPixie = await toPixieImageElement(noPixieLayer);
-    const noPixieRadio = '<input type="radio" name="set" value="none">';
+    const nonechecked = (dollset === undefined || dollset === null || dollset == 'none' || dollset == '') ? "checked" : "";
+    const noPixieRadio = `<input type="radio" name="set" ${nonechecked} value="none">`;
     body = `${body}<tr><td>${noPixieRadio}<br/>none<br/> set</td>`;
     body = `${body}<td>${noPixie}</td>`;
     body = `${body}<td>${noPixie}</td>`;
@@ -569,7 +569,8 @@ const makeSetTable = async function(withPicker) {
   }
   for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
     const dollLayers = resources.dollSets[setNum]; // array 0..4 of desc, path, toJimp()
-    const radio = withPicker ? `<input type="radio" name="set" value="${setNum}"> `: '';
+    const checked = (setNum == dollset) ? "checked" : "";
+    const radio = withPicker ? `<input type="radio" name="set" ${checked} value="${setNum}"> `: '';
     body = `${body}<tr><td>${radio}${setNum}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[0])}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[1])}</td>`;
@@ -584,12 +585,12 @@ const makeSetTable = async function(withPicker) {
 
 const asPicker = true; const asViewer = false;
 
-const makeSetPicker = async function() {
-  return makeSetTable(asPicker);
+const makeSetPicker = async function(dollset) {
+  return makeSetTable(asPicker, dollset);
 }
 
 const makeSetViewer = async function() {
-  return makeSetTable(asViewer);
+  return makeSetTable(asViewer, undefined);
 }
 
 const withQueryParams = function(baseUrl, props) {
@@ -629,7 +630,8 @@ app.get('/make', async (req, res) => {  // wip picker
   const unitsSection = '<p>Units for Report<br/><input type="radio" name="units" value="" checked> By station locale |' +
 		'<input type="radio" name="units" value="C"> C/hPa/kph |' +
 		'<input type="radio" name="units" value="F"> F/mmHg/mph </p>\n';
-  const table = await makeSetPicker();
+
+  const table = await makeSetPicker(dollset);
   const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
