@@ -72,6 +72,7 @@ const namedLayers = new Map();
 resources.namedLayers = namedLayers;
 namedLayers.set("none", new Layer("none", "pixifier/pixies/weather/blank.png"));
 namedLayers.set("frame", new Layer("black frame", "pixifier/pixies/backgrounds/blackframe.png"));
+namedLayers.set("whichpixie", new Layer("question mark", "pixifier/pixies/whichpixie.png"));
 
 // Register a doll set across temperature levels for lookup in namedLayers by a composite key.
 // This is the "distributed" expression of the doll sets.

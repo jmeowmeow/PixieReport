@@ -556,7 +556,7 @@ const makeSetTable = async function(withPicker) {
   let body = '<p>Pixel Doll Sets</p>\n';
   body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
   if (withPicker) {
-    const noPixieLayer = resources.namedLayers.get("none");
+    const noPixieLayer = resources.namedLayers.get("whichpixie");
     const noPixie = await toPixieImageElement(noPixieLayer);
     const noPixieRadio = '<input type="radio" name="set" value="none">';
     body = `${body}<tr><td>${noPixieRadio}<br/>none<br/> set</td>`;
