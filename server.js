@@ -549,17 +549,14 @@ const toPixieImageElement = async function(pixieLayer) {
   return element;
 }
 
-const makeSetTable = async function(withPicker, dollset) {
-  // TODO pass in which doll set starts as selected, for picker at least
-  // TODO picker should also render a no-set-chosen row with radio button.
+const makeSetTable = async function(withPicker, urlProps) {
 let body = '<p>Pixel Doll Sets</p>\n';
 body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
   if (withPicker) {
     const noPixieLayer = resources.namedLayers.get("whichpixie");
     const noPixie = await toPixieImageElement(noPixieLayer);
-    const nonechecked = (dollset === undefined || dollset === null || dollset == 'none' || dollset == '') ? "checked" : "";
-    const noPixieRadio = `<input type="radio" name="set" ${nonechecked} value="none">`;
-    body = `${body}<tr><td>${noPixieRadio}<br/>none<br/> set</td>`;
+    const noPixieUrl = withQueryParams(urlProps.baseUrl, {...urlProps, dollset: undefined});
+    body = `${body}<tr><td>${noPixieUrl}<br/>no doll set</td>`;
     body = `${body}<td>${noPixie}</td>`;
     body = `${body}<td>${noPixie}</td>`;
     body = `${body}<td>${noPixie}</td>`;
@@ -569,9 +566,8 @@ body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>c
   }
   for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
     const dollLayers = resources.dollSets[setNum]; // array 0..4 of desc, path, toJimp()
-    const checked = (setNum == dollset) ? "checked" : "";
-    const radio = withPicker ? `<input type="radio" name="set" ${checked} value="${setNum}"> `: '';
-    body = `${body}<tr><td>${radio}${setNum}</td>`;
+    const dollsetUrl = withPicker ? withQueryParams(urlProps.baseUrl, {...urlProps, dollset: setNum}) : '';
+    body = `${body}<tr><td>${dollsetUrl}<br/>set ${setNum}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[0])}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[1])}</td>`;
     body = `${body}<td>${await toPixieImageElement(dollLayers[2])}</td>`;
@@ -585,17 +581,17 @@ body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>c
 
 const asPicker = true; const asViewer = false;
 
-const makeSetPicker = async function(dollset) {
-  return makeSetTable(asPicker, dollset);
+const makeSetPicker = async function(props) {
+  return makeSetTable(asPicker, props);
 }
 
 const makeSetViewer = async function() {
   return makeSetTable(asViewer, undefined);
 }
 
-const withQueryParams = function(baseUrl, props) {
-  // location or nothing; dollset or nothing; units or nothing.
+const toUrlWithParams = function(baseUrl, props) {
   let qparams = [];
+  // location or nothing; dollset or nothing; units or nothing.
   if (props.location) { qparams.push(`location=${props.location}`); }
   if (props.dollset)  { qparams.push(`set=${props.dollset}`); }
   if (props.units)    { qparams.push(`units=${props.units}`); }
@@ -605,6 +601,11 @@ const withQueryParams = function(baseUrl, props) {
   } else {
     qUrl = `${baseUrl}?${qparams.join('&')}`;
   }
+  return qUrl;
+};
+
+const withQueryParams = function(baseUrl, props) {
+  const qUrl = toUrlWithParams(baseUrl, props);
   return `${baseUrl} : ${anchor(qUrl, qUrl, qUrl)}`;
 }
 
@@ -617,22 +618,30 @@ app.get('/make', async (req, res) => {  // wip picker
   let location = req.query.location; // undef is ok
   let dollset  = req.query.set; // undef is ok; filter out unknowns <0 >setnum
   let units  = req.query.units; // C or F, upcased, undef is ok; filter out unknowns
-  const props = { units, dollset, location }; // 'units': units, etc.
+  const props = { units, dollset, location, baseUrl: '/make' }; // 'units': units, etc.
   // Depict the URLs being constructed, the important dimensions being:
   // which endpoint: PNG or iframe source; maybe a multi-station array like "nearby"
   // source/render choices, all optional: weather station, pixie set, C/F.
-  const model_url = "/ENDPOINT?location=LOCATION&set=SET"; // relative URL!
   const endpoints = [ "/pixie", "/png" ];
   let endpointsWithParams = [];
   endpoints.map( each => { endpointsWithParams.push(
-    `<br/>${each}: ${withQueryParams(each, props)}\n`); });
-  const urlSection = `<p>Model URL:<br/>${model_url}${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
-  const unitsSection = '<p>Units for Report<br/><input type="radio" name="units" value="" checked> By station locale |' +
-		'<input type="radio" name="units" value="C"> C/hPa/kph |' +
-		'<input type="radio" name="units" value="F"> F/mmHg/mph </p>\n';
+    `<br/>${withQueryParams(each, props)}\n`); });
 
-  const table = await makeSetPicker(dollset);
-  const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
+  // let's do that again with '/make' and the units property.
+  let unitsOptionsUrls = [];
+  const unitsOptions = [ undefined, 'C', 'F' ];
+  unitsOptions.map( each => { unitsOptionsUrls.push(
+    `${withQueryParams('/make', {...props, 'units': each})}\n`); });
+  const urlSection = `<p>URLs to copy:<br/>${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
+  const previewPngUrl = toUrlWithParams('/png', props);
+  const previewSection = `Preview Image<br/><a href="${previewPngUrl}"><img src="${previewPngUrl}" title="picker preview" /></a><br/>`;
+  const unitsSection = "<p>Choose Weather Report Units<br/>" +
+    `C/F by station locale ${unitsOptionsUrls[0]}<br/>` +
+		`C/hPa/kph ${unitsOptionsUrls[1]}<br/>` +
+		`F/mmHg/mph ${unitsOptionsUrls[2]}</p>\n`;
+
+  const table = await makeSetPicker(props);
+  const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${previewSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
 

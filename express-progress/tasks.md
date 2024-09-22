@@ -378,6 +378,40 @@ How about this general thought:
     * An upstream weather report update.
     * A cached image expires, the new image rebinds unbound params. Cache key includes params.
 
+Tue 17 Sep 2024 06:45:30 PM PDT
+
+We now have a draft picker at /make which forwards the dollset from the query parameters
+into the dollset radio button, which includes a "none set" option illustrated by '?' for
+the doll images.
+
+Probably the picker should have a little JS to re-read units, dollset, and location and
+rebuild the URL locally on a form change. IDK how to do a site picker. Maybe imagemap
+of the world with a couple levels of zoom, getting "stations near click" as a list, or
+enter a METAR station code and "validate" to look up.
+
+
+Thu 19 Sep 2024 08:52:41 AM PDT
+
+Arrgh, Talk Like A Pirate Day. Missed opportunity for some pirate and/or parrot art.
+
+/make, Station picker: Or "stations near initial location" and provide some seed
+locations as a list to orient on. Or put THOSE seed locations on the front page.
+North America, South America, Europe, Mediterranean, Africa, etc.
+
+But first let's get the cycle working with form widgets to model URL.
+
+Rather hacky approach:
+* onLoad picks up the current location, set, and units
+* onChange substitutes the changed parameter and calls document.location = (new relative URL)
+* Let's try that last bit all by itself! (thanks to E. for the suggestion)
+* In the console: document.location='/compose?location=LIMC&set=1' : totally works!
+
+Other hacky approach (for doll set, for units; leaving station name aside):
+* Each chooser has a GET URL link which is preloaded with that substitution to the source URL.
+* No Javascript needed at all, and you already have withQueryParmas(baseUrl, props) to build
+  the relative URL from '/make'.
+
+
 
 
 ## Weatherpixie.com Features
