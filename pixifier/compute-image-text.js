@@ -45,6 +45,10 @@ var abbreviateLocation = function(location) {
 }
 
 const useMetric = function(params) {
+  if (params.units) {
+    if (params.units == 'C') { return true; }
+    if (params.units == 'F') { return false; }
+  }
   if (!(params.stationCode)) {
     return true;
   }
