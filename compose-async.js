@@ -81,6 +81,7 @@ function addDollLayer(layerFiles, params) {
   }
   const doll = (dollname) ? dollname : setNames[randomIdx];
 
+  // TODO extract temperature breaks to use in pixie chooser '/make'
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {
     if (tempC < -9) {

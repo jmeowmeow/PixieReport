@@ -44,7 +44,10 @@ var abbreviateLocation = function(location) {
   return loc;
 }
 
-function useMetric(params) {
+const useMetric = function(params) {
+  if (!(params.stationCode)) {
+    return true;
+  }
   if (params.stationCode.startsWith("K")) {
     return false; // Continental US plus one 'VI'
   }
@@ -130,3 +133,4 @@ const computeImageTextValues = function (params) {
 }
 
 exports.computeImageTextValues = computeImageTextValues;
+exports.useMetric = useMetric; // visible for test
