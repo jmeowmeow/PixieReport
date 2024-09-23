@@ -8,7 +8,6 @@ const { cache } = require('../webapp/cache.js');
 
 const fs = require('fs');
 const resourceDir = __dirname + '/resources';
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU' ];
 
 const loadMetarText = function(icaoName) {
     var metarFile = resourceDir + '/' + icaoName + '.TXT';
