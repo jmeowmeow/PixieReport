@@ -301,6 +301,7 @@ const pixieAlt = async function(params) {
   let location = params.stationCode;
   let set = params.dollset;
   let pixieKey;
+  // TODO add &units=${units} if set
   if (set) {
     pixieKey = `location=${location}&set=${set}`;
   } else {
@@ -319,6 +320,7 @@ const pixieAlt = async function(params) {
   }
   var [pixie, alt]= await compose(params).catch(console.error);
   cache.put(pixieKey, [pixie, alt], dtNow);
+  // todo keyWithDollset needs units if set
   let keyWithDollset = `location=${location}&set=${params.dollset}`; // late bound dollset?
   if (pixieKey != keyWithDollset) {
     cache.put(keyWithDollset, [pixie, alt], dtNow);

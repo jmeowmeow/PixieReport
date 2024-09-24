@@ -412,6 +412,20 @@ Other hacky approach (for doll set, for units; leaving station name aside):
   the relative URL from '/make'.
 
 
+Mon 23 Sep 2024 04:58:24 PM PDT
+
+/make : proceeding on the GET URL approach which requires no widgets or javascript.
+* Added dollset/set chooser with URLs for dollset 0,1,2,3 and none.
+* Added spec/imageTextSpec.js for useMetric() from pixifier/compute-image-text.js
+* Added units='C|F|undefined' as part of the URL, overriding useMetric based on station code.
+* Added three options for "&units=C", "&units=F", and absent.
+* When should units be part of the cache key?
+    1. When absent, resolve useMetric(station) ? units='C' : units='F' as an extra cache key attribute.
+    2. When present, and disagrees with useMetric(station), don't store the no-units key.
+    3. When present, and agrees with useMetric(station), store both.
+
+(on bus: managed to lose my grip on the laptop when my backpack slid forward, and the laptop
+shot forward under the next forward-facing seat. But all seems well! Thanks ThinkPad)
 
 
 ## Weatherpixie.com Features
