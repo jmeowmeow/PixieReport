@@ -312,7 +312,6 @@ const pixieCacheKeys = function(params) {
     pixieKey = pixieKey + `&units=${paramUnits}`;
   }
   let someParams = { stationCode: location, dollset: set, units: params.units };
-  console.log(`pixieKey for ${JSON.stringify(someParams)} is ${pixieKey}`); 
   return pixieKey;
 }
 
@@ -631,7 +630,7 @@ const toUrlWithParams = function(baseUrl, props) {
 
 const withQueryParams = function(baseUrl, props) {
   const qUrl = toUrlWithParams(baseUrl, props);
-  return `${baseUrl} : ${anchor(qUrl, qUrl, qUrl)}`;
+  return `${anchor(qUrl, qUrl, qUrl)}`;
 }
 
 app.get('/make', async (req, res) => {  // wip picker
@@ -661,9 +660,9 @@ app.get('/make', async (req, res) => {  // wip picker
   const previewPngUrl = toUrlWithParams('/png', props);
   const previewSection = `Preview Image<br/><a href="${previewPngUrl}"><img src="${previewPngUrl}" title="picker preview" /></a><br/>`;
   const unitsSection = "<p>Choose Weather Report Units<br/>" +
-    `C/F by station locale ${unitsOptionsUrls[0]}<br/>` +
-		`C/hPa/kph ${unitsOptionsUrls[1]}<br/>` +
-		`F/mmHg/mph ${unitsOptionsUrls[2]}</p>\n`;
+    `C/F by station locale: ${unitsOptionsUrls[0]}<br/>` +
+		`C/hPa/kph: ${unitsOptionsUrls[1]}<br/>` +
+		`F/mmHg/mph: ${unitsOptionsUrls[2]}</p>\n`;
 
   const table = await makeSetPicker(props);
   const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${previewSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
