@@ -15,7 +15,7 @@ const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, 
 const {compose} = require('./compose-async');
 // METAR parsing
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
-const {computeImageTextValues} = require('./pixifier/compute-image-text');
+const {computeImageTextValues, useMetric} = require('./pixifier/compute-image-text');
 // pixie cache and recent client IP addresses
 const {cache, clients, robots} = require('./webapp/cache');
 
@@ -101,7 +101,7 @@ const navigationLinks = userNav + "<br/>\n" + devNav;
 const navigation = `<p class="nav">${navigationLinks}</p>`;
 
 // Copy pixie query params into navigation links,
-// preserving location and set (dollset) during navigation.
+// preserving location, set (dollset), and units during navigation.
 const nav = function(req) {
   const url = req.url;
   const pathquery = url.split('?');
@@ -291,22 +291,42 @@ app.get('/metar', async (req, res) => {
   res.send(`Hello from ${location}, report follows:\n ${report}`);
 });
 
-const pixieAlt = async function(params) {
-  // a first-cut parameter for caching would be the request query param string
-  // location=ABCD&set=3  where location=params.stationCode and set=params.dollset
-
-  // params.stationCode appears as '????' if the fetch fails, and we cache that.
-  // maybe a more explicit no-report-found would be better?
-  // "the sky over the port was the the color of a television tuned to an empty channel"
-  let location = params.stationCode;
-  let set = params.dollset;
+const pixieCacheKeys = function(params) {
+  // NOTE: the request parameters are not available here;
+  // what is in hand are the processed pixie params, and
+  // any logic assuming URL params is ill-posed.
+  const location = params.stationCode;
+  const set   = params.dollset;   // from qParam on fetch
+  const units = params.units;     // from qParam on fetch
   let pixieKey;
-  // TODO add &units=${units} if set
   if (set) {
     pixieKey = `location=${location}&set=${set}`;
   } else {
     pixieKey = `location=${location}`;
   }
+  // if set is absent in qparams, we can include a no-dollset key in cache.get
+  // we should be able to include a no-dollset key in cache.put
+  const paramUnits = params.units;
+  const locationUnits = useMetric( {stationCode: location, units: undefined } ) ? 'C' : 'F';
+  if ((paramUnits == 'C' || paramUnits == 'F') && (paramUnits != locationUnits)) {
+    pixieKey = pixieKey + `&units=${paramUnits}`;
+  }
+  let someParams = { stationCode: location, dollset: set, units: params.units };
+  console.log(`pixieKey for ${JSON.stringify(someParams)} is ${pixieKey}`); 
+  return pixieKey;
+}
+
+const pixieAlt = async function(params) {
+  // a first-cut parameter for caching would be the request query param string
+  // location=ABCD&set=3  where location=params.stationCode and set=params.dollset
+
+  // params.stationCode appears as '????' if the fetch fails, and we cache that.
+  // ok what did I mess up
+  // maybe a more explicit no-report-found would be better?
+  // "the sky over the port was the the color of a television tuned to an empty channel"
+  let location = params.stationCode;
+  let set = params.dollset;
+  let pixieKey = pixieCacheKeys(params); // handle dollset and units
   const dtNow = Date.now();
   const cachedPixie = cache.get(pixieKey, dtNow);
   if (cachedPixie) {
@@ -346,6 +366,7 @@ app.get('/compose', async (req, res) => {
   }
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
   params.dollset = req.query.set;
+  params.units   = req.query.units;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
@@ -376,7 +397,8 @@ const servePixie = async function(req, res, location, note) {
   if (!note || note == '') { // patch contra factoring, had to be after params call.
     note = `<p>${elapsedMessage(params.zHoursSince)}</p>\n`;
   }
-  params.dollset = req.query.set;
+  params.dollset = req.query.set; // qParam to pixie param
+  params.units   = req.query.units;
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
@@ -462,7 +484,8 @@ app.get('/png', async (req, res) => {
     return;
   }
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
-  params.dollset = req.query.set;
+  params.dollset = req.query.set; // qParam to doll param
+  params.units   = req.query.units;
   // if this fails, we should probably return a default image.
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
   const pngbuf = await pixie.getBufferAsync(Jimp.MIME_PNG);
