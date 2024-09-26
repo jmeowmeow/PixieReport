@@ -419,14 +419,22 @@ Mon 23 Sep 2024 04:58:24 PM PDT
 * Added spec/imageTextSpec.js for useMetric() from pixifier/compute-image-text.js
 * Added units='C|F|undefined' as part of the URL, overriding useMetric based on station code.
 * Added three options for "&units=C", "&units=F", and absent.
-* When should units be part of the cache key?
-    1. When absent, resolve useMetric(station) ? units='C' : units='F' as an extra cache key attribute.
-    2. When present, and disagrees with useMetric(station), don't store the no-units key.
-    3. When present, and agrees with useMetric(station), store both.
+* When should units be part of the image cache key? (edited)
+    * Only when the unit type disagrees with the unit type of the station locale.
 
 (on bus: managed to lose my grip on the laptop when my backpack slid forward, and the laptop
-shot forward under the next forward-facing seat. But all seems well! Thanks ThinkPad)
+shot forward under the next forward-facing seat. But all seems well! Thanks, Lenovo ThinkPad)
 
+Tue 24 Sep 2024 06:53:43 PM PDT
+
+/make: GET URL approach working for doll set and C/F units.
+
+Pixie image cache key includes units=C or units=F when different from default units.
+Navigation link building naively supports units by including the entire query string.
+
+Goodness, now I need a station picker wizard, but how? Map? Text prefix?
+I guess I already have the latitude and longitude sorted active server lists, so
+that could be something to start from.
 
 ## Weatherpixie.com Features
 
