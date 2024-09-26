@@ -436,6 +436,15 @@ Goodness, now I need a station picker wizard, but how? Map? Text prefix?
 I guess I already have the latitude and longitude sorted active server lists, so
 that could be something to start from.
 
+Thu 26 Sep 2024 08:35:52 AM PDT
+
+/make: Pushed the latest chooser on Wednesday. It behaves reasonably on being passed no arguments.
+
+Time to adjust the "done" list, if needed.
+
+Now for something of a different cardinality. We probably want to base the pick list on the overlap
+of active stations having geodata entries.
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
@@ -518,13 +527,13 @@ Generally:
 
 * Presumes "Full PixieReport Function" below (pixie sets, etc.)
 
+- [ ] Consider TheDryPrinciple for code blobs and resources.
 - [X] Remove unused files and functions from other versions.
 - [ ] Remove neglected endpoint handlers which have served their purpose
-- [ ] Remove console.log for routine operations.
+- [X] Remove console.log for routine operations.
 - [X] Update the prospectus document.
 - [ ] Add an about/credits/source/acknowledgements page to the source.
 - [ ] Consider assertions as a prelude to tests.
-- [ ] Consider TheDryPrinciple for resources.
 - [ ] Is there a jslint to run for suggested cleanup?
 - [ ] Express.js model app format to review?
 - [ ] Replace let or global with const as possible.
@@ -535,7 +544,8 @@ Generally:
 
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
-- [ ] Factor out layer map into a layer locator passed from the server main program and/or export it to a resource helper.
+- [X] Factor out layer map into a layer locator passed from the server main program
+- [ ] Enhance layor locator to allow indirection / context by pixie set or other style choices.
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp
@@ -544,12 +554,14 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [X] Choose a pixel doll set with UI/URL parameter
 - [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [ ] Group pixie-set-specific weather layers separately from generic weather?
-- [?] Graceful error handling for missing report data or fetch failure (TV static image)
+- [X] Graceful error handling for missing report data or fetch failure (TV static image) call it done.
 - [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
 Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
+- [X] units and dollset chooser active as GET options in '/make'
+- [ ] Weather station chooser. How do we navigate / wizard our way to a choice?
 
 
 ## Operations Status, Robustness, and Recovery
@@ -560,9 +572,11 @@ From the above item:
  - [X] start-up script? Replace "nohup node server.js", ^Z, "bg"  (pm2 below)
  - [X] daemonization, better automatic restartability. Using PM2 [pm2.io](https://pm2.io).
 
-### Service load
+### Service usage and load
  - [ ] observe load and latency (Express or Node runtime obs? PM2 builtins?)
  - [X] experiment with cache. Implemented cache.
+ - [X] "callers" and "robots" list of very recently callers by IP address.
+     *  Note that Hurricane Electric has a lookup page.
 
 ### Pixie Rendering Flaw Reporting and Handling
 Add more information in an ops page, maybe frame-in some specific logs.

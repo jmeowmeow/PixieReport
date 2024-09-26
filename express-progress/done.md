@@ -55,6 +55,7 @@ initial Express setup and async handlers.
 * Use station and dollset params in navigation links.
 * Nearby Stations To This Station page.
 * Nearby Stations To: navigate by +/- 1 or 5 degrees of lat/long.
+* Pixie picker prototype with preview for doll sets and C/F units.
 
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
