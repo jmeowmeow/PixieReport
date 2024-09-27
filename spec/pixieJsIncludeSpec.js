@@ -21,10 +21,10 @@ describe("data resource modules should load OK", function() {
     // pre Jasmine 3.6.0 equivalent assertion for number of doll variations
     const dollEntries = Object.entries(dollsByTemperature);
     const entryCount = dollEntries.length;
-    expect(entryCount).toBe(5, "number of doll variations by temperature"); // icy, cold, cool, warm, hot
+    expect(entryCount).withContext("number of doll variations by temperature").toBe(5); // icy, cold, cool, warm, hot
     expect(dollEntries[5]).toBeUndefined();
-    expect(dollEntries[4][0]).toBe('4', "last map entry");
-    expect(dollEntries[4][1]).toMatch(/\.$/, "last doll variation has non-empty doll description");
+    expect(dollEntries[4][0]).withContext("last map entry").toBe('4');
+    expect(dollEntries[4][1]).withContext("last doll variation has non-empty doll description").toMatch(/\.$/);
   };
 
   beforeAll(function() {

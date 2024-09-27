@@ -101,7 +101,7 @@ describe("decoded metar to param parser", function() {
       for (const prop of Object.getOwnPropertyNames(expectedParamsMap)) {
         var asFound  = toParam[prop];
         var asSought = expectedParamsMap[prop];
-        expect(asFound).toBe(asSought, 'properties.' + prop + ' of '+sampleMetar);
+        expect(asFound).withContext('properties.' + prop + ' of '+sampleMetar).toBe(asSought);
       };
     };
   });
