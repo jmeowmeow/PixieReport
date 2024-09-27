@@ -9,6 +9,7 @@ Disallow: /compose
 Disallow: /pixie
 Disallow: /random
 Disallow: /png
+Disallow: /make
 Disallow: /uptime
 Disallow: /cache
 Disallow: /stations
