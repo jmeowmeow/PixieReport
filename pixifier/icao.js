@@ -13674,6 +13674,9 @@ const activeMetarStations = [
 ];
 // activeMetarStations n=4948 acquired 20 Jun 2024 from
 // https://aviationweather.gov/data/cache/metars.cache.csv.gz
+// May be updated, n=4949 in spec/pixieJsIncludeSpec.js ; also
+// some stations with reports have very old reports persisting
+// in the zipped snapshot.
 exports.activeMetarStations = activeMetarStations;
 
 // adapted from decoded-metar-parser
