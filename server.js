@@ -349,7 +349,8 @@ const pixieAlt = async function(params) {
 
 const elapsedMessage = function(hoursSince) {
  if (typeof hoursSince === 'number' && isFinite(hoursSince)) {
-    return `${hoursSince.toFixed(1)} h since report.`;  // toFixed(1) makes it a string
+    let quip = (hoursSince < 0) ? ' What even is time?' : '';
+    return `${hoursSince.toFixed(1)} h since report.${quip}`;  // toFixed(1) makes it a string
   } else {
     return "No report time available."
   }
@@ -574,8 +575,10 @@ const toPixieImageElement = async function(pixieLayer) {
 }
 
 const makeSetTable = async function(withPicker, urlProps) {
-let body = '<p>Pixel Doll Sets</p>\n';
-body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
+  let body = '<p>Pixel Doll Sets</p>\n';
+  body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
+  // TODO: render templevel name and range (in C or chosen units)
+  // as centered text under each pixie
   if (withPicker) {
     const noPixieLayer = resources.namedLayers.get("whichpixie");
     const noPixie = await toPixieImageElement(noPixieLayer);

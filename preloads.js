@@ -2,7 +2,7 @@
 // Troublesome issue in interaction of promises and current
 // working directory. ES6 modules might allow us to do
 // synchronous / settled file operations with await()
-// but we can't do that with CommonJS modules and 
+// but we can't do that with CommonJS modules and
 // image loading unless we embed the images as String
 // resources and decode them.
 
@@ -19,27 +19,40 @@
 // maybe resources.backgroundSets (e.g. the night-comet)
 
 // Load the resource descriptions expediently, grafting the old script's mechanism.
-var dollsByWeather;
-const moomindescs = require('./pixifier/pixies/pixiemoomin/dolldesc.js');
-const pixie0descs = require('./pixifier/pixies/pixie0/dolldesc.js');
-const bunnydescs  = require('./pixifier/pixies/pixiebunny/dolldesc.js');
-const selfiedescs = require('./pixifier/pixies/pixieselfie/dolldesc.js');
-const xmasdescs   = require('./pixifier/pixies/pixiexmas/dolldesc.js');
-
+// dollset names here are a superset of the ones exposed in the app
+const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'xmas'];
 const dd = new Map();
-dd.set('moomin', moomindescs.dollsByWeather);
-dd.set('pixie0', pixie0descs.dollsByWeather);
-dd.set('selfie', selfiedescs.dollsByWeather);
-dd.set('bunny', bunnydescs.dollsByWeather);
-dd.set('xmas', xmasdescs.dollsByWeather);
-
 const pixiepaths = new Map();
-pixiepaths.set('moomin', './pixifier/pixies/pixiemoomin/');
-pixiepaths.set('pixie0', './pixifier/pixies/pixie0/');
-pixiepaths.set('selfie', './pixifier/pixies/pixieselfie/');
-pixiepaths.set('bunny', './pixifier/pixies/pixiebunny/');
-pixiepaths.set('xmas', './pixifier/pixies/pixiexmas/');
-const pixieFiles = ['pixie-icy.png', 'pixie-cold.png', 'pixie-cool.png', 'pixie-warm.png', 'pixie-hot.png'];
+dollSetNames.map( (n) => {
+  let ppath = (n == 'pixie0') ? n : `pixie${n}`;
+  const pixiepath = `./pixifier/pixies/${ppath}/`;
+  pixiepaths.set(n, pixiepath);
+  const dollsetDesc = require(`${pixiepath}/dolldesc.js`);
+  dd.set(n, dollsetDesc.dollsByWeather);
+});
+
+// Temperature levels factored here for use in doll image setup,
+// dollset picker presentation, and composition logic.
+const tempLevelNames    = ['icy', 'cold', 'cool', 'warm', 'hot'];
+const tempLevelsC  = [-473, -9, 5, 19, 28, 9999];
+const tempLevels = new Map();
+for (let z=0; z<tempLevelNames.length; z++) {
+   const tempName = tempLevelNames[z];
+   const tempLevel = { level: tempName, lowerC: tempLevelsC[z], upperC: tempLevelsC[z+1] };
+   tempLevels.set(tempName, tempLevel);
+   tempLevels[z] = tempLevel;
+}
+const tempLevelForDegreesC = function(degreesC) {
+  for (let z=0; z<tempLevelNames.length; z++) {
+    const tempLevel = tempLevels[z];
+    if (degreesC < tempLevel.upperC) {
+      return tempLevel;
+    }
+  }
+  return undefined;
+}
+
+const pixieFiles = tempLevelNames.map( (e) => ( `pixie-${e}.png` ) );
 const { icaoToLocationMap, activeMetarStations, stationsByLat, stationsByLong } = require('./pixifier/icao.js');
 const Jimp = require("jimp"); // used here and in composer.
 const resources = {};
@@ -63,7 +76,7 @@ class Layer {
       let jp = Jimp.read(this.path);
       jp.then( (result) => { this.img = result; } );
       return jp;
-    } 
+    }
   }
 }
 
@@ -88,6 +101,7 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
   return thisDollLayers;
 }
 
+// Adopted set for general use (excludes 'xmas' set)
 const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
 resources.setNames    = setNames;
 resources.howManySets = setNames.length;
@@ -169,7 +183,7 @@ namedLayers.set('patches of fog', namedLayers.get('fog'));
 namedLayers.set('light snow', new Layer('light snow', 'pixifier/pixies/weather/ltsnow.png'));
 namedLayers.set('snow', new Layer('snow', 'pixifier/pixies/weather/snow.png'));
 namedLayers.set('heavy snow', namedLayers.get('snow'));
-namedLayers.set('blowing snow', namedLayers.get('light snow')); 
+namedLayers.set('blowing snow', namedLayers.get('light snow'));
 namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lightning.png'));
 
 let promises = [];
