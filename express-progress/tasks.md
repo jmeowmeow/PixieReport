@@ -445,6 +445,25 @@ Time to adjust the "done" list, if needed.
 Now for something of a different cardinality. We probably want to base the pick list on the overlap
 of active stations having geodata entries.
 
+Wed 02 Oct 2024o
+
+Successful experiment downloading gzipped metars.cache.csv and importing into an sqlite3 DB.
+
+In brief:
+* Download and unzip.
+* Edit csv file to rename duplicated sky cover columns with 2, 3, 4.
+* sqlite3 metars.db
+* .mode csv
+* .import metars.cache.csv snapshot
+* .schema snapshot
+* start querying, SELECT etc.
+
+
+Thu 03 Oct 2024 08:50:44 AM PDT
+
+Picker needs a fix for "set 0". I made a mistake probably on the JS falsy value.
+Did a messy fix.
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
@@ -464,17 +483,17 @@ of active stations having geodata entries.
 
 ### PixieReport ExpressJS site features:
 - [ ] Pixie Creation Wizard
-    - [ ] Geographic picker
-    - [ ] Doll set picker
+    - [X] Preview of choices
+    - [X] Doll set picker
         - [X] Which doll sets are available?
-    - [ ] C/F unit picker
-- [ ] Pixie Preview Page
-    - [ ] Copy this URL / cookie-me this pixie / copy this embed
+    - [X] C/F unit picker
+    - [ ] Geographic picker
+    - [ ] Copy this URL / cookie-me this pixie / copy this embed / bookmark this URL
 - [X] Site Navigation
 - [ ] Pixie Renderer
     - [X] METAR code, doll series yield a scene
     - [X] No-data mode: TV static if not available
-    - [ ] No-current-data mode: not yet sensitive to freshness.
+    - [ ] No-current-data mode: page shows hours since report, but image not sensitive to freshness.
 - [X] Rendered Pixies served as images
     - [X] /png endpoint
 - [ ] HTTP Cookie to remember your chosen location, doll style, units.
@@ -499,7 +518,12 @@ Generally:
 - [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
 - [X] Instead of defaulting KSEA, random pixie via hit and redirect
 - [X] Nearest other stations, based on geo-sort
-- [ ] Station list view/search
+- [ ] /make - pick doll set, units, station; copy to system clipboard.
+    - [X] Units picker (C/F/use station locale)
+    - [X] Doll set picker (display, choose)
+    - [X] Preview results
+    - [ ] Copy URL(s) to clipboard
+    - [ ] Station list view/search
 
 ### Webapp architecture
 - [X] page template structure with navigation
@@ -545,7 +569,7 @@ Generally:
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 - [X] Factor out layer map into a layer locator passed from the server main program
-- [ ] Enhance layor locator to allow indirection / context by pixie set or other style choices.
+- [ ] Enhance layer locator to allow indirection / context by pixie set or other style choices.
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp

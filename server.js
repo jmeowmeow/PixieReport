@@ -620,7 +620,7 @@ const toUrlWithParams = function(baseUrl, props) {
   let qparams = [];
   // location or nothing; dollset or nothing; units or nothing.
   if (props.location) { qparams.push(`location=${props.location}`); }
-  if (props.dollset)  { qparams.push(`set=${props.dollset}`); }
+  if (props.dollset == 0 || props.dollset == '0' || props.dollset)  { qparams.push(`set=${props.dollset}`); } // don't shortcut dollset zero (or re-do it as a special value equivalent to "none"?)
   if (props.units)    { qparams.push(`units=${props.units}`); }
   let qUrl;
   if (qparams.length == 0) {
