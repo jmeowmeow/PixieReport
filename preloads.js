@@ -80,6 +80,7 @@ class Layer {
   }
 }
 
+
 // namedLayers: main lookup repository for pixel doll composer
 const namedLayers = new Map();
 resources.namedLayers = namedLayers;
@@ -188,6 +189,15 @@ namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lig
 
 let promises = [];
 namedLayers.forEach(layer => { promises.push(layer.toJimp())});
+
+// a bootleg application of Layer/Promise to load the world map.
+// not part of namedLayers, way way big! Will it stomp on the app memory as a Jimp image?
+resources.worldMap =
+	new Layer("worldmap",
+		'webapp/resources/world-equirect-cc-by-strebe-wikimedia.jpg');
+const worldMapPromise = resources.worldMap.toJimp(); // hold that thought...
+promises.push(worldMapPromise);
+
 // Resolution gets printed after the "Server listening" message.
 Promise.allSettled(promises).then((results) => {console.log(`Loaded named image layers, n= ${results.length}`)}).catch(console.error);
 

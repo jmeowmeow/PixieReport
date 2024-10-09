@@ -464,6 +464,24 @@ Thu 03 Oct 2024 08:50:44 AM PDT
 Picker needs a fix for "set 0". I made a mistake probably on the JS falsy value.
 Did a messy fix.
 
+
+Tue 08 Oct 2024 08:47:16 PM PDT
+
+Trying out a base map. I want to see if I can use this with the span of
+stations in the "nearby" page (/stations) and clip to that size.  
+It will be pretty weird for the neighborhood around NZSP.
+
+Wed 09 Oct 2024 08:54:09 AM PDT
+
+Of course for /stations I could just start with an SVG and lat/long lines and
+dot the stations in by code and lat/long.
+
+Looking at the console:
+  didn't find haze in namedLayers
+  no weather layer defined for haze
+maybe haze can be a yellowish vertically flipped version of mist/fog?
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features

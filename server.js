@@ -738,6 +738,7 @@ app.get('/stations', async (req, res) => {
     latlong = params.latlong;
   }
   let gridnav="";
+  let showLimits = "";
   if (latlong) {
       const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
       const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
@@ -770,9 +771,19 @@ app.get('/stations', async (req, res) => {
       myClosestStations += "</p>\n";
       myClosestStations += `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
 
+      const lats =  closestTwelve.map( e => e.lat).sort( (a, b) => (a - b) );
+      const longs = closestTwelve.map( e => e.long).sort( (a, b) => (a - b) );
+      const latSpan = (lats[11] - lats[0]).toFixed(3);
+      const longSpan = (longs[11] - longs[0]).toFixed(3);
+      const latMin = lats[0].toFixed(2);
+      const latMax = lats[11].toFixed(2);
+      const longMin = longs[0].toFixed(2);
+      const longMax = longs[11].toFixed(2);
+      showLimits = `<p>The range of these stations is ${latMin} to ${latMax} latitude, ${longMin} to ${longMax} longitude, or ${latSpan} deg lat, ${longSpan} deg long.</p>`;
   }
   const mynav = nav(req);
-  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}`;
+  const mapPane = `${showLimits}\n`; // <svg><circle cx="10" cy="10" r="50" fill="red"/></svg>`
+  body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}${mapPane}`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
 });
