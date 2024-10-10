@@ -713,6 +713,12 @@ const makeGridNav = function(path, latlong) {
 app.get('/stations', async (req, res) => {
   tallyClientIp(req);
   const location = req.query.location;
+  let units = req.query.units;
+  if (units == 'F' || units == 'C') {
+    units = `&units=${units}`;
+  } else {
+    units = '';
+  }
   let body = '';
   let myLocation = "Grid Coordinates";
   let latlong = { degLat: 0.0, degLong: 0.0 }
@@ -725,7 +731,7 @@ app.get('/stations', async (req, res) => {
                   degLong: Number.parseFloat(req.query.degLong) };
     } else {
       // okay, use Zero Zero
-      let redirection = req.path + '?degLat=0.0&degLong=0.0';
+      let redirection = req.path + '?degLat=0.0&degLong=0.0'+units;
       res.redirect(redirection);
       return;
     }
@@ -755,11 +761,11 @@ app.get('/stations', async (req, res) => {
       // anchored list of closest METAR stations on our active station list
       const closestTwelve = closestStns.slice(0,12);
       const closestStnsStr  = closestTwelve.reduce((a, b) =>
-        (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station, b.station, 'Stations near '+b.station)} ${b.desc}`), "");
+        (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station+units, b.station, 'Stations near '+b.station)} ${b.desc}`), "");
 
       // code duplication from home page array
       let tileNo = 0;
-      let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
+      let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}'+units+'"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
