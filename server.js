@@ -575,10 +575,33 @@ const toPixieImageElement = async function(pixieLayer) {
 }
 
 const makeSetTable = async function(withPicker, urlProps) {
+  const tempLevels = resources.tempLevels;
+  const units = (urlProps) ? urlProps.units : 'C';
+  const tempHdr = function(idx) {
+    const tl  = tempLevels[idx];
+    let hdr;
+    if (units == 'F') {
+      if (idx == 0) {
+        hdr = `${tl.level}<br/>up to ${tl.upperF}F`;
+      } else if (idx == 4) {
+        hdr = `${tl.level}<br/>${tl.lowerF}F and up`;
+      } else {
+      hdr = `${tl.level}<br/>${tl.lowerF}F to ${tl.upperF}F`;
+      }
+    } else {
+      if (idx == 0) {
+        hdr = `${tl.level}<br/>up to ${tl.upperC}C`;
+      } else if (idx == 4) {
+        hdr = `${tl.level}<br/>${tl.lowerC}C and up`;
+      } else {
+        hdr = `${tl.level}<br/>${tl.lowerC}C to ${tl.upperC}C`
+      }
+    }
+    return hdr;
+  }
+
   let body = '<p>Pixel Doll Sets</p>\n';
-  body = `${body}<br/><table border><tr><th>Set</th><th>icy</th><th>cold</th><th>cool</th><th>warm</th><th>hot</th></tr>\n`;
-  // TODO: render templevel name and range (in C or chosen units)
-  // as centered text under each pixie
+  body = `${body}<br/><table border><tr><th>Set</th><th>${tempHdr(0)}</th><th>${tempHdr(1)}</th><th>${tempHdr(2)}</th><th>${tempHdr(3)}</th><th>${tempHdr(4)}</th></tr>\n`;
   if (withPicker) {
     const noPixieLayer = resources.namedLayers.get("whichpixie");
     const noPixie = await toPixieImageElement(noPixieLayer);

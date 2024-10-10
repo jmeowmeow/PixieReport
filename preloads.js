@@ -34,11 +34,13 @@ dollSetNames.map( (n) => {
 // Temperature levels factored here for use in doll image setup,
 // dollset picker presentation, and composition logic.
 const tempLevelNames    = ['icy', 'cold', 'cool', 'warm', 'hot'];
-const tempLevelsC  = [-473, -9, 5, 19, 28, 9999];
+const tempLevelsC  = [-273,  -9,  5, 19, 30, 9999];
+const tempLevelsF  = [-459, -16, 41, 66, 86, 9999];
 const tempLevels = new Map();
 for (let z=0; z<tempLevelNames.length; z++) {
    const tempName = tempLevelNames[z];
-   const tempLevel = { level: tempName, lowerC: tempLevelsC[z], upperC: tempLevelsC[z+1] };
+   const tempLevel = { level: tempName, lowerC: tempLevelsC[z], upperC: tempLevelsC[z+1],
+                       lowerF: tempLevelsF[z], upperF: tempLevelsF[z+1] };
    tempLevels.set(tempName, tempLevel);
    tempLevels[z] = tempLevel;
 }
@@ -91,7 +93,7 @@ namedLayers.set("whichpixie", new Layer("question mark", "pixifier/pixies/whichp
 // Register a doll set across temperature levels for lookup in namedLayers by a composite key.
 // This is the "distributed" expression of the doll sets.
 const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, compositionLayers) {
-  const tempLevel = ['icy', 'cold', 'cool', 'warm', 'hot'];
+  const tempLevel = tempLevelNames;
   let thisDollLayers = [];
   for (const i in [0,1,2,3,4]) {
     const dollLayer = new Layer(dollDescs.get(whichPixie)[i], ''+dollPaths.get(whichPixie)+dollFiles[i]);
@@ -204,6 +206,8 @@ Promise.allSettled(promises).then((results) => {console.log(`Loaded named image 
 const metarToLocationMap = new Map();
 Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
 
+resources.tempLevelsC = tempLevelsC;
+resources.tempLevels = tempLevels; // a Map and also tempLevels[0] to [4]
 exports.stations = metarToLocationMap;
 exports.stationsByLat = stationsByLat;
 exports.stationsByLong = stationsByLong;

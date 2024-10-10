@@ -81,16 +81,16 @@ function addDollLayer(layerFiles, params) {
   }
   const doll = (dollname) ? dollname : setNames[randomIdx];
 
-  // TODO extract temperature breaks to use in pixie chooser '/make'
+  const tempLevelsC = resources.tempLevelsC;
   const tempC = params.degreesC;
   if (typeof tempC === 'number' && isFinite(tempC)) {
-    if (tempC < -9) {
+    if (tempC < tempLevelsC[1]) {
       layerFiles.push(layerByName(`${doll}/icyPixie`));
-    } else if (tempC < 5) {
+    } else if (tempC < tempLevelsC[2]) {
       layerFiles.push(layerByName(`${doll}/coldPixie`));
-    } else if (tempC < 19) {
+    } else if (tempC < tempLevelsC[3]) {
       layerFiles.push(layerByName(`${doll}/coolPixie`));
-    } else if (tempC < 28) {
+    } else if (tempC < tempLevelsC[4]) {
       layerFiles.push(layerByName(`${doll}/warmPixie`));
     } else {
       layerFiles.push(layerByName(`${doll}/hotPixie`));
