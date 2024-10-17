@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/jmeowmeow/PixieReport#readme",
   "dependencies": {
+    "commonmark": "^0.31.2",
     "express": "^4.21.0",
     "jimp": "^0.22.12",
     "pm2": "^5.4.2",

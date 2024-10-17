@@ -19,5 +19,5 @@ test:
 pixies:
 	open http://localhost:3000/compose
 
-compose:
-	node compose.js
+markdown:
+	cd doc && npx commonmark weatherpixie-prospectus.md > weatherpixie-prospectus.html
