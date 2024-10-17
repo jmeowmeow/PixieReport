@@ -772,11 +772,14 @@ Operator features accomplished:
 * Uptime, pixies served as PNG, served as data:png, cache hits and misses.
 * Recent requests by client IP address. This revealed Google and OpenAI crawlers.
 
+Features in progress:
+* Report URL builder / wizard, including:
+   * Doll set picker. 
+   * Units picker (metric/US for temperature, wind speed and pressure)
+
 Features missing:
 * Report URL builder / wizard, including:
    * Station picker.
-   * Doll set picker. 
-   * Units picker (metric/US for temperature, wind speed and pressure)
    * Copy-to-clipboard (img url, maybe iframe)
 
 Operator features:
