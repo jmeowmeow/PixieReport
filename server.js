@@ -733,6 +733,18 @@ const makeGridNav = function(path, latlong) {
    return gridnav;
 }
 
+// iterate over closest twelve, produce a station dot for each
+const stationDot = function(sta, span, latlong) {
+  const stn = sta.station;
+//  const refLat  = latlong.degLat; // viewpoint coords
+//  const refLong = latlong.degLong;
+  const cx = 0.8 * 200 * (sta.long - span.longMin)/span.longSpan;
+  const cy = 0.8 * 200 * (1 - (sta.lat  - span.latMin)/span.latSpan);
+  const circle = `<circle title="${stn}" id="${stn}" cx="${cx}" cy="${cy}" r="2" fill="black"/>`;
+  const label = `<text x="${cx}" y="${cy+5}">-${stn}</text>`;
+  return ''+circle+label;
+};
+
 app.get('/stations', async (req, res) => {
   tallyClientIp(req);
   const location = req.query.location;
@@ -768,6 +780,7 @@ app.get('/stations', async (req, res) => {
   }
   let gridnav="";
   let showLimits = "";
+  let mySvg = '<svg></svg>';
   if (latlong) {
       const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
       const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
@@ -808,10 +821,16 @@ app.get('/stations', async (req, res) => {
       const latMax = lats[11].toFixed(2);
       const longMin = longs[0].toFixed(2);
       const longMax = longs[11].toFixed(2);
+      const span = {latMin, latMax, latSpan, longMin, longMax, longSpan};
+      const stationDots = closestTwelve.map( e => stationDot(e, span, latlong) ).reduce( (a, b) => `${a}\n${b}`, '');
+      const cx = 0.8 * 200 * (latlong.degLong - span.longMin)/span.longSpan;
+      const cy = 0.8 * 200 * (1 - (latlong.degLat  - span.latMin)/span.latSpan);
+      const viewpointDot = `<circle title="viewpoint" id="viewpoint" cx="${cx}" cy="${cy}" r="5" stroke="black" fill="none"/>`;
+      mySvg = `<svg width="500" viewbox="0 0 260 260"><rect width="260" height="260" fill="none" stroke="blue" />${stationDots}\n${viewpointDot}</svg>`;
       showLimits = `<p>The range of the stations and the viewpoint is ${latMin} to ${latMax} latitude, ${longMin} to ${longMax} longitude, or ${latSpan} deg lat, ${longSpan} deg long.</p>`;
   }
   const mynav = nav(req);
-  const mapPane = `${showLimits}\n`; // <svg><circle cx="10" cy="10" r="50" fill="red"/></svg>`
+  const mapPane = `${showLimits}\n${mySvg}`; 
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}${mapPane}`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
