@@ -738,8 +738,8 @@ const stationDot = function(sta, span, latlong) {
   const stn = sta.station;
 //  const refLat  = latlong.degLat; // viewpoint coords
 //  const refLong = latlong.degLong;
-  const cx = 0.8 * 200 * (sta.long - span.longMin)/span.longSpan;
-  const cy = 0.8 * 200 * (1 - (sta.lat  - span.latMin)/span.latSpan);
+  const cx = 0.8 * 260 * (sta.long - span.longMin)/span.longSpan;
+  const cy = 20 + (0.8 * 260 * (1 - (sta.lat  - span.latMin)/span.latSpan));
   const circle = `<circle title="${stn}" id="${stn}" cx="${cx}" cy="${cy}" r="2" fill="black"/>`;
   const label = `<text x="${cx}" y="${cy+5}">-${stn}</text>`;
   return ''+circle+label;
@@ -823,8 +823,8 @@ app.get('/stations', async (req, res) => {
       const longMax = longs[11].toFixed(2);
       const span = {latMin, latMax, latSpan, longMin, longMax, longSpan};
       const stationDots = closestTwelve.map( e => stationDot(e, span, latlong) ).reduce( (a, b) => `${a}\n${b}`, '');
-      const cx = 0.8 * 200 * (latlong.degLong - span.longMin)/span.longSpan;
-      const cy = 0.8 * 200 * (1 - (latlong.degLat  - span.latMin)/span.latSpan);
+      const cx = 0.8 * 260 * (latlong.degLong - span.longMin)/span.longSpan;
+      const cy = 20 + (0.8 * 260 * (1 - (latlong.degLat  - span.latMin)/span.latSpan));
       const viewpointDot = `<circle title="viewpoint" id="viewpoint" cx="${cx}" cy="${cy}" r="5" stroke="black" fill="none"/>`;
       mySvg = `<svg width="500" viewbox="0 0 260 260"><rect width="260" height="260" fill="none" stroke="blue" />${stationDots}\n${viewpointDot}</svg>`;
       showLimits = `<p>The range of the stations and the viewpoint is ${latMin} to ${latMax} latitude, ${longMin} to ${longMax} longitude, or ${latSpan} deg lat, ${longSpan} deg long.</p>`;
