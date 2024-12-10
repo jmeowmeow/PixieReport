@@ -482,6 +482,39 @@ Looking at the console:
 maybe haze can be a yellowish vertically flipped version of mist/fog?
 
 
+Thu 05 Dec 2024 09:44:19 AM PST
+
+Wow, PixieReport has been pretty stable. Look at the uptime!
+
+I've renewed the domain cert a couple of times with Certbot.
+
+I find myself capturing the "Nearby" array as a single screencap, so maybe
+I should go ahead and create a composed version and see how that looks. This
+will change the dynamics, where the current one is a patchwork of individual
+image loads in the browser.
+
+I find myself capturing the alt text for an individual pixie image. Having a
+click to copy to clipboard would be handy.
+
+Image features:
+* Composed nearby image, maybe a specific URL
+* Extending this rendering style to an image quilt from a list of stations.
+
+Mon 09 Dec 2024 06:17:21 PM PST
+
+Clipboard
+* Click to copy alt text to clipboard. 
+    * So far this has been pretty awkward to test using clipboard.readText() etc.
+    * It requires permission in a local file context.
+    * readText() and writeText() are Promise based. I've tried using setTimeout() but the combo of asking in the
+      browser client context for permission to touch the clipboard and some possible background call which setTimeout(resolve, 0)
+      have left me scratching my head about.
+
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Interact_with_the_clipboard
+https://developer.mozilla.org/en-US/docs/Web/API/Clipboard
+https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
