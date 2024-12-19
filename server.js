@@ -356,6 +356,10 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
+const copyTextClipboard = function(spanId, spanTitle, spanText) {
+  return `<span id=${spanId} onclick="navigator.clipboard.writeText('${spanText}')">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
+}
+
 const wrapInCopy = function(spanId, spanText) {
   return `<span id=${spanId} onclick="navigator.clipboard.writeText('${spanText}')">${spanText}</span>`;
 }
@@ -419,6 +423,7 @@ const servePixie = async function(req, res, location, note) {
   if (mapUrl.startsWith('http')) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
   }
+  const altTextSpan = '\n<p>' + copyTextClipboard('alt', 'alt text', alt) + '</p>\n';
   let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="${alt}" src="${src}" title="${title}"/></a>';
   const imageHolder = pixieimg.replace(
     /\${station}/g, location).replace(
@@ -427,7 +432,7 @@ const servePixie = async function(req, res, location, note) {
           /\${title}/g, title);
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${note}`;
+    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${note}`;
     const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
     res.send(responseBody);
     increment('pixiecount');
