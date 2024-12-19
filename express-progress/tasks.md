@@ -514,6 +514,18 @@ https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Interact_
 https://developer.mozilla.org/en-US/docs/Web/API/Clipboard
 https://developer.mozilla.org/en-US/docs/Web/API/Clipboard_API
 
+Wed 18 Dec 2024 09:14:24 AM PST
+
+OK it's been a little slow on the mark for clipboard work and the PixieReport
+runtime is clicking up into the high triple digits of hours. But I copied a
+little script from the VPN setup at work and hopefully that can be a working
+example of writing to the clipboard from the page. Reading from the clipboard
+is more a vector for an exfiltration attack, depending on what's in the cb,
+notably account numbers and passwords.
+
+Initial copy-alt-text-to-clipboard in /compose = devpixie page.
+
+
 
 ## Weatherpixie.com Features
 

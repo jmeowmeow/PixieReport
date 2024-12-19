@@ -356,6 +356,10 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
+const wrapInCopy = function(spanId, spanText) {
+  return `<span id=${spanId} onclick="navigator.clipboard.writeText('${spanText}')">${spanText}</span>`;
+}
+
 app.get('/compose', async (req, res) => {
   tallyClientIp(req);
   // Developer's view of a pixie render.
@@ -383,8 +387,9 @@ app.get('/compose', async (req, res) => {
   }
   const elapsedMsg = elapsedMessage(params.zHoursSince);
   const mynav = nav(req);
+  const wrappedAlt = wrapInCopy('alttext', alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${alt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
+    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
     res.send(responseBody);
     increment('pixiecount');
   });
@@ -840,4 +845,3 @@ app.get('/stations', async (req, res) => {
 app.listen(port, host, () => {
   console.log(`${new Date().toLocaleTimeString()} Server listening at http://${host}:${port} (${sinceStart()} msec)`);
 });
-
