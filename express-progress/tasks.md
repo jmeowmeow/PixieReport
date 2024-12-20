@@ -525,6 +525,13 @@ notably account numbers and passwords.
 
 Initial copy-alt-text-to-clipboard in /compose = devpixie page.
 
+Thu 19 Dec 2024 09:27:01 AM PST
+
+Initial copy-alt-text-to-clipboard on regular pixie page.
+No visual signal of the copy affordance like a tool tip or onHover yet.
+Other things that want tweaking:
+* /stations map, all stations aren't in the box. (where are they? off the top? can we fix?)
+* can we make the SVG nodes for stations clickable?
 
 
 ## Weatherpixie.com Features
