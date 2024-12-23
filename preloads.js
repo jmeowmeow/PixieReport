@@ -105,7 +105,9 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
 }
 
 // Adopted set for general use (excludes 'xmas' set)
-const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+//const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin' ];
+const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
 resources.setNames    = setNames;
 resources.howManySets = setNames.length;
 resources.randomDollSetNum = function() { return Math.trunc(Math.random()*resources.howManySets) };
