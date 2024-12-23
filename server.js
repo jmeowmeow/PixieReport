@@ -366,14 +366,16 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
-const copyTextClipboard = function(spanId, spanTitle) {
-  // just innerText the DOM element to avoid quote escaping.
-  const spanText = getContentById(spanId);
-  return `<span id=${spanId} onclick="navigator.clipboard.writeText(\"${spanText}\")">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
+const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
+  // just innerText the DOM element to avoid quote escaping oops but "copy alt text to clipboard" is not interesting.
+  const holderAndWidget = `
+<span id="${spanId}holder" style="display:none">${textToCopy}</span>
+<span id="${spanId}" onclick="navigator.clipboard.writeText(getContentById('${spanId}holder'))">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
+  return holderAndWidget;
 }
 
 const wrapInCopy = function(spanId, spanText) {
-  return `<span id=${spanId} onclick="navigator.clipboard.writeText(getContentById('${spanId}'))">${spanText}</span>`;
+  return `<span id="${spanId}" onclick="navigator.clipboard.writeText(getContentById('${spanId}'))">${spanText}</span>`;
 }
 
 app.get('/compose', async (req, res) => {
