@@ -62,10 +62,20 @@ const ogImage    = '<meta property="og:image" content="https://github.com/jmeowm
 const ogUrl      = '<meta property="og:url" content="pixiereport.com" />\n';
 const ogSiteName = '<meta property="og:site_name" content="PixieReport" />\n';
 const ogDesc     = '<meta property="og:description" content="Pixel paperdoll weather reports in homage to Weatherpixie dot com." />\n';
-const opengraph = `${ogTitle}${ogDesc}${ogType}${ogImage}${ogUrl}${ogSiteName}`;
-
+const opengraph  = `${ogTitle}${ogDesc}${ogType}${ogImage}${ogUrl}${ogSiteName}`;
+const getContentById = `
+const getContentById = function(domId) {
+  if (domId && document.getElementById(domId)) {
+    contentElement = document.getElementById(domId);
+    return contentElement.innerText;
+  } else {
+    return '';
+  }
+}
+`;
+const headscript = `<script>${getContentById}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
-const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}</head>`;
+const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}${headscript}</head>`;
 
 // in which we reinvent Lodash a method at a time, to avoid managing
 // a dependency stream
@@ -356,12 +366,14 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
-const copyTextClipboard = function(spanId, spanTitle, spanText) {
-  return `<span id=${spanId} onclick="navigator.clipboard.writeText('${spanText}')">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
+const copyTextClipboard = function(spanId, spanTitle) {
+  // just innerText the DOM element to avoid quote escaping.
+  const spanText = getContentById(spanId);
+  return `<span id=${spanId} onclick="navigator.clipboard.writeText(\"${spanText}\")">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
 }
 
 const wrapInCopy = function(spanId, spanText) {
-  return `<span id=${spanId} onclick="navigator.clipboard.writeText('${spanText}')">${spanText}</span>`;
+  return `<span id=${spanId} onclick="navigator.clipboard.writeText(getContentById('${spanId}'))">${spanText}</span>`;
 }
 
 app.get('/compose', async (req, res) => {

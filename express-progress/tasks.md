@@ -533,6 +533,15 @@ Other things that want tweaking:
 * /stations map, all stations aren't in the box. (where are they? off the top? can we fix?)
 * can we make the SVG nodes for stations clickable?
 
+ARGH we are having the problem of embedding an onClick that has single / double / single quotes nested.
+I couldn't make the regexp do the job I was hoping of escaping quotes with backslashes or apostrophers.
+
+Punt for now.
+
+Mon 23 Dec 2024 08:54:02 AM PST
+
+Picking up, looks like I need a get-by-id, get-inner-text.
+
 
 ## Weatherpixie.com Features
 
