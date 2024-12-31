@@ -540,7 +540,13 @@ Punt for now.
 
 Mon 23 Dec 2024 08:54:02 AM PST
 
-Picking up, looks like I need a get-by-id, get-inner-text.
+Picking up, looks like I need a get-by-id, get-inner-text. Done.
+
+Noticing that random-pixie does not honor the pixie set. That seems broken.
+Except that the /random endpoint accepts ?set=2 and works!
+
+Tue 31 Dec 2024 09:10:08 AM PST
+Adding night fireworks background a beat late.
 
 
 ## Weatherpixie.com Features
