@@ -105,9 +105,9 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
 }
 
 // Adopted set for general use (excludes 'xmas' set)
-//const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
-const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin' ];
-const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
+const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+//const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin' ];
+//const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
 resources.setNames    = setNames;
 resources.howManySets = setNames.length;
 resources.randomDollSetNum = function() { return Math.trunc(Math.random()*resources.howManySets) };
@@ -135,10 +135,10 @@ namedLayers.set('hotPixie', hotDoll);
 
 // day/night background and special "no report" layer.
 namedLayers.set("noreport", new Layer("video static", "pixifier/pixies/backgrounds/nosignal-bkg.png"));
-// namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
+namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
 // save for Moomin doll set or meteor showers or comets! (Oct 2024 comet special)
 // namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/nightcometbkg.png"));
-namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/newyears-nightbackground.png"));
+// namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/newyears-nightbackground.png"));
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
 namedLayers.set("pink", new Layer("dusk", "pixifier/pixies/backgrounds/pinkbackground.png"));
 namedLayers.set("day", new Layer("day", "pixifier/pixies/backgrounds/sunnybackground.png"));
