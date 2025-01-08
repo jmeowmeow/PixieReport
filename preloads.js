@@ -191,6 +191,7 @@ namedLayers.set('snow', new Layer('snow', 'pixifier/pixies/weather/snow.png'));
 namedLayers.set('heavy snow', namedLayers.get('snow'));
 namedLayers.set('blowing snow', namedLayers.get('light snow'));
 namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lightning.png'));
+namedLayers.set('smoke', new Layer('smoke', 'pixifier/pixies/weather/smoke.png'));
 
 let promises = [];
 namedLayers.forEach(layer => { promises.push(layer.toJimp())});
