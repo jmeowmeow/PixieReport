@@ -457,6 +457,7 @@ app.get('/about', async (req, res) => {
   tallyClientIp(req);
   let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus', 'PixieReport History, Notes, and Prospects');
   let body = "<p>About the PixieReport server.</p>";
+  body += "<p>⛅</p>";
   body += "<p>PixieReport constructs pixel paperdoll images from airport weather conditions. ";
   body += "It is an homage to Tamsin Bowles' original Weatherpixie.com site.</p>";
   body += "<p>The site is intended to support bookmarking URLs for including PixieReport images in other pages, ";

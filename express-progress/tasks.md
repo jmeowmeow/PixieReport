@@ -548,6 +548,16 @@ Except that the /random endpoint accepts ?set=2 and works!
 Tue 31 Dec 2024 09:10:08 AM PST
 Adding night fireworks background a beat late.
 
+Mon 06 Jan 2025 09:52:50 AM PST
+
+Need a test for decoded-metar-parser.js#hoursSince including
+a possible refactor to pass dtNow rather than using Date.now().
+
+This may require some reconstruction around month and year
+boundaries to recognize and avoid naive negative "hoursSince",
+since METAR compresses dates by reporting only the day of
+month in the short METAR report, and depending on context.
+
 
 ## Weatherpixie.com Features
 
