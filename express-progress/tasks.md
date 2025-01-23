@@ -558,6 +558,19 @@ boundaries to recognize and avoid naive negative "hoursSince",
 since METAR compresses dates by reporting only the day of
 month in the short METAR report, and depending on context.
 
+Thu 23 Jan 2025 08:59:29 AM PST
+
+Reviewing from the commute bus to Bellevue.
+
+2-mo certbot renewal for site performed last week (as I recall)
+
+Might be time to review the "done.md" doc and/or move old notes
+here to archive.
+
+Watching the local console suggested two improvements to weather not found
+reporting.
+* Add the station name to the console error
+* Add the weather-not-found name to the JSON seen in /devpixie
 
 ## Weatherpixie.com Features
 
@@ -672,8 +685,8 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [X] alt-text in the HTML page presentation using pre-existing logic
 - [X] Choose a pixel doll set with UI/URL parameter
 - [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
-- [ ] Group pixie-set-specific weather layers separately from generic weather?
 - [X] Graceful error handling for missing report data or fetch failure (TV static image) call it done.
+- [ ] Group pixie-set-specific weather layers separately from generic weather?
 - [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
@@ -695,14 +708,14 @@ From the above item:
  - [ ] observe load and latency (Express or Node runtime obs? PM2 builtins?)
  - [X] experiment with cache. Implemented cache.
  - [X] "callers" and "robots" list of very recently callers by IP address.
-     *  Note that Hurricane Electric has a lookup page.
+     *  Note that Hurricane Electric has a lookup page. (bookmarked in browser)
 
 ### Pixie Rendering Flaw Reporting and Handling
-Add more information in an ops page, maybe frame-in some specific logs.
+Add more information in an ops page or subtly in pixie page, maybe frame-in some specific logs.
+ - [ ] What about weather conditions with no mapped image layer ("light rain showers"): loggable in devpixie json?
  - [ ] What about rarely reporting stations? Should we refresh the active snapshot more often?
  - [ ] What about stations with an unchanging old report? (time/date detection)
  - [ ] What about stations with no geodata? Is this something loggable in the uptime/debug page?
- - [ ] What about weather conditions with no mapped image layer ("light rain showers"): loggable other than console?
 
 ### Full METAR parse from raw METAR report.
 These items would enable running from a bulk METAR latest fetch.

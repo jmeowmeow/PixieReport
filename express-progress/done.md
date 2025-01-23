@@ -53,9 +53,10 @@ initial Express setup and async handlers.
 * Gallery on home page, each pixie linked.
 * Navigation links among webapp pages on HTML pages.
 * Use station and dollset params in navigation links.
-* Nearby Stations To This Station page.
+* Nearby Stations To This Station page /stations.
 * Nearby Stations To: navigate by +/- 1 or 5 degrees of lat/long.
-* Pixie picker prototype with preview for doll sets and C/F units.
+* Nearby Stations svg map (noninteractive). 
+* Pixie picker prototype /make with preview for doll sets and C/F units.
 
 ## Soft Launch
 * ExpressJS up on pixiereport site! (at :3000, not broadly circulated)
@@ -63,5 +64,5 @@ initial Express setup and async handlers.
 
 ## Public Launch
 * [pixiereport.com](https://pixiereport.com).
-* Let's Encrypt / Certbot certificate (manual fetch), manually renewed 1x Sep 2024.
+* Let's Encrypt / Certbot certificate (manual fetch), manually renewed 3x by Jan 2025.
 * Nginx reverse proxy from :443 to :3000.
