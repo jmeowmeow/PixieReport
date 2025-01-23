@@ -120,7 +120,7 @@ function addWindFlagLayer(layerFiles, params) {
   }
 }
 
-function addWeatherLayers(layerFiles, params) {
+function addWeatherLayers(layerFiles, params, unrendered) {
   if (params.weather) {
     for (const cond of params.weather) {
       if (cond == LIGHTNING_PARSED) {
@@ -138,6 +138,7 @@ function addWeatherLayers(layerFiles, params) {
           let stName = "";
           if (params.stationCode) { stName = params.stationCode + ": "; }
           console.log(stName + "no weather layer defined for " + cond);
+	  unrendered.push(cond);
         }
       }
     }
@@ -236,12 +237,13 @@ function printTimeText(pixie, font, timeText) {
 async function compose(params) {
 
   const layers = [];
+  const unrendered = [];
   addBackgroundLayer(layers, params);
   addCloudLayer(layers, params);
   addLightningLayer(layers, params);
   addDollLayer(layers, params);
   addWindFlagLayer(layers, params);
-  addWeatherLayers(layers, params);
+  addWeatherLayers(layers, params, unrendered);
   addFrame(layers, params);
   const sceneText = computeSceneText(layers);
   let blankCanvas = new Jimp(125, 175, "#000000");
@@ -268,7 +270,7 @@ async function compose(params) {
     pixie.print(font, 2, 160, imageTextValues.windbar);
   });
 
-  return [ pixie, sceneText ];
+  return [ pixie, sceneText, unrendered ];
 
 }
 

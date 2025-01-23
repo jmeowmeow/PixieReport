@@ -569,8 +569,10 @@ here to archive.
 
 Watching the local console suggested two improvements to weather not found
 reporting.
-* Add the station name to the console error
-* Add the weather-not-found name to the JSON seen in /devpixie
+- [X] Add the station name to the console error
+- [X] Add the weather-not-found name to the JSON seen in /devpixie
+
+Take The Small Win! Accomplished during commute.
 
 ## Weatherpixie.com Features
 
@@ -712,7 +714,7 @@ From the above item:
 
 ### Pixie Rendering Flaw Reporting and Handling
 Add more information in an ops page or subtly in pixie page, maybe frame-in some specific logs.
- - [ ] What about weather conditions with no mapped image layer ("light rain showers"): loggable in devpixie json?
+ - [X] What about weather conditions with no mapped image layer ("light rain showers"): loggable in devpixie json?
  - [ ] What about rarely reporting stations? Should we refresh the active snapshot more often?
  - [ ] What about stations with an unchanging old report? (time/date detection)
  - [ ] What about stations with no geodata? Is this something loggable in the uptime/debug page?

@@ -347,7 +347,8 @@ const pixieAlt = async function(params) {
       cache.expire(dtNow);
     }
   }
-  var [pixie, alt]= await compose(params).catch(console.error);
+  var [pixie, alt, unrendered] = await compose(params).catch(console.error);
+  params.unrendered = unrendered; // freezing fog, blowing dust: see devpixie
   cache.put(pixieKey, [pixie, alt], dtNow);
   // todo keyWithDollset needs units if set
   let keyWithDollset = `location=${location}&set=${params.dollset}`; // late bound dollset?
