@@ -134,8 +134,10 @@ function addWeatherLayers(layerFiles, params) {
           // e.g. TSRA- = "light rain with thunder" = ltrain.png
           layerFiles.push(layer);
         } else {
-          // ice crystals, smoke, frogs, unknown weather types
-          console.log("no weather layer defined for " + cond);
+          // ice crystals, blowing dust, frogs, unknown weather types
+          let stName = "";
+          if (params.stationCode) { stName = params.stationCode + ": "; }
+          console.log(stName + "no weather layer defined for " + cond);
         }
       }
     }
