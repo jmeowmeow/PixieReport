@@ -1,0 +1,10 @@
+Hello from EHJA, report follows:
+ Station name not available
+Jan 24, 2025 - 11:55 AM EST / 2025.01.24 1655 UTC
+Visibility: greater than 7 mile(s):0
+Temperature: 48 F (9 C)
+Dew Point: 32 F (0 C)
+Relative Humidity: 53%
+Pressure (altimeter): 29.29 in. Hg (0992 hPa)
+ob: EHJA 241655Z AUTO ///41KT 9999 NSC 09/00 Q0992
+cycle: 17
