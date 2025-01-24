@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU' ];
+const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU', 'EHJA' ];
 const expectedParams = {
   KBLI: { degreesC: 1, zuluTime: '06:53Z',  zuluDayOfMonth: '03'},
   KFNT: { degreesC: 22, zuluTime: '03:21Z', zuluDayOfMonth: '12', windSpeedMph: '15-25'},
@@ -13,7 +13,8 @@ const expectedParams = {
   MHGS: { degreesC: 29, zuluTime: '22:00Z', zuluDayOfMonth: '16'},
   SVCJ: { degreesC: 31, zuluTime: '17:02Z', zuluDayOfMonth: '10'},
   KBRL: { degreesC: 0, zuluTime: '15:45Z',  zuluDayOfMonth: '15', windSpeedMph: '5'},
-  PANU: { degreesC: 18, zuluTime: '18:56Z',  zuluDayOfMonth: '22', windSpeedMph: '7'}
+  PANU: { degreesC: 18, zuluTime: '18:56Z',  zuluDayOfMonth: '22', windSpeedMph: '7', windDir: 'NW'},
+  EHJA: { degreesC: 9, zuluTime: '16:55Z',  zuluDayOfMonth: '24', windSpeedKph: '76', windDir: undefined}
 };
 
 // Given an observation like
