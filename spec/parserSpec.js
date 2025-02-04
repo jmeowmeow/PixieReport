@@ -14,7 +14,7 @@ const expectedParams = {
   SVCJ: { degreesC: 31, zuluTime: '17:02Z', zuluDayOfMonth: '10'},
   KBRL: { degreesC: 0, zuluTime: '15:45Z',  zuluDayOfMonth: '15', windSpeedMph: '5'},
   PANU: { degreesC: 18, zuluTime: '18:56Z',  zuluDayOfMonth: '22', windSpeedMph: '7', windDir: 'NW'},
-  EHJA: { degreesC: 9, zuluTime: '16:55Z',  zuluDayOfMonth: '24', windSpeedKph: '76', windDir: undefined}
+  EHJA: { degreesC: 9, zuluTime: '16:55Z',  zuluDayOfMonth: '24', windSpeedKph: '76', windDir: 'Wind'}
 };
 
 // Given an observation like

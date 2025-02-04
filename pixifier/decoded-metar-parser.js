@@ -32,6 +32,8 @@ const { icaoToLocationMap } = require('./icao.js');
 // 36010G17KT 360 (North) 10 (10 KT) G17 (gusting to 17 KT)
 // 26017G028KT 260 (WSW) 17 (17 KT) G028 (gusting to 28 KT)
 
+const windRegex = / (VRB|\/\/\/|\d{3})(0?\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
+
 var stationCode = function(obs) {
   var regex = /^([A-Z][A-Z0-9]{3}) /;
   var result = regex.exec(obs);
@@ -141,13 +143,13 @@ var degreesF = function(obs) {
 
 const windSpeed = function(obs) {
     // needs to be consistent with dirMatcher
-    var windMatcher = / (\/\/\/|VRB|\d{3})(0?\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
+    const windMatcher = windRegex;
     var result = windMatcher.exec(obs);
     var retval = null;
     if (result) {
       retval = {};
       if (result[2] == '//') {
-    	  return '';
+      return '';
       }
       var speed = parseInt(result[2], 10);
       var gust = false;
@@ -180,16 +182,16 @@ const windSpeed = function(obs) {
 };
 
 var windSpeedStr = function(obs) {
-	var wsp = windSpeed(obs);
-	return wsp ? wsp.toString() : wsp;
+  var wsp = windSpeed(obs);
+  return wsp ? wsp.toString() : wsp;
 };
 
 var windSpeedKph = function(obs) {
-	var result = windSpeed(obs);
-	if (result) {
-		return result['KPH'];
-	}
-	return '';
+  var result = windSpeed(obs);
+  if (result) {
+    return result['KPH'];
+  }
+  return '';
 };
 
 var windSpeedMph = function(obs) {
@@ -202,13 +204,13 @@ var windSpeedMph = function(obs) {
 
 var windDir = function(obs) {
     // needs to be consistent with windMatcher
-    var dirMatcher = / (VRB|\d{3})(0?\d{2}|\/\/)(G0?(\d{2}))?(KT|MPS)/;
+    const dirMatcher = windRegex;
     var result = dirMatcher.exec(obs);
     if (result) {
       if (result[1] == "VRB") {
         return "Vrbl";
       } else if (result[1] == "///") {
-    	  return "";
+        return "Wind"; // not calm, no direction
       } else if (result[2] == "00") {
         return "Calm";
       } else {
