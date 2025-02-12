@@ -574,6 +574,14 @@ reporting.
 
 Take The Small Win! Accomplished during commute.
 
+Tue 02 Jan 2025 05:30:00 PM PST
+
+Added a stretch-to-fit width experiment for the /stations handler
+image using display: flex and similar flexbox and object-fit attributes.
+
+I think it's a success for mobile screens but a little alarming for
+wide aspects.
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
