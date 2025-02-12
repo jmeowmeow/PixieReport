@@ -754,7 +754,7 @@ const makeGridNav = function(path, latlong) {
      longnav += longTemplate.replace('LONG', longs[idx]).replace('NAV', longnavs[idx]);
    }
    // Experiment, width=100% , add a spacer, so maybe lat/log grid navigation isn't so tiny on mobile?
-   let spacer = '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
+   let spacer = '<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>';
    let gridnav = '<table width="100%"><tr>\n'+latnav + '</tr>\n'+spacer+'\n<tr>' + longnav + '</tr></table>\n';
    return gridnav;
 }
@@ -783,7 +783,7 @@ app.get('/stations', async (req, res) => {
   let body = '';
   let myLocation = "Grid Coordinates";
   let latlong = { degLat: 0.0, degLong: 0.0 }
-  let myClosestStations = "";
+  let myClosestStations = '<div style="display: flex">';
 
   if (absentValue(location)) {
     // maybe there is a degLat/degLong passed as query params?
@@ -827,16 +827,21 @@ app.get('/stations', async (req, res) => {
 
       // code duplication from home page array
       let tileNo = 0;
-      let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}'+units+'"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
+      let pixieimg  = '<a style="flex: 1 1 auto; display: flex" href="pixie?location=${station}&set=${dollset}'+units+'"><img style="flex: 1 1 auto; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
         let dollset=resources.randomDollSetNum(); // discards any URL param dollset
         myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
         tileNo++;
-        if (tileNo % 4 === 0) {myClosestStations += "<br/>";}
+        if (tileNo % 4 === 0) {
+           myClosestStations += "</div>\n";
+           if (tileNo < 12) {
+             myClosestStations += '<div style="display: flex">';
+           }
+        }
       });
-      myClosestStations += "</p>\n";
+      myClosestStations += "\n";
       myClosestStations += `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
 
       const lats =  closestTwelve.map( e => e.lat).concat(latlong.degLat).sort( (a, b) => (a - b) );
