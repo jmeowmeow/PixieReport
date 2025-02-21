@@ -1,0 +1,11 @@
+SANTA MONICA MUNICIPAL AIRPORT , CA, United States (KSMO) 34-01N 118-27W 57M
+Feb 20, 2025 - 02:51 PM EST / 2025.02.20 1951 UTC
+Wind: from the S (190 degrees) at 8 MPH (7 KT):0
+Visibility: 6 mile(s):0
+Sky conditions: clear
+Weather: haze
+Temperature: 62.1 F (16.7 C)
+Dew Point: 52.0 F (11.1 C)
+Relative Humidity: 69%
+Pressure (altimeter): 30 in. Hg (1015 hPa)
+ob: KSMO 201951Z 19007KT 6SM HZ CLR 17/11 A3000 RMK AO2 SLP156 T016701
