@@ -841,7 +841,7 @@ app.get('/stations', async (req, res) => {
            }
         }
       });
-      myClosestStations += "\n";
+      myClosestStations = `<div id="nearbyholder">${myClosestStations}</div>\n`;
       myClosestStations += `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
 
       const lats =  closestTwelve.map( e => e.lat).concat(latlong.degLat).sort( (a, b) => (a - b) );
