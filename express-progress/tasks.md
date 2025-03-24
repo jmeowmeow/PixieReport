@@ -582,6 +582,11 @@ image using display: flex and similar flexbox and object-fit attributes.
 I think it's a success for mobile screens but a little alarming for
 wide aspects.
 
+Mon 24 Mar 2025 09:26:41 AM PDT
+
+Tweaked max-width for flexbox /stations holder div.
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
