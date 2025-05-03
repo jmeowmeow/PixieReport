@@ -1,7 +1,8 @@
 const layerDefsBunny   = require('./layerDefsBunny.js');
 const layerDefsHoliday = require('./layerDefsHoliday.js');
 const layerDefsMoomin  = require('./layerDefsMoomin.js');
-const layerDefsPixie0  = require('./layerDefsPixie0.js');
+#const layerDefsPixie0  = require('./layerDefsPixie0.js');
+const layerDefsPixie0  = require('./layerDefsZeroZero.js');
 const layerDefsSelfie  = require('./layerDefsSelfie.js');
 
 const layerDefs = new Map();

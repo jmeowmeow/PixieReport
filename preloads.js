@@ -20,7 +20,7 @@
 
 // Load the resource descriptions expediently, grafting the old script's mechanism.
 // dollset names here are a superset of the ones exposed in the app
-const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'xmas'];
+const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'xmas', 'zero'];
 const dd = new Map();
 const pixiepaths = new Map();
 dollSetNames.map( (n) => {
@@ -105,7 +105,7 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
 }
 
 // Adopted set for general use (excludes 'xmas' set)
-const setNames = ['bunny', 'selfie', 'pixie0', 'moomin' ];
+const setNames = ['bunny', 'selfie', 'zero', 'moomin' ];
 //const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin' ];
 //const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
 resources.setNames    = setNames;
