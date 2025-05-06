@@ -586,6 +586,12 @@ Mon 24 Mar 2025 09:26:41 AM PDT
 
 Tweaked max-width for flexbox /stations holder div.
 
+Tue 06 May 2025 08:51:14 AM PDT
+
+Launched Curi Lagann's Hedgehog On A Stroll as pixie set=4
+but set=4 doesn't seem to parse correctly and select the set.
+Aha, here's the problem:
+  redirectToSetLocation overwrites the set rather than preserving it.
 
 ## Weatherpixie.com Features
 
