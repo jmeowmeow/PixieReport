@@ -199,15 +199,48 @@ app.get('/', (req, res) => {
   res.send(responseBody);
 });
 
+//  "dollset" and "set" separate for '/make'
+const toUrlWithParams = function(baseUrl, props) {
+  let qparams = [];
+  // location or nothing; dollset or nothing; units or nothing.
+  if (props.location) { qparams.push(`location=${props.location}`); }
+  if (props.set == 0 || props.set == '0' || props.set)  { qparams.push(`set=${props.set}`); } // don't shortcut dollset zero
+  if (props.dollset == 0 || props.dollset == '0' || props.dollset)  { qparams.push(`set=${props.dollset}`); } // don't shortcut dollset zero (or re-do it as a special value equivalent to "none"?)
+  if (props.units)    { qparams.push(`units=${props.units}`); }
+  let qUrl;
+  if (qparams.length == 0) {
+    qUrl = baseUrl;
+  } else {
+    qUrl = `${baseUrl}?${qparams.join('&')}`;
+  }
+  return qUrl;
+};
+
+const withQueryParams = function(baseUrl, props) {
+  const qUrl = toUrlWithParams(baseUrl, props);
+  return `${anchor(qUrl, qUrl, qUrl)}`;
+}
+
 const redirectToSetLocation = (req, res) => {
+  // Presumes req.query.location is undefined.
+
   // We could use cookies or other preset info to set
   // which location to use if absent from the request.
-  let redirection = req.path + '?location=KSEA';
+  // preserve dollset and units: join the rest of the qparams?
+
+  // caution: we may want to sort the param keys for the cache key's sake.
+
   let location = randomStation();
-  if (location) {
-    redirection = req.path + `?location=${location}`;
+  if (!location) {
+    location = 'KSEA'; // SEA-TAC, because why not?
   }
-  res.redirect(redirection);
+  let pathWithLocation = `${req.path}?location=${location}`
+  if (req.query) {
+    req.query.location = location;
+  } else {
+    req.query = {'location': location};
+  }
+  res.redirect(toUrlWithParams(req.path, req.query));
 };
 
 const KLAN = `
@@ -668,24 +701,11 @@ const makeSetViewer = async function() {
   return makeSetTable(asViewer, undefined);
 }
 
-const toUrlWithParams = function(baseUrl, props) {
-  let qparams = [];
-  // location or nothing; dollset or nothing; units or nothing.
-  if (props.location) { qparams.push(`location=${props.location}`); }
-  if (props.dollset == 0 || props.dollset == '0' || props.dollset)  { qparams.push(`set=${props.dollset}`); } // don't shortcut dollset zero (or re-do it as a special value equivalent to "none"?)
-  if (props.units)    { qparams.push(`units=${props.units}`); }
-  let qUrl;
-  if (qparams.length == 0) {
-    qUrl = baseUrl;
-  } else {
-    qUrl = `${baseUrl}?${qparams.join('&')}`;
-  }
-  return qUrl;
-};
-
-const withQueryParams = function(baseUrl, props) {
-  const qUrl = toUrlWithParams(baseUrl, props);
-  return `${anchor(qUrl, qUrl, qUrl)}`;
+const pixieProps = function(req) {
+  let location = req.query.location;   // undef is ok
+  let dollset  = req.query.set;        // undef is ok; filter out unknowns <0 >setnum
+  let units    = req.query.units;      // C or F, upcased, undef is ok; filter out unknowns
+  return { units, dollset, location }; // shorthand: 'units': units, etc.
 }
 
 app.get('/make', async (req, res) => {  // wip picker
@@ -695,9 +715,9 @@ app.get('/make', async (req, res) => {  // wip picker
   // we want this endpoint to potentially be re-entered
   // during editing choices and allow undef values.
   let location = req.query.location; // undef is ok
-  let dollset  = req.query.set; // undef is ok; filter out unknowns <0 >setnum
-  let units  = req.query.units; // C or F, upcased, undef is ok; filter out unknowns
-  const props = { units, dollset, location, baseUrl: '/make' }; // 'units': units, etc.
+  let dollset  = req.query.set;      // undef is ok; filter out unknowns <0 >setnum
+  let units    = req.query.units;    // C or F, upcased, undef is ok; filter out unknowns
+  const props  = { ...pixieProps(req), baseUrl: '/make' }; // 'units': units, etc.
   // Depict the URLs being constructed, the important dimensions being:
   // which endpoint: PNG or iframe source; maybe a multi-station array like "nearby"
   // source/render choices, all optional: weather station, pixie set, C/F.
