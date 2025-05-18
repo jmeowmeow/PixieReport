@@ -1,4 +1,4 @@
-const layerDefSnapshot = 
+const layerDefSnapshot =
 {
   bkgd: [
     {
@@ -151,4 +151,4 @@ const layerDefSnapshot =
     path: 'pixifier/pixies/backgrounds/blackframe.png'
   }
 };
-exports.layerDefsBunny = layerDefSnapshot;
+exports.layerDefsHedge = layerDefSnapshot;
