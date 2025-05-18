@@ -606,6 +606,13 @@ stack, so that the witch sprite is in front of the high wind flagpole.
 
 Flexbox continues to be alarming for wide aspects.
 
+Deployed Witch On A Broom to PixieReport.com
+
+Two small changes might be useful:
+1. The preview image in the /make picker should probably include the random location, and be consistent with /random.
+2. The "stations nearby" should honor the pixie set for (at least?) the first image in the array.
+
+
 
 ## Weatherpixie.com Features
 
