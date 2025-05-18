@@ -593,6 +593,20 @@ but set=4 doesn't seem to parse correctly and select the set.
 Aha, here's the problem:
   redirectToSetLocation overwrites the set rather than preserving it.
 
+Sun 18 May 2025 08:12:52 AM PDT
+
+Deployed logic to preserve ?set= query param so that /make works without a
+location set.
+
+Curi Lagann's second set, Witch On A Broom, has been delivered.
+I added PNG metadata for the Author field, "Curi Lagann, curilagann.art"
+
+Change in composition to move wind flags behind the pixie image in the layer
+stack, so that the witch sprite is in front of the high wind flagpole.
+
+Flexbox continues to be alarming for wide aspects.
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features

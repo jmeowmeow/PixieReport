@@ -241,8 +241,8 @@ async function compose(params) {
   addBackgroundLayer(layers, params);
   addCloudLayer(layers, params);
   addLightningLayer(layers, params);
+  addWindFlagLayer(layers, params); // move behind doll for pixiewitch set
   addDollLayer(layers, params);
-  addWindFlagLayer(layers, params);
   addWeatherLayers(layers, params, unrendered);
   addFrame(layers, params);
   const sceneText = computeSceneText(layers);

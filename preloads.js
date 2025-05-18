@@ -20,7 +20,7 @@
 
 // Load the resource descriptions expediently, grafting the old script's mechanism.
 // dollset names here are a superset of the ones exposed in the app
-const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'xmas'];
+const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'witch', 'xmas'];
 const dd = new Map();
 const pixiepaths = new Map();
 dollSetNames.map( (n) => {
@@ -105,7 +105,7 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
 }
 
 // Adopted set for general use (excludes 'xmas' set)
-const setNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge' ];
+const setNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'witch' ];
 //const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin' ];
 //const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
 resources.setNames    = setNames;
@@ -117,12 +117,13 @@ const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, na
 const pixie0Layers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, namedLayers);
 const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
 const hedgeLayers  = savePixieLayers(setNames[4], dd, pixiepaths, pixieFiles, namedLayers);
-resources.dollSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers];
+const witchLayers  = savePixieLayers(setNames[5], dd, pixiepaths, pixieFiles, namedLayers);
+resources.dollSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers];
 
 // We should probably pick the doll set in the server or composer, but for now, here.
 // Vestigial code to select a doll set for a single script run.
 // Does the server ever compose without choosing a dollset?
-const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers];
+const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers];
 const chosenDollSet = dollLayerSets[resources.randomDollSetNum()];
 const icyDoll  = chosenDollSet[0];
 const coldDoll = chosenDollSet[1];
