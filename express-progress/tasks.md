@@ -613,6 +613,12 @@ Two small changes might be useful:
 2. The "stations nearby" should honor the pixie set for (at least?) the first image in the array.
 
 
+Wed 28 May 2025 06:07:57 PM PDT
+
+Let's see if we can do the things as above.
+1. /make preview image now clicks through to a pixie page with navigation like /random.
+2. "stations nearby" /stations makes dollset sticky for first link, round-trips.
+
 
 ## Weatherpixie.com Features
 

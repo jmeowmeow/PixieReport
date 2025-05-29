@@ -732,8 +732,11 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
   unitsOptions.map( each => { unitsOptionsUrls.push(
     `${withQueryParams('/make', {...props, 'units': each})}\n`); });
   const urlSection = `<p>URLs to copy:<br/>${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
-  const previewPngUrl = toUrlWithParams('/png', props);
-  const previewSection = `Preview Image<br/><a href="${previewPngUrl}"><img src="${previewPngUrl}" title="picker preview" /></a><br/>`;
+  // early-bind a PNG preview location so it's conserved on clickthrough
+  const propsWithLocation = { ...props, 'location': (location) ? location : randomStation() }
+  const previewPngUrl = toUrlWithParams('/png', propsWithLocation);
+  const previewClickUrl = toUrlWithParams('/pixie', propsWithLocation);
+  const previewSection = `Preview Image<br/><a href="${previewClickUrl}"><img src="${previewPngUrl}" title="picker preview" /></a><br/>`;
   const unitsSection = "<p>Choose Weather Report Units<br/>" +
     `C/F by station locale: ${unitsOptionsUrls[0]}<br/>` +
 		`C/hPa/kph: ${unitsOptionsUrls[1]}<br/>` +
