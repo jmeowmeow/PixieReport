@@ -708,7 +708,7 @@ const pixieProps = function(req) {
   return { units, dollset, location }; // shorthand: 'units': units, etc.
 }
 
-app.get('/make', async (req, res) => {  // wip picker
+app.get('/make', async (req, res) => {  // dollset and units picker, location wip
   tallyClientIp(req);
   const mynav = nav(req);
   // Don't redirect if station or set is undefined,
@@ -807,6 +807,9 @@ app.get('/stations', async (req, res) => {
   let myLocation = "Grid Coordinates";
   let latlong = { degLat: 0.0, degLong: 0.0 }
   let myClosestStations = '<div style="display: flex">';
+  let urlDollset = req.query.set;
+  if (!(req.query.set == 0 || req.query.set == '0' || req.query.set))
+    { urlDollset = resources.randomDollSetNum(); }
 
   if (absentValue(location)) {
     // maybe there is a degLat/degLong passed as query params?
@@ -845,7 +848,10 @@ app.get('/stations', async (req, res) => {
       closestStns.map(each => ( each.distance = diffwt(each)));
       // anchored list of closest METAR stations on our active station list
       const closestTwelve = closestStns.slice(0,12);
-      const closestStnsStr  = closestTwelve.reduce((a, b) =>
+      const firstStn =    closestTwelve[0];
+      const firstStnUrl = toUrlWithParams('/stations', {...pixieProps(req), 'location': firstStn.station});
+      const firstStnStr = `${firstStn.distance.toFixed(2)} ${anchor(firstStnUrl, firstStn.station, 'Stations near '+firstStn.station)} ${firstStn.desc}`;
+      const closestStnsStr  = firstStnStr + closestTwelve.slice(1).reduce((a, b) =>
         (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station+units, b.station, 'Stations near '+b.station)} ${b.desc}`), "");
 
       // code duplication from home page array
@@ -854,7 +860,7 @@ app.get('/stations', async (req, res) => {
       closestTwelve.map(each =>
       {
         let stn = each.station;
-        let dollset=resources.randomDollSetNum(); // discards any URL param dollset
+        let dollset = (tileNo == 0) ? urlDollset : resources.randomDollSetNum(); // retain url for first image
         myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
         tileNo++;
         if (tileNo % 4 === 0) {
