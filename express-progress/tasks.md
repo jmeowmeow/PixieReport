@@ -616,9 +616,27 @@ Two small changes might be useful:
 Wed 28 May 2025 06:07:57 PM PDT
 
 Let's see if we can do the things as above.
-1. /make preview image now clicks through to a pixie page with navigation like /random.
-2. "stations nearby" /stations makes dollset sticky for first link, round-trips.
+- [X]  /make preview image now clicks through to a pixie page with navigation like /random.
+- [X]  "stations nearby" /stations makes dollset sticky for first link, round-trips.
 
+
+Wed 04 Jun 2025 09:13:36 AM PDT
+
+Third set from Curi Lagann on the way.
+
+I'm wondering if editing in VSCode might be useful for operating more fluidly /
+fluently with refactoring Javascript, esp. server.js.
+
+Ideas about the picker. The /stations logic already has a doubly indexed
+lat/long list. Do we filter it for our active list? We could try just a picker.
+What might that look like? We already have a world map which could give us a
+starting lat/long as an image map.
+
+Maybe even have the world map as a picker on the nearby stations page.
+especially if there's no specific station chosen.
+
+Sun 08 Jun 2025 08:44:47 AM PDT
+KU52 https://beaverutah.net/community/beaver-city-airport/
 
 ## Weatherpixie.com Features
 
@@ -644,7 +662,7 @@ Let's see if we can do the things as above.
         - [X] Which doll sets are available?
     - [X] C/F unit picker
     - [ ] Geographic picker
-    - [ ] Copy this URL / cookie-me this pixie / copy this embed / bookmark this URL
+    - [ ] Widget to: Copy this URL / cookie-me this pixie / copy this embed / bookmark this URL
 - [X] Site Navigation
 - [ ] Pixie Renderer
     - [X] METAR code, doll series yield a scene
@@ -656,7 +674,7 @@ Let's see if we can do the things as above.
 
 Prelaunch
 - [X] Caddy or Nginx reverse proxy. (Nginx)
-- [X] Certbot or similar. Certbot, but a one-off 2024-08-11. Because fedwiki occupies :80, I have to manually fetch new certs or script the down / up hooks.
+- [X] Certbot or similar. Certbot, but a one-off 2024-08-11, repeated manually. Because fedwiki occupies :80, I have to manually fetch new certs or script the down / up hooks.
 
 ## Next Step Directions
 
