@@ -30,7 +30,7 @@ describe("data resource modules should load OK", function() {
   beforeAll(function() {
     icaoEntries = Object.entries(icaoToLocationMap);
     entryCount = icaoEntries.length;
-    // to-do: also check the active stations list for geodata?
+    // to-do: cross-check the active stations list vs icao geodata?
     expect(icaoToLocationMap).toBeDefined();
     expect(icaoToLocationMap).not.toBe(null);
     expect(activeMetarStations).toBeDefined();
@@ -39,7 +39,7 @@ describe("data resource modules should load OK", function() {
   });
 
   it("location map should have this many entries", function() {
-    expect(entryCount).toBe(8727);
+    expect(entryCount).toBe(8728);
   });
 
   it("location map first entry should be", function() {
