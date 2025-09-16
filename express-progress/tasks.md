@@ -638,6 +638,27 @@ especially if there's no specific station chosen.
 Sun 08 Jun 2025 08:44:47 AM PDT
 KU52 https://beaverutah.net/community/beaver-city-airport/
 
+Undated (June 2025): At some point I renewed the Let's Encrypt certificate.
+
+23 June 2025
+Used the Devin DeepWiki summarizer on PixieReport. It uses "comprehensive"
+where it isn't appropriate, and gets a few things wrong, but overall it's 
+not bad at summarizing the project.
+https://deepwiki.com/jmeowmeow/PixieReport
+
+Mon 16 Jun 2025 08:50:47 AM PDT
+LTFO Rize-Artvin Airport, built on Black Sea fill.
+Maybe it's time for a new geodata snapshot and cross-check of active
+stations vs. geodata.
+
+Fri 22 Aug 2025
+Renewed Let's Encrypt certificate through November 20th.
+
+Tue 16 Sep 2025 08:13:42 AM PDT
+K2IS Clewistown Airglades Airport, Florida.
+
+
+
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
