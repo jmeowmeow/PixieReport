@@ -17,7 +17,7 @@ const {compose} = require('./compose-async');
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
 const {computeImageTextValues, useMetric} = require('./pixifier/compute-image-text');
 // pixie cache and recent client IP addresses
-const {cache, clients, robots} = require('./webapp/cache');
+const {cache, clients, robots, pages} = require('./webapp/cache');
 
 const dispRecentIps = function(brk, ipCache) {
   return ipCache.showclients().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
@@ -29,6 +29,10 @@ const dispclients = function(brk) {
 
 const disprobots = function(brk) {
   return dispRecentIps(brk, robots);
+}
+
+const disppages = function(brk) {
+  return dispRecentIps(brk, pages);
 }
 
 const tallyRobotIp = function(req) {
@@ -45,6 +49,13 @@ const tallyClientIp = function(req) {
   }
 }
 
+const tallyPage = function(req) {
+  let path = req.path;
+  if (path) {
+    pages.increment(path, Date.now());
+  }
+}
+
 // app activity counters
 const {increment, clearout, showcounters} = require ('./webapp/counters')
 
@@ -52,7 +63,7 @@ const dispcounters = function(brk) {
   return showcounters().reduce((a,b) => a + `${b[0]} : ${b[1]} ${brk}\n`, `${brk}\n`);
 }
 
-clearout('imagecount', 'pixiecount');
+clearout('pngcount', 'p64count');
 
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
@@ -150,12 +161,14 @@ const shortStationName = function(stn) {
 }
 
 app.get('/robots.txt', (req, res) => {
+  tallyPage(req);
   tallyRobotIp(req);
   res.setHeader('Content-Type', 'text/plain');
   res.send(robots_txt);
 });
 
 app.get('/', (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const stationChoices = [
   'KSEA', 'KPAE', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH'
@@ -310,6 +323,7 @@ const fetchMETAR = async (location) => {
 }
 
 app.get('/json', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const location = req.query.location;
   if (absentValue(location)) {
@@ -323,6 +337,7 @@ app.get('/json', async (req, res) => {
 });
 
 app.get('/metar', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
   const location = req.query.location;
@@ -414,6 +429,7 @@ const wrapInCopy = function(spanId, spanText) {
 }
 
 app.get('/compose', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   // Developer's view of a pixie render.
   const location = req.query.location;
@@ -444,7 +460,7 @@ app.get('/compose', async (req, res) => {
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
     res.send(responseBody);
-    increment('pixiecount');
+    increment('p64count');
   });
 });
 
@@ -484,11 +500,12 @@ const servePixie = async function(req, res, location, note) {
     const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${note}`;
     const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
     res.send(responseBody);
-    increment('pixiecount');
+    increment('p64count');
   });
 }
 
 app.get('/about', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   let doc = anchor('https://github.com/jmeowmeow/PixieReport/blob/main/doc/weatherpixie-prospectus.md','PixieReport Prospectus', 'PixieReport History, Notes, and Prospects');
   let body = "<p>About the PixieReport server.</p>";
@@ -510,12 +527,13 @@ app.get('/about', async (req, res) => {
     const body = imageHolder.replace(/_SRC_/g, src);
     const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
     res.send(responseBody);
-    increment('pixiecount');
+    increment('p64count');
   });
 });
 
 // parameters: airport code, C/F, which pixie set; optional!
 app.get('/pixie', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const location = req.query.location;
   if (absentValue(location)) {
@@ -527,6 +545,7 @@ app.get('/pixie', async (req, res) => {
   });
 
 app.get('/random', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const location = randomStation();
   // can we supply a doll set and C/F params (or other theming params?)
@@ -537,6 +556,7 @@ app.get('/random', async (req, res) => {
 });
 
 app.get('/png', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const location = req.query.location;
   if (absentValue(location)) {
@@ -555,7 +575,7 @@ app.get('/png', async (req, res) => {
     'Content-Type': 'image/png'
   })
   .end(pngbuf);
-  increment('imagecount');
+  increment('pngcount');
 });
 
 const msecPerHr = 3600 * 1000;
@@ -584,15 +604,17 @@ const to_hhmmss = function(msec) {
 }
 
 app.get('/uptime', (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   res.setHeader('Content-Type', 'text/plain');
   // JSON dump of header object
   let headers = JSON.stringify(req.headers, null, 2);
-  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\ncallers ${dispclients('')}\nrobots ${disprobots('')}\n\n${headers}\n`);
+  res.send(`Uptime: ${to_hhmmss(sinceStart())}\n${dispcounters('')}\npages ${disppages('')}\ncallers ${dispclients('')}\nrobots ${disprobots('')}\n\n${headers}\n`);
 });
 
 app.get('/cache', (req, res) => {
   const dtNow = Date.now();
+  tallyPage(req);
   tallyClientIp(req);
   res.setHeader('Content-Type', 'text/html');
   res.header('Refresh', '10');
@@ -709,6 +731,7 @@ const pixieProps = function(req) {
 }
 
 app.get('/make', async (req, res) => {  // dollset and units picker, location wip
+  tallyPage(req);
   tallyClientIp(req);
   const mynav = nav(req);
   // Don't redirect if station or set is undefined,
@@ -748,6 +771,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 });
 
 app.get('/sets', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const mynav = nav(req);
   const body = await makeSetViewer();
@@ -798,6 +822,7 @@ const stationDot = function(sta, span, latlong) {
 };
 
 app.get('/stations', async (req, res) => {
+  tallyPage(req);
   tallyClientIp(req);
   const location = req.query.location;
   let units = req.query.units;

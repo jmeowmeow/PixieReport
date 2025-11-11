@@ -2,6 +2,7 @@
 // using prototype-based inheritance and "this"
 // to glue together functions into object-like items
 // "cache" and "clients" for export.
+// Viva SelfLang!
 
 const cacheDurationMin = 5;
 const cacheDurationMsec = 1000 * 60 * cacheDurationMin;
@@ -91,11 +92,16 @@ const clients = {
 }
 
 const robots = {
- ...clients  
+ ...clients
+}
+
+const pages = {
+ ...clients
 }
 
 clients.clear();
 robots.clear();
+pages.clear();
 // Ephemeral synthetic transaction style test at start-up.
 let clientStart = Date.now();
 clients.increment('255.255.255.255', clientStart);
@@ -105,5 +111,8 @@ clients.increment('192.168.0.1', clientStart);
 clients.increment('192.168.0.1', clientStart);
 clients.increment('10.0.0.1', clientStart);
 
+pages.increment('/dev/null', clientStart);
+
 exports.clients = clients;
-exports.robots = robots;
+exports.robots  = robots;
+exports.pages   = pages;
