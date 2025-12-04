@@ -871,7 +871,8 @@ app.get('/stations', async (req, res) => {
         return dw;
       }
       myLocation = myLocation + ' ' + JSON.stringify(latlong);
-      gridnav = '<p>\n'+makeGridNav(req.path, latlong)+'\n</p>\n';
+      // gridnav = '<p>\n'+makeGridNav(req.path, latlong)+'\n</p>\n';
+      gridnav = '<p>Grid navigation temporarily disabled: scrapers.</p>\n';
       let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
       closestStns.map(each => ( each.distance = diffwt(each)));
       // anchored list of closest METAR stations on our active station list
