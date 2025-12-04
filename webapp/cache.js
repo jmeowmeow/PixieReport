@@ -4,7 +4,7 @@
 // "cache" and "clients" for export.
 // Viva SelfLang!
 
-const cacheDurationMin = 5;
+const cacheDurationMin = 2; // down from 5 as scraper expedient
 const cacheDurationMsec = 1000 * 60 * cacheDurationMin;
 
 const put = function (key, value, now) {
