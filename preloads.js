@@ -138,10 +138,10 @@ namedLayers.set('hotPixie', hotDoll);
 
 // day/night background and special "no report" layer.
 namedLayers.set("noreport", new Layer("video static", "pixifier/pixies/backgrounds/nosignal-bkg.png"));
-// namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
+namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/starrynightbkg.png"));
 // save for Moomin doll set or meteor showers or comets! (Oct 2024 comet special)
 // namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/nightcometbkg.png"));
-namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/newyears-nightbackground.png"));
+// namedLayers.set("night", new Layer("night", "pixifier/pixies/backgrounds/newyears-nightbackground.png"));
 namedLayers.set("gray", new Layer("gray twilight", "pixifier/pixies/backgrounds/graybackground.png"));
 namedLayers.set("pink", new Layer("dusk", "pixifier/pixies/backgrounds/pinkbackground.png"));
 namedLayers.set("day", new Layer("day", "pixifier/pixies/backgrounds/sunnybackground.png"));
