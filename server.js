@@ -67,6 +67,7 @@ clearout('pngcount', 'p64count');
 
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
 
+const viewport   = '<meta name="viewport" content="width=device-width, initial-scale=1" />\n';
 const ogTitle    = '<meta property="og:title" content="PixieReport" />\n';
 const ogType     = '<meta property="og:type" content="website" />\n';
 const ogImage    = '<meta property="og:image" content="https://github.com/jmeowmeow/PixieReport/raw/main/doc/images/image6.png" />\n';
@@ -87,7 +88,7 @@ const getContentById = function(domId) {
 `;
 const headscript = `<script>${getContentById}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
-const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${opengraph}${headscript}</head>`;
+const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}</head>`;
 
 // in which we reinvent Lodash a method at a time, to avoid managing
 // a dependency stream
@@ -183,7 +184,7 @@ app.get('/', (req, res) => {
   stationChoices.push(randomStation());
   let body = "";
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
-  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
+  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}" style="object-fit: scale-down"><img alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}" style="object-fit: scale-down"/></a>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += navigation;
@@ -834,7 +835,7 @@ app.get('/stations', async (req, res) => {
   let body = '';
   let myLocation = "Grid Coordinates";
   let latlong = { degLat: 0.0, degLong: 0.0 }
-  let myClosestStations = '<div style="display: flex">';
+  let myClosestStations = '';
   let urlDollset = req.query.set;
   if (!(req.query.set == 0 || req.query.set == '0' || req.query.set))
     { urlDollset = resources.randomDollSetNum(); }
@@ -885,7 +886,7 @@ app.get('/stations', async (req, res) => {
 
       // code duplication from home page array
       let tileNo = 0;
-      let pixieimg  = '<a style="flex: 1 1 auto; display: flex" href="pixie?location=${station}&set=${dollset}'+units+'"><img style="flex: 1 1 auto; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
+      let pixieimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}'+units+'"><img height="100%" width="100%" style="display: grid; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
@@ -893,14 +894,15 @@ app.get('/stations', async (req, res) => {
         myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
         tileNo++;
         if (tileNo % 4 === 0) {
-           myClosestStations += "</div>\n";
+           myClosestStations += "\n";
            if (tileNo < 12) {
-             myClosestStations += '<div style="display: flex">';
+             myClosestStations += '';
            }
         }
       });
-      myClosestStations = `<div id="nearbyholder" style="max-width: 90vw">\n${myClosestStations}</div>\n`;
-      myClosestStations += `<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
+// Set display: grid  on the containing element and then grid-template-rows: repeat(4, 1fr) and grid-template-columns: repeat(3, 1fr) 
+      myClosestStations = `<div id="nearbyholder" style="max-width: 70vh; max-height: 70vh; display: grid; grid-template-rows: repeat(3, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myClosestStations}</div>\n`;
+      myClosestStations += `<hr/>\n<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
 
       const lats =  closestTwelve.map( e => e.lat).concat(latlong.degLat).sort( (a, b) => (a - b) );
       const longs = closestTwelve.map( e => e.long).concat(latlong.degLong).sort( (a, b) => (a - b) );
