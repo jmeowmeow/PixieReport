@@ -168,6 +168,7 @@ app.get('/robots.txt', (req, res) => {
   res.send(robots_txt);
 });
 
+// PixieReport Home Page
 app.get('/', (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
@@ -182,9 +183,10 @@ app.get('/', (req, res) => {
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
-  let body = "";
+  let body = ""; // home page body is top nav; 18-line station table; 4x4 grid w/first 16 images; bottom nav.
   let pixieLink  = "p <a title='pixie ${station}' href='/pixie?location=${station}'>${station}</a> | <i><a title='developer ${station}' href='/compose?location=${station}'>d</a></i>";
-  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}" style="object-fit: scale-down"><img alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}" style="object-fit: scale-down"/></a>';
+  // Currently no C/F units from the home page, but we can use the query param like nearby/make if we want to.
+  let pixiehomeimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}"><img height="100%" width="100%" style="display: grid; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}" title="pixie for ${station}"/></a>';
   let locationLink = "${location}";
   let reportLink = `<tr><td>${pixieLink}</td><td>${locationLink}</td></tr>\n`;
   body += navigation;
@@ -195,18 +197,21 @@ app.get('/', (req, res) => {
     let loc = shortStationName(stn);
     body += reportLink.replace(/\${station}/g, stn).replace(/\${location}/, loc);
   });
+  // two extra lines in the table; no images in the grid for NZSP and XKXK
   body += reportLink.replace(/\${station}/g, 'NZSP').replace(/\${location}/, shortStationName('NZSP'));
   body += reportLink.replace(/\${station}/g, 'XKXK').replace(/\${location}/, '(unknown station)');
-  body += "</table><br/>"
-  body += "<p>"
+  body += "</table><br/>";
+  body += "<p>";
   let tileNo = 0;
+  let myStationChoices = "";
   stationChoices.map(stn =>
   {
     let dollset=resources.randomDollSetNum();
-    body += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
-    tileNo++;
-    if (tileNo % 4 === 0) {body += "<br/>";}
+    myStationChoices += pixiehomeimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
   });
+// Set "display: grid" on the containing element and then grid-template-rows: repeat(4, 1fr) and grid-template-columns: repeat(4, 1fr) (4w x 4h)
+  myStationChoices = `<div id="stationholder" style="max-width: 70vh; max-height: 70vh; display: grid; grid-template-rows: repeat(4, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myStationChoices}</div>\n`;
+  body += myStationChoices;
   body += "</p>\n"
   body += navigation;
   const responseBody = `${pagehead}<body>${body}</body>`;
@@ -886,21 +891,18 @@ app.get('/stations', async (req, res) => {
 
       // code duplication from home page array
       let tileNo = 0;
-      let pixieimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}'+units+'"><img height="100%" width="100%" style="display: grid; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
+      let pixiegridimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}'+units+'"><img height="100%" width="100%" style="display: grid; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
         let dollset = (tileNo == 0) ? urlDollset : resources.randomDollSetNum(); // retain url for first image
-        myClosestStations += pixieimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
+        myClosestStations += pixiegridimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
         tileNo++;
         if (tileNo % 4 === 0) {
-           myClosestStations += "\n";
-           if (tileNo < 12) {
-             myClosestStations += '';
-           }
+           myClosestStations += "\n"; // the newline is a hint in view-source rather than layout mark-up
         }
       });
-// Set display: grid  on the containing element and then grid-template-rows: repeat(4, 1fr) and grid-template-columns: repeat(3, 1fr) 
+// Set display: grid  on the containing element and then grid-template-rows: repeat(4, 1fr) and grid-template-columns: repeat(3, 1fr) (4w x 3h)
       myClosestStations = `<div id="nearbyholder" style="max-width: 70vh; max-height: 70vh; display: grid; grid-template-rows: repeat(3, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myClosestStations}</div>\n`;
       myClosestStations += `<hr/>\n<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
 

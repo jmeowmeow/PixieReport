@@ -657,6 +657,14 @@ Renewed Let's Encrypt certificate through November 20th.
 Tue 16 Sep 2025 08:13:42 AM PDT
 K2IS Clewistown Airglades Airport, Florida.
 
+Sat 02 May 2026 10:13:17 PM PDT
+Since last update:
+* Still on the same cloud server OS image.
+* KT78 Liberty Municipal TX geodata
+* Add SBJR, SBIL airports in Brazil.
+* Several Let's Encrypt renewals.
+* Sieges of web scrapers (mostly Chinese cloud server IP blocks). Disabled lat/long nearby navigation.
+* CSS Grid navigation working nearby page and home page. This makes wide and narrow browser windows useful for image grids (home; nearby) without needing a media query. Thanks to Aria Stewart for the consult.
 
 
 ## Weatherpixie.com Features
@@ -751,7 +759,7 @@ Generally:
 - [ ] Remove neglected endpoint handlers which have served their purpose
 - [X] Remove console.log for routine operations.
 - [X] Update the prospectus document.
-- [ ] Add an about/credits/source/acknowledgements page to the source.
+- [X] Add an about/credits/source/acknowledgements page to the source.
 - [ ] Consider assertions as a prelude to tests.
 - [ ] Is there a jslint to run for suggested cleanup?
 - [ ] Express.js model app format to review?
