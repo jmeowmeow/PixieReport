@@ -210,7 +210,7 @@ app.get('/', (req, res) => {
     myStationChoices += pixiehomeimg.replace(/\${station}/g, stn).replace(/\${dollset}/g, dollset);
   });
 // Set "display: grid" on the containing element and then grid-template-rows: repeat(4, 1fr) and grid-template-columns: repeat(4, 1fr) (4w x 4h)
-  myStationChoices = `<div id="stationholder" style="max-width: 70vh; max-height: 70vh; display: grid; grid-template-rows: repeat(4, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myStationChoices}</div>\n`;
+  myStationChoices = `<div id="stationholder" style="max-width: 70vh; display: grid; grid-template-rows: repeat(4, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myStationChoices}</div>\n`;
   body += myStationChoices;
   body += "</p>\n"
   body += navigation;
@@ -903,7 +903,7 @@ app.get('/stations', async (req, res) => {
         }
       });
 // Set display: grid  on the containing element and then grid-template-rows: repeat(4, 1fr) and grid-template-columns: repeat(3, 1fr) (4w x 3h)
-      myClosestStations = `<div id="nearbyholder" style="max-width: 70vh; max-height: 70vh; display: grid; grid-template-rows: repeat(3, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myClosestStations}</div>\n`;
+      myClosestStations = `<div id="nearbyholder" style="max-width: 70vh; display: grid; grid-template-rows: repeat(3, 1fr); grid-template-columns: repeat(4, 1fr)">\n${myClosestStations}</div>\n`;
       myClosestStations += `<hr/>\n<p>Closest (lat/long):<br/>\n${closestStnsStr}></p>\n<p>`;
 
       const lats =  closestTwelve.map( e => e.lat).concat(latlong.degLat).sort( (a, b) => (a - b) );
