@@ -822,8 +822,8 @@ const stationDot = function(sta, span, latlong) {
 //  const refLong = latlong.degLong;
   const cx = 0.8 * 260 * (sta.long - span.longMin)/span.longSpan;
   const cy = 20 + (0.8 * 260 * (1 - (sta.lat  - span.latMin)/span.latSpan));
-  const circle = `<circle title="${stn}" id="${stn}" cx="${cx}" cy="${cy}" r="2" fill="black"/>`;
-  const label = `<text x="${cx}" y="${cy+5}">-${stn}</text>`;
+  const circle = `<circle title="${stn}" id="${stn}" cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="2" fill="black"/>`;
+  const label = `<text x="${cx.toFixed(2)}" y="${(cy+4).toFixed(2)}">-${stn}</text>`;
   return ''+circle+label;
 };
 
