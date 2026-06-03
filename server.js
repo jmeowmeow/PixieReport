@@ -816,14 +816,16 @@ const makeGridNav = function(path, latlong) {
 }
 
 // iterate over closest twelve, produce a station dot for each
-const stationDot = function(sta, span, latlong) {
+const stationDot = function(sta, span, latlong, coordScale) {
   const stn = sta.station;
 //  const refLat  = latlong.degLat; // viewpoint coords
 //  const refLong = latlong.degLong;
-  const cx = 0.8 * 260 * (sta.long - span.longMin)/span.longSpan;
-  const cy = 20 + (0.8 * 260 * (1 - (sta.lat  - span.latMin)/span.latSpan));
+  const cx = 250 + coordScale * 500 * (sta.long - span.longMean)/span.longSpan;
+  const cy = 250 - coordScale * 500 * (sta.lat  - span.latMean)/span.latSpan;
   const circle = `<circle title="${stn}" id="${stn}" cx="${cx.toFixed(2)}" cy="${cy.toFixed(2)}" r="2" fill="black"/>`;
   const label = `<text x="${cx.toFixed(2)}" y="${(cy+4).toFixed(2)}">-${stn}</text>`;
+  let staLatLong = {lat: sta.lat, long: sta.long};
+  let cxcy = {cx, cy};
   return ''+circle+label;
 };
 
@@ -908,22 +910,28 @@ app.get('/stations', async (req, res) => {
 
       const lats =  closestTwelve.map( e => e.lat).concat(latlong.degLat).sort( (a, b) => (a - b) );
       const longs = closestTwelve.map( e => e.long).concat(latlong.degLong).sort( (a, b) => (a - b) );
-      const latSpan = (lats[11] - lats[0]).toFixed(3);
-      const longSpan = (longs[11] - longs[0]).toFixed(3);
-      const latMin = lats[0].toFixed(2);
-      const latMax = lats[11].toFixed(2);
-      const longMin = longs[0].toFixed(2);
-      const longMax = longs[11].toFixed(2);
-      const span = {latMin, latMax, latSpan, longMin, longMax, longSpan};
-      const stationDots = closestTwelve.map( e => stationDot(e, span, latlong) ).reduce( (a, b) => `${a}\n${b}`, '');
-      const cx = 0.8 * 260 * (latlong.degLong - span.longMin)/span.longSpan;
-      const cy = 20 + (0.8 * 260 * (1 - (latlong.degLat  - span.latMin)/span.latSpan));
+      const latSpan = (lats[11] - lats[0]);
+      const longSpan = (longs[11] - longs[0]);
+      const latMin = lats[0];
+      const latMax = lats[11];
+      const latMean = ((lats[11] + lats[0])/2.0);
+      const longMin = longs[0];
+      const longMax = longs[11];
+      const longMean = ((longs[11] + longs[0])/2.0);
+      const span = {latMin, latMax, latMean, latSpan, longMin, longMax, longMean, longSpan};
+      // Fitting the nearby stations into the map looks like a job for viewbox
+      // but I couldn't get things to work well; therefore center-based coords
+      // (250,250) for a 500x500 SVG, and coordScale to shrink toward center.
+      const coordScale = 0.8;
+      const stationDots = closestTwelve.map( e => stationDot(e, span, latlong, coordScale) ).reduce( (a, b) => `${a}\n${b}`, '');
+      const cx = 250 + coordScale*(500 * (latlong.degLong - span.longMean)/span.longSpan);
+      const cy = 250 - coordScale*(500 * (latlong.degLat - span.latMean)/span.latSpan);
       const viewpointDot = `<circle title="viewpoint" id="viewpoint" cx="${cx}" cy="${cy}" r="5" stroke="black" fill="none"/>`;
-      mySvg = `<svg width="500" viewbox="0 0 260 260"><rect width="260" height="260" fill="none" stroke="blue" />${stationDots}\n${viewpointDot}</svg>`;
-      showLimits = `<p>The range of the stations and the viewpoint is ${latMin} to ${latMax} latitude, ${longMin} to ${longMax} longitude, or ${latSpan} deg lat, ${longSpan} deg long.</p>`;
-  }
+      mySvg = `<svg width="500" viewbox="0 0 500 500"><rect x="0" y="0" width="100%" height="100%" fill="none" stroke="blue" />${stationDots}\n${viewpointDot}</svg>`;
+      showLimits = `<p>The range of the stations and the viewpoint is ${latMin.toFixed(2)} to ${latMax.toFixed(2)} latitude, ${longMin.toFixed(2)} to ${longMax.toFixed(2)} longitude, or ${latSpan.toFixed(3)} deg lat, ${longSpan.toFixed(3)} deg long.</p>`;
+    }
   const mynav = nav(req);
-  const mapPane = `${showLimits}\n${mySvg}`; 
+  const mapPane = `${showLimits}\n${mySvg}`;
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}${mapPane}`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   res.send(responseBody);
