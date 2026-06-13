@@ -86,6 +86,16 @@ const getContentById = function(domId) {
   }
 }
 `;
+
+// in which we finally remember we're sending HTML document responses
+// replaces most of res.send(responseBody) with
+// sendHtml(res, responseBody);
+const sendHtml = function(responseHandle, bodyElementOuterHtml) {
+  const responseDoc = `<!DOCTYPE html>\n<html>\n${bodyElementOuterHtml}\n</html>\n`;
+  responseHandle.setHeader('Content-Type', 'text/html');
+  responseHandle.send(responseDoc);
+};
+
 const headscript = `<script>${getContentById}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}</head>`;
@@ -215,7 +225,7 @@ app.get('/', (req, res) => {
   body += "</p>\n"
   body += navigation;
   const responseBody = `${pagehead}<body>${body}</body>`;
-  res.send(responseBody);
+  sendHtml(res, responseBody);
 });
 
 //  "dollset" and "set" separate for '/make'
@@ -465,7 +475,7 @@ app.get('/compose', async (req, res) => {
   const wrappedAlt = wrapInCopy('alttext', alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
-    res.send(responseBody);
+    sendHtml(res, responseBody);
     increment('p64count');
   });
 });
@@ -505,7 +515,7 @@ const servePixie = async function(req, res, location, note) {
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${note}`;
     const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
-    res.send(responseBody);
+    sendHtml(res, responseBody);
     increment('p64count');
   });
 }
@@ -532,7 +542,7 @@ app.get('/about', async (req, res) => {
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = imageHolder.replace(/_SRC_/g, src);
     const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
-    res.send(responseBody);
+    sendHtml(res, responseBody);
     increment('p64count');
   });
 });
@@ -629,7 +639,7 @@ app.get('/cache', (req, res) => {
   let activekeys = [...cache.keys()].filter(k => (undefined !== cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   let expiredkeys = [...cache.keys()].filter(k => (undefined === cache.get(k, Date.now()))).reduce((a,b) => `${a}, ${b}`,'');
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${dispcounters('<br/>\n')}</p><p>Cache size = ${cache.size}</p><p>Keys:<br/>${keys}</p><hr/><p>Active keys:<br/>${activekeys}</p><hr/><p>Expired keys:<br/>${expiredkeys}</p>`;
-  const responseBody = `${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>`;
+  const responseBody = `<!DOCTYPE html>\n<html>${pagehead}<body>\n${navigation}\n${body}\n${navigation}\n</body>\n</html>\n`;
   cache.expire(dtNow);
   res.send(responseBody);
 });
@@ -773,7 +783,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 
   const table = await makeSetPicker(props);
   const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${previewSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
-  res.send(responseBody);
+  sendHtml(res, responseBody);
 });
 
 app.get('/sets', async (req, res) => {
@@ -782,7 +792,7 @@ app.get('/sets', async (req, res) => {
   const mynav = nav(req);
   const body = await makeSetViewer();
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
-  res.send(responseBody);
+  sendHtml(res, responseBody);
 });
 
 const makeGridNav = function(path, latlong) {
@@ -934,7 +944,7 @@ app.get('/stations', async (req, res) => {
   const mapPane = `${showLimits}\n${mySvg}`;
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}${mapPane}`;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
-  res.send(responseBody);
+  sendHtml(res, responseBody);
 });
 
 
