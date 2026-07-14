@@ -15,6 +15,7 @@ const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, 
 const {compose} = require('./compose-async');
 // METAR parsing
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
+const externalMapLink = worldMapLink; // distinguish world-map on picker from external world map service
 const {computeImageTextValues, useMetric} = require('./pixifier/compute-image-text');
 // pixie cache and recent client IP addresses
 const {cache, clients, robots, pages} = require('./webapp/cache');
@@ -86,6 +87,11 @@ const getContentById = function(domId) {
   }
 }
 `;
+const copyTextToClipboard = `
+const copyTextToClipboard = function(domId) {
+  navigator.clipboard.writeText(getContentById(domId));
+}
+`;
 
 // in which we finally remember we're sending HTML document responses
 // replaces most of res.send(responseBody) with
@@ -96,7 +102,7 @@ const sendHtml = function(responseHandle, bodyElementOuterHtml) {
   responseHandle.send(responseDoc);
 };
 
-const headscript = `<script>${getContentById}</script>` + '\n';
+const headscript = `<script>${getContentById} ${copyTextToClipboard}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}</head>`;
 
@@ -432,6 +438,7 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
+// with invisible text holder, for regular pixie with hidden alt-text
 const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
   // just innerText the DOM element to avoid quote escaping oops but "copy alt text to clipboard" is not interesting.
   const holderAndWidget = `
@@ -440,6 +447,7 @@ const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
   return holderAndWidget;
 }
 
+// for devpixie or compose endpoint with exposed alt-text
 const wrapInCopy = function(spanId, spanText) {
   return `<span id="${spanId}" onclick="navigator.clipboard.writeText(getContentById('${spanId}'))">${spanText}</span>`;
 }
@@ -462,7 +470,7 @@ app.get('/compose', async (req, res) => {
   let jsonOutput = JSON.stringify(params, null, 2);
   // add a "stations" lookup
   let icaoLocData = stations.get(location);
-  let mapUrl = worldMapLink(params);
+  let mapUrl = externalMapLink(params);
   let mapLink = '';
   if (mapUrl.startsWith('http')) {
      mapLink = `<a href="${mapUrl}">${mapUrl}</a>`;
@@ -474,7 +482,7 @@ app.get('/compose', async (req, res) => {
   const mynav = nav(req);
   const wrappedAlt = wrapInCopy('alttext', alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
+    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt (click in text to copy)=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
     sendHtml(res, responseBody);
     increment('p64count');
   });
@@ -499,7 +507,7 @@ const servePixie = async function(req, res, location, note) {
     icaoLoc = `No information in database for station code ${location}.`;
     icaoLoc = icaoLoc + `\n<br/>Try NWS METAR for <a href="https://aviationweather.gov/data/metar/?id=${location}">${location}</a>\n`
   }
-  let mapUrl = worldMapLink(params);
+  let mapUrl = externalMapLink(params);
   let mapLink = '';
   if (mapUrl.startsWith('http')) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
@@ -569,6 +577,20 @@ app.get('/random', async (req, res) => {
   const refsec = '10';
   res.header('Refresh', refsec);
   servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.</p>`);
+});
+
+// <img src="/worldmap">
+app.get('/worldmap', async (req, res) => {
+  tallyPage(req);
+  tallyClientIp(req);
+  const worldbuf = await resources.worldMap.img.getBufferAsync(Jimp.MIME_PNG);
+  res
+  .writeHead(200, {
+    'Content-Length': Buffer.byteLength(worldbuf),
+    'Content-Type': 'image/png'
+  })
+  .end(worldbuf);
+
 });
 
 app.get('/png', async (req, res) => {
@@ -782,7 +804,8 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 		`F/mmHg/mph: ${unitsOptionsUrls[2]}</p>\n`;
 
   const table = await makeSetPicker(props);
-  const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${previewSection}\n${unitsSection}\n${table}\n${mynav}\n</body>`;
+  const worldmap = '<br/> I am a world map!<br/><img src="/worldmap" alt="world map">';
+  const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${previewSection}\n${unitsSection}\n${worldmap}\n${table}\n${mynav}\n</body>`;
   sendHtml(res, responseBody);
 });
 
@@ -839,9 +862,38 @@ const stationDot = function(sta, span, latlong, coordScale) {
   return ''+circle+label;
 };
 
+
+// Handle imagemap clicks
+app.get('/stationsmap', async (req, res) => {
+  // handles imagemap ?x,y query format
+  // lat = (height/2 - y)/height * 180.0 // north latitude
+  // long = (x - width/2)/width * 360.0 // east longitude
+
+  // any error here could be reasonably responded to with a 40x code
+  let xy = Object.keys(req.query).filter(k => /,/.test(k)).at(0).split(',');
+  console.log(`xy = [ ${xy[0]}, ${xy[1]} ]`);
+
+  let x = Number(xy[0]);
+  let y = Number(xy[1]);
+  let width = resources.worldMap.width;
+  let height = resources.worldMap.height;
+  let long=(360/width*(x - width/2)).toFixed(1);
+  let lat=(180/height*(height/2 - y)).toFixed(1);
+  let redirection ='/stations' + `?degLat=${lat}&degLong=${long}`;
+  console.log(redirection);
+  res.redirect(redirection);
+  return;
+
+}) ;
+
+
+
 app.get('/stations', async (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
+  // start of extractable logic for nearby stations (for /make station picker)
+
+  // handling input parameters and extracting values for page logic
   const location = req.query.location;
   let units = req.query.units;
   if (units == 'F' || units == 'C') {
@@ -853,10 +905,13 @@ app.get('/stations', async (req, res) => {
   let myLocation = "Grid Coordinates";
   let latlong = { degLat: 0.0, degLong: 0.0 }
   let myClosestStations = '';
+  // preserve a dollset value from the query params if needed;
+  // otherwise render the no-doll-set image with a random set
   let urlDollset = req.query.set;
   if (!(req.query.set == 0 || req.query.set == '0' || req.query.set))
     { urlDollset = resources.randomDollSetNum(); }
 
+  // do we have a weather station code? y/n
   if (absentValue(location)) {
     // maybe there is a degLat/degLong passed as query params?
     if (req.query.degLat && req.query.degLong) {
@@ -869,13 +924,19 @@ app.get('/stations', async (req, res) => {
       return;
     }
   } else {
+    // we have a station code in the input params
     let icaoLocData = stations.get(location); // lat/long after last comma
     if (icaoLocData) {
       myLocation = icaoLocData.substring(1+icaoLocData.lastIndexOf(', '));
     }
+    // use the lat/long from the external data report (see London airports for confusion)
     const params = decodedToParamsForStation(await fetchMETAR(location), location);
     latlong = params.latlong;
   }
+  // we have all the data needed to find the nearest stations
+
+  // find the nearest (active) stations -- there is a long list and a short list of active
+  // short = 5000 ; long = 12k?
   let gridnav="";
   let showLimits = "";
   let mySvg = '<svg></svg>';
@@ -903,7 +964,11 @@ app.get('/stations', async (req, res) => {
 
       // code duplication from home page array
       let tileNo = 0;
-      let pixiegridimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}'+units+'"><img height="100%" width="100%" style="display: grid; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+units+'" title="pixie for ${station}"/></a>';
+      let pixiegridimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}'+
+        units +
+        '"><img height="100%" width="100%" style="display: grid; object-fit: cover" alt="pixie for ${station}" src="/png?location=${station}&set=${dollset}'+
+        units +
+        '" title="pixie for ${station}"/></a>';
       closestTwelve.map(each =>
       {
         let stn = each.station;
@@ -940,9 +1005,15 @@ app.get('/stations', async (req, res) => {
       mySvg = `<svg width="500" viewbox="0 0 500 500"><rect x="0" y="0" width="100%" height="100%" fill="none" stroke="blue" />${stationDots}\n${viewpointDot}</svg>`;
       showLimits = `<p>The range of the stations and the viewpoint is ${latMin.toFixed(2)} to ${latMax.toFixed(2)} latitude, ${longMin.toFixed(2)} to ${longMax.toFixed(2)} longitude, or ${latSpan.toFixed(3)} deg lat, ${longSpan.toFixed(3)} deg long.</p>`;
     }
+  // if we didn't render anything the results will be pretty empty
   const mynav = nav(req);
   const mapPane = `${showLimits}\n${mySvg}`;
+  // end of the repurposeable code for /make
+
+  const worldmap = '<a href="/stationsmap"><img src="/worldmap" alt="clickable world map" ismap="true"></a>';
+  // render the /location page output to the servlet output stream
   body = `<p>Uptime: ${to_hhmmss(sinceStart())}</p><p>${myLocation}</p>${gridnav}${myClosestStations}${mapPane}`;
+  body = body + worldmap;
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   sendHtml(res, responseBody);
 });

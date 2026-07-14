@@ -715,6 +715,7 @@ Generally:
 * Ops friendliness
 
 ### Webapp Functions
+
 - [X] HTTP refresh header slideshow of random pixie /random
 - [X] /random - should also link individual slides and jump out of show
 - [X] /png - with no args, serves as a discovered "random pixie image" feature.
@@ -725,8 +726,18 @@ Generally:
     - [X] Units picker (C/F/use station locale)
     - [X] Doll set picker (display, choose)
     - [X] Preview results
-    - [ ] Copy URL(s) to clipboard
-    - [ ] Station list view/search
+    - [ ] Copy /make URL(s) to clipboard -- use similar technique from alt-text
+    - [ ] Station list view/search <- or use map navigation
+
+2026-07-13: Map Navigation Attempts
+
+- [ ] Add click response from weather map to lat/long
+    - [X] Start by using /stations page which already has lat/long navigation
+    - [X] Add parsing x,y to degLat, degLong. You can use the preloaded image size.
+- [ ] Show nearest stations on /make page, similar to /stations page.
+- [ ] Make the nearest stations a selectable list
+- [ ] maybe we can try spriting the weather map in the client? hmm
+    - [ ] How much zoom/unzoom can we use and have it still be useful?
 
 ### Webapp architecture
 - [X] page template structure with navigation

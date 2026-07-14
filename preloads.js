@@ -64,6 +64,8 @@ class Layer {
     this.desc = desc;
     this.path = path;
     this.img = undefined;
+    this.height = 175;
+    this.width = 125;
   }
 
   myPromise() {
@@ -76,7 +78,11 @@ class Layer {
       return this.myPromise();
     } else {
       let jp = Jimp.read(this.path);
-      jp.then( (result) => { this.img = result; } );
+      jp.then( (result) => {
+        this.img = result;
+        this.height=result.bitmap.height;
+        this.width=result.bitmap.width;
+      } );
       return jp;
     }
   }
