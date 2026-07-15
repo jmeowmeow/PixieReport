@@ -2494,6 +2494,7 @@ K1GN: "GOLF (plaza), ND, UNITED STATES (K1GN), 48-07N 101-58W 644M", // weather.
 K1GW: "GOLF MADIS, NE, United States (K1GW), 41-13N 103-06W 1335M",
 K1H2: "EFFINGHAM, IL, United States (K1H2), 39-04N 088-32W 174M",
 K1HM: "HOTEL, MT, United States (K1HM), 47-42N 111-57W 1181M",
+K1HN: "HOTEL, ND, United States (K1HN), 47-58N 102-13W 600M", // a guess for elevation
 K1HW: "HOTEL MADIS, NE, United States (K1HW), 41-19N 102-50W 1265M",
 K1II: "HIMSEL AAF, IN, United States (K1II), 39-20N 086-02W 214M",
 K1IM: "INDIA, MT, United States (K1IM), 47-19N 111-28W 1110M",
