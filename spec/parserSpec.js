@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU', 'EHJA', 'KSMO' ];
+const samples = [ 'KFNT', 'KIIY', 'KLAN', 'KSIY', 'NZSP', 'VEJS', 'KYIP', 'KBLI', 'MHGS', 'SVCJ', 'KBRL', 'PANU', 'EHJA', 'KSMO', 'VOKN' ];
 const expectedParams = {
   KBLI: { degreesC: 1, zuluTime: '06:53Z',  zuluDayOfMonth: '03'},
   KFNT: { degreesC: 22, zuluTime: '03:21Z', zuluDayOfMonth: '12', windSpeedMph: '15-25'},
@@ -16,7 +16,10 @@ const expectedParams = {
   PANU: { degreesC: 18, zuluTime: '18:56Z',  zuluDayOfMonth: '22', windSpeedMph: '7', windDir: 'NW'},
   EHJA: { degreesC: 9, zuluTime: '16:55Z',  zuluDayOfMonth: '24', windSpeedKph: '76', windDir: 'Wind'},
   KSMO: { degreesC: 17, zuluTime: '19:51Z', zuluDayOfMonth: '20', windDir: 'S'},
+  VOKN: { degreesC: 24, zuluTime: '01:00Z', zuluDayOfMonth: '15', windDir: 'ESE'},
 };
+
+// VOKN has unparsed "partial fog" as PRFG in the brief METAR, "partial fog" in the parsed; "patchy fog" might also apply?
 
 // Given an observation like
 // ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016

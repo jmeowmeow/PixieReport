@@ -1,0 +1,13 @@
+Hello from VOKN, report follows:
+ Station name not available
+Jul 14, 2026 - 09:00 PM EDT / 2026.07.15 0100 UTC
+Wind: from the ESE (120 degrees) at 5 MPH (4 KT):0
+Visibility: less than 1 mile:0
+Sky conditions: mostly clear
+Weather: partial fog
+Temperature: 75 F (24 C)
+Dew Point: 73 F (23 C)
+Relative Humidity: 94%
+Pressure (altimeter): 29.83 in. Hg (1010 hPa)
+ob: VOKN 150100Z 12004KT 0300 R25/0325 R07/2000 PRFG FEW001 24/23 Q1010 TEMPO 0800 FG
+cycle: 1
