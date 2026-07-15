@@ -731,7 +731,7 @@ Generally:
 
 2026-07-13: Map Navigation Attempts
 
-- [ ] Add click response from weather map to lat/long
+- [X] Add click response from weather map to lat/long
     - [X] Start by using /stations page which already has lat/long navigation
     - [X] Add parsing x,y to degLat, degLong. You can use the preloaded image size.
 - [ ] Show nearest stations on /make page, similar to /stations page.

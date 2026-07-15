@@ -779,6 +779,11 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
   let dollset  = req.query.set;      // undef is ok; filter out unknowns <0 >setnum
   let units    = req.query.units;    // C or F, upcased, undef is ok; filter out unknowns
   const props  = { ...pixieProps(req), baseUrl: '/make' }; // 'units': units, etc.
+
+  // somewhere in here, if we have degLat and degLong but location is undefined/unknown,
+  // bind the nearest station to the location parameter. Otherwise we fall through to a
+  // random station
+
   // Depict the URLs being constructed, the important dimensions being:
   // which endpoint: PNG or iframe source; maybe a multi-station array like "nearby"
   // source/render choices, all optional: weather station, pixie set, C/F.
@@ -792,8 +797,10 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
   const unitsOptions = [ undefined, 'C', 'F' ];
   unitsOptions.map( each => { unitsOptionsUrls.push(
     `${withQueryParams('/make', {...props, 'units': each})}\n`); });
+  // consider making the urlSection URLs rendered and copy-pasteable;
+  // though we'd have to bind the site name and perhaps elide http/https and port number?
   const urlSection = `<p>URLs to copy:<br/>${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
-  // early-bind a PNG preview location so it's conserved on clickthrough
+  // early-bind a PNG preview location so a random pick is conserved on clickthrough
   const propsWithLocation = { ...props, 'location': (location) ? location : randomStation() }
   const previewPngUrl = toUrlWithParams('/png', propsWithLocation);
   const previewClickUrl = toUrlWithParams('/pixie', propsWithLocation);
@@ -804,7 +811,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 		`F/mmHg/mph: ${unitsOptionsUrls[2]}</p>\n`;
 
   const table = await makeSetPicker(props);
-  const worldmap = '<br/> I am a world map!<br/><img src="/worldmap" alt="world map">';
+  const worldmap = '<a href="/makemap"><img src="/worldmap" alt="clickable world map" ismap="true"></a>';
   const responseBody = `${pagehead}<body>\n${mynav}\n${urlSection}\n${previewSection}\n${unitsSection}\n${worldmap}\n${table}\n${mynav}\n</body>`;
   sendHtml(res, responseBody);
 });
@@ -862,31 +869,58 @@ const stationDot = function(sta, span, latlong, coordScale) {
   return ''+circle+label;
 };
 
+// Handle imagemap clicks using ?x,y query format
+// we lose any dollset or C/F units params, c'est la vie for server-parsed imagemaps
+const imageMapRedirection = function(req, res, pathTemplate) {
 
-// Handle imagemap clicks
-app.get('/stationsmap', async (req, res) => {
-  // handles imagemap ?x,y query format
-  // lat = (height/2 - y)/height * 180.0 // north latitude
-  // long = (x - width/2)/width * 360.0 // east longitude
-
-  // any error here could be reasonably responded to with a 40x code
+  // any error parsing x,y could be reasonably responded to with a 4x code
   let xy = Object.keys(req.query).filter(k => /,/.test(k)).at(0).split(',');
   console.log(`xy = [ ${xy[0]}, ${xy[1]} ]`);
-
   let x = Number(xy[0]);
   let y = Number(xy[1]);
+
+  // todo check for shenanigans and return a 4xx go away robot.
+
   let width = resources.worldMap.width;
   let height = resources.worldMap.height;
-  let long=(360/width*(x - width/2)).toFixed(1);
-  let lat=(180/height*(height/2 - y)).toFixed(1);
-  let redirection ='/stations' + `?degLat=${lat}&degLong=${long}`;
+  let long=((x - width/2)/width*360.0).toFixed(1);
+  let lat=((height/2 - y)/height*180.0).toFixed(1);
+  let location = closestStation(lat, long);
+  // redirection for /make will bind a station; for /stations will bind lat/long.
+  let redirection =
+    pathTemplate.replace('${location}', location).replace('${lat}', lat).replace('${long}', long);
   console.log(redirection);
   res.redirect(redirection);
   return;
 
-}) ;
+};
 
+app.get('/stationsmap', async (req, res) => imageMapRedirection(req, res, '/stations?degLat=${lat}&degLong=${long}'));
 
+app.get('/makemap', async (req, res) => imageMapRedirection(req, res, '/make?location=${location}'));
+
+// factored from /stations for use in /make with geo picker
+const closestStationsWithDistance = function(latlong) {
+// latlong = {degLat: float, degLong: float}
+  const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
+  const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
+  // approximate distance metric, weighting longitude decreasing by cosine of latitude.
+  const diffwt = function(stn) {
+    let dw = ((coslat * Math.abs(ifdef(stn.long) - latlong.degLong)) +
+              (Math.abs(ifdef(stn.lat) - latlong.degLat)));
+    return dw;
+  }
+  let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
+  closestStns.map(each => ( each.distance = diffwt(each)));
+  return closestStns;
+};
+
+const closestStation = function(degLat, degLong) {
+  let latlong = { degLat: Number.parseFloat(degLat),
+                  degLong: Number.parseFloat(degLong) };
+  let stations = closestStationsWithDistance(latlong);
+  return stations[0].station;
+};
 
 app.get('/stations', async (req, res) => {
   tallyPage(req);
@@ -941,19 +975,10 @@ app.get('/stations', async (req, res) => {
   let showLimits = "";
   let mySvg = '<svg></svg>';
   if (latlong) {
-      const coslat = Math.cos(3.141 * latlong.degLat / 180.0); // 180 degrees / pi radians
-      const ifdef = function(val) { if ((typeof val) === 'number') { return val;} else { return 9999; }}
-      // approximate distance metric, weighting longitude decreasing by cosine of latitude.
-      const diffwt = function(stn) {
-        let dw = ((coslat * Math.abs(ifdef(stn.long) - latlong.degLong)) +
-                  (Math.abs(ifdef(stn.lat) - latlong.degLat)));
-        return dw;
-      }
-      myLocation = myLocation + ' ' + JSON.stringify(latlong);
-      // gridnav = '<p>\n'+makeGridNav(req.path, latlong)+'\n</p>\n';
+  //  gridnav = '<p>\n'+makeGridNav(req.path, latlong)+'\n</p>\n';
       gridnav = '<p>Grid navigation temporarily disabled: scrapers.</p>\n';
-      let closestStns = stationsByLong.slice(0).sort( (a, b) => (diffwt(a) - diffwt(b)) );
-      closestStns.map(each => ( each.distance = diffwt(each)));
+      myLocation = myLocation + ' ' + JSON.stringify(latlong);
+      let closestStns = closestStationsWithDistance(latlong);
       // anchored list of closest METAR stations on our active station list
       const closestTwelve = closestStns.slice(0,12);
       const firstStn =    closestTwelve[0];
