@@ -895,9 +895,17 @@ const imageMapRedirection = function(req, res, pathTemplate) {
 
 };
 
-app.get('/stationsmap', async (req, res) => imageMapRedirection(req, res, '/stations?degLat=${lat}&degLong=${long}'));
+app.get('/stationsmap', async (req, res) => {
+  tallyPage(req);
+  tallyClientIp(req);
+  imageMapRedirection(req, res, '/stations?degLat=${lat}&degLong=${long}');
+});
 
-app.get('/makemap', async (req, res) => imageMapRedirection(req, res, '/make?location=${location}'));
+app.get('/makemap', async (req, res) => {
+  tallyPage(req);
+  tallyClientIp(req);
+  imageMapRedirection(req, res, '/make?location=${location}');
+});
 
 // factored from /stations for use in /make with geo picker
 const closestStationsWithDistance = function(latlong) {
