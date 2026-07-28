@@ -91,6 +91,11 @@ const copyTextToClipboard = `
 const copyTextToClipboard = function(domId) {
   navigator.clipboard.writeText(getContentById(domId));
 }
+const animateAndCopyText = function(element, domId) {
+  element.classList.add('copyAnimation');
+  setTimeout(()=> { element.classList.remove('copyAnimation')}, 750);
+  copyTextToClipboard(domId);
+}
 `;
 
 // in which we finally remember we're sending HTML document responses
@@ -104,7 +109,10 @@ const sendHtml = function(responseHandle, bodyElementOuterHtml) {
 
 const headscript = `<script>${getContentById} ${copyTextToClipboard}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
-const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}</head>`;
+const headstyle = `<style>
+.copyAnimation:after { content: " ☑"}
+</style>`;
+const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}${headstyle}</head>`;
 
 // in which we reinvent Lodash a method at a time, to avoid managing
 // a dependency stream
@@ -443,13 +451,13 @@ const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
   // just innerText the DOM element to avoid quote escaping oops but "copy alt text to clipboard" is not interesting.
   const holderAndWidget = `
 <span id="${spanId}holder" style="display:none">${textToCopy}</span>
-<span id="${spanId}" onclick="navigator.clipboard.writeText(getContentById('${spanId}holder'))">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
+<span id="${spanId}" onclick="animateAndCopyText(this, '${spanId}holder')">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
   return holderAndWidget;
 }
 
 // for devpixie or compose endpoint with exposed alt-text
 const wrapInCopy = function(spanId, spanText) {
-  return `<span id="${spanId}" onclick="navigator.clipboard.writeText(getContentById('${spanId}'))">${spanText}</span>`;
+  return `<span id="${spanId}" onclick="animateAndCopyText(this, '${spanId}')">${spanText}</span>`;
 }
 
 app.get('/compose', async (req, res) => {
@@ -482,7 +490,9 @@ app.get('/compose', async (req, res) => {
   const mynav = nav(req);
   const wrappedAlt = wrapInCopy('alttext', alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const responseBody = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/><p>alt (click in text to copy)=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
+    const body = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/>
+       <p>alt (click in text to copy)=${wrappedAlt}</p><p>icaoLocData=${icaoLocData}</p><p>mapLink=${mapLink}</p><p>${elapsedMsg}</p>${mynav}\n<pre>${jsonOutput}</pre>`;
+    const responseBody = `${pagehead}<body>${body}</body>`;
     sendHtml(res, responseBody);
     increment('p64count');
   });
