@@ -88,13 +88,25 @@ const getContentById = function(domId) {
 }
 `;
 const copyTextToClipboard = `
-const copyTextToClipboard = function(domId) {
-  navigator.clipboard.writeText(getContentById(domId));
+const copyTextToClipboard = function(domId, prefix) {
+  navigator.clipboard.writeText(''+prefix+getContentById(domId));
 }
-const animateAndCopyText = function(element, domId) {
+
+const copyAnimation = function(element) {
   element.classList.add('copyAnimation');
   setTimeout(()=> { element.classList.remove('copyAnimation')}, 750);
-  copyTextToClipboard(domId);
+}
+
+const animateAndCopyText = function(element, domId) {
+  copyAnimation(element);
+  copyTextToClipboard(domId, '');
+}
+
+const animateAndCopyPath = function(element, pathDomId) {
+  copyAnimation(element);
+  // path DOM element text content should start with '/'
+  // pre-pend the server base URL as seen by the client
+  copyTextToClipboard(pathDomId, document.location.origin);
 }
 `;
 
@@ -263,6 +275,12 @@ const withQueryParams = function(baseUrl, props) {
   const qUrl = toUrlWithParams(baseUrl, props);
   return `${anchor(qUrl, qUrl, qUrl)}`;
 }
+
+const withQueryParamsAndId = function(baseUrl, props, idName) {
+  const qUrl = toUrlWithParams(baseUrl, props);
+  return `<span id="${idName}" style="display: none">${qUrl}</span><a href="${qUrl}" title="${qUrl}">${qUrl}</a>`;
+}
+
 
 const redirectToSetLocation = (req, res) => {
   // Presumes req.query.location is undefined.
@@ -446,7 +464,7 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
-// with invisible text holder, for regular pixie with hidden alt-text
+// %%% with invisible text holder, for regular pixie with hidden alt-text
 const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
   // just innerText the DOM element to avoid quote escaping oops but "copy alt text to clipboard" is not interesting.
   const holderAndWidget = `
@@ -778,6 +796,12 @@ const pixieProps = function(req) {
   return { units, dollset, location }; // shorthand: 'units': units, etc.
 }
 
+const asClickToCopyUrl = function(pixieOrPngUrlPath, domId) {
+  // domId names the element with innerText with the URL to be copied
+  let copySpan = `<span onclick="animateAndCopyPath(this, '${domId}')" style="text-decoration: underline">copy URL to clipboard &#x1f4cb;</span>`;
+  return `${pixieOrPngUrlPath} follow link, or ${copySpan}.`;
+}
+
 app.get('/make', async (req, res) => {  // dollset and units picker, location wip
   tallyPage(req);
   tallyClientIp(req);
@@ -792,23 +816,26 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 
   // somewhere in here, if we have degLat and degLong but location is undefined/unknown,
   // bind the nearest station to the location parameter. Otherwise we fall through to a
-  // random station
+  // random station. The image map redirection will bind a station but forget all else.
 
   // Depict the URLs being constructed, the important dimensions being:
   // which endpoint: PNG or iframe source; maybe a multi-station array like "nearby"
   // source/render choices, all optional: weather station, pixie set, C/F.
+  //
+  // Make the urlSection URLs rendered and copy-pasteable; therefore to do
+  // client-side: prefix document.location to the preview URL paths when clicked.
   const endpoints = [ "/pixie", "/png" ];
   let endpointsWithParams = [];
-  endpoints.map( each => { endpointsWithParams.push(
-    `<br/>${withQueryParams(each, props)}\n`); });
+  endpoints.map( each => { 
+          let idName = `urlfor${each.slice(1)}`;
+	  endpointsWithParams.push(
+    `<br/>${asClickToCopyUrl(withQueryParamsAndId(each, props, idName), idName)}\n`); });
 
   // let's do that again with '/make' and the units property.
   let unitsOptionsUrls = [];
   const unitsOptions = [ undefined, 'C', 'F' ];
   unitsOptions.map( each => { unitsOptionsUrls.push(
     `${withQueryParams('/make', {...props, 'units': each})}\n`); });
-  // consider making the urlSection URLs rendered and copy-pasteable;
-  // though we'd have to bind the site name and perhaps elide http/https and port number?
   const urlSection = `<p>URLs to copy:<br/>${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
   // early-bind a PNG preview location so a random pick is conserved on clickthrough
   const propsWithLocation = { ...props, 'location': (location) ? location : randomStation() }
@@ -866,6 +893,7 @@ const makeGridNav = function(path, latlong) {
 }
 
 // iterate over closest twelve, produce a station dot for each
+// Can we make the svg dots clickable in the context of the current page?
 const stationDot = function(sta, span, latlong, coordScale) {
   const stn = sta.station;
 //  const refLat  = latlong.degLat; // viewpoint coords
