@@ -690,7 +690,7 @@ Since last update:
     - [X] Doll set picker
         - [X] Which doll sets are available?
     - [X] C/F unit picker
-    - [ ] Geographic picker
+    - [X] Geographic picker (prototype imagemap of the whole world)
     - [ ] Widget to: Copy this URL / cookie-me this pixie / copy this embed / bookmark this URL
 - [X] Site Navigation
 - [ ] Pixie Renderer
@@ -699,7 +699,7 @@ Since last update:
     - [ ] No-current-data mode: page shows hours since report, but image not sensitive to freshness.
 - [X] Rendered Pixies served as images
     - [X] /png endpoint
-- [ ] HTTP Cookie to remember your chosen location, doll style, units.
+- [ ] HTTP Cookie to remember your chosen location, doll style, units? Or is a bookmarked URL good enough?
 
 Prelaunch
 - [X] Caddy or Nginx reverse proxy. (Nginx)
@@ -729,13 +729,14 @@ Generally:
     - [ ] Copy /make URL(s) to clipboard -- use similar technique from alt-text
     - [ ] Station list view/search <- or use map navigation
 
-2026-07-13: Map Navigation Attempts
+2026-07-13: World Map Navigation Attempts
 
 - [X] Add click response from weather map to lat/long
     - [X] Start by using /stations page which already has lat/long navigation
     - [X] Add parsing x,y to degLat, degLong. You can use the preloaded image size.
 - [ ] Show nearest stations on /make page, similar to /stations page.
-- [ ] Make the nearest stations a selectable list
+    - [X] svg nearest stations
+    - [ ] clickable list like /stations
 - [ ] maybe we can try spriting the weather map in the client? hmm
     - [ ] How much zoom/unzoom can we use and have it still be useful?
 
@@ -755,7 +756,7 @@ Generally:
 - [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
 - [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
 - [ ] METAR stations as a queryable database; how to query? what lists? "near lat, long?"
-- [ ] Pick METAR stations from a map, like FedWiki map marker plugin.
+- [X] Pick METAR stations from a map, like FedWiki map marker plugin. (initial prototype)
 
 ### Parity with Twitterbot pixies. See [./done](./done.md)
 
@@ -773,7 +774,7 @@ Generally:
 - [X] Add an about/credits/source/acknowledgements page to the source.
 - [ ] Consider assertions as a prelude to tests.
 - [ ] Is there a jslint to run for suggested cleanup?
-- [ ] Express.js model app format to review?
+- [X] Express.js model app format to review? (a ha ha ha ha nope)
 - [ ] Replace let or global with const as possible.
 - [ ] Name output template strings rather than leaving nameless inline.
 
@@ -784,6 +785,7 @@ Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 - [X] Factor out layer map into a layer locator passed from the server main program
 - [ ] Enhance layer locator to allow indirection / context by pixie set or other style choices.
+  - [ ] example: comet for Moomins at night; moon if visible; fireworks for new year's night.
 
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp
@@ -799,7 +801,9 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
 - [X] units and dollset chooser active as GET options in '/make'
-- [ ] Weather station chooser. How do we navigate / wizard our way to a choice?
+- [X] Weather station chooser. Rough and imprecise: use server-parsed world imagemap.
+- [ ] Copy-me for URLs: Resolve document.location on the client side.
+- [ ] Copy-me for URLs: Add the checkbox animation.
 
 
 ## Operations Status, Robustness, and Recovery
@@ -818,13 +822,17 @@ From the above item:
 
 ### Pixie Rendering Flaw Reporting and Handling
 Add more information in an ops page or subtly in pixie page, maybe frame-in some specific logs.
- - [X] What about weather conditions with no mapped image layer ("light rain showers"): loggable in devpixie json?
- - [ ] What about rarely reporting stations? Should we refresh the active snapshot more often?
- - [ ] What about stations with an unchanging old report? (time/date detection)
- - [ ] What about stations with no geodata? Is this something loggable in the uptime/debug page?
+ - [X] Weather conditions with no mapped image layer ("ice crystals"): loggable in devpixie json.
+ - [ ] Rarely reporting stations? Should we refresh the active snapshot more often?
+ - [ ] Stations with an unchanging old report? (time/date detection)
+ - [ ] Active stations with no geodata? Is this something loggable in the uptime/debug page?
 
 ### Full METAR parse from raw METAR report.
 These items would enable running from a bulk METAR latest fetch.
+Thoughts:
+* The bulk METAR is wide and wordy and might not need all the fromRawMetar processing.
+* Contra this, wide and wordy may be fragile and subject to parsing errors similar to truncated single fetches.
+* More broadly: what does OpenWeatherMap return?
  - [ ] Add a fromRawMetar section to debug output.
  - [ ] Include a guess at report time / freshness.
  - [ ] Reproduce the 'Decoded METAR" parsing logic for...

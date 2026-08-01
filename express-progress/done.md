@@ -57,6 +57,8 @@ initial Express setup and async handlers.
 * Nearby Stations To: navigate by +/- 1 or 5 degrees of lat/long. (disabled: scrapers)
 * Nearby Stations svg map (noninteractive). 
 * Pixie picker prototype /make with preview for doll sets and C/F units.
+* Geographic station chooser for /make and /stations, world map as server-parsed imagemap.
+* Checkmark animation as a nicety for "copy alt text".
 * CSS grid layout for image grids (home; nearby stations) makes them useful in wide/narrow viewports.
 
 ## Soft Launch
@@ -65,6 +67,7 @@ initial Express setup and async handlers.
 
 ## Public Launch
 * [pixiereport.com](https://pixiereport.com).
-* Let's Encrypt / Certbot certificate (manual fetch), manually renewed 3x by Jan 2025.
+* Let's Encrypt / Certbot certificate (manual fetch), manually renewed multiple times
+  * Because Certbot needs :80, I have to down/up Federated Wiki around the update.
 * Nginx reverse proxy from :443 to :3000.
-* X Nearby Stations +/- 1 or 5 degrees removed since public launch (scrapers)
+* X Nearby Stations, navigation by +/- 1 or 5 degrees removed since public launch (scrapers)
