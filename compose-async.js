@@ -85,7 +85,7 @@ function addDollLayer(layerFiles, params) {
     }
   }
   // messy write-to-request-params for late-bound dollset for "/random"
-  // TODO pull this up so we don't have to write to the params
+  // TODO pull this into the calling code so we don't have to write to the params
   let randomIdx = resources.randomDollSetNum();
   if (!params.dollset) {
     params.dollset = randomIdx;
@@ -135,8 +135,9 @@ function addWeatherLayers(layerFiles, params, unrendered) {
   if (params.weather) {
     for (const cond of params.weather) {
       if (cond == LIGHTNING_PARSED) {
-        // known case handled elsewhere, skip
+        // Lightning has its own layer ordering handled elsewhere, skip.
       } else {
+        // Non-lightning weather layers compose in the order supplied.
         const layer = layerByName(cond);
         if (layer) {
           // known weather types and aliases; this is us
@@ -252,11 +253,11 @@ async function compose(params) {
   addBackgroundLayer(layers, params);
   addCloudLayer(layers, params);
   addLightningLayer(layers, params);
-  addWindFlagLayer(layers, params); // move behind doll for pixiewitch set
-  addDollLayer(layers, params);
+  addWindFlagLayer(layers, params); // move behind doll because of pixiewitch set
+  addDollLayer(layers, params); // TODO bind a random dollset here or in server.js / '/random'
   addWeatherLayers(layers, params, unrendered);
   addFrame(layers, params);
-  const sceneText = computeSceneText(layers);
+  const sceneText = computeSceneText(layers); // TODO Only doll scene alt text: add location/weather?
   let blankCanvas = new Jimp(125, 175, "#000000");
   const jimpLayers = [];
   jimpLayers.push(blankCanvas);
