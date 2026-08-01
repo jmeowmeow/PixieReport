@@ -3,15 +3,26 @@ const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 const LIGHTNING_PARSED = 'Lightning observed';
 
-// weather we show: drizzle, rain, mist, fog, snow
-// weather we don't: haze, smoke, dust, volcanic ash, ice crystals
+// weather we show: drizzle, rain, mist, fog, snow, smoke (see preloads.js)
+// weather we don't: haze, dust, volcanic ash, ice crystals
+// Unresolved, from the server console log 2026-08-01:
+//   Cumulonimbus clouds observed
+//   Towering cumulus clouds observed
+//   fog in the vicinity
+//   haze
+//   ice crystals
+//   showers in the vicinity
+//   thunder
+//   thunder in the vicinity
+
 
 const layerByName = function(name) {
   // preloaded images from resources
   // resources.namedLayers first.
+  // return null to avoid accumulating a blank layer
+  // in the image weather text description
   let layer = resources.namedLayers.get(name);
-  if (layer) { return layer; } else {console.log(`didn't find ${name} in namedLayers`); }
-  return null; // cannot return blank because of image weather text description
+  if (layer) { return layer; } else { return null; }
   }
 
 function backgroundLayer(params) {
