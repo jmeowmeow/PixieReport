@@ -469,13 +469,13 @@ const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
   // just innerText the DOM element to avoid quote escaping oops but "copy alt text to clipboard" is not interesting.
   const holderAndWidget = `
 <span id="${spanId}holder" style="display:none">${textToCopy}</span>
-<span id="${spanId}" onclick="animateAndCopyText(this, '${spanId}holder')">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
+<span id="${spanId}" style="cursor: pointer" onclick="animateAndCopyText(this, '${spanId}holder')">Copy ${spanTitle} to clipboard &#x1f4cb;</span>`;
   return holderAndWidget;
 }
 
 // for devpixie or compose endpoint with exposed alt-text
 const wrapInCopy = function(spanId, spanText) {
-  return `<span id="${spanId}" onclick="animateAndCopyText(this, '${spanId}')">${spanText}</span>`;
+  return `<span id="${spanId}" style="cursor: pointer" onclick="animateAndCopyText(this, '${spanId}')">${spanText}</span>`;
 }
 
 app.get('/compose', async (req, res) => {
@@ -798,8 +798,8 @@ const pixieProps = function(req) {
 
 const asClickToCopyUrl = function(pixieOrPngUrlPath, domId) {
   // domId names the element with innerText with the URL to be copied
-  let copySpan = `<span onclick="animateAndCopyPath(this, '${domId}')" style="text-decoration: underline">copy URL to clipboard &#x1f4cb;</span>`;
-  return `${pixieOrPngUrlPath} follow link, or ${copySpan}.`;
+  let copySpan = `<span onclick="animateAndCopyPath(this, '${domId}')" style="text-decoration: underline; cursor: pointer">copy URL to clipboard &#x1f4cb;</span>`;
+  return `Follow link ${pixieOrPngUrlPath} or ${copySpan}.`;
 }
 
 app.get('/make', async (req, res) => {  // dollset and units picker, location wip
