@@ -13,22 +13,28 @@
 //   (actives): exports.activeMetarStations
 // * Pixel doll layer files (name, file path, Jimp image) + Layer and Jimp
 // * Weather and background layer files.
-// TODO dollsets in resources.*
+// * dollsets in resources.dollSets[0...]
 // These two are in resources.namedLayers in distributed form.
-// For a picker (/make) or survey (/sets), we should provide resources.pixieSets and
-// maybe resources.backgroundSets (e.g. the night-comet)
+// For a picker (/make) or survey (/sets), we provide resources.dollSets
+//
+// For a picker or survey, maybe we should provide resources.backgroundSets
+// (e.g. the night-comet) or art grouped by style?
+// For example, a glitch art style could provide glitched backgrounds.
+// This approach suggests a more complex query approach than using namedLayers.
 
 // Load the resource descriptions expediently, grafting the old script's mechanism.
-// dollset names here are a superset of the ones exposed in the app
-const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'witch', 'xmas'];
+// dollset names here are a superset of the ones exposed in the app (e.g. "xmas")
+// TODO: Resource loading is pretty direct, but could be cleaner and easier to extend
+// TODO: than pixifier/pixies/pixieNAME/ and dolldesc.js, pixie-icy through pixie-hot:
+const dollSetNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'witch', 'prep', 'unique', 'xmas'];
 const dd = new Map();
 const pixiepaths = new Map();
-dollSetNames.map( (n) => {
-  let ppath = (n == 'pixie0') ? n : `pixie${n}`;
+dollSetNames.map( (name) => {
+  let ppath = (name == 'pixie0') ? name : `pixie${name}`;
   const pixiepath = `./pixifier/pixies/${ppath}/`;
-  pixiepaths.set(n, pixiepath);
+  pixiepaths.set(name, pixiepath);
   const dollsetDesc = require(`${pixiepath}/dolldesc.js`);
-  dd.set(n, dollsetDesc.dollsByWeather);
+  dd.set(name, dollsetDesc.dollsByWeather);
 });
 
 // Temperature levels factored here for use in doll image setup,
@@ -89,7 +95,9 @@ class Layer {
 }
 
 
-// namedLayers: main lookup repository for pixel doll composer
+// namedLayers(key, value): main lookup repository for pixel doll composer
+//  key   = the lookup handle; some keys share the same Layer object.
+//  value = an Layer object intended for compositing into a pixel doll weather report.
 const namedLayers = new Map();
 resources.namedLayers = namedLayers;
 namedLayers.set("none", new Layer("none", "pixifier/pixies/weather/blank.png"));
@@ -110,26 +118,31 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
   return thisDollLayers;
 }
 
-// Adopted set for general use (excludes 'xmas' set)
-const setNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'witch' ];
-//const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin' ];
+// Adopted set for general use (excludes 'xmas' alternative to pixie0 "pixel girl" set)
+// TODO: repetition of set names from the doll set names in the doll description data loads?
+const setNames = ['bunny', 'selfie', 'pixie0', 'moomin', 'hedge', 'witch', 'prep', 'unique' ];
+//const xmasSetNames = ['bunny', 'selfie', 'xmas', 'moomin', 'hedge', 'witch', 'prep', 'unique' ];
 //const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
 resources.setNames    = setNames;
 resources.howManySets = setNames.length; // used by '/make' '/sets' and randomDollSetNum()
 resources.randomDollSetNum = function() { return Math.trunc(Math.random()*resources.howManySets) };
 
+// saving named layer doll set groups for the chosenDollSet application
+// TODO: do we even use chosenDollSet anymore?
 const bunnyLayers  = savePixieLayers(setNames[0], dd, pixiepaths, pixieFiles, namedLayers);
 const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, namedLayers);
 const pixie0Layers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, namedLayers);
 const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
 const hedgeLayers  = savePixieLayers(setNames[4], dd, pixiepaths, pixieFiles, namedLayers);
 const witchLayers  = savePixieLayers(setNames[5], dd, pixiepaths, pixieFiles, namedLayers);
+const prepLayers   = savePixieLayers(setNames[6], dd, pixiepaths, pixieFiles, namedLayers);
+const uniqueLayers = savePixieLayers(setNames[7], dd, pixiepaths, pixieFiles, namedLayers);
 resources.dollSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers];
 
 // We should probably pick the doll set in the server or composer, but for now, here.
 // Vestigial code to select a doll set for a single script run.
 // Does the server ever compose without choosing a dollset?
-const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers];
+const dollLayerSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers, prepLayers, uniqueLayers];
 const chosenDollSet = dollLayerSets[resources.randomDollSetNum()];
 const icyDoll  = chosenDollSet[0];
 const coldDoll = chosenDollSet[1];
