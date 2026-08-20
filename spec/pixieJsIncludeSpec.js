@@ -9,6 +9,10 @@ describe("data resource modules should load OK", function() {
         pfx + 'pixiebunny/',
         pfx + 'pixieselfie/',
         pfx + 'pixie0/',
+        pfx + 'pixiehedge/',
+        pfx + 'pixiewitch/',
+        pfx + 'pixieprep/',
+        pfx + 'pixieunique/',
         pfx + 'pixiexmas/'
         ];
 
@@ -24,7 +28,7 @@ describe("data resource modules should load OK", function() {
     expect(entryCount).withContext("number of doll variations by temperature").toBe(5); // icy, cold, cool, warm, hot
     expect(dollEntries[5]).toBeUndefined();
     expect(dollEntries[4][0]).withContext("last map entry").toBe('4');
-    expect(dollEntries[4][1]).withContext("last doll variation has non-empty doll description").toMatch(/\.$/);
+    expect(dollEntries[4][1]).withContext("last doll variation has doll description ending in '.'").toMatch(/\.$/);
   };
 
   beforeAll(function() {
@@ -70,8 +74,24 @@ describe("data resource modules should load OK", function() {
     assertDollDesc(pixieDirs[3]);
   });
 
-  it(`${pixieDirs[4]} should have xmas doll descriptions`, function() {
+  it(`${pixieDirs[4]} should have hedgehog doll descriptions`, function() {
     assertDollDesc(pixieDirs[4]);
+  });
+
+  it(`${pixieDirs[5]} should have witch doll descriptions`, function() {
+    assertDollDesc(pixieDirs[5]);
+  });
+
+  it(`${pixieDirs[6]} should have prep doll descriptions`, function() {
+    assertDollDesc(pixieDirs[6]);
+  });
+
+  it(`${pixieDirs[7]} should have unique doll descriptions`, function() {
+    assertDollDesc(pixieDirs[7]);
+  });
+
+  it(`${pixieDirs[8]} should have xmas doll descriptions`, function() {
+    assertDollDesc(pixieDirs[8]);
   });
 
 });
