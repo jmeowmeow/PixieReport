@@ -137,7 +137,7 @@ const hedgeLayers  = savePixieLayers(setNames[4], dd, pixiepaths, pixieFiles, na
 const witchLayers  = savePixieLayers(setNames[5], dd, pixiepaths, pixieFiles, namedLayers);
 const prepLayers   = savePixieLayers(setNames[6], dd, pixiepaths, pixieFiles, namedLayers);
 const uniqueLayers = savePixieLayers(setNames[7], dd, pixiepaths, pixieFiles, namedLayers);
-resources.dollSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers];
+resources.dollSets = [bunnyLayers, selfieLayers, pixie0Layers, moominLayers, hedgeLayers, witchLayers, prepLayers, uniqueLayers];
 
 // We should probably pick the doll set in the server or composer, but for now, here.
 // Vestigial code to select a doll set for a single script run.

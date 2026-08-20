@@ -764,7 +764,8 @@ const makeSetTable = async function(withPicker, urlProps) {
   }
   // resources.howManySets : index-based iteration of pixel doll sets
   // This will work for a bit, and Tamsin's was up in the double digits
-  // howManySets presumes that all sets are displayed on one page.
+  // howManySets presumes that all sets are displayed on one page; also,
+  // resources.dollSets is loaded separately from resources.howManySets (oops!)
   for (let setNum = 0; setNum < resources.howManySets; setNum += 1) {
     const dollLayers = resources.dollSets[setNum]; // array 0..4 of desc, path, toJimp()
     const dollsetUrl = withPicker ? withQueryParams(urlProps.baseUrl, {...urlProps, dollset: setNum}) : '';
