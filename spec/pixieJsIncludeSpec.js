@@ -55,7 +55,7 @@ describe("data resource modules should load OK", function() {
   });
 
   it("active stations should have this many entries (fwiw!)", function () {
-    expect(activeCount).toBe(4949);
+    expect(activeCount).toBe(4948);
   });
 
   it(`${pixieDirs[0]} should have moomin doll descriptions`, function() {

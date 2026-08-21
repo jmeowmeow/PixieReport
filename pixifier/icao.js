@@ -11706,7 +11706,6 @@ const activeMetarStations = [
 'KPYX',
 'KPZQ',
 'KQBL',
-'KQCG',
 'KQDG',
 'KQEI',
 'KQEJ',
