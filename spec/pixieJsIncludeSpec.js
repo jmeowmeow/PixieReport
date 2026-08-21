@@ -42,19 +42,19 @@ describe("data resource modules should load OK", function() {
     activeCount = activeMetarStations.length;
   });
 
-  it("location map should have this many entries", function() {
-    expect(entryCount).toBe(8739);
+  it("known locations map should have this many entries", function() {
+    expect(entryCount).toBe(8740);
   });
 
-  it("location map first entry should be", function() {
+  it("known locations map first entry should be", function() {
     expect(icaoEntries[0][0]).toBe('AAWR');
   });
 
-  it("location map last entry should be", function() {
+  it("known locations map last entry should be", function() {
     expect(icaoEntries[entryCount-1][0]).toBe('ZYYY');
   });
 
-  it("active stations should have this many entries (fwiw!)", function () {
+  it("active stations list should have this many entries (fwiw!)", function () {
     expect(activeCount).toBe(4948);
   });
 
