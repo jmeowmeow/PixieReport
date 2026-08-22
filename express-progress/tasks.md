@@ -691,7 +691,10 @@ Since last update:
         - [X] Which doll sets are available?
     - [X] C/F unit picker
     - [X] Geographic picker (prototype imagemap of the whole world)
-    - [ ] Widget to: Copy this URL / cookie-me this pixie / copy this embed / bookmark this URL
+    - [ ] Geolocation element picker (see MDN docs on HTML "geolocation").
+    - [X] Widget to: Copy this URL
+        - [X] includes checkmark animation (thanks Reed Spool)
+        - [ ] Extend to cookie-me this pixie / copy this embed / bookmark this URL
 - [X] Site Navigation
 - [ ] Pixie Renderer
     - [X] METAR code, doll series yield a scene
@@ -726,14 +729,17 @@ Generally:
     - [X] Units picker (C/F/use station locale)
     - [X] Doll set picker (display, choose)
     - [X] Preview results
-    - [ ] Copy /make URL(s) to clipboard -- use similar technique from alt-text
-    - [ ] Station list view/search <- or use map navigation
+    - [X] Copy /make URL(s) to clipboard -- use similar technique from alt-text
+    - [X] World map for approximate station picking
+    - [ ] Geolocation element ("nearest station to my coordinates")
+    - [ ] Station list view/search, or navigate the map with quadtree or zoom
 
 2026-07-13: World Map Navigation Attempts
 
 - [X] Add click response from weather map to lat/long
     - [X] Start by using /stations page which already has lat/long navigation
     - [X] Add parsing x,y to degLat, degLong. You can use the preloaded image size.
+- [ ] Revision needed because server parsed imagemap loses the other settings, it only sends ?x,y
 - [ ] Show nearest stations on /make page, similar to /stations page.
     - [X] svg nearest stations
     - [ ] clickable list like /stations
@@ -785,8 +791,11 @@ Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 - [X] Factor out layer map into a layer locator passed from the server main program
 - [ ] Enhance layer locator to allow indirection / context by pixie set or other style choices.
-  - [ ] example: comet for Moomins at night; moon if visible; fireworks for new year's night.
-
+  - [ ] Start by making the weather layer image mapping more explicit (thanks Andrew Sherman)
+    - [ ] Make "parsed weather" to "requested layer" a visible boundary in the code.
+    - [ ] Make background, weather, doll, and accessories more distinct groupings?
+  - [ ] driving example: comet for Moomins at night; moon if visible; fireworks for new year's night.
+  - [ ] driving exampleer: known seaborne stations can have waves, maybe a buoy like Zero Zero island
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp
 - [X] Write the weather report text on the image

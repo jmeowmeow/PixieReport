@@ -193,6 +193,10 @@ namedLayers.set("hurricane", new Layer('two red and black hurricane warning flag
 // composer only cares about the description of the visible layers on top
 // of the pixel doll, so we can re-use a Layer.
 //
+// See express-progress/tasks.md for ideas on how to reorganize code to make
+// make the mapping clearer. Maybe we need to explicitly extract it away from
+// the data setup; the namedLayers setup mingles these concerns. (thanks AS)
+//
 // images to carry the layer description along.
 namedLayers.set('light drizzle', new Layer('light rain', 'pixifier/pixies/weather/ltrain.png'));
 namedLayers.set('drizzle', new Layer('drizzle', 'pixifier/pixies/weather/drizzle.png'));
