@@ -58,6 +58,27 @@ Source URL: [https://twitter.com/miramanga/status/1092320373083947009](https://t
 ![tableau of eighteen overlapping pixel dolls of the same model with dress spanning bikini to parka](images/image11.jpg "tableau of Tamsin pixies from hot to cold")
 
 
+### Pixel Dolling
+
+Tamsin's dolls come from a pixel dolling tradition.
+
+Pixel dolling is its own online culture, with interactive doll making scripts
+and different threads of work from the early Web, when bandwidth was scarce and
+images were small. PixieReport's images are a nod to this time, and as of 2026,
+thanks to a fan of the original, now include sets from the dolling tradition.
+
+There's a distinctive Japanese heritage of on-screen dress-up dolls, kisekae or
+"KISS" dolls distributed as sets of dolls and accessories to run on doll
+programs on a personal computer.
+
+As of the 2020s, a pixel doll dress-up program will most likely run in your web
+browser and allow you to download your composition. A community of enthusiast
+programmers has kept the field alive, with sites such as Dollie Palace offering
+familiar styles.
+
+These days you might see new art related to the dolling tradition in the form
+of "Picrew" character creation sets, with as much attention to the character's
+face, skin, eyes, and hair as to clothing and accessories.
 
 ### Other Pixies: The St. Louis Post-Dispatch Weatherbird
 
