@@ -67,6 +67,8 @@ and different threads of work from the early Web, when bandwidth was scarce and
 images were small. PixieReport's images are a nod to this time, and as of 2026,
 thanks to a fan of the original, now include sets from the dolling tradition.
 
+![Dolling style pixel dolls in day, night, warm, and cold weather](images/dolliepalace-cardiff-ushuaia-paris-s_georgia.png)
+
 There's a distinctive Japanese heritage of on-screen dress-up dolls, kisekae or
 "KISS" dolls distributed as sets of dolls and accessories to run on doll
 programs on a personal computer.
