@@ -230,13 +230,20 @@ resources.worldMap =
 const worldMapPromise = resources.worldMap.toJimp(); // hold that thought...
 promises.push(worldMapPromise);
 
-// Resolution gets printed after the "Server listening" message.
-Promise.allSettled(promises).then((results) => {console.log(`Loaded named image layers, n= ${results.length}`)}).catch(console.error);
+// Absorb typeface loading from compose-async.js
+
+let locationFontPath = "pixifier/bmfont/iosevska-ss04-bold-10green.fnt";
+promises.push( Jimp.loadFont(locationFontPath).then((locationfont) => {
+  resources.locationFont = locationfont;
+}));
+
+let weatherFontPath = "pixifier/bmfont/iosevska-ss04-bold-13white.fnt";
+promises.push( Jimp.loadFont(weatherFontPath).then((weatherfont) => {
+    resources.weatherFont = weatherfont;
+}));
 
 const metarToLocationMap = new Map();
 Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
-
-// TODO: absorb typeface loading from compose-async.js
 
 resources.tempLevelsC = tempLevelsC;
 resources.tempLevels = tempLevels; // a Map and also tempLevels[0] to [4]
@@ -247,3 +254,6 @@ exports.activeMetarStations = activeMetarStations;
 exports.resources = resources;
 exports.Jimp = Jimp;
 exports.Layer = Layer;
+
+// Resolution gets printed after the "Server listening" message.
+Promise.allSettled(promises).then((results) => {console.log(`Loaded named image layers, n= ${results.length}`)}).catch(console.error);

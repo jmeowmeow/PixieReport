@@ -915,7 +915,6 @@ const imageMapRedirection = function(req, res, pathTemplate) {
 
   // any error parsing x,y could be reasonably responded to with a 4x code
   let xy = Object.keys(req.query).filter(k => /,/.test(k)).at(0).split(',');
-  console.log(`xy = [ ${xy[0]}, ${xy[1]} ]`);
   let x = Number(xy[0]);
   let y = Number(xy[1]);
 
@@ -929,7 +928,6 @@ const imageMapRedirection = function(req, res, pathTemplate) {
   // redirection for /make will bind a station; for /stations will bind lat/long.
   let redirection =
     pathTemplate.replace('${location}', location).replace('${lat}', lat).replace('${long}', long);
-  console.log(redirection);
   res.redirect(redirection);
   return;
 

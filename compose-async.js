@@ -256,7 +256,7 @@ async function compose(params) {
   const unrendered = [];
   addBackgroundLayer(layers, params);
   addCloudLayer(layers, params);
-  addLightningLayer(layers, params);
+  addLightningLayer(layers, params); // what would it look like behind the clouds?
   addWindFlagLayer(layers, params); // move behind doll because of pixiewitch set
   addDollLayer(layers, params); // TODO bind a random dollset here or in server.js / '/random'
   addWeatherLayers(layers, params, unrendered);
@@ -273,18 +273,13 @@ async function compose(params) {
   // write station and weather info (compute-image-text.js)
   // Note that location information is not available for all stations.
   const imageTextValues = computeImageTextValues(params);
-  // add the fonts to preloads? TODO: yes, please avoid load-per-pixie composition
-  let locationFontPath = "pixifier/bmfont/iosevska-ss04-bold-10green.fnt";
-  await Jimp.loadFont(locationFontPath).then((font) => {
-    printLocationText(pixie, font, imageTextValues.locationLabel);
-    printTimeText(pixie, font, imageTextValues.zuluTime);
-  });
+  const locationFont = resources.locationFont;
+  const weatherFont = resources.weatherFont;
 
-  let weatherFontPath = "pixifier/bmfont/iosevska-ss04-bold-13white.fnt";
-  await Jimp.loadFont(weatherFontPath).then((font) => {
-    pixie.print(font, 2, 148, imageTextValues.temphum);
-    pixie.print(font, 2, 160, imageTextValues.windbar);
-  });
+  printLocationText(pixie, locationFont, imageTextValues.locationLabel);
+  printTimeText(pixie, locationFont, imageTextValues.zuluTime);
+  pixie.print(weatherFont, 2, 148, imageTextValues.temphum);
+  pixie.print(weatherFont, 2, 160, imageTextValues.windbar);
 
   return [ pixie, sceneText, unrendered ];
 
