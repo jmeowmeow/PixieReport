@@ -790,12 +790,14 @@ Generally:
 Next Logical Steps (next *notional* steps for evolutionary architecture?)
 - [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 - [X] Factor out layer map into a layer locator passed from the server main program
+- [ ] Jimp Font Preload, move it from compose-async to preloads.
 - [ ] Enhance layer locator to allow indirection / context by pixie set or other style choices.
   - [ ] Start by making the weather layer image mapping more explicit (thanks Andrew Sherman)
     - [ ] Make "parsed weather" to "requested layer" a visible boundary in the code.
     - [ ] Make background, weather, doll, and accessories more distinct groupings?
+  - [ ] Group pixie-set-specific weather layers separately from generic weather
   - [ ] driving example: comet for Moomins at night; moon if visible; fireworks for new year's night.
-  - [ ] driving exampleer: known seaborne stations can have waves, maybe a buoy like Zero Zero island
+  - [ ] driving example: known seaborne stations can have waves, maybe a buoy like Zero Zero island
 Full PixieReport function (minus the weather report location choosing wizard) needs
 - [X] Get a font matching the original WeatherPixie loaded into Jimp
 - [X] Write the weather report text on the image
@@ -803,7 +805,6 @@ Full PixieReport function (minus the weather report location choosing wizard) ne
 - [X] Choose a pixel doll set with UI/URL parameter
 - [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [X] Graceful error handling for missing report data or fetch failure (TV static image) call it done.
-- [ ] Group pixie-set-specific weather layers separately from generic weather?
 - [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
@@ -811,8 +812,8 @@ Weather Report Choosing Wizard
 - [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
 - [X] units and dollset chooser active as GET options in '/make'
 - [X] Weather station chooser. Rough and imprecise: use server-parsed world imagemap.
-- [ ] Copy-me for URLs: Resolve document.location on the client side.
-- [ ] Copy-me for URLs: Add the checkbox animation.
+- [X] Copy-me for URLs: Resolve document.location on the client side.
+- [X] Copy-me for URLs: Add the checkbox animation.
 
 
 ## Operations Status, Robustness, and Recovery

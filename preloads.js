@@ -236,6 +236,8 @@ Promise.allSettled(promises).then((results) => {console.log(`Loaded named image 
 const metarToLocationMap = new Map();
 Object.entries(icaoToLocationMap).map(each => {metarToLocationMap.set(each[0], each[1]);});
 
+// TODO: absorb typeface loading from compose-async.js
+
 resources.tempLevelsC = tempLevelsC;
 resources.tempLevels = tempLevels; // a Map and also tempLevels[0] to [4]
 exports.stations = metarToLocationMap;

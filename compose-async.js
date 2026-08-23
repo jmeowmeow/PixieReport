@@ -16,6 +16,10 @@ const LIGHTNING_PARSED = 'Lightning observed';
 //   thunder in the vicinity
 
 
+// TODO: make layerByName behave differently:
+// -- don't return null, accumulate to a list by moving result.push(layer) here.
+// -- we've separated the composition back to front; should the preloaded resources
+// -- already be separated out rather than resources.namedLayers all together?
 const layerByName = function(name) {
   // preloaded images from resources
   // resources.namedLayers first.
@@ -269,7 +273,7 @@ async function compose(params) {
   // write station and weather info (compute-image-text.js)
   // Note that location information is not available for all stations.
   const imageTextValues = computeImageTextValues(params);
-  // add the fonts to preloads?
+  // add the fonts to preloads? TODO: yes, please avoid load-per-pixie composition
   let locationFontPath = "pixifier/bmfont/iosevska-ss04-bold-10green.fnt";
   await Jimp.loadFont(locationFontPath).then((font) => {
     printLocationText(pixie, font, imageTextValues.locationLabel);
