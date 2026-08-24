@@ -62,9 +62,12 @@ const hoursSince = function(obsDate) {
 
 //ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016
 //example: 171550Z -> 17th of the month, 15:50 UT
-var withZuluTime = function(params, metar) {
-  var regex = /(\d{2})(\d{2})(\d{2}Z)/;
-  var result = regex.exec(metar);
+// fallback to searching "/ ... UTC"
+//  example: "Aug 24, 2026 - 10:53 AM EDT / 2026.08.24 1453 UTC"
+var withZuluTime = function(params, metar, decoded) {
+
+  let regex = /(\d{2})(\d{2})(\d{2}Z)/;
+  let result = regex.exec(metar);
   if (result) {
    params.zuluTime = "" + result[2] + ':' + result[3];
    params.zuluDayOfMonth = "" + result[1];
@@ -82,7 +85,34 @@ var withZuluTime = function(params, metar) {
   // older than a month it's kinda what-do-we-do?
    params.zuluDate = zuluDate;
    params.zHoursSince = hoursSince(zuluDate);
+  // pull in the NWS decoded report's date line if hoursSince is suspicious?
+  let hoursDiff = params.zHoursSince;
+  if (hoursDiff > 4.0 || hoursDiff < 0.0) {
+   console.log(`hoursSince is ${params.zHoursSince}`);
+   const nwsDateExpression = (/\/ (.*?) (?=UTC)/);
+   const nwsDateMatchUTC = nwsDateExpression.exec(decoded);
+   let utcDateString;
+   if (nwsDateMatchUTC) {
+     utcDateString = nwsDateMatchUTC[1];
+     let nwsDateFieldExp = /(\d{4}).(\d{2}).(\d{2}) (\d{2})(\d{2})/;
+     let nwsDateFieldResult = utcDateString.match(nwsDateFieldExp);
+     if (nwsDateFieldResult) {
+       let result = nwsDateFieldResult;
+       let nwsDate = new Date(); // "now" provides year and month guesses
+       nwsDate.setUTCFullYear(Number(result[1]));
+       nwsDate.setUTCMonth(Number(result[2] - 1)); // zero based months
+       nwsDate.setUTCDate(Number(result[3]));
+       nwsDate.setUTCHours(Number(result[4]));
+       nwsDate.setUTCMinutes(Number(result[5]));
+       nwsDate.setUTCSeconds(0);
+       nwsDate.setUTCMilliseconds(0);
+       console.log(`nwsDate as UTC/ISO is "${nwsDate.toISOString()}"\n`);
+     }  // we can parse and construct an NWS UTC date.
+    }  // we can identify an NWS UTC date.
+   }; // hoursDiff is suspicious
+
   } else {
+   // no time parsed from METAR line
    params.zuluTime = "(no time)";
   }
   return params;
@@ -494,7 +524,7 @@ var decodedToParamsForStation = function(decodedRawMetarReport, codeRequested) {
     params.windSpeedKph = windSpeedKph(metar); // rendered KPH text
     params.windSpeedMph = windSpeedMph(metar); // rendered MPH text
     params.windDir = windDir(metar);
-    params = withZuluTime(params, metar);
+    params = withZuluTime(params, metar, decoded);
     params.skyCover = skyCover(decoded);
     params.humidity = humidity(decoded);
     params.weather  = weatherlist(decoded);
