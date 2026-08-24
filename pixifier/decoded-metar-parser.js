@@ -62,7 +62,6 @@ const hoursSince = function(obsDate) {
 
 //ob: EGSC 171550Z 23019KT CAVOK 32/14 Q1016
 //example: 171550Z -> 17th of the month, 15:50 UT
-// fallback to searching "/ ... UTC"
 //  example: "Aug 24, 2026 - 10:53 AM EDT / 2026.08.24 1453 UTC"
 var withZuluTime = function(params, metar, decoded) {
 
