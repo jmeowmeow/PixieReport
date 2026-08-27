@@ -546,6 +546,8 @@ const servePixie = async function(req, res, location, note) {
   let title = `Pixel Doll Weather Report from ${location}.`;
   params.text = title;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
+  // Currently if we navigate from '/make' there's no dollset; when
+  // coming from the home page there's a dollset in the params.
   let dollset = params.dollset; // if bound in compose(); TODO pull late-bound set to server code?
   // add a "stations" lookup
   let icaoLoc = stations.get(location);
@@ -559,20 +561,28 @@ const servePixie = async function(req, res, location, note) {
      mapLink = `<p><a href="${mapUrl}">${location} OpenStreetMap</a></p>`;
   }
   const altTextSpan = '\n<p>' + copyTextClipboard('alt', 'alt text', alt) + '</p>\n';
-  let pixieimg  = '<a href="pixie?location=${station}&set=${dollset}"><img width="125" alt="${alt}" src="${src}" title="${title}"/></a>';
+
+  let dollparam;
+  if (absentValue(dollset)) {
+    dollparam = "";
+  } else {
+    dollparam = `&set=${dollset}`;
+  }
+
+  let pixieimg  = '<a href="pixie?location=${station}${dollparam}"><img width="125" alt="${alt}" src="${src}" title="${title}"/></a>';
   const imageHolder = pixieimg.replace(
     /\${station}/g, location).replace(
-      /\${dollset}/g, dollset).replace(
+      /\${dollparam}/g, dollparam).replace(
         /\${alt}/g, alt).replace(
           /\${title}/g, title);
 
   const copyableImageHolder = pixieimg.replace(
     /\${station}/g, location).replace(
-      /\${dollset}/g, dollset).replace(
+      /\${dollparam}/g, dollparam).replace(
         /\${alt}/g, title).replace(
           /\${title}/g, title);
 
-  const pngRelativeUrl = toUrlWithParams("/png", {
+  const pngRelativeUrl = toUrlWithParams("png", {
     location,
     set: req.query.set,
     units: req.query.units,
