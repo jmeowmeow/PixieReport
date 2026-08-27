@@ -1,6 +1,7 @@
 const tStart = Date.now();
 
 const express = require('express');
+const escapeHtml = require('escape-html');
 const app = express();
 const port = 3000;
 const ipv4_localhost = '127.0.0.1';
@@ -110,8 +111,23 @@ const animateAndCopyPath = function(element, pathDomId) {
 }
 `;
 
+const onPageLoad = `
+  // Find src=" and href=" and pre-pend document.location.origin
+  // to particularize text intended for copying, then un-hide that element.
+  // (does the first matching element)
+  const onLoadIncludeOriginBaseUrl = function() {
+    let baseUrl = document.location.origin + '/';
+    element = document.body.querySelector('.sourceloc');
+    let myText = element.textContent;
+    let withServerOrigin =
+      myText.replace('src="', 'src="' + baseUrl).replace('href="', 'href="' + baseUrl);
+    element.textContent = withServerOrigin;
+    element.style = "display: inline";
+  };
+`;
+
 // in which we finally remember we're sending HTML document responses
-// replaces most of res.send(responseBody) with
+// replaces most calls to res.send(responseBody) with
 // sendHtml(res, responseBody);
 const sendHtml = function(responseHandle, bodyElementOuterHtml) {
   const responseDoc = `<!DOCTYPE html>\n<html>\n${bodyElementOuterHtml}\n</html>\n`;
@@ -120,11 +136,13 @@ const sendHtml = function(responseHandle, bodyElementOuterHtml) {
 };
 
 const headscript = `<script>${getContentById} ${copyTextToClipboard}</script>` + '\n';
+const locscript = `<script>${getContentById} ${copyTextToClipboard} ${onPageLoad}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
 const headstyle = `<style>
 .copyAnimation:after { content: " ☑"}
 </style>`;
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}${headstyle}</head>`;
+const locpagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${locscript}${headstyle}</head>`;
 
 // in which we reinvent Lodash a method at a time, to avoid managing
 // a dependency stream
@@ -547,10 +565,24 @@ const servePixie = async function(req, res, location, note) {
       /\${dollset}/g, dollset).replace(
         /\${alt}/g, alt).replace(
           /\${title}/g, title);
+
+  const copyableImageHolder = pixieimg.replace(
+    /\${station}/g, location).replace(
+      /\${dollset}/g, dollset).replace(
+        /\${alt}/g, title).replace(
+          /\${title}/g, title);
+
+  const pngRelativeUrl = toUrlWithParams("/png", {
+    location,
+    set: req.query.set,
+    units: req.query.units,
+  });
+  const copyableCode = copyableImageHolder.replace(/\${src}/g, pngRelativeUrl)
+  const copyableCodeEscaped = 'Copy the following HTML to include this weather report:<br/><p><tt><span class="sourceloc" style="display: none">${copyableCode}</span></tt></p>'.replace(/\${copyableCode}/g, escapeHtml(copyableCode));
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${note}`;
-    const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
+    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}${note}`;
+    const responseBody = `${locpagehead}<body onload="onLoadIncludeOriginBaseUrl()">\n${mynav}\n${body}\n${mynav}\n</body>`;
     sendHtml(res, responseBody);
     increment('p64count');
   });

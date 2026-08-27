@@ -74,14 +74,10 @@ class Layer {
     this.width = 125;
   }
 
-  myPromise() {
-    const fulfilled = new Promise((resolve, reject) => { resolve(this.img); });
-    return fulfilled;
-  }
-
   async toJimp() {
     if (this.img) {
-      return this.myPromise();
+      let alreadyFulfilled = new Promise((resolve, reject) => { resolve(this.img); });
+      return alreadyFulfilled;
     } else {
       let jp = Jimp.read(this.path);
       jp.then( (result) => {
