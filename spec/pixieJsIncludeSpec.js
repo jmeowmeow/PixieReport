@@ -43,7 +43,7 @@ describe("data resource modules should load OK", function() {
   });
 
   it("known locations map should have this many entries", function() {
-    expect(entryCount).toBe(8740);
+    expect(entryCount).toBe(8750);
   });
 
   it("known locations map first entry should be", function() {
@@ -55,7 +55,7 @@ describe("data resource modules should load OK", function() {
   });
 
   it("active stations list should have this many entries (fwiw!)", function () {
-    expect(activeCount).toBe(4948);
+    expect(activeCount).toBe(4943);
   });
 
   it(`${pixieDirs[0]} should have moomin doll descriptions`, function() {
