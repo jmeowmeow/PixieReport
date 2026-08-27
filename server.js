@@ -534,8 +534,9 @@ app.get('/compose', async (req, res) => {
   });
 });
 
-// factored for param-request and random-request
-const servePixie = async function(req, res, location, note) {
+// factored for param-request and random-request and embed
+const servePixie = async function(req, res, location, note, withNav) {
+  const isEmbed = !withNav;
   // which pixel doll? is this in 'req' or already 'params' ?
   const params = decodedToParamsForStation(await fetchMETAR(location), location);
   if (!note || note == '') { // patch contra factoring, had to be after params call.
@@ -591,8 +592,15 @@ const servePixie = async function(req, res, location, note) {
   const copyableCodeEscaped = 'Copy the following HTML to include this weather report:<br/><p><tt><span class="sourceloc" style="display: none">${copyableCode}</span></tt></p>'.replace(/\${copyableCode}/g, escapeHtml(copyableCode));
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
-    const body = imageHolder.replace(/\${src}/g, src)+`<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}${note}`;
-    const responseBody = `${locpagehead}<body onload="onLoadIncludeOriginBaseUrl()">\n${mynav}\n${body}\n${mynav}\n</body>`;
+    const linkedImage = imageHolder.replace(/\${src}/g, src);
+    const pageContent = linkedImage + `<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}${note}`;
+    let responseBody;
+    if (isEmbed) {
+      let linkedImageNewTab = linkedImage.replace(/<a /, '<a target="_blank" ');
+      responseBody = `${pagehead}<body>\n${linkedImageNewTab}\n</body>`;
+    } else {
+      responseBody = `${locpagehead}<body onload="onLoadIncludeOriginBaseUrl()">\n${mynav}\n${pageContent}\n${mynav}\n</body>`;
+    }
     sendHtml(res, responseBody);
     increment('p64count');
   });
@@ -635,7 +643,8 @@ app.get('/pixie', async (req, res) => {
     return;
   }
 
-    servePixie(req, res, location, '');
+    const withNav = true;
+    servePixie(req, res, location, '', withNav);
   });
 
 app.get('/random', async (req, res) => {
@@ -646,7 +655,21 @@ app.get('/random', async (req, res) => {
   // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
   const refsec = '10';
   res.header('Refresh', refsec);
-  servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.</p>`);
+  const withNav = true;
+  servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.</p>`, withNav);
+});
+
+// embed: no navigation in or out, this endpoint is supposed
+// to be for iframes, etc.
+app.get('/embed', async (req, res) => {
+  tallyPage(req);
+  tallyClientIp(req);
+  let location = req.query.location;
+  if (absentValue(location)) {
+    location = randomStation();
+  }
+  const falseForNoNav = false;
+  servePixie(req, res, location, '', falseForNoNav);
 });
 
 // <img src="/worldmap">
