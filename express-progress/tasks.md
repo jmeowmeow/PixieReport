@@ -858,8 +858,10 @@ Add more information in an ops page or subtly in pixie page, maybe frame-in some
 
 - [x] Weather conditions with no mapped image layer ("ice crystals"): loggable in devpixie json.
 - [ ] Rarely reporting stations? Should we refresh the active snapshot more often?
+  - [x] removed five inactive stations from the active list during no-geodata pass
 - [ ] Stations with an unchanging old report? (time/date detection)
 - [ ] Active stations with no geodata? Is this something loggable in the uptime/debug page?
+  - [x] used sqlite3 to create a list of active-no-geodata records, did a pass, added ten geodata
 
 ### Full METAR parse from raw METAR report.
 
