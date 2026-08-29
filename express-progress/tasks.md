@@ -4,7 +4,7 @@ Progress on expressJS server branch
 
 Earlier work from 14 Mar 2024 to [./archived-tasks.md](./archived-tasks.md)
 
-8<---     Cut above to archived-tasks.md and below remains in tasks.md     --->8
+8<--- Cut above to archived-tasks.md and below remains in tasks.md --->8
 
 Tue 25 Jun 2024 09:16:50 AM PDT
 
@@ -28,10 +28,9 @@ Rollover from previous days of possible Tuesday intentions.
 
 Some progress Wednesday-Thursday for pixie sets.
 
-- [X] Address which pixie set via params. set=0,1,2,3 or set=bunny,selfie,pixie0,moomin
-- [X] Pixie preview link in / or /random should include the pixie set as a param.
+- [x] Address which pixie set via params. set=0,1,2,3 or set=bunny,selfie,pixie0,moomin
+- [x] Pixie preview link in / or /random should include the pixie set as a param.
 - [ ] Image cache with 5-10min duration. Add a nocache param? but redirect if seen.
-
 
 Tue 09 Jul 2024 08:12:49 AM PDT
 
@@ -40,9 +39,9 @@ Reviewing "done" and "tasks" Probably ready for a revamp and rollover of tasks.
 Next obvious bits:
 
 Public alpha, needs:
-* METAR report cache to avoid hammering the NWS
-* status and statistics page (all we have is uptime and the console)
 
+- METAR report cache to avoid hammering the NWS
+- status and statistics page (all we have is uptime and the console)
 
 Thu 11 Jul 2024 08:45:38 AM PDT
 
@@ -68,59 +67,62 @@ expect when reloading the home page (which is mostly the same set of stations).
 2. Maybe I need a cache list page.
 3. Oh oops I forgot to make a fetch generate a cache.put();
 
-
 **Cache Thoughts**
 
 Extracted to [./cache.md](./cache.md)
 
-
 Tue 16 Jul 2024 09:26:27 AM PDT
 
-* Cache implemented and deployed. It could use an automatic expire.
-* PM2 rolled out as new production launcher. First one's free! [pm2.io](https://pm2.io).
-* Updated [./cache.md](./cache.md) and [./done.md](./done.md).
+- Cache implemented and deployed. It could use an automatic expire.
+- PM2 rolled out as new production launcher. First one's free! [pm2.io](https://pm2.io).
+- Updated [./cache.md](./cache.md) and [./done.md](./done.md).
 
 Tuesday intentions:
-* Review the prospectus. (check.)
-* Consider launch tasks:
-    * How do we set up a HTTPS cert for \*.pixiereport.com ?
-    * reverse proxy via nginx or other?
-* Consider nearest-sites using icao.js geolocations near in lat or long.
-* Add some list of nearest sites to the devpixie / compose page.
+
+- Review the prospectus. (check.)
+- Consider launch tasks:
+  - How do we set up a HTTPS cert for \*.pixiereport.com ?
+  - reverse proxy via nginx or other?
+- Consider nearest-sites using icao.js geolocations near in lat or long.
+- Add some list of nearest sites to the devpixie / compose page.
 
 Wilder ideas (not today):
-* Bring Your Own Pictures via PaperJS or a simpler "load to canvas, add transparency".
-* As well as /png, have /randompng for a slide show of includable images. Alt text to HTTP headers?
-* As well as /png, have /gif for gif89a animated pics or slideshow stacks of multiple locs.
-* Multiple "location" query params to make your own matrix (or gif). Redirect to a canonical version for URL based caching if you like.
+
+- Bring Your Own Pictures via PaperJS or a simpler "load to canvas, add transparency".
+- As well as /png, have /randompng for a slide show of includable images. Alt text to HTTP headers?
+- As well as /png, have /gif for gif89a animated pics or slideshow stacks of multiple locs.
+- Multiple "location" query params to make your own matrix (or gif). Redirect to a canonical version for URL based caching if you like.
 
 Mon 22 Jul 2024 05:06:14 PM PDT
 
-* Working on sorted grid of stations by lat/long for "nearest stations to this one".
-
+- Working on sorted grid of stations by lat/long for "nearest stations to this one".
 
 Mon 29 Jul 2024 09:24:17 AM PDT
 
 Done since last Monday:
-* Nearest-stations includes a grid of linked images.
+
+- Nearest-stations includes a grid of linked images.
 
 Intention:
-* Default View for Nearby Stations. See thoughts below.
+
+- Default View for Nearby Stations. See thoughts below.
 
 Thoughts on navigating nearby stations:
-* DONE. Nearby Stations Default View: Zero Zero Island (degLat, degLong)
-* Nearby Stations Zoom by Decimation. Do we want to do some binning? Only the most remote
-stations have a large reach, because densely spaced stations give a small area.
-* Nearby Stations in each cardinal direction. Kind of nonsensical for high latitude but helpful if you're on a continent edge and your next-East or next-West station is a jump; also allows southern-edge stations more reach.
-* DONE. Nearby Stations by Lat-Long, with directional browsing. "Stations near LAT, LONG" and
-navigation with +/- degrees.
-* Of course there's much-thought-of, much-deferred OpenStreetMap Leaflet and linked pegs for navigation.
-* Client-side imagemap for nearby stations navigation. One could JUST DO THAT on a static world map or SVG world map, or pair of world / nearby station image maps.
+
+- DONE. Nearby Stations Default View: Zero Zero Island (degLat, degLong)
+- Nearby Stations Zoom by Decimation. Do we want to do some binning? Only the most remote
+  stations have a large reach, because densely spaced stations give a small area.
+- Nearby Stations in each cardinal direction. Kind of nonsensical for high latitude but helpful if you're on a continent edge and your next-East or next-West station is a jump; also allows southern-edge stations more reach.
+- DONE. Nearby Stations by Lat-Long, with directional browsing. "Stations near LAT, LONG" and
+  navigation with +/- degrees.
+- Of course there's much-thought-of, much-deferred OpenStreetMap Leaflet and linked pegs for navigation.
+- Client-side imagemap for nearby stations navigation. One could JUST DO THAT on a static world map or SVG world map, or pair of world / nearby station image maps.
 
 Wilder idea (from Sunday wiki):
-* External Federated Wiki server URL patterns, serving wiki-compatible JSON including
-sitemap and cache items. Try using Eric Dobbs' model of a wiki-compatible bookmarking
-site from Glitch, an "outpost" of Federated Wiki.
+
+- External Federated Wiki server URL patterns, serving wiki-compatible JSON including
+  sitemap and cache items. Try using Eric Dobbs' model of a wiki-compatible bookmarking
+  site from Glitch, an "outpost" of Federated Wiki.
 
 Thu 01 Aug 2024 09:53:23 AM PDT
 
@@ -179,11 +181,11 @@ endpoints now and then, not just me.
 
 Thursday intentions.
 
-- [X] Request header dump. (turns out it's an Object)
-    - [X] Check on client IP header on public site. "GoogleBot!"
+- [x] Request header dump. (turns out it's an Object)
+  - [x] Check on client IP header on public site. "GoogleBot!"
 - [ ] Freshness of a METAR report, what's non-fresh?
 - [ ] Render non-fresh report time how? (hh:mm since?)
-- [ ] Cache clear without hitting /cache endpoint 
+- [ ] Cache clear without hitting /cache endpoint
 
 Mon 19 Aug 2024 08:58:02 AM PDT
 
@@ -195,7 +197,7 @@ implicit expire() inside cache.js or should that be in server.js ?
 
 Added expire() in server.js
 
-- [X] Cache expire(dtNow) without hitting /cache endpoint (10% on a pixie image
+- [x] Cache expire(dtNow) without hitting /cache endpoint (10% on a pixie image
       cache miss).
 
 De-tabbed cache.js . Probably want to remove tab formatting in your dev
@@ -240,9 +242,7 @@ image inclusion on the /png endpoint, the browser doesn't get it.
 I guess one could add something in the PNG properties but it's not
 like the browser would expose that detail in the view.
 
-Two sides to doing the pixie matrix pages as img src=data server-side:
-    1. Having a client page pull 12 or 16 pixies is that much client-side chattiness.
-    2. Having the server pull 12 or 16 pixies is a potential hammering of the NWS METAR servers
+Two sides to doing the pixie matrix pages as img src=data server-side: 1. Having a client page pull 12 or 16 pixies is that much client-side chattiness. 2. Having the server pull 12 or 16 pixies is a potential hammering of the NWS METAR servers
 
 Pulling to-dos from earlier: freshness.
 
@@ -250,9 +250,10 @@ Pulling to-dos from earlier: freshness.
 - [ ] Render non-fresh report time how? (hh:mm since?)
 
 The computed pixie parameters have two dates available.
-* One uses the server date and the raw METAR, which has the UT day-of-month
-and clock time encoded. The "zuluDate" parameter has this information.
-* One is supplied from the parsed report, and is reported with the parameter "dateTimeUTC.utcDate" as a subfield of dateTimeUTC.
+
+- One uses the server date and the raw METAR, which has the UT day-of-month
+  and clock time encoded. The "zuluDate" parameter has this information.
+- One is supplied from the parsed report, and is reported with the parameter "dateTimeUTC.utcDate" as a subfield of dateTimeUTC.
 
 If a decoded report hangs around long enough (which it can!), then
 you can get wildly different guesses between zuluDate (guesses at
@@ -267,7 +268,6 @@ The first step is probably wiring a freshness number into the computed params,
 with a resolution of minutes since report time to server time of param
 computation.
 
-
 Wed 21 Aug 2024 08:24:43 AM PDT
 
 Noticing a couple of no-icao-data reports. So:
@@ -275,7 +275,7 @@ Noticing a couple of no-icao-data reports. So:
 When neither report nor DB has location data, suggest on the pixie page:
 https://aviationweather.gov/data/metar/?id=${location}
 or possibly a MADIS lookup from there or directly?
-  [NOAA MADIS](https://madis.ncep.noaa.gov/madis_metar.shtml)
+[NOAA MADIS](https://madis.ncep.noaa.gov/madis_metar.shtml)
 "No information in database for station ${location}."
 Example stations:
 K1NN
@@ -287,16 +287,15 @@ calling decodedToParamsForStation, passing Date.now().
 oops caused a test failure by adding two lines and forgetting to
 bump up the icao count.
 
-
 Fri 23 Aug 2024 08:43:51 AM PDT
 
 Yesterday: deployed the tightened pixie landing page matrix.
 
 Thoughts:
-* Could the pixie detail page be a picker for doll set and maybe units?
-* "record locator" versus "unique ID" concept for doll sets? (numeric IDs ~ externally enumerable?)
-* interpreter endpoint, "do" or "token", parse the token and unpack it to a pixie or image request? This would allow bookmarkable behavior while rewriting the URLs as needed.
 
+- Could the pixie detail page be a picker for doll set and maybe units?
+- "record locator" versus "unique ID" concept for doll sets? (numeric IDs ~ externally enumerable?)
+- interpreter endpoint, "do" or "token", parse the token and unpack it to a pixie or image request? This would allow bookmarkable behavior while rewriting the URLs as needed.
 
 A feature I would use:
 "Click here to copy alt text to system clipboard." (see: MDN Clipboard API)
@@ -306,16 +305,17 @@ signing authority cert for Go Daddy was absent from both my dev laptop cert
 store and my droplet cert store.
 
 Fixed by:
-* Diagnosing the problem (certificate authority cert unrecognized).
-* Finding some options, trying them out, failing (didn't have new certs).
-* Finding working certs on a newer OS install, copying the Go Daddy certs, and installling them.
-* Laptop: installed in main cert store; Production: added to NodeJS extra certs.
+
+- Diagnosing the problem (certificate authority cert unrecognized).
+- Finding some options, trying them out, failing (didn't have new certs).
+- Finding working certs on a newer OS install, copying the Go Daddy certs, and installling them.
+- Laptop: installed in main cert store; Production: added to NodeJS extra certs.
 
 Mon 26 Aug 2024 08:37:46 AM PDT
 
 Next Obvious Steps
 
-- [X] Make freshness more visible. We have it in params as hours.tenths now. (Added in /compose and /pixie)
+- [x] Make freshness more visible. We have it in params as hours.tenths now. (Added in /compose and /pixie)
 
 Tue 27 Aug 2024 08:49:39 AM PDT
 
@@ -326,9 +326,9 @@ Wed 28 Aug 2024 08:45:22 AM PDT
 Rollover Monday intentions.
 
 - [ ] Factor doll sets into an object composed in preloads. That helps with a picker and duplicated logic across preloads, server, and composer.
-    - [X] Tag usages of the dollset names and cardinality in server and composer.
-    - [X] Make these calls on the preloaded dollsets resource.
-    - [X] Use the dollsets resource in new logic like a picker or displayer. _Displayer_. See '/sets'.
+  - [x] Tag usages of the dollset names and cardinality in server and composer.
+  - [x] Make these calls on the preloaded dollsets resource.
+  - [x] Use the dollsets resource in new logic like a picker or displayer. _Displayer_. See '/sets'.
 - [ ] Copy-to-clipboard functionality. Useful for URLs.
 
 Experiment
@@ -338,23 +338,23 @@ Experiment
 Tue 03 Sep 2024 09:12:51 AM PDT
 
 Tuesday.
-* Placeholder for pixel doll set page. Chose not to add the query params to /sets but maybe could use it to pre-set the chosen pixie doll set.
-* Finished initial version of '/sets'. Not interactive, but shows all the doll layers.
+
+- Placeholder for pixel doll set page. Chose not to add the query params to /sets but maybe could use it to pre-set the chosen pixie doll set.
+- Finished initial version of '/sets'. Not interactive, but shows all the doll layers.
 
 Wed 04 Sep 2024 09:03:04 AM PDT
 
-- [X] Need a push and redeploy for /sets while crossing the UW wi-fi bubble.
+- [x] Need a push and redeploy for /sets while crossing the UW wi-fi bubble.
 - Copy-to-clipboard feels like a soon-ish thing, and some sort of geographic picker.
-    - Note that clipboard.write() and clipboard.writeText() supposedly only work in a secure context and how do I even?
-    - But MDN's example is pretty straightforward, and one could catch and alert or whatever.
-    - [MDN Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard)
+  - Note that clipboard.write() and clipboard.writeText() supposedly only work in a secure context and how do I even?
+  - But MDN's example is pretty straightforward, and one could catch and alert or whatever.
+  - [MDN Clipboard API](https://developer.mozilla.org/en-US/docs/Web/API/Clipboard)
 - Styling for mobile browsers is still pretty terrible.
 
 Mon 09 Sep 2024 08:52:13 AM PDT
 
 Can I whip up a picker? Let's start by passing the location and doll set a la the other
 navigation targets.
-
 
 Mon 16 Sep 2024 08:54:12 AM PDT
 
@@ -367,16 +367,17 @@ More to the point is the picker. Fiddling with picker result URLs to start.
 From the Recurse Center gamedev topic: [Derek Yu's Pixel Art Tutorial](https://derekyu.com/makegames/pixelart.html) with drawing stages for a 96x96 and 32x32 character sprite. He recommends a drawing tablet and just-about-any pixel paint program (Paint, Aseprite, others).
 
 How about this general thought:
-* A call to the pixie generator is a query rendered by endpoint and params.
-* The query operates on a time-varying database (the latest METAR report per station).
-* The query may return multiple results in one or more ways, to wit:
-    * A list-formed query returns a result set. Some list items may be "choose a random station."
-    * A "locations" query returns a result set ordered by nearness to a station or lat/long.
-    * A "favorites" query is a bookmarked list query.
-* A query may return varying results for subsequent calls.
-    * Unspecified parameters are bound randomly (station, doll set); the /random endpoint.
-    * An upstream weather report update.
-    * A cached image expires, the new image rebinds unbound params. Cache key includes params.
+
+- A call to the pixie generator is a query rendered by endpoint and params.
+- The query operates on a time-varying database (the latest METAR report per station).
+- The query may return multiple results in one or more ways, to wit:
+  - A list-formed query returns a result set. Some list items may be "choose a random station."
+  - A "locations" query returns a result set ordered by nearness to a station or lat/long.
+  - A "favorites" query is a bookmarked list query.
+- A query may return varying results for subsequent calls.
+  - Unspecified parameters are bound randomly (station, doll set); the /random endpoint.
+  - An upstream weather report update.
+  - A cached image expires, the new image rebinds unbound params. Cache key includes params.
 
 Tue 17 Sep 2024 06:45:30 PM PDT
 
@@ -389,7 +390,6 @@ rebuild the URL locally on a form change. IDK how to do a site picker. Maybe ima
 of the world with a couple levels of zoom, getting "stations near click" as a list, or
 enter a METAR station code and "validate" to look up.
 
-
 Thu 19 Sep 2024 08:52:41 AM PDT
 
 Arrgh, Talk Like A Pirate Day. Missed opportunity for some pirate and/or parrot art.
@@ -401,26 +401,28 @@ North America, South America, Europe, Mediterranean, Africa, etc.
 But first let's get the cycle working with form widgets to model URL.
 
 Rather hacky approach:
-* onLoad picks up the current location, set, and units
-* onChange substitutes the changed parameter and calls document.location = (new relative URL)
-* Let's try that last bit all by itself! (thanks to E. for the suggestion)
-* In the console: document.location='/compose?location=LIMC&set=1' : totally works!
+
+- onLoad picks up the current location, set, and units
+- onChange substitutes the changed parameter and calls document.location = (new relative URL)
+- Let's try that last bit all by itself! (thanks to E. for the suggestion)
+- In the console: document.location='/compose?location=LIMC&set=1' : totally works!
 
 Other hacky approach (for doll set, for units; leaving station name aside):
-* Each chooser has a GET URL link which is preloaded with that substitution to the source URL.
-* No Javascript needed at all, and you already have withQueryParmas(baseUrl, props) to build
-  the relative URL from '/make'.
 
+- Each chooser has a GET URL link which is preloaded with that substitution to the source URL.
+- No Javascript needed at all, and you already have withQueryParmas(baseUrl, props) to build
+  the relative URL from '/make'.
 
 Mon 23 Sep 2024 04:58:24 PM PDT
 
 /make : proceeding on the GET URL approach which requires no widgets or javascript.
-* Added dollset/set chooser with URLs for dollset 0,1,2,3 and none.
-* Added spec/imageTextSpec.js for useMetric() from pixifier/compute-image-text.js
-* Added units='C|F|undefined' as part of the URL, overriding useMetric based on station code.
-* Added three options for "&units=C", "&units=F", and absent.
-* When should units be part of the image cache key? (edited)
-    * Only when the unit type disagrees with the unit type of the station locale.
+
+- Added dollset/set chooser with URLs for dollset 0,1,2,3 and none.
+- Added spec/imageTextSpec.js for useMetric() from pixifier/compute-image-text.js
+- Added units='C|F|undefined' as part of the URL, overriding useMetric based on station code.
+- Added three options for "&units=C", "&units=F", and absent.
+- When should units be part of the image cache key? (edited)
+  - Only when the unit type disagrees with the unit type of the station locale.
 
 (on bus: managed to lose my grip on the laptop when my backpack slid forward, and the laptop
 shot forward under the next forward-facing seat. But all seems well! Thanks, Lenovo ThinkPad)
@@ -450,20 +452,19 @@ Wed 02 Oct 2024o
 Successful experiment downloading gzipped metars.cache.csv and importing into an sqlite3 DB.
 
 In brief:
-* Download and unzip.
-* Edit csv file to rename duplicated sky cover columns with 2, 3, 4.
-* sqlite3 metars.db
-* .mode csv
-* .import metars.cache.csv snapshot
-* .schema snapshot
-* start querying, SELECT etc.
 
+- Download and unzip.
+- Edit csv file to rename duplicated sky cover columns with 2, 3, 4.
+- sqlite3 metars.db
+- .mode csv
+- .import metars.cache.csv snapshot
+- .schema snapshot
+- start querying, SELECT etc.
 
 Thu 03 Oct 2024 08:50:44 AM PDT
 
 Picker needs a fix for "set 0". I made a mistake probably on the JS falsy value.
 Did a messy fix.
-
 
 Tue 08 Oct 2024 08:47:16 PM PDT
 
@@ -477,10 +478,9 @@ Of course for /stations I could just start with an SVG and lat/long lines and
 dot the stations in by code and lat/long.
 
 Looking at the console:
-  didn't find haze in namedLayers
-  no weather layer defined for haze
+didn't find haze in namedLayers
+no weather layer defined for haze
 maybe haze can be a yellowish vertically flipped version of mist/fog?
-
 
 Thu 05 Dec 2024 09:44:19 AM PST
 
@@ -497,18 +497,20 @@ I find myself capturing the alt text for an individual pixie image. Having a
 click to copy to clipboard would be handy.
 
 Image features:
-* Composed nearby image, maybe a specific URL
-* Extending this rendering style to an image quilt from a list of stations.
+
+- Composed nearby image, maybe a specific URL
+- Extending this rendering style to an image quilt from a list of stations.
 
 Mon 09 Dec 2024 06:17:21 PM PST
 
 Clipboard
-* Click to copy alt text to clipboard. 
-    * So far this has been pretty awkward to test using clipboard.readText() etc.
-    * It requires permission in a local file context.
-    * readText() and writeText() are Promise based. I've tried using setTimeout() but the combo of asking in the
-      browser client context for permission to touch the clipboard and some possible background call which setTimeout(resolve, 0)
-      have left me scratching my head about.
+
+- Click to copy alt text to clipboard.
+  - So far this has been pretty awkward to test using clipboard.readText() etc.
+  - It requires permission in a local file context.
+  - readText() and writeText() are Promise based. I've tried using setTimeout() but the combo of asking in the
+    browser client context for permission to touch the clipboard and some possible background call which setTimeout(resolve, 0)
+    have left me scratching my head about.
 
 https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Interact_with_the_clipboard
 https://developer.mozilla.org/en-US/docs/Web/API/Clipboard
@@ -530,8 +532,9 @@ Thu 19 Dec 2024 09:27:01 AM PST
 Initial copy-alt-text-to-clipboard on regular pixie page.
 No visual signal of the copy affordance like a tool tip or onHover yet.
 Other things that want tweaking:
-* /stations map, all stations aren't in the box. (where are they? off the top? can we fix?)
-* can we make the SVG nodes for stations clickable?
+
+- /stations map, all stations aren't in the box. (where are they? off the top? can we fix?)
+- can we make the SVG nodes for stations clickable?
 
 ARGH we are having the problem of embedding an onClick that has single / double / single quotes nested.
 I couldn't make the regexp do the job I was hoping of escaping quotes with backslashes or apostrophers.
@@ -569,8 +572,9 @@ here to archive.
 
 Watching the local console suggested two improvements to weather not found
 reporting.
-- [X] Add the station name to the console error
-- [X] Add the weather-not-found name to the JSON seen in /devpixie
+
+- [x] Add the station name to the console error
+- [x] Add the weather-not-found name to the JSON seen in /devpixie
 
 Take The Small Win! Accomplished during commute.
 
@@ -591,7 +595,7 @@ Tue 06 May 2025 08:51:14 AM PDT
 Launched Curi Lagann's Hedgehog On A Stroll as pixie set=4
 but set=4 doesn't seem to parse correctly and select the set.
 Aha, here's the problem:
-  redirectToSetLocation overwrites the set rather than preserving it.
+redirectToSetLocation overwrites the set rather than preserving it.
 
 Sun 18 May 2025 08:12:52 AM PDT
 
@@ -609,16 +613,16 @@ Flexbox continues to be alarming for wide aspects.
 Deployed Witch On A Broom to PixieReport.com
 
 Two small changes might be useful:
+
 1. The preview image in the /make picker should probably include the random location, and be consistent with /random.
 2. The "stations nearby" should honor the pixie set for (at least?) the first image in the array.
-
 
 Wed 28 May 2025 06:07:57 PM PDT
 
 Let's see if we can do the things as above.
-- [X]  /make preview image now clicks through to a pixie page with navigation like /random.
-- [X]  "stations nearby" /stations makes dollset sticky for first link, round-trips.
 
+- [x] /make preview image now clicks through to a pixie page with navigation like /random.
+- [x] "stations nearby" /stations makes dollset sticky for first link, round-trips.
 
 Wed 04 Jun 2025 09:13:36 AM PDT
 
@@ -642,7 +646,7 @@ Undated (June 2025): At some point I renewed the Let's Encrypt certificate.
 
 23 June 2025
 Used the Devin DeepWiki summarizer on PixieReport. It uses "comprehensive"
-where it isn't appropriate, and gets a few things wrong, but overall it's 
+where it isn't appropriate, and gets a few things wrong, but overall it's
 not bad at summarizing the project.
 https://deepwiki.com/jmeowmeow/PixieReport
 
@@ -659,32 +663,34 @@ K2IS Clewistown Airglades Airport, Florida.
 
 Sat 02 May 2026 10:13:17 PM PDT
 Since last update:
-* Still on the same cloud server OS image.
-* KT78 Liberty Municipal TX geodata
-* Add SBJR, SBIL airports in Brazil.
-* Several Let's Encrypt renewals.
-* Sieges of web scrapers (mostly Chinese cloud server IP blocks). Disabled lat/long nearby navigation.
-* CSS Grid navigation working nearby page and home page. This makes wide and narrow browser windows useful for image grids (home; nearby) without needing a media query. Thanks to Aria Stewart for the consult.
 
+- Still on the same cloud server OS image.
+- KT78 Liberty Municipal TX geodata
+- Add SBJR, SBIL airports in Brazil.
+- Several Let's Encrypt renewals.
+- Sieges of web scrapers (mostly Chinese cloud server IP blocks). Disabled lat/long nearby navigation.
+- CSS Grid navigation working nearby page and home page. This makes wide and narrow browser windows useful for image grids (home; nearby) without needing a media query. Thanks to Aria Stewart for the consult.
 
 ## Weatherpixie.com Features
 
 ### Tamsin's Model Site Features
+
 1. Pixie Creation Wizard:
-    1. Geographic picker to find the nearest airport to a location, or search by continent and country. Yields an airport code.
-    1. Pixie Doll Picker. Each has a description and is encoded by a small integer ID.
-    1. Unit picker (mph/kph, °F/°C)
-    1. Maybe other options? I don't recall
+   1. Geographic picker to find the nearest airport to a location, or search by continent and country. Yields an airport code.
+   1. Pixie Doll Picker. Each has a description and is encoded by a small integer ID.
+   1. Unit picker (mph/kph, °F/°C)
+   1. Maybe other options? I don't recall
 2. Pixie Preview Page:
-    1. Rendered Weatherpixie.
-    1. URL to embed the image on your site.
+   1. Rendered Weatherpixie.
+   1. URL to embed the image on your site.
 3. Site navigation
-    1. "About" page, site/project background, links to resources, etc.
+   1. "About" page, site/project background, links to resources, etc.
 4. Pixie Renderer. Given an airport, a doll series, and display options, renders a scene. If there is no current METAR data for that airport, renders daytime/nighttime background and a flag.
 5. Rendered Pixies served as images
 6. HTTP Cookie to remember your chosen location, doll style, units.
 
 ### PixieReport ExpressJS site features:
+
 - [ ] Pixie Creation Wizard
   - [x] Preview of choices
   - [x] Doll set picker
@@ -713,64 +719,68 @@ Since last update:
 - [ ] HTTP Cookie to remember your chosen location, doll style, units? Or is a bookmarked URL good enough?
 
 Prelaunch
-- [X] Caddy or Nginx reverse proxy. (Nginx)
-- [X] Certbot or similar. Certbot, but a one-off 2024-08-11, repeated manually. Because fedwiki occupies :80, I have to manually fetch new certs or script the down / up hooks.
+
+- [x] Caddy or Nginx reverse proxy. (Nginx)
+- [x] Certbot or similar. Certbot, but a one-off 2024-08-11, repeated manually. Because fedwiki occupies :80, I have to manually fetch new certs or script the down / up hooks.
 
 ## Next Step Directions
 
 Generally:
-* User-friendliness
-* Dev features less obvious/obtrusive
-* Mobile stylings
-* Code cleanup, dev-doc system as built
-* Ops friendliness
+
+- User-friendliness
+- Dev features less obvious/obtrusive
+- Mobile stylings
+- Code cleanup, dev-doc system as built
+- Ops friendliness
 
 ### Webapp Functions
 
-- [X] HTTP refresh header slideshow of random pixie /random
-- [X] /random - should also link individual slides and jump out of show
-- [X] /png - with no args, serves as a discovered "random pixie image" feature.
-- [X] Explore ICAO METAR stations (random, like Twitter PixieReport).
-- [X] Instead of defaulting KSEA, random pixie via hit and redirect
-- [X] Nearest other stations, based on geo-sort
+- [x] HTTP refresh header slideshow of random pixie /random
+- [x] /random - should also link individual slides and jump out of show
+- [x] /png - with no args, serves as a discovered "random pixie image" feature.
+- [x] Explore ICAO METAR stations (random, like Twitter PixieReport).
+- [x] Instead of defaulting KSEA, random pixie via hit and redirect
+- [x] Nearest other stations, based on geo-sort
 - [ ] /make - pick doll set, units, station; copy to system clipboard.
-    - [X] Units picker (C/F/use station locale)
-    - [X] Doll set picker (display, choose)
-    - [X] Preview results
-    - [X] Copy /make URL(s) to clipboard -- use similar technique from alt-text
-    - [X] World map for approximate station picking
-    - [ ] Geolocation element ("nearest station to my coordinates")
-    - [ ] Station list view/search, or navigate the map with quadtree or zoom
+  - [x] Units picker (C/F/use station locale)
+  - [x] Doll set picker (display, choose)
+  - [x] Preview results
+  - [x] Copy /make URL(s) to clipboard -- use similar technique from alt-text
+  - [x] World map for approximate station picking
+  - [ ] Geolocation element ("nearest station to my coordinates")
+  - [ ] Station list view/search, or navigate the map with quadtree or zoom
 
 2026-07-13: World Map Navigation Attempts
 
-- [X] Add click response from weather map to lat/long
-    - [X] Start by using /stations page which already has lat/long navigation
-    - [X] Add parsing x,y to degLat, degLong. You can use the preloaded image size.
+- [x] Add click response from weather map to lat/long
+  - [x] Start by using /stations page which already has lat/long navigation
+  - [x] Add parsing x,y to degLat, degLong. You can use the preloaded image size.
 - [ ] Revision needed because server parsed imagemap loses the other settings, it only sends ?x,y
 - [ ] Show nearest stations on /make page, similar to /stations page.
-    - [X] svg nearest stations
-    - [ ] clickable list like /stations
+  - [x] svg nearest stations
+  - [ ] clickable list like /stations
 - [ ] maybe we can try spriting the weather map in the client? hmm
-    - [ ] How much zoom/unzoom can we use and have it still be useful?
+  - [ ] How much zoom/unzoom can we use and have it still be useful?
 
 ### Webapp architecture
-- [X] page template structure with navigation
-- [X] favicon templated into every page _mostly_ (only in HTML pages, not PNG or text/plain)
-- [X] Basic uptime endpoint.
-- [X] Useful uptime page with stats (pixies served, uptime, maybe error count) maybe in template footer
-- [X] Start an ops status / robustness / recovery list.
-- [X] Most recent IP addresses requesting pages. ExpressJs request param? Look for proxy headers with actual client IP address, not "localhost".
+
+- [x] page template structure with navigation
+- [x] favicon templated into every page _mostly_ (only in HTML pages, not PNG or text/plain)
+- [x] Basic uptime endpoint.
+- [x] Useful uptime page with stats (pixies served, uptime, maybe error count) maybe in template footer
+- [x] Start an ops status / robustness / recovery list.
+- [x] Most recent IP addresses requesting pages. ExpressJs request param? Look for proxy headers with actual client IP address, not "localhost".
 - [ ] Replace string with URL object with template/builder behavior for links/redirects.
 - [ ] Rethink URL path handlers, remove unneeded ones.
 - [ ] Document which URLs are designed to be supported
-- [X] Add robots.txt
+- [x] Add robots.txt
 
 ### Reporting Stations
-- [X] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
+
+- [x] Refresh ICAO.js by grabbing a whole-set zip and using it for active stations
 - [ ] Log 404s from actual METAR source, scrub candidates from ICAO.js .
 - [ ] METAR stations as a queryable database; how to query? what lists? "near lat, long?"
-- [X] Pick METAR stations from a map, like FedWiki map marker plugin. (initial prototype)
+- [x] Pick METAR stations from a map, like FedWiki map marker plugin. (initial prototype)
 
 ### Parity with Twitterbot pixies. See [./done](./done.md)
 
@@ -778,26 +788,26 @@ Generally:
 
 ### Tasks to be Ready for Main Branch / Code Review
 
-* Presumes "Full PixieReport Function" below (pixie sets, etc.)
+- Presumes "Full PixieReport Function" below (pixie sets, etc.)
 
-- [ ] Consider TheDryPrinciple for code blobs and resources.
-- [X] Remove unused files and functions from other versions.
-- [ ] Remove neglected endpoint handlers which have served their purpose
-- [X] Remove console.log for routine operations.
-- [X] Update the prospectus document.
-- [X] Add an about/credits/source/acknowledgements page to the source.
-- [ ] Consider assertions as a prelude to tests.
-- [ ] Is there a jslint to run for suggested cleanup?
-- [X] Express.js model app format to review? (a ha ha ha ha nope)
-- [ ] Replace let or global with const as possible.
-- [ ] Name output template strings rather than leaving nameless inline.
-
+* [ ] Consider TheDryPrinciple for code blobs and resources.
+* [x] Remove unused files and functions from other versions.
+* [ ] Remove neglected endpoint handlers which have served their purpose
+* [x] Remove console.log for routine operations.
+* [x] Update the prospectus document.
+* [x] Add an about/credits/source/acknowledgements page to the source.
+* [ ] Consider assertions as a prelude to tests.
+* [ ] Is there a jslint to run for suggested cleanup?
+* [x] Express.js model app format to review? (a ha ha ha ha nope)
+* [ ] Replace let or global with const as possible.
+* [ ] Name output template strings rather than leaving nameless inline.
 
 ---
 
-Next Logical Steps (next *notional* steps for evolutionary architecture?)
-- [X] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
-- [X] Factor out layer map into a layer locator passed from the server main program
+Next Logical Steps (next _notional_ steps for evolutionary architecture?)
+
+- [x] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
+- [x] Factor out layer map into a layer locator passed from the server main program
 - [ ] Jimp Font Preload, move it from compose-async to preloads.
 - [ ] Enhance layer locator to allow indirection / context by pixie set or other style choices.
   - [ ] Start by making the weather layer image mapping more explicit (thanks Andrew Sherman)
@@ -806,57 +816,65 @@ Next Logical Steps (next *notional* steps for evolutionary architecture?)
   - [ ] Group pixie-set-specific weather layers separately from generic weather
   - [ ] driving example: comet for Moomins at night; moon if visible; fireworks for new year's night.
   - [ ] driving example: known seaborne stations can have waves, maybe a buoy like Zero Zero island
-Full PixieReport function (minus the weather report location choosing wizard) needs
-- [X] Get a font matching the original WeatherPixie loaded into Jimp
-- [X] Write the weather report text on the image
-- [X] alt-text in the HTML page presentation using pre-existing logic
-- [X] Choose a pixel doll set with UI/URL parameter
-- [X] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
-- [X] Graceful error handling for missing report data or fetch failure (TV static image) call it done.
+        Full PixieReport function (minus the weather report location choosing wizard) needs
+- [x] Get a font matching the original WeatherPixie loaded into Jimp
+- [x] Write the weather report text on the image
+- [x] alt-text in the HTML page presentation using pre-existing logic
+- [x] Choose a pixel doll set with UI/URL parameter
+- [x] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
+- [x] Graceful error handling for missing report data or fetch failure (TV static image) call it done.
 - [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
 - [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
 Weather Report Choosing Wizard
-- [X] prototyped in fedwiki with web-linked markers on Leaflet map widget
-- [X] units and dollset chooser active as GET options in '/make'
-- [X] Weather station chooser. Rough and imprecise: use server-parsed world imagemap.
-- [X] Copy-me for URLs: Resolve document.location on the client side.
-- [X] Copy-me for URLs: Add the checkbox animation.
 
+- [x] prototyped in fedwiki with web-linked markers on Leaflet map widget
+- [x] units and dollset chooser active as GET options in '/make'
+- [x] Weather station chooser. Rough and imprecise: use server-parsed world imagemap.
+- [x] Copy-me for URLs: Resolve document.location on the client side.
+- [x] Copy-me for URLs: Add the checkbox animation.
 
 ## Operations Status, Robustness, and Recovery
+
 From the above item:
-- [X] Start an ops status / robustness / recovery list.
+
+- [x] Start an ops status / robustness / recovery list.
 
 ### Service start / restart
- - [X] start-up script? Replace "nohup node server.js", ^Z, "bg"  (pm2 below)
- - [X] daemonization, better automatic restartability. Using PM2 [pm2.io](https://pm2.io).
+
+- [x] start-up script? Replace "nohup node server.js", ^Z, "bg" (pm2 below)
+- [x] daemonization, better automatic restartability. Using PM2 [pm2.io](https://pm2.io).
 
 ### Service usage and load
- - [ ] observe load and latency (Express or Node runtime obs? PM2 builtins?)
- - [X] experiment with cache. Implemented cache.
- - [X] "callers" and "robots" list of very recently callers by IP address.
-     *  Note that Hurricane Electric has a lookup page. (bookmarked in browser)
+
+- [ ] observe load and latency (Express or Node runtime obs? PM2 builtins?)
+- [x] experiment with cache. Implemented cache.
+- [x] "callers" and "robots" list of very recently callers by IP address.
+  - Note that Hurricane Electric has a lookup page. (bookmarked in browser)
 
 ### Pixie Rendering Flaw Reporting and Handling
+
 Add more information in an ops page or subtly in pixie page, maybe frame-in some specific logs.
- - [X] Weather conditions with no mapped image layer ("ice crystals"): loggable in devpixie json.
- - [ ] Rarely reporting stations? Should we refresh the active snapshot more often?
- - [ ] Stations with an unchanging old report? (time/date detection)
- - [ ] Active stations with no geodata? Is this something loggable in the uptime/debug page?
+
+- [x] Weather conditions with no mapped image layer ("ice crystals"): loggable in devpixie json.
+- [ ] Rarely reporting stations? Should we refresh the active snapshot more often?
+- [ ] Stations with an unchanging old report? (time/date detection)
+- [ ] Active stations with no geodata? Is this something loggable in the uptime/debug page?
 
 ### Full METAR parse from raw METAR report.
+
 These items would enable running from a bulk METAR latest fetch.
 Thoughts:
-* The bulk METAR is wide and wordy and might not need all the fromRawMetar processing.
-* Contra this, wide and wordy may be fragile and subject to parsing errors similar to truncated single fetches.
-* More broadly: what does OpenWeatherMap return?
- - [ ] Add a fromRawMetar section to debug output.
- - [ ] Include a guess at report time / freshness.
- - [ ] Reproduce the 'Decoded METAR" parsing logic for...
-     - [ ] temperature
-     - [ ] relative humidity based on temp/dew point/pressure (argh)
-     - [ ] wind
-     - [ ] sky cover
-     - [ ] weather conds
 
+- The bulk METAR is wide and wordy and might not need all the fromRawMetar processing.
+- Contra this, wide and wordy may be fragile and subject to parsing errors similar to truncated single fetches.
+- More broadly: what does OpenWeatherMap return?
+
+* [ ] Add a fromRawMetar section to debug output.
+* [ ] Include a guess at report time / freshness.
+* [ ] Reproduce the 'Decoded METAR" parsing logic for...
+  - [ ] temperature
+  - [ ] relative humidity based on temp/dew point/pressure (argh)
+  - [ ] wind
+  - [ ] sky cover
+  - [ ] weather conds
