@@ -686,22 +686,30 @@ Since last update:
 
 ### PixieReport ExpressJS site features:
 - [ ] Pixie Creation Wizard
-    - [X] Preview of choices
-    - [X] Doll set picker
-        - [X] Which doll sets are available?
-    - [X] C/F unit picker
-    - [X] Geographic picker (prototype imagemap of the whole world)
-    - [ ] Geolocation element picker (see MDN docs on HTML "geolocation").
-    - [X] Widget to: Copy this URL
-        - [X] includes checkmark animation (thanks Reed Spool)
-        - [ ] Extend to cookie-me this pixie / copy this embed / bookmark this URL
-- [X] Site Navigation
+  - [x] Preview of choices
+  - [x] Doll set picker
+    - [x] Which doll sets are available?
+  - [x] C/F unit picker
+  - [x] Geographic picker (prototype imagemap of the whole world)
+  - [ ] Geolocation element picker (see MDN docs on HTML "geolocation").
+  - [x] Support embedding via URL or embed HTML snippet.
+    - [x] Widget to: Copy this URL
+      - [x] /make for /png and /pixie URLs
+      - [x] includes checkmark animation (thanks Reed Spool)
+    - [x] Render embed snippet (thanks Yifan)
+    - [ ] Embed endpoint for iframe rendering
+      - [x] Preview /embed no-nav page parallel to /pixie and /random
+      - [ ] refine /embed remove body CSS padding (thanks MB)
+      - [ ] /embed opengraph preview image via data: url (tx Ayla: "pin Bluesky post")
+      - [ ] add copy-this-embed-as-iframe on /make and/or pixie page
+    - [ ] Extend to cookie-me this pixie / bookmark this URL (maybe?)
+- [x] Site Navigation
 - [ ] Pixie Renderer
-    - [X] METAR code, doll series yield a scene
-    - [X] No-data mode: TV static if not available
-    - [ ] No-current-data mode: page shows hours since report, but image not sensitive to freshness.
-- [X] Rendered Pixies served as images
-    - [X] /png endpoint
+  - [x] METAR code, doll series yield a scene
+  - [x] No-data mode: TV static if not available
+  - [ ] No-current-data mode: page shows hours since report, but image not sensitive to freshness.
+- [x] Rendered Pixies served as images
+  - [x] /png endpoint
 - [ ] HTTP Cookie to remember your chosen location, doll style, units? Or is a bookmarked URL good enough?
 
 Prelaunch
