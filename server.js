@@ -603,8 +603,9 @@ const servePixie = async function(req, res, location, note, withNav) {
     const pageContent = linkedImage + `<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}${note}`;
     let responseBody;
     if (isEmbed) {
+      let pngAbsoluteUrl = `https://pixiereport.com/${pngRelativeUrl}`;
       let linkedImageNewTab = linkedImage.replace(/<a /, '<a target="_blank" ');
-      let embedOGimagehead = embedpagehead.replace(/\${src}/g, src).replace(/\${alt}/g, alt);
+      let embedOGimagehead = embedpagehead.replace(/\${src}/g, pngAbsoluteUrl).replace(/\${alt}/g, alt);
       responseBody = `${embedOGimagehead}<body>\n${linkedImageNewTab}\n</body>`;
     } else {
       responseBody = `${locpagehead}<body onload="onLoadIncludeOriginBaseUrl()">\n${mynav}\n${pageContent}\n${mynav}\n</body>`;
