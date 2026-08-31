@@ -78,6 +78,9 @@ const ogUrl      = '<meta property="og:url" content="pixiereport.com" />\n';
 const ogSiteName = '<meta property="og:site_name" content="PixieReport" />\n';
 const ogDesc     = '<meta property="og:description" content="Pixel paperdoll weather reports in homage to Weatherpixie dot com." />\n';
 const opengraph  = `${ogTitle}${ogDesc}${ogType}${ogImage}${ogImageAlt}${ogUrl}${ogSiteName}`;
+const embedImage = '<meta property="og:image" content="${src}" />\n'; // content="data:..."
+const embedImageAlt = '<meta property="og:image:alt" content="${alt}" />\n';
+const ogembed    = `${ogTitle}${ogDesc}${ogType}` +`${embedImage}${embedImageAlt}` + `${ogUrl}${ogSiteName}`;
 const getContentById = `
 const getContentById = function(domId) {
   if (domId && document.getElementById(domId)) {
@@ -135,14 +138,18 @@ const sendHtml = function(responseHandle, bodyElementOuterHtml) {
   responseHandle.send(responseDoc);
 };
 
+
 const headscript = `<script>${getContentById} ${copyTextToClipboard}</script>` + '\n';
 const locscript = `<script>${getContentById} ${copyTextToClipboard} ${onPageLoad}</script>` + '\n';
 const pagetitle = "PixieReport Webapp";
 const headstyle = `<style>
 .copyAnimation:after { content: " ☑"}
 </style>`;
+const embedstyle = '<style>\n html, body { margin: 0; padding: 0; border: 0; overflow: hidden; }\n</style>\n';
 const pagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${headscript}${headstyle}</head>`;
 const locpagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${opengraph}${locscript}${headstyle}</head>`;
+
+const embedpagehead = `<head><title>${pagetitle}</title>\n${favicon}${viewport}${ogembed}${embedstyle}</head>`;
 
 // in which we reinvent Lodash a method at a time, to avoid managing
 // a dependency stream
@@ -372,7 +379,7 @@ const fetchMETAR = async (location) => {
   // https://aviationweather.gov/data/api/#/Data/dataMetars
   //
   // also note the bulk all-current-METARs cache updated by minute,
-  // with the METAR reports in raw, non-decoded form.
+  // with the METAR reports in a wide CSV cache that could be converted to sqlite.
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
   let cached = cache.get(location, Date.now());
   if (cached) {
@@ -597,7 +604,8 @@ const servePixie = async function(req, res, location, note, withNav) {
     let responseBody;
     if (isEmbed) {
       let linkedImageNewTab = linkedImage.replace(/<a /, '<a target="_blank" ');
-      responseBody = `${pagehead}<body>\n${linkedImageNewTab}\n</body>`;
+      let embedOGimagehead = embedpagehead.replace(/\${src}/g, src).replace(/\${alt}/g, alt);
+      responseBody = `${embedOGimagehead}<body>\n${linkedImageNewTab}\n</body>`;
     } else {
       responseBody = `${locpagehead}<body onload="onLoadIncludeOriginBaseUrl()">\n${mynav}\n${pageContent}\n${mynav}\n</body>`;
     }
