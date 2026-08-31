@@ -282,7 +282,13 @@ var windDir = function(obs) {
   };
 
 var metarObsLine = function(decoded) {
-  var regex = /ob: (.*)\n/
+  // decoded report ends with:
+  //   Pressure tendency:...\n
+  //   ob: ...\n
+  //   cycle: #\n
+
+  // \n? : be a little more resilient to truncated obs line output
+  var regex = /ob: (.*)\n?/
   var result = regex.exec(decoded);
   if (result) { return result[1] };
   return "";
