@@ -12,7 +12,7 @@ const robots_txt = fs.readFileSync("webapp/robots.txt");
 
 // preloaded data files and image layers, Jimp image package
 const {stations, activeMetarStations, stationsByLat, stationsByLong, resources, Jimp} = require('./preloads');
-// image composition
+// image composition; returns [pixie, alt] - should return [pixie, alt, imagetext] incl station desc ?
 const {compose} = require('./compose-async');
 // METAR parsing
 const {decodedToParamsForStation, worldMapLink} = require('./pixifier/decoded-metar-parser'); //icao.js used
@@ -117,15 +117,17 @@ const animateAndCopyPath = function(element, pathDomId) {
 const onPageLoad = `
   // Find src=" and href=" and pre-pend document.location.origin
   // to particularize text intended for copying, then un-hide that element.
-  // (does the first matching element)
+  // (iterates through elements matching metadata hook, class "sourceloc")
   const onLoadIncludeOriginBaseUrl = function() {
     let baseUrl = document.location.origin + '/';
-    element = document.body.querySelector('.sourceloc');
+    elements = document.body.querySelectorAll('.sourceloc');
+    elements.forEach( function (element, _currentIndex, _listObj) {
     let myText = element.textContent;
     let withServerOrigin =
       myText.replace('src="', 'src="' + baseUrl).replace('href="', 'href="' + baseUrl);
     element.textContent = withServerOrigin;
     element.style = "display: inline";
+    } );
   };
 `;
 
@@ -473,6 +475,7 @@ const pixieAlt = async function(params) {
   params.unrendered = unrendered; // freezing fog, blowing dust: see devpixie
   cache.put(pixieKey, [pixie, alt], dtNow);
   // todo keyWithDollset needs units if set
+  // todo maybe we don't want to cache a TV snow render if it's a transient truncated report?
   let keyWithDollset = `location=${location}&set=${params.dollset}`; // late bound dollset?
   if (pixieKey != keyWithDollset) {
     cache.put(keyWithDollset, [pixie, alt], dtNow);
@@ -552,6 +555,11 @@ const servePixie = async function(req, res, location, note, withNav) {
   params.dollset = req.query.set; // qParam to pixie param
   params.units   = req.query.units;
   let title = `Pixel Doll Weather Report from ${location}.`;
+  if (params.stationDesc) {
+    // ideally we would use the same logic as /json for image text
+    // after await pixieAlt()
+    title = `Pixel Doll Weather Report from ${params.stationDesc}.`;
+  }
   params.text = title;
   var [pixie, alt]= await pixieAlt(params).catch(console.error);
   // Currently if we navigate from '/make' there's no dollset; when
@@ -584,6 +592,20 @@ const servePixie = async function(req, res, location, note, withNav) {
         /\${alt}/g, alt).replace(
           /\${title}/g, title);
 
+  let iframe = '<iframe src="embed?location=${station}${dollparam}" width="125" height="175">Pixie image frame will load here.</iframe>';
+
+  const copyableIframe = iframe.replace(
+    /\${station}/g, location).replace(
+      /\${dollparam}/g, dollparam).replace(
+          /\${title}/g, title);
+
+// Note class="sourceloc" is a metadata hook for post-processing in the browser
+// via Javascript, and will stay hidden if Javascript is disabled. See above.
+// The copyableIframeBlock and copyableCodeEscaped below use relative URLs
+// to allow client side URL resolution.
+
+  const copyableIframeBlock = 'Copy the following HTML to include this weather report as an inline frame (iframe):<br/><p><tt><span class="sourceloc" style="display: none">${copyableIframe}</span></tt></p>'.replace(/\${copyableIframe}/g, escapeHtml(copyableIframe));
+
   const copyableImageHolder = pixieimg.replace(
     /\${station}/g, location).replace(
       /\${dollparam}/g, dollparam).replace(
@@ -596,15 +618,20 @@ const servePixie = async function(req, res, location, note, withNav) {
     units: req.query.units,
   });
   const copyableCode = copyableImageHolder.replace(/\${src}/g, pngRelativeUrl)
-  const copyableCodeEscaped = 'Copy the following HTML to include this weather report:<br/><p><tt><span class="sourceloc" style="display: none">${copyableCode}</span></tt></p>'.replace(/\${copyableCode}/g, escapeHtml(copyableCode));
+  const copyableCodeEscaped = 'Copy the following HTML to include this weather report as a linked image:<br/><p><tt><span class="sourceloc" style="display: none">${copyableCode}</span></tt></p>'.replace(/\${copyableCode}/g, escapeHtml(copyableCode));
   const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const linkedImage = imageHolder.replace(/\${src}/g, src);
-    const pageContent = linkedImage + `<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}${note}`;
+    const pageContent = linkedImage + `<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}<br/>${copyableIframeBlock}${note}`;
     let responseBody;
     if (isEmbed) {
+    // We might be able to get the site absolute URL prefix from reverse proxy headers
+    // Maybe worth extracting https://pixiereport.com/ to a top-level property as "siteURL".
       let pngAbsoluteUrl = `https://pixiereport.com/${pngRelativeUrl}`;
       let linkedImageNewTab = linkedImage.replace(/<a /, '<a target="_blank" ');
+    // Bluesky likes wide preview images, like Twitter; Mastodon likes square preview images.
+    // Maybe we need a PNG style that adds transparent flanks like the Twitter posting script.
+    // Pixies are 125x175 (5x7); with flanks of the same width they'd be 375x175, or about 2x1
       let embedOGimagehead = embedpagehead.replace(/\${src}/g, pngAbsoluteUrl).replace(/\${alt}/g, alt);
       responseBody = `${embedOGimagehead}<body>\n${linkedImageNewTab}\n</body>`;
     } else {
@@ -902,7 +929,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
   // client-side: prefix document.location to the preview URL paths when clicked.
   const endpoints = [ "/pixie", "/png" ];
   let endpointsWithParams = [];
-  endpoints.map( each => { 
+  endpoints.map( each => {
           let idName = `urlfor${each.slice(1)}`;
 	  endpointsWithParams.push(
     `<br/>${asClickToCopyUrl(withQueryParamsAndId(each, props, idName), idName)}\n`); });
@@ -912,7 +939,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
   const unitsOptions = [ undefined, 'C', 'F' ];
   unitsOptions.map( each => { unitsOptionsUrls.push(
     `${withQueryParams('/make', {...props, 'units': each})}\n`); });
-  const urlSection = `<p>URLs to copy:<br/>${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
+  const urlSection = `<p>URLs to copy: (/pixie includes HTML snippets to embed in your page)<br/>${endpointsWithParams[0]}${endpointsWithParams[1]}</p>`;
   // early-bind a PNG preview location so a random pick is conserved on clickthrough
   const propsWithLocation = { ...props, 'location': (location) ? location : randomStation() }
   const previewPngUrl = toUrlWithParams('/png', propsWithLocation);
