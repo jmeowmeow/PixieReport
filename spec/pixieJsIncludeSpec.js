@@ -3,17 +3,17 @@ describe("data resource modules should load OK", function() {
 
   const { activeMetarStations, icaoToLocationMap } = require('../pixifier/icao.js');
 
-  const pfx = '../pixifier/pixies/';
+  const pfx = '../pixifier/pixies/dolls/';
   const pixieDirs = [
-        pfx + 'pixiemoomin/',
-        pfx + 'pixiebunny/',
-        pfx + 'pixieselfie/',
-        pfx + 'pixie0/',
-        pfx + 'pixiehedge/',
-        pfx + 'pixiewitch/',
-        pfx + 'pixieprep/',
-        pfx + 'pixieunique/',
-        pfx + 'pixiexmas/'
+        pfx + 'moomin/',
+        pfx + 'bunny/',
+        pfx + 'selfie/',
+        pfx + 'sunflower/',
+        pfx + 'hedge/',
+        pfx + 'witch/',
+        pfx + 'prep/',
+        pfx + 'unique/',
+        pfx + 'xmas/'
         ];
 
   const assertDollDesc = function(dolldir) {
