@@ -1,12 +1,12 @@
-// Ayla's "unique" doll set from dolliepalace
+// Ayla's black-haired variation using the "unique" doll set from dolliepalace
 // https://dolliepalace.com/dm/uniques/uniquemaker1/
 // Dollmaker script credit: https://github.com/lottev1991/Dollmaker-NEO
 const dollsByWeather = {
-0: "a uniquely styled pixel doll of a young woman dressed for very cold weather.",
-1: "a uniquely styled pixel doll of a young woman dressed for cold weather.",
-2: "a uniquely styled pixel doll of a young woman dressed for cool weather.",
-3: "a uniquely styled pixel doll of a young woman dressed for warm weather.",
-4: "a uniquely styled pixel doll of a young woman dressed for hot weather."
+0: "a pixel doll of a black-haired young woman dressed in quirky personal style for very cold weather.",
+1: "a pixel doll of a black-haired young woman dressed in quirky personal style for cold weather.",
+2: "a pixel doll of a black-haired young woman dressed in quirky personal style for cool weather.",
+3: "a pixel doll of a black-haired young woman dressed in quirky personal style for warm weather.",
+4: "a pixel doll of a black-haired young woman dressed in quirky personal style for hot weather."
 };
 
 exports.dollsByWeather = dollsByWeather;

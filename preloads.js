@@ -27,7 +27,7 @@
 // TODO: Resource loading is pretty direct, but could be cleaner and easier to extend
 // TODO: than pixifier/pixies/dolls/NAME/ and dolldesc.js, pixie-icy through pixie-hot:
 const dollSetNames = ['bunny', 'selfie', 'sunflower', 'moomin', 'hedge', 'witch',
-                      'prep',  'unique', 'xmas'];
+                      'prep',  'unique', 'prep2', 'xmas'];
 const runSetNames = dollSetNames.slice(0, -1); // xmas excluded
 const dd = new Map();
 const pixiepaths = new Map();
@@ -116,7 +116,6 @@ const savePixieLayers = function(whichPixie, dollDescs, dollPaths, dollFiles, co
 }
 
 // Adopted set for general use (excludes 'xmas' alternative to sunflower "pixel girl" set)
-// TODO: repetition of set names from the doll set names in the doll description data loads?
 const setNames = runSetNames;
 //const xmasSetNames = // (substitute in "xmas" for "sunflower" in the runSetNames)
 //const setNames     = xmasSetNames; // 2024-12-23; or we could refresh and check the date
@@ -130,16 +129,6 @@ resources.dollSets = [];
 
 resources.setNames.map( (setName) => resources.dollSets.push(
 	savePixieLayers(setName, dd, pixiepaths, pixieFiles, namedLayers) ) );
-
-// const bunnyLayers  = savePixieLayers(setNames[0], dd, pixiepaths, pixieFiles, namedLayers);
-// const selfieLayers = savePixieLayers(setNames[1], dd, pixiepaths, pixieFiles, namedLayers);
-// const sunflowerLayers = savePixieLayers(setNames[2], dd, pixiepaths, pixieFiles, namedLayers);
-// const moominLayers = savePixieLayers(setNames[3], dd, pixiepaths, pixieFiles, namedLayers);
-// const hedgeLayers  = savePixieLayers(setNames[4], dd, pixiepaths, pixieFiles, namedLayers);
-// const witchLayers  = savePixieLayers(setNames[5], dd, pixiepaths, pixieFiles, namedLayers);
-// const prepLayers   = savePixieLayers(setNames[6], dd, pixiepaths, pixieFiles, namedLayers);
-// const uniqueLayers = savePixieLayers(setNames[7], dd, pixiepaths, pixieFiles, namedLayers);
-// resources.dollSets = [bunnyLayers, selfieLayers, sunflowerLayers, moominLayers, hedgeLayers, witchLayers, prepLayers, uniqueLayers];
 
 // We should probably pick the doll set in the server or composer, but for now, here.
 // Vestigial code to select a doll set for a single script run.

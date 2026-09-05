@@ -1,12 +1,12 @@
-// Ayla's "prep" doll set from dolliepalace
+// Ayla's black-haired variation of a "prep" doll set from dolliepalace
 // https://dolliepalace.com/dm/preps/prepfemale/
 // Dollmaker script credit: https://github.com/lottev1991/Dollmaker-NEO
 const dollsByWeather = {
-0: "a pixel doll of a young woman with prep style dressed for very cold weather.",
-1: "a pixel doll of a young woman with prep style dressed for cold weather.",
-2: "a pixel doll of a young woman with prep style dressed for cool weather.",
-3: "a pixel doll of a young woman with prep style dressed for warm weather.",
-4: "a pixel doll of a young woman with prep style dressed for hot weather."
+0: "a pixel doll of a black-haired young woman dressed in prep style for very cold weather.",
+1: "a pixel doll of a black-haired young woman dressed in prep style for cold weather.",
+2: "a pixel doll of a black-haired young woman dressed in prep style for cool weather.",
+3: "a pixel doll of a black-haired young woman dressed in prep style for warm weather.",
+4: "a pixel doll of a black-haired young woman dressed in prep style for hot weather."
 };
 
 exports.dollsByWeather = dollsByWeather;
