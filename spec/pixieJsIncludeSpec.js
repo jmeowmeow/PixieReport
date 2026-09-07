@@ -12,7 +12,11 @@ describe("data resource modules should load OK", function() {
         pfx + 'hedge/',
         pfx + 'witch/',
         pfx + 'prep/',
+        pfx + 'prep2/',
+        pfx + 'prep3/',
         pfx + 'unique/',
+        pfx + 'unique2/',
+        pfx + 'unique3/',
         pfx + 'xmas/'
         ];
 
@@ -82,16 +86,32 @@ describe("data resource modules should load OK", function() {
     assertDollDesc(pixieDirs[5]);
   });
 
-  it(`${pixieDirs[6]} should have prep doll descriptions`, function() {
+  it(`${pixieDirs[6]} should have black-haired prep doll descriptions`, function() {
     assertDollDesc(pixieDirs[6]);
   });
 
-  it(`${pixieDirs[7]} should have unique doll descriptions`, function() {
+  it(`${pixieDirs[7]} should have brunette prep doll descriptions`, function() {
     assertDollDesc(pixieDirs[7]);
   });
 
-  it(`${pixieDirs[8]} should have xmas doll descriptions`, function() {
+  it(`${pixieDirs[8]} should have blonde prep doll descriptions`, function() {
     assertDollDesc(pixieDirs[8]);
+  });
+
+  it(`${pixieDirs[9]} should have black-haired unique doll descriptions`, function() {
+    assertDollDesc(pixieDirs[9]);
+  });
+
+  it(`${pixieDirs[10]} should have brunette unique doll descriptions`, function() {
+    assertDollDesc(pixieDirs[10]);
+  });
+
+  it(`${pixieDirs[11]} should have blonde unique doll descriptions`, function() {
+    assertDollDesc(pixieDirs[11]);
+  });
+
+  it(`${pixieDirs[12]} should have xmas doll descriptions`, function() {
+    assertDollDesc(pixieDirs[12]);
   });
 
 });
