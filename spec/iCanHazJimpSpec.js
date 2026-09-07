@@ -19,7 +19,7 @@ describe("iCanHazJimp has jimp library", function() {
   });
 
   it("should have loaded the jimp library", function() {
-    expect(jimpLibrary).not.toBe(null);
+    expect(jimpLibrary).withContext("jimp library").not.toBe(null);
   });
 
   it("should have loaded jimp.create == jimp.read", function() {
@@ -40,10 +40,10 @@ describe("iCanHazJimp has jimp library", function() {
   });
 
   it("should have read the sample Tamsin pixie with create()", function() {
-    expect(tamsin).not.toBe(undefined);
-    expect(tamsin).not.toBe(null);
-    expect(tamsin.bitmap).not.toBe(undefined);
-    expect(tamsin.bitmap).not.toBe(null);
+    expect(tamsin).withContext("Tamsin pixie").not.toBe(undefined);
+    expect(tamsin).withContext("Tamsin pixie").not.toBe(null);
+    expect(tamsin.bitmap).withContext("Tamsin pixie bitmap").not.toBe(undefined);
+    expect(tamsin.bitmap).withContext("Tamsin pixie bitmap").not.toBe(null);
     expect(tamsin.bitmap.width).toBe(124);
     expect(tamsin.bitmap.height).toBe(175);
   });
@@ -51,10 +51,10 @@ describe("iCanHazJimp has jimp library", function() {
   it("should read the sample Tamsin pixie with read()", function() {
     let tamsinr;
     readImage('spec/resources/tamsinpixie.png').then((t) => {tamsinr = t;
-      expect(tamsinr).not.toBe(undefined);
-      expect(tamsinr).not.toBe(null);
-      expect(tamsinr.bitmap).not.toBe(undefined);
-      expect(tamsinr.bitmap).not.toBe(null);
+      expect(tamsinr).withContext("Tamsin pixie readImage").not.toBe(undefined);
+      expect(tamsinr).withContext("Tamsin pixie readImage").not.toBe(null);
+      expect(tamsinr.bitmap).withContext("Tamsin pixie readImage").not.toBe(undefined);
+      expect(tamsinr.bitmap).withContext("Tamsin pixie readImage").not.toBe(null);
       expect(tamsinr.bitmap.width).toBe(124);
       expect(tamsinr.bitmap.height).toBe(175);
       });
