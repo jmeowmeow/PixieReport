@@ -11,12 +11,14 @@ describe("data resource modules should load OK", function() {
         pfx + 'sunflower/',
         pfx + 'hedge/',
         pfx + 'witch/',
-        pfx + 'prep/',
+        pfx + 'prep1/',
         pfx + 'prep2/',
         pfx + 'prep3/',
-        pfx + 'unique/',
+        pfx + 'prep4/',
+        pfx + 'unique1/',
         pfx + 'unique2/',
         pfx + 'unique3/',
+        pfx + 'unique4/',
         pfx + 'xmas/'
         ];
 
@@ -110,8 +112,16 @@ describe("data resource modules should load OK", function() {
     assertDollDesc(pixieDirs[11]);
   });
 
-  it(`${pixieDirs[12]} should have xmas doll descriptions`, function() {
+  it(`${pixieDirs[12]} should have red-headed prep doll descriptions`, function() {
     assertDollDesc(pixieDirs[12]);
+  });
+
+  it(`${pixieDirs[13]} should have red-headed unique doll descriptions`, function() {
+    assertDollDesc(pixieDirs[13]);
+  });
+
+  it(`${pixieDirs[14]} should have xmas doll descriptions`, function() {
+    assertDollDesc(pixieDirs[14]);
   });
 
 });

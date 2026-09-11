@@ -27,7 +27,8 @@
 // TODO: Resource loading is pretty direct, but could be cleaner and easier to extend
 // TODO: than pixifier/pixies/dolls/NAME/ and dolldesc.js, pixie-icy through pixie-hot:
 const dollSetNames = ['bunny', 'selfie', 'sunflower', 'moomin', 'hedge', 'witch',
-                      'prep',  'unique', 'prep2', 'unique2', 'prep3', 'unique3', 'xmas'];
+                      'prep1', 'unique1', 'prep2', 'unique2', 'prep3', 'unique3', 
+                      'prep4', 'unique4', 'xmas'];
 const runSetNames = dollSetNames.slice(0, -1); // xmas excluded
 const dd = new Map();
 const pixiepaths = new Map();

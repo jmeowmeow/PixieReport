@@ -14,5 +14,9 @@ describe("preloads of resources should produce images and lookups", function() {
     console.log("should have loaded 2");
   });
 
+  it(`should have loaded the pixel doll sets`, function() {
+    console.log("resources.setNames()", resources.setNames);
+  });
+
 
 });
