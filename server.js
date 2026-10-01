@@ -68,6 +68,7 @@ const dispcounters = function(brk) {
 clearout('pngcount', 'p64count');
 
 const favicon = "\n<link rel=\"icon\" href=\"data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Ctext%20x='0'%20y='14'%3E⛅%3C/text%3E%3C/svg%3E\" type=\"image/svg+xml\" />\n";
+const favicon_ico = { contentType: "image/svg+xml", body: '<svg xmlns="http://www.w3.org/200/svg" viewBox="0 0 16 16"><text x="0" y="0">⛅</text></svg>'};
 
 const viewport   = '<meta name="viewport" content="width=device-width, initial-scale=1" />\n';
 const ogTitle    = '<meta property="og:title" content="PixieReport" />\n';
@@ -224,6 +225,13 @@ const shortStationName = function(stn) {
   return loc;
 }
 
+app.get('/favicon.ico', (req, res) => {
+  // and/or intercept static fetches (robots.txt, favicon.ico) in the reverse proxy
+  tallyPage(req);
+  res.setHeader('Content-Type', favicon_ico.contentType);
+  res.send(favicon_ico.body);
+});
+
 app.get('/robots.txt', (req, res) => {
   tallyPage(req);
   tallyRobotIp(req);
@@ -236,7 +244,7 @@ app.get('/', (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
   const stationChoices = [
-  'KSEA', 'KPAE', 'KBLI', 'KSFO', 'EGLC', 'EGGD', 'LIMC', 'SAWH'
+  'KBFI', 'KPAE', 'KOAK', 'KLGA', 'EGLC', 'LIMC', 'LTBA', 'SAWH'
   ];
   stationChoices.push(randomStation());
   stationChoices.push(randomStation());
@@ -265,7 +273,6 @@ app.get('/', (req, res) => {
   body += reportLink.replace(/\${station}/g, 'XKXK').replace(/\${location}/, '(unknown station)');
   body += "</table><br/>";
   body += "<p>";
-  let tileNo = 0;
   let myStationChoices = "";
   stationChoices.map(stn =>
   {
@@ -687,7 +694,7 @@ app.get('/random', async (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
   const location = randomStation();
-  // can we supply a doll set and C/F params (or other theming params?)
+  // can we supply a doll set and C/F params (or other theming params)? Yes!
   // can we add a response header like 'Refresh: "3"' for a slide show? Yes!
   const refsec = '10';
   res.header('Refresh', refsec);
@@ -1134,7 +1141,7 @@ app.get('/stations', async (req, res) => {
       const closestStnsStr  = firstStnStr + closestTwelve.slice(1).reduce((a, b) =>
         (`${a}<br/>\n${b.distance.toFixed(2)} ${anchor('/stations?location='+b.station+units, b.station, 'Stations near '+b.station)} ${b.desc}`), "");
 
-      // code duplication from home page array
+      // code duplication from home page array; tileNo is dispensed with in home
       let tileNo = 0;
       let pixiegridimg  = '<a style="display: grid" href="pixie?location=${station}&set=${dollset}'+
         units +
