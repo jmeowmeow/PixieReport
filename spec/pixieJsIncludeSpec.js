@@ -49,7 +49,7 @@ describe("data resource modules should load OK", function() {
   });
 
   it("known locations map should have this many entries", function() {
-    expect(entryCount).toBe(8753);
+    expect(entryCount).toBe(8754);
   });
 
   it("known locations map first entry should be", function() {
