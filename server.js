@@ -189,6 +189,7 @@ const navigation = `<p class="nav">${navigationLinks}</p>`;
 
 // Copy pixie query params into navigation links,
 // preserving location, set (dollset), and units during navigation.
+// TODO: caller should remove "locations" param in nav to non-cycle pages? figure it out!
 const nav = function(reqUrl) {
   const url = reqUrl;
   const pathquery = url.split('?');
