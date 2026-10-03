@@ -189,8 +189,8 @@ const navigation = `<p class="nav">${navigationLinks}</p>`;
 
 // Copy pixie query params into navigation links,
 // preserving location, set (dollset), and units during navigation.
-const nav = function(req) {
-  const url = req.url;
+const nav = function(reqUrl) {
+  const url = reqUrl;
   const pathquery = url.split('?');
   if( pathquery.length != 2) { return navigation; }
   let q = pathquery[1];
@@ -289,10 +289,16 @@ app.get('/', (req, res) => {
 });
 
 //  "dollset" and "set" separate for '/make'
+//  "location" and "locations" both needed for '/cycle'
 const toUrlWithParams = function(baseUrl, props) {
   let qparams = [];
-  // location or nothing; dollset or nothing; units or nothing.
-  if (props.location) { qparams.push(`location=${props.location}`); }
+  // location or nothing; locations or nothing; dollset or nothing; units or nothing.
+  if (props.location) {
+    qparams.push(`location=${props.location}`);
+  }
+  if (props.locations) {
+    qparams.push(`locations=${props.locations}`);
+  }
   if (props.set == 0 || props.set == '0' || props.set)  { qparams.push(`set=${props.set}`); } // don't shortcut dollset zero
   if (props.dollset == 0 || props.dollset == '0' || props.dollset)  { qparams.push(`set=${props.dollset}`); } // don't shortcut dollset zero (or re-do it as a special value equivalent to "none"?)
   if (props.units)    { qparams.push(`units=${props.units}`); }
@@ -364,8 +370,8 @@ const defaultReport = (location) => {
   }
 }
 
-// offline testing of METAR report cache, given
-// that an old snapshot is presumed current.
+// offline testing of METAR report cache, given that
+// an outdated snapshot is rendered and not rejected.
 // But subtract four minutes from the cache.
 cache.put('KLAN', KLAN, Date.now() - (4 * 60 * 1000));
 
@@ -382,14 +388,15 @@ const fetchMetarFile = async (location) => {
 };
 
 
-const fetchMETAR = async (location) => {
-  // note new METAR API endpoint after text server was announced
-  // as discontinued but text URL still works 2024-06-25. Be wary.
+  // fetchMETAR: note new web-UI METAR endpoint after text server was announced
+  // as discontinued but tgftp.nws.noaa.gov still works >2yr, 2026-10-02. Be wary.
   // https://aviationweather.gov/data/api/#/Data/dataMetars
   //
   // also note the bulk all-current-METARs cache updated by minute,
-  // with the METAR reports in a wide CSV cache that could be converted to sqlite.
+  // with the METAR reports in a wide CSV cache that could be converted to sqlite3
+  // in a separate activity thread from PixieReport web requests.
   // https://aviationweather.gov/data/cache/metars.cache.csv.gz
+const fetchMETAR = async (location) => {
   let cached = cache.get(location, Date.now());
   if (cached) {
       return cached;
@@ -499,7 +506,7 @@ const elapsedMessage = function(hoursSince) {
   }
 }
 
-// %%% with invisible text holder, for regular pixie with hidden alt-text
+// with invisible text holder, for regular pixie with hidden alt-text
 const copyTextClipboard = function(spanId, spanTitle, textToCopy) {
   // just innerText the DOM element to avoid quote escaping oops but "copy alt text to clipboard" is not interesting.
   const holderAndWidget = `
@@ -540,7 +547,7 @@ app.get('/compose', async (req, res) => {
      mapLink = mapLink + `, try aviationweather.gov for <a href="https://aviationweather.gov/data/metar/?id=${location}">${location}</a>\n`;
   }
   const elapsedMsg = elapsedMessage(params.zHoursSince);
-  const mynav = nav(req);
+  const mynav = nav(req.url);
   const wrappedAlt = wrapInCopy('alttext', alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/>
@@ -626,7 +633,7 @@ const servePixie = async function(req, res, location, note, withNav) {
   });
   const copyableCode = copyableImageHolder.replace(/\${src}/g, pngRelativeUrl)
   const copyableCodeEscaped = 'Copy the following HTML to include this weather report as a linked image:<br/><p><tt><span class="sourceloc" style="display: none">${copyableCode}</span></tt></p>'.replace(/\${copyableCode}/g, escapeHtml(copyableCode));
-  const mynav = nav(req);
+  const mynav = nav(req.url);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const linkedImage = imageHolder.replace(/\${src}/g, src);
     const pageContent = linkedImage + `<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}<br/>${copyableIframeBlock}${note}`;
@@ -701,6 +708,81 @@ app.get('/random', async (req, res) => {
   const withNav = true;
   servePixie(req, res, location, `<p>New pixie every ${refsec} seconds.</p>`, withNav);
 });
+
+const latlongFromRequestQueryParams = (qParams) => {
+  // duplicates logic in "stations" handler for use in "cycle"
+  const location = qParams.location;
+  const degLat = qParams.degLat;
+  const degLong = qParams.degLong;
+
+  if (absentValue(location)) {
+    if (degLat && degLong) {
+      latlongFromParamLatLong =
+      { degLat: Number.parseFloat(degLat),
+        degLong: Number.parseFloat(degLong)
+      };
+      return latlongFromParamLatLong;
+    } else {
+      return undefined;
+    }
+  } else {
+    // prefer lat/long from the weather report if provided; the METAR
+    // fetch is cached, and not duplicated within a pixie request
+    // I can't figure out why the promise async resolution is failing here
+    const params = decodedToParamsForStation('No report.', location);
+    latlong = params.latlong;
+    return latlong;
+  }
+};
+
+app.get('/seq', async (req, res) => {
+  tallyPage(req);
+  tallyClientIp(req);
+  const refreshPath = '/seq';
+  const withNav = false;
+  serveCycle(req, res, refreshPath, withNav);
+});
+
+app.get('/cycle', async (req, res) => {
+  tallyPage(req);
+  tallyClientIp(req);
+  const refreshPath = '/cycle';
+  const withNav = true;
+  serveCycle(req, res, refreshPath, withNav);
+});
+
+const serveCycle = function(req, res, refreshPath, withNav) {
+  const howManyNearby = 5; // three or five nearest?
+  // if you have a list, stick with it! "closest(A) -> B" isn't transitive.
+  let locs = req.query.locations;
+  let locarray;
+  if (locs) {
+    locarray = locs.split(',');
+  } else {
+    // can we bootstrap a location?
+    let latlong = latlongFromRequestQueryParams({location: req.query.location, degLat: req.query.degLat, degLong: req.query.degLong});
+    let closestFew = closestStationsWithDistance(latlong).slice(0, howManyNearby);
+    locarray = [];
+    closestFew.map( each => {locarray.push(each.station)});
+  }
+  if (!locarray || !stations.get(locarray[0])) {
+    // nonsense parameter gets tossed back to '/pixie'
+    res.redirect(toUrlWithParams('/pixie', ''));
+    return;
+  }
+  // cycle the list
+  let location = locarray.shift();
+  locarray.push(location);
+  let locations= locarray.join(',');
+  // set up the refresh-to-update, preserving C/F and doll set
+  const refsec = '30'; // 30 for production, 3 for testing
+  // set "location" to next-station in refreshUrl params to preserve /cycle page navigation links.
+  const refreshUrl = toUrlWithParams(refreshPath, {locations: locations, location: locarray[0], set: req.query.set, units: req.query.units});
+  res.header('Refresh', `${refsec}; url=${refreshUrl}`);
+  const comment = `Cycles to first in ${locations} in ${refsec} seconds.`;
+  // withNav: we need to change how servePixie passes location to override locations.
+  servePixie(req, res, location, `<p>${comment}</p>`, withNav);
+}
 
 // embed: no navigation in or out, this endpoint is supposed
 // to be for iframes, etc.
@@ -915,7 +997,7 @@ const asClickToCopyUrl = function(pixieOrPngUrlPath, domId) {
 app.get('/make', async (req, res) => {  // dollset and units picker, location wip
   tallyPage(req);
   tallyClientIp(req);
-  const mynav = nav(req);
+  const mynav = nav(req.url);
   // Don't redirect if station or set is undefined,
   // we want this endpoint to potentially be re-entered
   // during editing choices and allow undef values.
@@ -966,7 +1048,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 app.get('/sets', async (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
-  const mynav = nav(req);
+  const mynav = nav(req.url);
   const body = await makeSetViewer();
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   sendHtml(res, responseBody);
@@ -1079,7 +1161,8 @@ const closestStation = function(degLat, degLong) {
 app.get('/stations', async (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
-  // start of extractable logic for nearby stations (for /make station picker)
+
+  // Can more of the nearest-stations query processing be extracted?
 
   // handling input parameters and extracting values for page logic
   const location = req.query.location;
@@ -1094,7 +1177,7 @@ app.get('/stations', async (req, res) => {
   let latlong = { degLat: 0.0, degLong: 0.0 }
   let myClosestStations = '';
   // preserve a dollset value from the query params if needed;
-  // otherwise render the no-doll-set image with a random set
+  // otherwise render the no-doll-set URL's preview image with a random set
   let urlDollset = req.query.set;
   if (!(req.query.set == 0 || req.query.set == '0' || req.query.set))
     { urlDollset = resources.randomDollSetNum(); }
@@ -1124,7 +1207,7 @@ app.get('/stations', async (req, res) => {
   // we have all the data needed to find the nearest stations
 
   // find the nearest (active) stations -- there is a long list and a short list of active
-  // short = 5000 ; long = 12k?
+  // short ~ 4900 ; long ~ 8700
   let gridnav="";
   let showLimits = "";
   let mySvg = '<svg></svg>';
@@ -1185,7 +1268,7 @@ app.get('/stations', async (req, res) => {
       showLimits = `<p>The range of the stations and the viewpoint is ${latMin.toFixed(2)} to ${latMax.toFixed(2)} latitude, ${longMin.toFixed(2)} to ${longMax.toFixed(2)} longitude, or ${latSpan.toFixed(3)} deg lat, ${longSpan.toFixed(3)} deg long.</p>`;
     }
   // if we didn't render anything the results will be pretty empty
-  const mynav = nav(req);
+  const mynav = nav(req.url);
   const mapPane = `${showLimits}\n${mySvg}`;
   // end of the repurposeable code for /make
 
@@ -1199,5 +1282,5 @@ app.get('/stations', async (req, res) => {
 
 
 app.listen(port, host, () => {
-  console.log(`${new Date().toLocaleTimeString()} Server listening at http://${host}:${port} (${sinceStart()} msec)`);
+  console.log(`${new Date().toLocaleTimeString()} PixieReport server listening at http://${host}:${port} (${sinceStart()} msec)`);
 });
