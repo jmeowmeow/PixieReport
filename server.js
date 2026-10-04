@@ -753,7 +753,16 @@ app.get('/cycle', async (req, res) => {
 });
 
 const serveCycle = function(req, res, refreshPath, withNav) {
+  let punt;
+  if (withNav) {
+    punt = toUrlWithParams('/pixie', '');
+  } else {
+    punt = toUrlWithParams('/embed', '');
+  }
   const howManyNearby = 5; // three or five nearest?
+
+  // TODO: for no-location(s), should we cycle a random neighborhood, a la "pixie", "png", "embed"?
+
   // if you have a list, stick with it! "closest(A) -> B" isn't transitive.
   let locs = req.query.locations;
   let locarray;
@@ -762,13 +771,18 @@ const serveCycle = function(req, res, refreshPath, withNav) {
   } else {
     // can we bootstrap a location?
     let latlong = latlongFromRequestQueryParams({location: req.query.location, degLat: req.query.degLat, degLong: req.query.degLong});
+    if (!latlong) {
+    // no list, no location, no lat/long: punt, don't know where to start
+      res.redirect(punt);
+      return;
+    }
     let closestFew = closestStationsWithDistance(latlong).slice(0, howManyNearby);
     locarray = [];
     closestFew.map( each => {locarray.push(each.station)});
   }
   if (!locarray || !stations.get(locarray[0])) {
-    // nonsense parameter gets tossed back to '/pixie'
-    res.redirect(toUrlWithParams('/pixie', ''));
+    // requests with nonsense parameters get punted to /pixie or /embed
+    res.redirect(punt);
     return;
   }
   // cycle the list
