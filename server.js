@@ -189,9 +189,9 @@ const navigation = `<p class="nav">${navigationLinks}</p>`;
 
 // Copy pixie query params into navigation links,
 // preserving location, set (dollset), and units during navigation.
-// TODO: caller should remove "locations" param in nav to non-cycle pages? figure it out!
-const nav = function(reqUrl) {
-  const url = reqUrl;
+const nav = function(req) {
+  const with_filtered_params = toUrlWithParams('ignore/', pixieProps(req));
+  const url = with_filtered_params;
   const pathquery = url.split('?');
   if( pathquery.length != 2) { return navigation; }
   let q = pathquery[1];
@@ -548,7 +548,7 @@ app.get('/compose', async (req, res) => {
      mapLink = mapLink + `, try aviationweather.gov for <a href="https://aviationweather.gov/data/metar/?id=${location}">${location}</a>\n`;
   }
   const elapsedMsg = elapsedMessage(params.zHoursSince);
-  const mynav = nav(req.url);
+  const mynav = nav(req);
   const wrappedAlt = wrapInCopy('alttext', alt);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const body = `${mynav}\n<img width="125" alt="${alt}" src="${src}" title="${title}" /><br/>
@@ -634,7 +634,7 @@ const servePixie = async function(req, res, location, note, withNav) {
   });
   const copyableCode = copyableImageHolder.replace(/\${src}/g, pngRelativeUrl)
   const copyableCodeEscaped = 'Copy the following HTML to include this weather report as a linked image:<br/><p><tt><span class="sourceloc" style="display: none">${copyableCode}</span></tt></p>'.replace(/\${copyableCode}/g, escapeHtml(copyableCode));
-  const mynav = nav(req.url);
+  const mynav = nav(req);
   pixie.getBase64(Jimp.MIME_PNG, (err, src) => {
     const linkedImage = imageHolder.replace(/\${src}/g, src);
     const pageContent = linkedImage + `<br/><p>${icaoLoc}</p>${mapLink}${altTextSpan}${copyableCodeEscaped}<br/>${copyableIframeBlock}${note}`;
@@ -998,7 +998,7 @@ const asClickToCopyUrl = function(pixieOrPngUrlPath, domId) {
 app.get('/make', async (req, res) => {  // dollset and units picker, location wip
   tallyPage(req);
   tallyClientIp(req);
-  const mynav = nav(req.url);
+  const mynav = nav(req);
   // Don't redirect if station or set is undefined,
   // we want this endpoint to potentially be re-entered
   // during editing choices and allow undef values.
@@ -1049,7 +1049,7 @@ app.get('/make', async (req, res) => {  // dollset and units picker, location wi
 app.get('/sets', async (req, res) => {
   tallyPage(req);
   tallyClientIp(req);
-  const mynav = nav(req.url);
+  const mynav = nav(req);
   const body = await makeSetViewer();
   const responseBody = `${pagehead}<body>\n${mynav}\n${body}\n${mynav}\n</body>`;
   sendHtml(res, responseBody);
@@ -1269,7 +1269,7 @@ app.get('/stations', async (req, res) => {
       showLimits = `<p>The range of the stations and the viewpoint is ${latMin.toFixed(2)} to ${latMax.toFixed(2)} latitude, ${longMin.toFixed(2)} to ${longMax.toFixed(2)} longitude, or ${latSpan.toFixed(3)} deg lat, ${longSpan.toFixed(3)} deg long.</p>`;
     }
   // if we didn't render anything the results will be pretty empty
-  const mynav = nav(req.url);
+  const mynav = nav(req);
   const mapPane = `${showLimits}\n${mySvg}`;
   // end of the repurposeable code for /make
 
