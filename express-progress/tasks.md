@@ -747,7 +747,10 @@ Generally:
   - [x] Preview results
   - [x] Copy /make URL(s) to clipboard -- use similar technique from alt-text
   - [x] World map for approximate station picking
-  - [ ] Geolocation element ("nearest station to my coordinates")
+      - [x] Clickable as server parsed image map, loses query params
+      - [ ] Current /make or /stations loc overlaid on map (canvas?)
+      - [ ] fallback server parsed worldmap, onload load canvas?
+  - [ ] HTML Geolocation element ("nearest station to my coordinates")
   - [ ] Station list view/search, or navigate the map with quadtree or zoom
 
 2026-07-13: World Map Navigation Attempts
@@ -808,7 +811,7 @@ Next Logical Steps (next _notional_ steps for evolutionary architecture?)
 
 - [x] Verify the layerfile composition, maybe /layers (or echo it alongside /compose output)
 - [x] Factor out layer map into a layer locator passed from the server main program
-- [ ] Jimp Font Preload, move it from compose-async to preloads.
+- [x] Jimp Font Preload, move it from compose-async to preloads.
 - [ ] Enhance layer locator to allow indirection / context by pixie set or other style choices.
   - [ ] Start by making the weather layer image mapping more explicit (thanks Andrew Sherman)
     - [ ] Make "parsed weather" to "requested layer" a visible boundary in the code.
@@ -816,7 +819,8 @@ Next Logical Steps (next _notional_ steps for evolutionary architecture?)
   - [ ] Group pixie-set-specific weather layers separately from generic weather
   - [ ] driving example: comet for Moomins at night; moon if visible; fireworks for new year's night.
   - [ ] driving example: known seaborne stations can have waves, maybe a buoy like Zero Zero island
-        Full PixieReport function (minus the weather report location choosing wizard) needs
+
+Full PixieReport function (minus the weather report location choosing wizard) needs
 - [x] Get a font matching the original WeatherPixie loaded into Jimp
 - [x] Write the weather report text on the image
 - [x] alt-text in the HTML page presentation using pre-existing logic
@@ -824,7 +828,7 @@ Next Logical Steps (next _notional_ steps for evolutionary architecture?)
 - [x] PNG output endpoint or PNG-data-img is fine. Or select just-image as ".png" or ".jpg" like http.cat ?
 - [x] Graceful error handling for missing report data or fetch failure (TV static image) call it done.
 - [ ] Error handling for internal error cases beyond catch(console.error)? Or let-it-crash.
-- [ ] Cacheable URL scheme (path params vs. query params?) responses, cache headers.
+- [ ] Client-cacheable URL scheme (path params vs. query params?) responses, cache headers.
 
 Weather Report Choosing Wizard
 
