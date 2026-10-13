@@ -469,7 +469,7 @@ Did a messy fix.
 Tue 08 Oct 2024 08:47:16 PM PDT
 
 Trying out a base map. I want to see if I can use this with the span of
-stations in the "nearby" page (/stations) and clip to that size.  
+stations in the "nearby" page (/stations) and clip to that size.
 It will be pretty weird for the neighborhood around NZSP.
 
 Wed 09 Oct 2024 08:54:09 AM PDT
@@ -670,6 +670,18 @@ Since last update:
 - Several Let's Encrypt renewals.
 - Sieges of web scrapers (mostly Chinese cloud server IP blocks). Disabled lat/long nearby navigation.
 - CSS Grid navigation working nearby page and home page. This makes wide and narrow browser windows useful for image grids (home; nearby) without needing a media query. Thanks to Aria Stewart for the consult.
+
+Tue Oct 13 11:09:43 AM PDT 2026
+Since last update:
+/embed improvements
+/seq and /cycle allowing multiple locations
+several geodata updates
+scrapers have been bad; these have been dealt with in part by IP blocking
+
+haze experiment in JRuby composition branch:
+ - maybe haze can be a yellowish vertically flipped version of mist/fog?
+ - answer: no, it shouldn't obscure the pixel doll (mist/fog are low-down)
+ - try including it like lightning? we'll have to experiment a bit with composition
 
 ## Weatherpixie.com Features
 
