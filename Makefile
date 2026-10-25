@@ -2,7 +2,7 @@ default:
 	@echo "make test       : run the Jasmine test suites"
 	@echo "make dev        : (npm run dev) express-js server with nodemon restart on :3000"
 	@echo "make start      : node server.js on :3000"
-	@echo "make production : (npx pm2 start) express-js server with pm2 restart on :3000"
+	@echo "make production : (npx pm2 start) express-js server with pm2 restart and memory limit on :3000"
 	@echo "make pixies     : navigate to :3000/pixie"
 
 start:
@@ -12,7 +12,7 @@ dev:
 	NODE_EXTRA_CA_CERTS=./webapp/go-daddy-certs.pem npm run dev
 
 production:
-	NODE_EXTRA_CA_CERTS=./webapp/go-daddy-certs.pem npx pm2 start server.js
+	NODE_EXTRA_CA_CERTS=./webapp/go-daddy-certs.pem npx pm2 start server.js --max-memory-restart 950M
 
 test:
 	npm test
