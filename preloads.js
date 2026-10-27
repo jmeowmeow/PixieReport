@@ -178,7 +178,7 @@ namedLayers.set("hurricane", new Layer('two red and black hurricane warning flag
 // Now for the weather. We coalesce the weather lookup by name based on
 // weather condition names from parsed METAR descriptions, so multiple
 // conditions produce the same image layer, and thundershowers / lightning
-// has its own logic for picking layers.
+// plus haze have their own logic for picking layers.
 
 // Each of the keys is a namedLayer entry. The computeSceneText logic in the
 // composer only cares about the description of the visible layers on top
@@ -208,6 +208,7 @@ namedLayers.set('snow', new Layer('snow', 'pixifier/pixies/weather/snow.png'));
 namedLayers.set('heavy snow', namedLayers.get('snow'));
 namedLayers.set('blowing snow', namedLayers.get('light snow'));
 namedLayers.set('lightning', new Layer('lightning', 'pixifier/pixies/weather/lightning.png'));
+namedLayers.set('haze', new Layer('haze', 'pixifier/pixies/weather/haze.png'));
 namedLayers.set('smoke', new Layer('smoke', 'pixifier/pixies/weather/smoke.png'));
 
 let promises = [];

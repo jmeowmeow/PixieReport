@@ -2,6 +2,7 @@ const {stations, resources, Jimp, Layer} = require('./preloads');
 const {computeImageTextValues} = require('./pixifier/compute-image-text');
 
 const LIGHTNING_PARSED = 'Lightning observed';
+const HAZE  = 'haze';
 
 // weather we show: drizzle, rain, mist, fog, snow, smoke (see preloads.js)
 // weather we don't: haze, dust, volcanic ash, ice crystals
@@ -67,6 +68,13 @@ function addLightningLayer(layerFiles, params) {
     layerFiles.push(layerByName('lightning'));
   }
   // default: add no lightning.
+};
+
+function addHazeLayer(layerFiles, params) {
+  if (params.weather && params.weather.includes(HAZE)) {
+    layerFiles.push(layerByName('haze'));
+  }
+  // default: add no haze.
 };
 
 // bind the doll set here so that we can later use params to choose
@@ -138,10 +146,10 @@ function addWindFlagLayer(layerFiles, params) {
 function addWeatherLayers(layerFiles, params, unrendered) {
   if (params.weather) {
     for (const cond of params.weather) {
-      if (cond == LIGHTNING_PARSED) {
-        // Lightning has its own layer ordering handled elsewhere, skip.
+      if (cond == LIGHTNING_PARSED || cond == HAZE) {
+        // Lightning and haze are added behind the doll, skip.
       } else {
-        // Non-lightning weather layers compose in the order supplied.
+        // Precipitation and smoke compose in the order supplied.
         const layer = layerByName(cond);
         if (layer) {
           // known weather types and aliases; this is us
@@ -183,8 +191,8 @@ const asOxfordCommaList = function(terms) {
 // showing (a pixel doll dressed for the weather | no pixel doll)
 const computeSceneText = function(imageLayers) {
   // imageLayers stack of layers: [day/night, skycover, lightning?, pixie, wind?, weather?, frame]
-  // OK pixie is always [2] or if lightning is present, [3]; frame is always last
-  // a(n) $1 $0 scene [with wind flags, lightning, rain, and fog], showing [pixie]
+  // OK pixie is always [2] or if lightning/haze is present, [3] or [4]; frame is always last
+  // a(n) $1 $0 scene [with wind flags, lightning, haze, rain, and fog], showing [pixie]
 
   // all right where is this null coming from? it's the pixel doll!
 
@@ -202,7 +210,7 @@ const computeSceneText = function(imageLayers) {
   scenetext = scenetext + ' ' + daynight + ' scene';
   // OK now we have maybe-lightning; pixel doll; maybe-wind, maybe-weather; frame
 
-  // this logic might be worth its own unit test
+  // this logic might be worth its own unit test, esp with haze and lightning
   layerNames.shift(); // base layer
   layerNames.shift(); // sky cover
   layerNames.pop();   // the top layer frame
@@ -210,16 +218,22 @@ const computeSceneText = function(imageLayers) {
   let pixieDesc = 'a pixel doll dressed for the weather';
 
   // implicitly assert layer name is string-like, not null or undefined
-  if (layerNames[0].match(/lightning/)) {
-    var ltng = layerNames.shift();
-    pixieDesc = layerNames.shift(); // did we drop it if there's lightning?
-    layerNames.unshift(ltng);
+  if (layerNames[0].match(/lightning/) || layerNames[0].match(/haze/)) {
+    var ltnghz = layerNames.shift();
+    if (layerNames[0].match(/lightning/) || layerNames[0].match(/haze/)) {
+      var ltnghz2 = layerNames.shift();
+      pixieDesc = layerNames.shift();
+      layerNames.unshift(ltnghz2);
+    } else {
+      pixieDesc = layerNames.shift(); // did we drop it if there's lightning?
+    }
+    layerNames.unshift(ltnghz);
   } else {
-    // it's a doll description
+    // no lightning or haze, it's a doll description
     pixieDesc = layerNames.shift();
   }
-  // OK now we have maybe-lightning, maybe-wind, maybe-weather
-  // whatever is left can be accumulated as weather
+  // OK now we have maybe-lightning, maybe-haze, maybe-wind, maybe-weather
+  // whatever is left can be accumulated in the description as weather
   // [0]  ...scene'
   // [1]  ...scene, with weather1'
   // [2]  ...scene, with weather1 and weather2'
@@ -257,11 +271,12 @@ async function compose(params) {
   addBackgroundLayer(layers, params);
   addCloudLayer(layers, params);
   addLightningLayer(layers, params); // what would it look like behind the clouds?
+  addHazeLayer(layers, params); // move behind doll like lightning to be sky haze
   addWindFlagLayer(layers, params); // move behind doll because of pixiewitch set
   addDollLayer(layers, params); // TODO bind a random dollset here or in server.js / '/random'
   addWeatherLayers(layers, params, unrendered);
   addFrame(layers, params);
-  const sceneText = computeSceneText(layers); // TODO Only doll scene alt text: add location/weather?
+  const sceneText = computeSceneText(layers); // TODO Only doll scene alt text: add location/weather as used in the params?
   let blankCanvas = new Jimp(125, 175, "#000000");
   const jimpLayers = [];
   jimpLayers.push(blankCanvas);
